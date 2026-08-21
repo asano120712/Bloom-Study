@@ -29,12 +29,12 @@ export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
         spellCheck={false}
         placeholder="こたえを入力"
         aria-label="こたえを入力"
-        className="w-full rounded-2xl border-2 border-petal-200 bg-white px-4 py-4 text-lg outline-none focus:border-petal-400"
+        className="w-full rounded-2xl border-2 border-bloom-200 bg-white px-4 py-4 text-lg outline-none focus:border-bloom-500"
       />
       <button
         type="submit"
         disabled={disabled || !value.trim()}
-        className="min-h-14 rounded-full bg-petal-500 px-6 text-lg font-bold text-white disabled:bg-petal-200"
+        className="min-h-14 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
       >
         こたえあわせ
       </button>

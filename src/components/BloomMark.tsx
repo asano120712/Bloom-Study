@@ -1,58 +1,69 @@
 import { useEffect, useRef } from 'react'
 
+/** ロゴ(public/bloomstudy_logo.svg)と同じ花びらの配色 */
+const PETAL_COLORS = ['#5DCAA5', '#3FBE93', '#5DCAA5', '#3FBE93', '#5DCAA5']
+const CENTER_COLOR = '#0F6E56'
+
 /**
- * ロゴの花びらモチーフ(暫定アセット)。
- * 5枚の花びらが順に開く演出を Web Animations API で制御する。
- * 確定版の bloomstudy_logo_*.svg が用意でき次第、差し替える。
+ * ロゴの花びらモチーフ(文字なし)。
+ * UI内の演出のため、SVGファイル側のSMILではなく Web Animations API で制御する。
+ * 形状・配色はロゴアセットと揃えてあるので、片方を変えたらもう片方も合わせること。
  */
-export function BloomMark({ size = 96 }: { size?: number }) {
+export function BloomMark({ size = 96, animate = true }: { size?: number; animate?: boolean }) {
   const rootRef = useRef<SVGSVGElement>(null)
 
   useEffect(() => {
-    const petals = rootRef.current?.querySelectorAll('[data-petal]')
-    petals?.forEach((petal, index) => {
-      petal.animate(
+    if (!animate) return
+    const parts = rootRef.current?.querySelectorAll<SVGElement>('[data-bloom-part]')
+    parts?.forEach((part, index) => {
+      const isCenter = part.dataset.bloomPart === 'center'
+      part.animate(
         [
-          { opacity: 0, transform: 'scale(0.2)' },
-          { opacity: 1, transform: 'scale(1)' },
+          { opacity: 0, transform: isCenter ? 'scale(0)' : 'scale(0.15)', offset: 0 },
+          { opacity: 1, transform: 'scale(1.1)', offset: 0.6 },
+          { opacity: 1, transform: 'scale(1)', offset: 1 },
         ],
         {
           duration: 600,
-          delay: index * 120,
+          delay: index * 100,
           easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
           fill: 'both',
         },
       )
     })
-  }, [])
+  }, [animate])
 
   return (
     <svg
       ref={rootRef}
       width={size}
       height={size}
-      viewBox="0 0 100 100"
+      viewBox="0 0 64 64"
       role="img"
       aria-label="Bloomstudy"
     >
-      <g style={{ transformOrigin: '50px 50px' }}>
-        {[0, 1, 2, 3, 4].map((index) => (
+      <g transform="translate(32,32) scale(1.5)">
+        {PETAL_COLORS.map((color, index) => (
           <ellipse
             key={index}
-            data-petal
-            cx="50"
-            cy="26"
-            rx="14"
-            ry="22"
-            fill="var(--color-petal-300)"
-            style={{
-              transformOrigin: '50px 50px',
-              rotate: `${index * 72}deg`,
-            }}
+            data-bloom-part="petal"
+            cx="0"
+            cy="-10"
+            rx="6.5"
+            ry="9.5"
+            fill={color}
+            style={{ transformOrigin: '0 0', rotate: `${index * 72}deg` }}
           />
         ))}
+        <circle
+          data-bloom-part="center"
+          cx="0"
+          cy="0"
+          r="4.5"
+          fill={CENTER_COLOR}
+          style={{ transformOrigin: '0 0' }}
+        />
       </g>
-      <circle cx="50" cy="50" r="9" fill="var(--color-petal-500)" />
     </svg>
   )
 }

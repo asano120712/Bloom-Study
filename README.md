@@ -34,7 +34,7 @@ npm run lint    # oxlint
 
 ```
 src/
-├── components/   共通UI(AppShell, HintList, TypingInput, HandwritingCanvas, BloomMark)
+├── components/   共通UI(AppShell, HintList, TypingInput, HandwritingCanvas, BloomLogo, BloomMark)
 ├── config/       ヒント間隔・トライアル上限・編集距離の許容量など調整パラメータ
 ├── data/         ジャンル定義とサンプル問題セット
 ├── features/
@@ -56,6 +56,31 @@ src/
 2. `src/features/hints/<genre>.ts` にヒント分解ルールを実装し、`src/features/hints/index.ts` の `HINT_RULES` に登録
 3. `src/data/genres.ts` と `src/data/questions.ts` にジャンル・問題を追加
 
+### ロゴと配色
+
+ロゴアセットは `public/` に置いてある。
+
+| ファイル | 用途 |
+|---|---|
+| `public/bloomstudy_icon.svg` | 縦組みロゴ(アイコン+文字)。トップ画面で `BloomLogo variant="vertical"` が表示 |
+| `public/bloomstudy_logo.svg` | 横組みロゴ。`BloomLogo variant="horizontal"` |
+| `public/favicon.svg` | 上記の花びらモチーフを正方形に切り出した静止版。16pxで潰れないよう文字とアニメーションは含めない |
+
+ロゴ単体ファイルのアニメーションはSVG内のSMILで完結しているため `<img>` で読み込む。
+一方、UI内の演出(結果画面など)は `BloomMark` が同じ形状・配色を Web Animations API で描き直している。
+**片方の形や色を変えたら、もう片方も合わせること。**
+
+配色トークンは `src/index.css` の `@theme` にあり、すべてロゴから採色している。
+
+| トークン | 値 | 由来 |
+|---|---|---|
+| `bloom-400` / `bloom-500` | `#5DCAA5` / `#3FBE93` | 花びら |
+| `bloom-700` | `#0F6E56` | 花の中心。主要ボタン・正解表示に使う |
+| `ink-900` | `#23292B` | ロゴのワードマーク |
+| `warm-500` / `warm-600` | `#E07A5F` / `#C25A3E` | 不正解・「ちがった」の表現(緑一色の中で区別をつけるため) |
+
+正誤は色だけに頼らず、⭕️/✖️ アイコンとテキストを併記する。
+
 ### バックエンド(Firebase / Supabase)
 
 技術選定書 6章の通り採用は未確定のため、MVP では `localStorage` 実装で動かしている。
@@ -67,7 +92,6 @@ src/
 - レベル3(LanguageTool API による文法チェック)
 - レベル4(Transformers.js + `all-MiniLM-L6-v2` による意味的類似度判定)
 - サブスク決済(Stripe)
-- 確定版ロゴSVGの適用(現在は `BloomMark` が暫定アセット)
 
 ## デプロイ
 

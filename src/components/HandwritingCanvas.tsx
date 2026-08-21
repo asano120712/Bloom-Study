@@ -7,7 +7,7 @@ interface HandwritingCanvasProps {
 }
 
 const LINE_WIDTH = 8
-const STROKE_COLOR = '#3a2f36'
+const STROKE_COLOR = '#23292B'
 
 /**
  * 手書き入力キャンバス。外部ライブラリを使わず Canvas API のみで実装する。
@@ -89,14 +89,14 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
         onPointerUp={endStroke}
         onPointerCancel={endStroke}
         aria-label="手書き入力エリア"
-        className="h-64 w-full touch-none rounded-2xl border-2 border-petal-200 bg-white"
+        className="h-64 w-full touch-none rounded-2xl border-2 border-bloom-200 bg-white"
       />
       <div className="flex gap-3">
         <button
           type="button"
           onClick={clear}
           disabled={disabled || !hasStroke}
-          className="min-h-14 flex-1 rounded-full border-2 border-petal-200 px-6 text-lg font-bold text-ink-600 disabled:text-ink-400"
+          className="min-h-14 flex-1 rounded-full border-2 border-bloom-200 px-6 text-lg font-bold text-ink-600 disabled:text-ink-400"
         >
           けす
         </button>
@@ -104,7 +104,7 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
           type="button"
           onClick={onSubmit}
           disabled={disabled || !hasStroke}
-          className="min-h-14 flex-2 rounded-full bg-petal-500 px-6 text-lg font-bold text-white disabled:bg-petal-200"
+          className="min-h-14 flex-2 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
         >
           かけた
         </button>

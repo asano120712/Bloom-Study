@@ -13,12 +13,12 @@ export function HintList({ hints, secondsToNext }: HintListProps) {
         {hints.map((hint) => (
           <li
             key={hint.index}
-            className="animate-bloom-in rounded-2xl bg-petal-50 px-4 py-3 text-left"
+            className="animate-bloom-in rounded-2xl bg-bloom-50 px-4 py-3 text-left"
           >
             {hint.caption && (
               <span className="block text-xs text-ink-400">{hint.caption}</span>
             )}
-            <span className="block text-xl tracking-widest text-petal-600">{hint.text}</span>
+            <span className="block text-xl tracking-widest text-bloom-700">{hint.text}</span>
           </li>
         ))}
       </ul>

@@ -7,9 +7,9 @@ import { useStats } from '@/hooks/useStats'
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex-1 rounded-2xl bg-petal-50 px-3 py-4 text-center">
+    <div className="flex-1 rounded-2xl bg-bloom-50 px-3 py-4 text-center">
       <p className="text-xs text-ink-400">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-petal-600">{value}</p>
+      <p className="mt-1 text-2xl font-bold text-bloom-700">{value}</p>
     </div>
   )
 }
@@ -47,13 +47,13 @@ export function MyPage() {
           {stats.history.map((record, index) => (
             <li
               key={`${record.questionId}-${record.answeredAt}-${index}`}
-              className="flex items-center justify-between rounded-2xl bg-cream-100 px-4 py-3 text-sm"
+              className="flex items-center justify-between rounded-2xl bg-base-100 px-4 py-3 text-sm"
             >
               <span>
                 {findGenre(record.genreId)?.label} /{' '}
                 {findQuestion(record.questionId)?.prompt ?? record.questionId}
               </span>
-              <span className={record.isCorrect ? 'text-leaf-600' : 'text-ink-400'}>
+              <span className={record.isCorrect ? 'text-bloom-700' : 'text-warm-600'}>
                 {record.isCorrect ? '⭕️' : '✖️'} ヒント{record.hintsUsed}
               </span>
             </li>
@@ -64,7 +64,7 @@ export function MyPage() {
       <div className="mt-8 flex flex-col gap-3">
         <Link
           to="/genres"
-          className="flex min-h-14 items-center justify-center rounded-full bg-petal-500 text-lg font-bold text-white"
+          className="flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
         >
           問題をとく
         </Link>

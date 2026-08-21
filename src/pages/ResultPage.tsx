@@ -33,15 +33,15 @@ export function ResultPage() {
 
         <p
           className={`text-2xl font-bold ${
-            result.isCorrect ? 'text-leaf-600' : 'text-ink-600'
+            result.isCorrect ? 'text-bloom-700' : 'text-warm-600'
           }`}
         >
           {VERDICT_LABEL[result.verdict]}
         </p>
 
-        <div className="w-full rounded-3xl bg-petal-50 px-5 py-6">
+        <div className="w-full rounded-3xl bg-bloom-50 px-5 py-6">
           <p className="text-sm text-ink-400">{prompt}</p>
-          <p className="mt-2 text-3xl font-bold text-petal-600">{result.answer}</p>
+          <p className="mt-2 text-3xl font-bold text-bloom-700">{result.answer}</p>
         </div>
 
         <p className="text-sm text-ink-600">🌸 {currentStreak} 問れんぞく正解中</p>
@@ -50,14 +50,14 @@ export function ResultPage() {
           {hasNext ? (
             <Link
               to={`/quiz/${genreId}`}
-              className="flex min-h-14 items-center justify-center rounded-full bg-petal-500 text-lg font-bold text-white"
+              className="flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
             >
               つぎの問題へ
             </Link>
           ) : (
             <Link
               to="/genres"
-              className="flex min-h-14 items-center justify-center rounded-full bg-petal-500 text-lg font-bold text-white"
+              className="flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
             >
               ジャンルをえらぶ
             </Link>

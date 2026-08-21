@@ -105,22 +105,22 @@ export function QuizPage() {
         {selfReport ? (
           // 手書きは自動判定しない。正解を提示したうえで自己申告してもらう
           <div className="flex flex-col gap-4">
-            <div className="rounded-3xl bg-petal-50 px-5 py-6 text-center">
+            <div className="rounded-3xl bg-bloom-50 px-5 py-6 text-center">
               <p className="text-sm text-ink-400">こたえ</p>
-              <p className="mt-2 text-3xl font-bold text-petal-600">{question.answer}</p>
+              <p className="mt-2 text-3xl font-bold text-bloom-700">{question.answer}</p>
             </div>
             <div className="flex gap-3">
               <button
                 type="button"
                 onClick={() => finish(judgeHandwriting(question, false), selfReport.hintsUsed)}
-                className="min-h-14 flex-1 rounded-full border-2 border-petal-200 text-lg font-bold text-ink-600"
+                className="min-h-14 flex-1 rounded-full border-2 border-warm-500 text-lg font-bold text-warm-600"
               >
                 ✖️ ちがった
               </button>
               <button
                 type="button"
                 onClick={() => finish(judgeHandwriting(question, true), selfReport.hintsUsed)}
-                className="min-h-14 flex-1 rounded-full bg-leaf-400 text-lg font-bold text-white"
+                className="min-h-14 flex-1 rounded-full bg-bloom-700 text-lg font-bold text-white"
               >
                 ⭕️ できた
               </button>
@@ -131,7 +131,7 @@ export function QuizPage() {
             <div
               role="group"
               aria-label="入力モード切替"
-              className="mb-4 flex rounded-full bg-petal-100 p-1"
+              className="mb-4 flex rounded-full bg-bloom-100 p-1"
             >
               {(['typing', 'handwriting'] as const).map((mode) => (
                 <button
@@ -141,7 +141,7 @@ export function QuizPage() {
                   // 切替時は入力コンポーネントごと差し替わり、入力内容はリセットされる
                   onClick={() => setInputMode(mode)}
                   className={`min-h-12 flex-1 rounded-full text-base font-bold ${
-                    inputMode === mode ? 'bg-white text-petal-600' : 'text-ink-600'
+                    inputMode === mode ? 'bg-white text-bloom-700' : 'text-ink-600'
                   }`}
                 >
                   {mode === 'typing' ? 'タイピング' : '手書き'}

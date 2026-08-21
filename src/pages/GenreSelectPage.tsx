@@ -13,9 +13,9 @@ export function GenreSelectPage() {
           <li key={genre.id}>
             <Link
               to={`/quiz/${genre.id}`}
-              className="flex min-h-20 flex-col justify-center rounded-3xl bg-petal-100 px-5 py-4"
+              className="flex min-h-20 flex-col justify-center rounded-3xl bg-bloom-100 px-5 py-4"
             >
-              <span className="text-xl font-bold text-petal-600">{genre.label}</span>
+              <span className="text-xl font-bold text-bloom-700">{genre.label}</span>
               <span className="mt-1 text-sm text-ink-600">{genre.description}</span>
             </Link>
           </li>
