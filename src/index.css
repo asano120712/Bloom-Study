@@ -1,0 +1,74 @@
+@import 'tailwindcss';
+
+/* Bloomstudy デザイントークン
+   「花びらが開くように答えが浮かび上がる」世界観を色とフォントで表現する。
+   子どもから大人まで使うため、本文は 16px 未満にしない。 */
+@theme {
+  --font-sans: 'Zen Maru Gothic', 'Hiragino Maru Gothic ProN', 'Yu Gothic', sans-serif;
+  --font-display: 'Quicksand', 'Zen Maru Gothic', sans-serif;
+
+  --color-petal-50: #fff7fa;
+  --color-petal-100: #ffe9f1;
+  --color-petal-200: #ffd0e1;
+  --color-petal-300: #ffb0cd;
+  --color-petal-400: #ff85b3;
+  --color-petal-500: #f4609a;
+  --color-petal-600: #d94a80;
+
+  --color-leaf-100: #e8f5ec;
+  --color-leaf-400: #6cc08b;
+  --color-leaf-600: #3f8f5f;
+
+  --color-ink-900: #3a2f36;
+  --color-ink-600: #6d5f68;
+  --color-ink-400: #9b8f96;
+
+  --color-cream-50: #fffdf9;
+  --color-cream-100: #fdf6ee;
+
+  /* ヒントが「じわっと浮かび上がる」演出。プロトタイプのブラー+フェードインを踏襲 */
+  --animate-bloom-in: bloom-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes bloom-in {
+    from {
+      opacity: 0;
+      filter: blur(10px);
+      transform: translateY(6px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-cream-50);
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+  /* 手書きキャンバスでの指入力中に画面が引っ張られないようにする */
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

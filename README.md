@@ -1,1 +1,74 @@
-# Bloom-Stady
+# Bloomstudy
+
+ヒントが花びらのようにひとつずつ浮かびあがるあいだに、答えを「思い出す」ゲーム型の学習ウェブアプリ。
+
+- [要件定義書](Bloomstudy_要件定義書.md) — コンセプト・ビジネスモデル
+- [機能要件書](Bloomstudy_機能要件書.md) — 画面一覧・機能要件
+- [技術選定書](Bloomstudy_技術選定書.md) — 技術スタックと選定理由
+
+## 開発環境
+
+| 項目 | 内容 |
+|---|---|
+| 言語 | TypeScript |
+| フレームワーク | React 19 |
+| ビルドツール | Vite |
+| スタイリング | Tailwind CSS v4(`@tailwindcss/vite` プラグイン) |
+| ルーティング | React Router |
+| 判定(レベル2) | `fast-levenshtein` |
+| Lint | oxlint |
+
+必要なもの: Node.js 20 以上(開発は v24 で確認)、npm。
+
+## セットアップ
+
+```bash
+npm install
+npm run dev     # 開発サーバー(--host 有効。スマホ実機からは表示される Network URL で確認)
+npm run build   # 型チェック + 本番ビルド
+npm run preview # ビルド結果の確認
+npm run lint    # oxlint
+```
+
+## ディレクトリ構成
+
+```
+src/
+├── components/   共通UI(AppShell, HintList, TypingInput, HandwritingCanvas, BloomMark)
+├── config/       ヒント間隔・トライアル上限・編集距離の許容量など調整パラメータ
+├── data/         ジャンル定義とサンプル問題セット
+├── features/
+│   ├── hints/    ジャンル別ヒント分解ルール(english / kanji)とレジストリ
+│   └── judge/    正誤判定(レベル1: 正規化一致 / レベル2: 編集距離)
+├── hooks/        useHintTimer, useStats
+├── pages/        画面(トップ / ジャンル選択 / 出題 / 結果 / マイページ / トライアル終了)
+├── services/     永続化(statsRepository, quizSession)
+└── types/        ドメイン型
+```
+
+## 実装上のメモ
+
+### ジャンルを追加するとき
+
+ヒントの出しかたはジャンルごとに個別設計する方針のため、共通ロジックには寄せない。
+
+1. `src/types/index.ts` の `GenreId` に ID を追加
+2. `src/features/hints/<genre>.ts` にヒント分解ルールを実装し、`src/features/hints/index.ts` の `HINT_RULES` に登録
+3. `src/data/genres.ts` と `src/data/questions.ts` にジャンル・問題を追加
+
+### バックエンド(Firebase / Supabase)
+
+技術選定書 6章の通り採用は未確定のため、MVP では `localStorage` 実装で動かしている。
+差し替え点は `src/services/statsRepository.ts` の `StatsRepository` インターフェースに閉じてあるので、
+採用時は同じインターフェースの実装を足して `statsRepository` を差し替える。
+
+### 未実装(将来フェーズ)
+
+- レベル3(LanguageTool API による文法チェック)
+- レベル4(Transformers.js + `all-MiniLM-L6-v2` による意味的類似度判定)
+- サブスク決済(Stripe)
+- 確定版ロゴSVGの適用(現在は `BloomMark` が暫定アセット)
+
+## デプロイ
+
+Vercel を想定。`vercel.json` で SPA のフォールバックを設定済み(ビルドコマンド `npm run build`、出力 `dist`)。
