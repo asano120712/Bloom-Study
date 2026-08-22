@@ -181,21 +181,26 @@ QuizPage → useQuizSession → quizSource.startSession(genreId) → QuizSession
                          ↘ quizSession(sessionStorage) で結果画面をはさんでも復元
 ```
 
-何問返すか・どの順で返すかを決めるのは [src/services/quizSource.ts](src/services/quizSource.ts) の責務で、
-画面はカタログの総数も未出題の残りも知らない。要件定義書7章の
-「プランに応じて問題数が増える」を後から足すには、この情報を画面に渡していないことが前提になる。
+**いまは回数制限を設けていない**(ジャンルの全問をシャッフルして返す)。
+そのうえで、何問返すか・どの順で返すかを決めるのは
+[src/services/quizSource.ts](src/services/quizSource.ts) の責務に寄せてあり、
+画面はカタログの総数も未出題の残りも知らない。
 
-| | いまの実装 | サーバー導入後 |
+要件定義書7章の「プランに応じて問題数が増える」を後から入れるときは、
+`startSession` の中で切るか、同じ `QuizSource` を実装したサーバー版に差し替える。
+
+| | いまの実装 | 制限・課金を入れた後 |
 |---|---|---|
 | 出題元 | バンドルした生成JSON | `fetch('/api/session')` |
-| 何問返すか | `TRIAL_LIMIT - trialUsed` をクライアントで計算 | サーバーがプランを見て決める |
+| 何問返すか | 全問(制限なし) | サーバーがプランを見て決める |
 | 出題順 | シャッフル | 復習・間隔反復をサーバー側で |
 
-差し替えるのは `quizSource` の実装1つで、`QuizSource` / `QuizSession` の形と画面側は変えない。
+差し替えるのは `quizSource` の実装1つで、`QuizSource` / `QuizSession` の形も画面側も変えない。
 `statsRepository` と同じ差し替えかた。
 
-**注意**: いまはトライアル残数の計算がクライアントにあるため、`localStorage` を消せば無制限に解ける。
-課金を始めるなら、この判断はサーバー実装へ移すこと(移す先が `quizSource` に決まっているのがこの設計の狙い)。
+出題数に上限を入れると、出題セットが空になりうる。その行き先は `/trial-end` に配線済み
+(いまは到達しない)。`TRIAL_LIMIT` と `UserStats.trialUsed` も、
+そのときに使う想定で残してある。
 
 ### バックエンド(Firebase / Supabase)
 
