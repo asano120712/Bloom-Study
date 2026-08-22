@@ -1,6 +1,6 @@
 <svg width="720" height="280" viewBox="0 0 360 140" xmlns="http://www.w3.org/2000/svg" role="img">
 <title>Bloomstudy ロゴ(横組み・アニメーション)</title>
-<desc>アイコンの花びらが順番に開き、続けてロゴ文字が横にフェードインするループアニメーション</desc>
+<desc>アイコンの花びらが順番に開き、続けてロゴ文字が横にフェードインするアニメーション(1回再生)</desc>
 
 <g transform="translate(50,70) scale(1.4)">
 
@@ -9,9 +9,9 @@
       <animateTransform attributeName="transform" type="scale"
         values="0.15;0.15;1.1;1;1"
         keyTimes="0;0;0.15;0.25;1"
-        dur="2.4s" repeatCount="indefinite" calcMode="linear"/>
+        dur="2.4s" repeatCount="1" calcMode="linear" fill="freeze"/>
       <ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5">
-        <animate attributeName="opacity" values="0;0;1;1;1" keyTimes="0;0;0.15;0.25;1" dur="2.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;0;1;1;1" keyTimes="0;0;0.15;0.25;1" dur="2.4s" repeatCount="1" fill="freeze"/>
       </ellipse>
     </g>
   </g>
@@ -21,9 +21,9 @@
       <animateTransform attributeName="transform" type="scale"
         values="0.15;0.15;1.1;1;1"
         keyTimes="0;0.0417;0.1917;0.2917;1"
-        dur="2.4s" repeatCount="indefinite" calcMode="linear"/>
+        dur="2.4s" repeatCount="1" calcMode="linear" fill="freeze"/>
       <ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#3FBE93">
-        <animate attributeName="opacity" values="0;0;1;1;1" keyTimes="0;0.0417;0.1917;0.2917;1" dur="2.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;0;1;1;1" keyTimes="0;0.0417;0.1917;0.2917;1" dur="2.4s" repeatCount="1" fill="freeze"/>
       </ellipse>
     </g>
   </g>
@@ -33,9 +33,9 @@
       <animateTransform attributeName="transform" type="scale"
         values="0.15;0.15;1.1;1;1"
         keyTimes="0;0.0833;0.2333;0.3333;1"
-        dur="2.4s" repeatCount="indefinite" calcMode="linear"/>
+        dur="2.4s" repeatCount="1" calcMode="linear" fill="freeze"/>
       <ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5">
-        <animate attributeName="opacity" values="0;0;1;1;1" keyTimes="0;0.0833;0.2333;0.3333;1" dur="2.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;0;1;1;1" keyTimes="0;0.0833;0.2333;0.3333;1" dur="2.4s" repeatCount="1" fill="freeze"/>
       </ellipse>
     </g>
   </g>
@@ -45,9 +45,9 @@
       <animateTransform attributeName="transform" type="scale"
         values="0.15;0.15;1.1;1;1"
         keyTimes="0;0.125;0.275;0.375;1"
-        dur="2.4s" repeatCount="indefinite" calcMode="linear"/>
+        dur="2.4s" repeatCount="1" calcMode="linear" fill="freeze"/>
       <ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#3FBE93">
-        <animate attributeName="opacity" values="0;0;1;1;1" keyTimes="0;0.125;0.275;0.375;1" dur="2.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;0;1;1;1" keyTimes="0;0.125;0.275;0.375;1" dur="2.4s" repeatCount="1" fill="freeze"/>
       </ellipse>
     </g>
   </g>
@@ -57,9 +57,9 @@
       <animateTransform attributeName="transform" type="scale"
         values="0.15;0.15;1.1;1;1"
         keyTimes="0;0.1667;0.3167;0.4167;1"
-        dur="2.4s" repeatCount="indefinite" calcMode="linear"/>
+        dur="2.4s" repeatCount="1" calcMode="linear" fill="freeze"/>
       <ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5">
-        <animate attributeName="opacity" values="0;0;1;1;1" keyTimes="0;0.1667;0.3167;0.4167;1" dur="2.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0;0;1;1;1" keyTimes="0;0.1667;0.3167;0.4167;1" dur="2.4s" repeatCount="1" fill="freeze"/>
       </ellipse>
     </g>
   </g>
@@ -68,9 +68,9 @@
     <animateTransform attributeName="transform" type="scale"
       values="0;0;1.2;1;1"
       keyTimes="0;0.2292;0.375;0.4375;1"
-      dur="2.4s" repeatCount="indefinite" calcMode="linear"/>
+      dur="2.4s" repeatCount="1" calcMode="linear" fill="freeze"/>
     <circle cx="0" cy="0" r="4.5" fill="#0F6E56">
-      <animate attributeName="opacity" values="0;0;1;1;1" keyTimes="0;0.2292;0.375;0.4375;1" dur="2.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0;1;1;1" keyTimes="0;0.2292;0.375;0.4375;1" dur="2.4s" repeatCount="1" fill="freeze"/>
     </circle>
   </g>
 
@@ -78,7 +78,7 @@
 
 <text x="110" y="82" text-anchor="start" font-family="Georgia, 'Times New Roman', serif" font-weight="500" font-size="38" fill="#23292B">
   Bloomstudy
-  <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.2917;0.5;1" dur="2.4s" repeatCount="indefinite"/>
+  <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.2917;0.5;1" dur="2.4s" repeatCount="1" fill="freeze"/>
 </text>
 
 </svg>

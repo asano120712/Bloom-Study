@@ -88,7 +88,7 @@ export function QuizPage() {
       <header className="flex items-center justify-between text-sm text-ink-600">
         <span>{genre.label}</span>
         <span aria-live="polite">
-          🌸 {stats.currentStreak} れんぞく / のこり {trialLeft} 問
+          🌱 {stats.currentStreak} れんぞく / のこり {trialLeft} 問
         </span>
       </header>
 

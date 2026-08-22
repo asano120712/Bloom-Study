@@ -44,7 +44,7 @@ export function ResultPage() {
           <p className="mt-2 text-3xl font-bold text-bloom-700">{result.answer}</p>
         </div>
 
-        <p className="text-sm text-ink-600">🌸 {currentStreak} 問れんぞく正解中</p>
+        <p className="text-sm text-ink-600">🌱 {currentStreak} 問れんぞく正解中</p>
 
         <div className="flex w-full flex-col gap-3">
           {hasNext ? (
