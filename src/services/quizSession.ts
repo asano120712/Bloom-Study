@@ -1,17 +1,41 @@
-import type { GenreId } from '@/types'
+import type { GenreId, Question } from '@/types'
 
 /**
- * ジャンルごとの出題位置。結果画面をはさんで出題画面に戻ってきても
- * 同じ問題を繰り返さないよう、タブ単位で保持する。
+ * 進行中の出題セットと、その中での位置。
+ *
+ * 結果画面をはさんで出題画面に戻ってきても同じ問題を繰り返さないよう、
+ * タブ単位(sessionStorage)で保持する。
+ * 出題順をシャッフルするようになったため、位置だけでなく問題そのものを持つ。
+ * (位置だけだと、戻ってきたときに別のシャッフル結果を指してしまう)
  */
-const KEY_PREFIX = 'bloomstudy:cursor:'
-
-export function readCursor(genreId: GenreId): number {
-  const raw = sessionStorage.getItem(KEY_PREFIX + genreId)
-  const parsed = Number(raw)
-  return Number.isInteger(parsed) && parsed >= 0 ? parsed : 0
+export interface StoredSession {
+  questions: Question[]
+  cursor: number
 }
 
-export function writeCursor(genreId: GenreId, index: number): void {
-  sessionStorage.setItem(KEY_PREFIX + genreId, String(index))
+const KEY_PREFIX = 'bloomstudy:session:'
+
+export function readSession(genreId: GenreId): StoredSession | null {
+  try {
+    const raw = sessionStorage.getItem(KEY_PREFIX + genreId)
+    if (!raw) return null
+
+    const parsed = JSON.parse(raw) as Partial<StoredSession>
+    if (!Array.isArray(parsed.questions) || typeof parsed.cursor !== 'number') return null
+    // 出し切ったセットは無効。呼び出し側に取り直させる
+    if (parsed.cursor >= parsed.questions.length) return null
+
+    return { questions: parsed.questions, cursor: parsed.cursor }
+  } catch {
+    // プライベートモードなど sessionStorage が使えない環境では毎回取り直す
+    return null
+  }
+}
+
+export function writeSession(genreId: GenreId, session: StoredSession): void {
+  try {
+    sessionStorage.setItem(KEY_PREFIX + genreId, JSON.stringify(session))
+  } catch {
+    // 保存できなくても、そのタブ内での出題は最後まで続けられる
+  }
 }

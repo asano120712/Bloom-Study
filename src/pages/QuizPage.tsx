@@ -5,14 +5,12 @@ import { HandwritingCanvas } from '@/components/HandwritingCanvas'
 import { HintList } from '@/components/HintList'
 import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
-import { TRIAL_LIMIT } from '@/config'
 import { findGenre } from '@/data/genres'
-import { questionsOf } from '@/data/questions'
 import { buildHints, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeTyping } from '@/features/judge'
 import { useHintTimer } from '@/hooks/useHintTimer'
+import { useQuizSession } from '@/hooks/useQuizSession'
 import { useStats } from '@/hooks/useStats'
-import { readCursor, writeCursor } from '@/services/quizSession'
 import type { AnswerRecord, InputMode, JudgeResult } from '@/types'
 import type { ResultState } from './ResultPage'
 
@@ -20,10 +18,10 @@ export function QuizPage() {
   const { genreId } = useParams<{ genreId: string }>()
   const navigate = useNavigate()
   const genre = findGenre(genreId ?? '')
-  const { stats, isLoading, record } = useStats()
+  const { stats, isLoading: isStatsLoading, record } = useStats()
 
-  const questions = useMemo(() => (genre ? questionsOf(genre.id) : []), [genre])
-  const cursor = genre ? readCursor(genre.id) : 0
+  // 何問配られるかは quizSource が決める。画面はこれがすべてだとして扱う
+  const { questions, cursor, isLoading: isSessionLoading, commitAdvance } = useQuizSession(genre?.id)
   const question = questions[cursor]
 
   const [inputMode, setInputMode] = useState<InputMode>(genre?.defaultInputMode ?? 'typing')
@@ -36,18 +34,19 @@ export function QuizPage() {
     paused: selfReport !== null,
   })
 
-  const trialLeft = Math.max(0, TRIAL_LIMIT - stats.trialUsed)
+  const isPreparing = isStatsLoading || isSessionLoading
 
-  // 無料トライアルの上限に達していたら出題せず案内画面へ送る
+  // 出題セットが空 = もう出せる問題が無い。
+  // いまは回数制限が無いので実質到達しないが、出題数に上限を入れたときの行き先。
   useEffect(() => {
-    if (!isLoading && trialLeft === 0) {
+    if (!isPreparing && questions.length === 0) {
       navigate('/trial-end', { replace: true })
     }
-  }, [isLoading, trialLeft, navigate])
+  }, [isPreparing, questions.length, navigate])
 
   if (!genre) return <Navigate to="/genres" replace />
 
-  if (isLoading || trialLeft === 0) {
+  if (isPreparing || questions.length === 0) {
     return (
       <AppShell>
         <Loading />
@@ -55,7 +54,7 @@ export function QuizPage() {
     )
   }
 
-  // 用意した問題を出し切った場合は、先頭に戻さずジャンル選択へ返す
+  // 出題セットを出し切った場合は、先頭に戻さずジャンル選択へ返す
   if (!question) {
     return <Navigate to="/genres" replace />
   }
@@ -71,14 +70,14 @@ export function QuizPage() {
       answeredAt: new Date().toISOString(),
     }
     const next = await record(answer)
-    writeCursor(genre.id, cursor + 1)
+    commitAdvance()
 
     const state: ResultState = {
       result,
       prompt: question.prompt,
       genreId: genre.id,
-      // 次の問題があり、かつトライアル残があるときだけ「つぎへ」を出す
-      hasNext: cursor + 1 < questions.length && next.trialUsed < TRIAL_LIMIT,
+      // この出題セットに次の問題が残っているときだけ「つぎへ」を出す
+      hasNext: cursor + 1 < questions.length,
       currentStreak: next.currentStreak,
     }
     navigate('/result', { state })
@@ -89,7 +88,7 @@ export function QuizPage() {
       <header className="flex items-center justify-between text-sm text-ink-600">
         <span>{genre.label}</span>
         <span aria-live="polite">
-          🌱 {stats.currentStreak} れんぞく / のこり {trialLeft} 問
+          🌱 {stats.currentStreak} れんぞく / {cursor + 1} 問め
         </span>
       </header>
 
