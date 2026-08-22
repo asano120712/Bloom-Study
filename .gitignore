@@ -30,6 +30,3 @@ dist-ssr
 .env
 .env.*
 !.env.example
-
-# 問題生成に使う辞書データ(npm run dict:fetch で取得)
-.dict-cache

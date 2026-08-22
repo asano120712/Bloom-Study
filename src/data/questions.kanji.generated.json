@@ -1,0 +1,3897 @@
+{
+  "_source": {
+    "note": "自動生成。編集しても npm run questions:kanji で上書きされる",
+    "generatedAt": "2026-08-22T18:20:41.642Z",
+    "grades": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "dictDate": "2026-08-17",
+    "credit": "KANJIDIC2 / KRADFILE — Electronic Dictionary Research and Development Group, CC BY-SA 4.0",
+    "urls": [
+      "https://www.edrdg.org/wiki/index.php/KANJIDIC_Project",
+      "https://www.edrdg.org/edrdg/licence.html"
+    ]
+  },
+  "questions": [
+    {
+      "id": "kj-g4-愛",
+      "genreId": "kanji",
+      "prompt": "いとしい",
+      "answer": "愛",
+      "hintSource": [
+        "部首|心(こころ)",
+        "のこりのパーツ|爪・冖・夂",
+        "画数|13画",
+        "音読み|アイ"
+      ]
+    },
+    {
+      "id": "kj-g3-悪",
+      "genreId": "kanji",
+      "prompt": "わるい",
+      "answer": "悪",
+      "hintSource": [
+        "部首|心(こころ)",
+        "画数|11画",
+        "音読み|アク"
+      ]
+    },
+    {
+      "id": "kj-g5-囲",
+      "genreId": "kanji",
+      "prompt": "かこむ",
+      "answer": "囲",
+      "hintSource": [
+        "部首|囗(くにがまえ)",
+        "のこりのパーツ|井",
+        "画数|7画",
+        "音読み|イ"
+      ]
+    },
+    {
+      "id": "kj-g3-委",
+      "genreId": "kanji",
+      "prompt": "ゆだねる",
+      "answer": "委",
+      "hintSource": [
+        "部首|女(おんな)",
+        "のこりのパーツ|禾",
+        "画数|8画",
+        "音読み|イ"
+      ]
+    },
+    {
+      "id": "kj-g4-茨",
+      "genreId": "kanji",
+      "prompt": "いばら",
+      "answer": "茨",
+      "hintSource": [
+        "部首|艹(くさかんむり)",
+        "のこりのパーツ|欠・冫",
+        "画数|9画",
+        "音読み|シ"
+      ]
+    },
+    {
+      "id": "kj-g3-飲",
+      "genreId": "kanji",
+      "prompt": "のむ",
+      "answer": "飲",
+      "hintSource": [
+        "部首|食(しょく)",
+        "のこりのパーツ|欠",
+        "画数|12画",
+        "音読み|イン"
+      ]
+    },
+    {
+      "id": "kj-g3-運",
+      "genreId": "kanji",
+      "prompt": "はこぶ",
+      "answer": "運",
+      "hintSource": [
+        "部首|辶(しんにょう)",
+        "のこりのパーツ|車・冖",
+        "画数|12画",
+        "音読み|ウン"
+      ]
+    },
+    {
+      "id": "kj-g4-栄",
+      "genreId": "kanji",
+      "prompt": "さかえる",
+      "answer": "栄",
+      "hintSource": [
+        "部首|木(き)",
+        "のこりのパーツ|尚・冖",
+        "画数|9画",
+        "音読み|エイ"
+      ]
+    },
+    {
+      "id": "kj-g5-永",
+      "genreId": "kanji",
+      "prompt": "ながい",
+      "answer": "永",
+      "hintSource": [
+        "部首|水(みず)",
+        "画数|5画",
+        "音読み|エイ"
+      ]
+    },
+    {
+      "id": "kj-g3-泳",
+      "genreId": "kanji",
+      "prompt": "およぐ",
+      "answer": "泳",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "画数|8画",
+        "音読み|エイ"
+      ]
+    },
+    {
+      "id": "kj-g4-英",
+      "genreId": "kanji",
+      "prompt": "はなぶさ",
+      "answer": "英",
+      "hintSource": [
+        "部首|艹(くさかんむり)",
+        "のこりのパーツ|大・冖",
+        "画数|8画",
+        "音読み|エイ"
+      ]
+    },
+    {
+      "id": "kj-g6-延",
+      "genreId": "kanji",
+      "prompt": "のびる",
+      "answer": "延",
+      "hintSource": [
+        "部首|廴(いんにょう)",
+        "画数|8画",
+        "音読み|エン"
+      ]
+    },
+    {
+      "id": "kj-g6-沿",
+      "genreId": "kanji",
+      "prompt": "そう",
+      "answer": "沿",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|口・ハ",
+        "画数|8画",
+        "音読み|エン"
+      ]
+    },
+    {
+      "id": "kj-g5-往",
+      "genreId": "kanji",
+      "prompt": "いく",
+      "answer": "往",
+      "hintSource": [
+        "部首|彳(ぎょうにんべん)",
+        "画数|8画",
+        "音読み|オウ"
+      ]
+    },
+    {
+      "id": "kj-g5-応",
+      "genreId": "kanji",
+      "prompt": "あたる",
+      "answer": "応",
+      "hintSource": [
+        "部首|心(こころ)",
+        "のこりのパーツ|广",
+        "画数|7画",
+        "音読み|オウ"
+      ]
+    },
+    {
+      "id": "kj-g3-横",
+      "genreId": "kanji",
+      "prompt": "よこ",
+      "answer": "横",
+      "hintSource": [
+        "部首|木(き)",
+        "画数|15画",
+        "音読み|オウ"
+      ]
+    },
+    {
+      "id": "kj-g4-沖",
+      "genreId": "kanji",
+      "prompt": "おき",
+      "answer": "沖",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "画数|7画",
+        "音読み|チュウ"
+      ]
+    },
+    {
+      "id": "kj-g4-加",
+      "genreId": "kanji",
+      "prompt": "くわえる",
+      "answer": "加",
+      "hintSource": [
+        "部首|力(ちから)",
+        "のこりのパーツ|口",
+        "画数|5画",
+        "音読み|カ"
+      ]
+    },
+    {
+      "id": "kj-g5-過",
+      "genreId": "kanji",
+      "prompt": "すぎる",
+      "answer": "過",
+      "hintSource": [
+        "部首|辶(しんにょう)",
+        "のこりのパーツ|口・冂",
+        "画数|12画",
+        "音読み|カ"
+      ]
+    },
+    {
+      "id": "kj-g6-我",
+      "genreId": "kanji",
+      "prompt": "われ",
+      "answer": "我",
+      "hintSource": [
+        "部首|戈(かのほこ)",
+        "画数|7画",
+        "音読み|ガ"
+      ]
+    },
+    {
+      "id": "kj-g5-快",
+      "genreId": "kanji",
+      "prompt": "こころよい",
+      "answer": "快",
+      "hintSource": [
+        "部首|忄(りっしんべん)",
+        "画数|7画",
+        "音読み|カイ"
+      ]
+    },
+    {
+      "id": "kj-g4-械",
+      "genreId": "kanji",
+      "prompt": "かせ",
+      "answer": "械",
+      "hintSource": [
+        "部首|木(き)",
+        "のこりのパーツ|廾・戈",
+        "画数|11画",
+        "音読み|カイ"
+      ]
+    },
+    {
+      "id": "kj-g6-灰",
+      "genreId": "kanji",
+      "prompt": "はい",
+      "answer": "灰",
+      "hintSource": [
+        "部首|火(ひ)",
+        "のこりのパーツ|厂",
+        "画数|6画",
+        "音読み|カイ"
+      ]
+    },
+    {
+      "id": "kj-g3-開",
+      "genreId": "kanji",
+      "prompt": "ひらく",
+      "answer": "開",
+      "hintSource": [
+        "部首|門(もんがまえ)",
+        "画数|12画",
+        "音読み|カイ"
+      ]
+    },
+    {
+      "id": "kj-g3-階",
+      "genreId": "kanji",
+      "prompt": "きざはし",
+      "answer": "階",
+      "hintSource": [
+        "部首|阝(こざとへん)",
+        "のこりのパーツ|白・比",
+        "画数|12画",
+        "音読み|カイ"
+      ]
+    },
+    {
+      "id": "kj-g4-街",
+      "genreId": "kanji",
+      "prompt": "まち",
+      "answer": "街",
+      "hintSource": [
+        "部首|行",
+        "のこりのパーツ|土",
+        "画数|12画",
+        "音読み|ガイ"
+      ]
+    },
+    {
+      "id": "kj-g4-各",
+      "genreId": "kanji",
+      "prompt": "おのおの",
+      "answer": "各",
+      "hintSource": [
+        "部首|口(くち)",
+        "のこりのパーツ|夂",
+        "画数|6画",
+        "音読み|カク"
+      ]
+    },
+    {
+      "id": "kj-g6-拡",
+      "genreId": "kanji",
+      "prompt": "ひろがる",
+      "answer": "拡",
+      "hintSource": [
+        "部首|扌(てへん)",
+        "のこりのパーツ|厶・广",
+        "画数|8画",
+        "音読み|カク"
+      ]
+    },
+    {
+      "id": "kj-g5-確",
+      "genreId": "kanji",
+      "prompt": "たしか",
+      "answer": "確",
+      "hintSource": [
+        "部首|石(いし)",
+        "のこりのパーツ|宀・隹",
+        "画数|15画",
+        "音読み|カク"
+      ]
+    },
+    {
+      "id": "kj-g4-覚",
+      "genreId": "kanji",
+      "prompt": "おぼえる",
+      "answer": "覚",
+      "hintSource": [
+        "部首|見(みる)",
+        "のこりのパーツ|尚・冖",
+        "画数|12画",
+        "音読み|カク"
+      ]
+    },
+    {
+      "id": "kj-g5-額",
+      "genreId": "kanji",
+      "prompt": "ひたい",
+      "answer": "額",
+      "hintSource": [
+        "部首|頁(おおがい)",
+        "のこりのパーツ|口・夂・宀",
+        "画数|18画",
+        "音読み|ガク"
+      ]
+    },
+    {
+      "id": "kj-g6-割",
+      "genreId": "kanji",
+      "prompt": "わる",
+      "answer": "割",
+      "hintSource": [
+        "部首|刂(りっとう)",
+        "画数|12画",
+        "音読み|カツ"
+      ]
+    },
+    {
+      "id": "kj-g6-株",
+      "genreId": "kanji",
+      "prompt": "かぶ",
+      "answer": "株",
+      "hintSource": [
+        "部首|木(き)",
+        "のこりのパーツ|牛",
+        "画数|10画",
+        "音読み|シュ"
+      ]
+    },
+    {
+      "id": "kj-g3-寒",
+      "genreId": "kanji",
+      "prompt": "さむい",
+      "answer": "寒",
+      "hintSource": [
+        "部首|宀(うかんむり)",
+        "画数|12画",
+        "音読み|カン"
+      ]
+    },
+    {
+      "id": "kj-g5-幹",
+      "genreId": "kanji",
+      "prompt": "みき",
+      "answer": "幹",
+      "hintSource": [
+        "部首|干",
+        "のこりのパーツ|日・个",
+        "画数|13画",
+        "音読み|カン"
+      ]
+    },
+    {
+      "id": "kj-g5-慣",
+      "genreId": "kanji",
+      "prompt": "なれる",
+      "answer": "慣",
+      "hintSource": [
+        "部首|忄(りっしんべん)",
+        "のこりのパーツ|貝",
+        "画数|14画",
+        "音読み|カン"
+      ]
+    },
+    {
+      "id": "kj-g4-管",
+      "genreId": "kanji",
+      "prompt": "くだ",
+      "answer": "管",
+      "hintSource": [
+        "部首|竹(たけかんむり)",
+        "画数|14画",
+        "音読み|カン"
+      ]
+    },
+    {
+      "id": "kj-g4-関",
+      "genreId": "kanji",
+      "prompt": "せき",
+      "answer": "関",
+      "hintSource": [
+        "部首|門(もんがまえ)",
+        "画数|14画",
+        "音読み|カン"
+      ]
+    },
+    {
+      "id": "kj-g3-館",
+      "genreId": "kanji",
+      "prompt": "やかた",
+      "answer": "館",
+      "hintSource": [
+        "部首|食(しょく)",
+        "画数|16画",
+        "音読み|カン"
+      ]
+    },
+    {
+      "id": "kj-g3-岸",
+      "genreId": "kanji",
+      "prompt": "きし",
+      "answer": "岸",
+      "hintSource": [
+        "部首|山(やま)",
+        "のこりのパーツ|干・厂",
+        "画数|8画",
+        "音読み|ガン"
+      ]
+    },
+    {
+      "id": "kj-g5-眼",
+      "genreId": "kanji",
+      "prompt": "まなこ",
+      "answer": "眼",
+      "hintSource": [
+        "部首|目(め)",
+        "のこりのパーツ|艮",
+        "画数|11画",
+        "音読み|ガン"
+      ]
+    },
+    {
+      "id": "kj-g4-願",
+      "genreId": "kanji",
+      "prompt": "ねがう",
+      "answer": "願",
+      "hintSource": [
+        "部首|頁(おおがい)",
+        "のこりのパーツ|小・白・厂",
+        "画数|19画",
+        "音読み|ガン"
+      ]
+    },
+    {
+      "id": "kj-g6-危",
+      "genreId": "kanji",
+      "prompt": "あぶない",
+      "answer": "危",
+      "hintSource": [
+        "部首|卩(ふしづくり)",
+        "のこりのパーツ|勹・厂",
+        "画数|6画",
+        "音読み|キ"
+      ]
+    },
+    {
+      "id": "kj-g4-器",
+      "genreId": "kanji",
+      "prompt": "うつわ",
+      "answer": "器",
+      "hintSource": [
+        "部首|口(くち)",
+        "のこりのパーツ|大",
+        "画数|15画",
+        "音読み|キ"
+      ]
+    },
+    {
+      "id": "kj-g4-希",
+      "genreId": "kanji",
+      "prompt": "まれ",
+      "answer": "希",
+      "hintSource": [
+        "部首|巾(はば)",
+        "画数|7画",
+        "音読み|キ"
+      ]
+    },
+    {
+      "id": "kj-g3-起",
+      "genreId": "kanji",
+      "prompt": "おきる",
+      "answer": "起",
+      "hintSource": [
+        "部首|走",
+        "のこりのパーツ|已",
+        "画数|10画",
+        "音読み|キ"
+      ]
+    },
+    {
+      "id": "kj-g6-疑",
+      "genreId": "kanji",
+      "prompt": "うたがう",
+      "answer": "疑",
+      "hintSource": [
+        "部首|疋",
+        "のこりのパーツ|矢・匕・マ",
+        "画数|14画",
+        "音読み|ギ"
+      ]
+    },
+    {
+      "id": "kj-g6-吸",
+      "genreId": "kanji",
+      "prompt": "すう",
+      "answer": "吸",
+      "hintSource": [
+        "部首|口(くち)",
+        "のこりのパーツ|及",
+        "画数|6画",
+        "音読み|キュウ"
+      ]
+    },
+    {
+      "id": "kj-g3-宮",
+      "genreId": "kanji",
+      "prompt": "みや",
+      "answer": "宮",
+      "hintSource": [
+        "部首|宀(うかんむり)",
+        "画数|10画",
+        "音読み|キュウ"
+      ]
+    },
+    {
+      "id": "kj-g3-急",
+      "genreId": "kanji",
+      "prompt": "いそぐ",
+      "answer": "急",
+      "hintSource": [
+        "部首|心(こころ)",
+        "のこりのパーツ|ヨ・勹",
+        "画数|9画",
+        "音読み|キュウ"
+      ]
+    },
+    {
+      "id": "kj-g4-求",
+      "genreId": "kanji",
+      "prompt": "もとめる",
+      "answer": "求",
+      "hintSource": [
+        "部首|水(みず)",
+        "画数|7画",
+        "音読み|キュウ"
+      ]
+    },
+    {
+      "id": "kj-g4-泣",
+      "genreId": "kanji",
+      "prompt": "なく",
+      "answer": "泣",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|立",
+        "画数|8画",
+        "音読み|キュウ"
+      ]
+    },
+    {
+      "id": "kj-g4-給",
+      "genreId": "kanji",
+      "prompt": "たまう",
+      "answer": "給",
+      "hintSource": [
+        "部首|糸(いと)",
+        "画数|12画",
+        "音読み|キュウ"
+      ]
+    },
+    {
+      "id": "kj-g4-挙",
+      "genreId": "kanji",
+      "prompt": "あげる",
+      "answer": "挙",
+      "hintSource": [
+        "部首|手(て)",
+        "のこりのパーツ|尚・ハ",
+        "画数|10画",
+        "音読み|キョ"
+      ]
+    },
+    {
+      "id": "kj-g5-許",
+      "genreId": "kanji",
+      "prompt": "ゆるす",
+      "answer": "許",
+      "hintSource": [
+        "部首|言(ごんべん)",
+        "のこりのパーツ|干・乞",
+        "画数|11画",
+        "音読み|キョ"
+      ]
+    },
+    {
+      "id": "kj-g4-漁",
+      "genreId": "kanji",
+      "prompt": "あさる",
+      "answer": "漁",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|魚",
+        "画数|14画",
+        "音読み|ギョ"
+      ]
+    },
+    {
+      "id": "kj-g4-競",
+      "genreId": "kanji",
+      "prompt": "きそう",
+      "answer": "競",
+      "hintSource": [
+        "部首|立(たつ)",
+        "のこりのパーツ|口・儿",
+        "画数|20画",
+        "音読み|キョウ"
+      ]
+    },
+    {
+      "id": "kj-g5-境",
+      "genreId": "kanji",
+      "prompt": "さかい",
+      "answer": "境",
+      "hintSource": [
+        "部首|土(つち)",
+        "のこりのパーツ|音・儿",
+        "画数|14画",
+        "音読み|キョウ"
+      ]
+    },
+    {
+      "id": "kj-g3-橋",
+      "genreId": "kanji",
+      "prompt": "はし",
+      "answer": "橋",
+      "hintSource": [
+        "部首|木(き)",
+        "画数|16画",
+        "音読み|キョウ"
+      ]
+    },
+    {
+      "id": "kj-g6-郷",
+      "genreId": "kanji",
+      "prompt": "さと",
+      "answer": "郷",
+      "hintSource": [
+        "部首|阝(おおざと)",
+        "のこりのパーツ|艮・幺",
+        "画数|11画",
+        "音読み|キョウ"
+      ]
+    },
+    {
+      "id": "kj-g4-鏡",
+      "genreId": "kanji",
+      "prompt": "かがみ",
+      "answer": "鏡",
+      "hintSource": [
+        "部首|金(かね)",
+        "のこりのパーツ|音・儿",
+        "画数|19画",
+        "音読み|キョウ"
+      ]
+    },
+    {
+      "id": "kj-g3-局",
+      "genreId": "kanji",
+      "prompt": "つぼね",
+      "answer": "局",
+      "hintSource": [
+        "部首|尸(しかばね)",
+        "のこりのパーツ|口",
+        "画数|7画",
+        "音読み|キョク"
+      ]
+    },
+    {
+      "id": "kj-g3-銀",
+      "genreId": "kanji",
+      "prompt": "しろがね",
+      "answer": "銀",
+      "hintSource": [
+        "部首|金(かね)",
+        "のこりのパーツ|艮",
+        "画数|14画",
+        "音読み|ギン"
+      ]
+    },
+    {
+      "id": "kj-g3-苦",
+      "genreId": "kanji",
+      "prompt": "くるしい",
+      "answer": "苦",
+      "hintSource": [
+        "部首|艹(くさかんむり)",
+        "のこりのパーツ|口・十",
+        "画数|8画",
+        "音読み|ク"
+      ]
+    },
+    {
+      "id": "kj-g3-君",
+      "genreId": "kanji",
+      "prompt": "きみ",
+      "answer": "君",
+      "hintSource": [
+        "部首|口(くち)",
+        "画数|7画",
+        "音読み|クン"
+      ]
+    },
+    {
+      "id": "kj-g4-訓",
+      "genreId": "kanji",
+      "prompt": "おしえる",
+      "answer": "訓",
+      "hintSource": [
+        "部首|言(ごんべん)",
+        "のこりのパーツ|川",
+        "画数|10画",
+        "音読み|クン"
+      ]
+    },
+    {
+      "id": "kj-g3-係",
+      "genreId": "kanji",
+      "prompt": "かかる",
+      "answer": "係",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "画数|9画",
+        "音読み|ケイ"
+      ]
+    },
+    {
+      "id": "kj-g6-警",
+      "genreId": "kanji",
+      "prompt": "いましめる",
+      "answer": "警",
+      "hintSource": [
+        "部首|言(ごんべん)",
+        "画数|19画",
+        "音読み|ケイ"
+      ]
+    },
+    {
+      "id": "kj-g3-軽",
+      "genreId": "kanji",
+      "prompt": "かるい",
+      "answer": "軽",
+      "hintSource": [
+        "部首|車(くるま)",
+        "のこりのパーツ|土・又",
+        "画数|12画",
+        "音読み|ケイ"
+      ]
+    },
+    {
+      "id": "kj-g6-激",
+      "genreId": "kanji",
+      "prompt": "はげしい",
+      "answer": "激",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|白・方・攵",
+        "画数|16画",
+        "音読み|ゲキ"
+      ]
+    },
+    {
+      "id": "kj-g5-潔",
+      "genreId": "kanji",
+      "prompt": "いさぎよい",
+      "answer": "潔",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "画数|15画",
+        "音読み|ケツ"
+      ]
+    },
+    {
+      "id": "kj-g4-結",
+      "genreId": "kanji",
+      "prompt": "むすぶ",
+      "answer": "結",
+      "hintSource": [
+        "部首|糸(いと)",
+        "のこりのパーツ|口・士",
+        "画数|12画",
+        "音読み|ケツ"
+      ]
+    },
+    {
+      "id": "kj-g5-件",
+      "genreId": "kanji",
+      "prompt": "くだん",
+      "answer": "件",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "のこりのパーツ|牛",
+        "画数|6画",
+        "音読み|ケン"
+      ]
+    },
+    {
+      "id": "kj-g4-健",
+      "genreId": "kanji",
+      "prompt": "すこやか",
+      "answer": "健",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "のこりのパーツ|廴・聿",
+        "画数|11画",
+        "音読み|ケン"
+      ]
+    },
+    {
+      "id": "kj-g3-研",
+      "genreId": "kanji",
+      "prompt": "とぐ",
+      "answer": "研",
+      "hintSource": [
+        "部首|石(いし)",
+        "画数|9画",
+        "音読み|ケン"
+      ]
+    },
+    {
+      "id": "kj-g5-険",
+      "genreId": "kanji",
+      "prompt": "けわしい",
+      "answer": "険",
+      "hintSource": [
+        "部首|阝(こざとへん)",
+        "のこりのパーツ|口・人・个",
+        "画数|11画",
+        "音読み|ケン"
+      ]
+    },
+    {
+      "id": "kj-g6-厳",
+      "genreId": "kanji",
+      "prompt": "おごそか",
+      "answer": "厳",
+      "hintSource": [
+        "部首|厂(がんだれ)",
+        "のこりのパーツ|耳・尚・攵",
+        "画数|17画",
+        "音読み|ゲン"
+      ]
+    },
+    {
+      "id": "kj-g6-源",
+      "genreId": "kanji",
+      "prompt": "みなもと",
+      "answer": "源",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|小・白・厂",
+        "画数|13画",
+        "音読み|ゲン"
+      ]
+    },
+    {
+      "id": "kj-g5-限",
+      "genreId": "kanji",
+      "prompt": "かぎる",
+      "answer": "限",
+      "hintSource": [
+        "部首|阝(こざとへん)",
+        "のこりのパーツ|艮",
+        "画数|9画",
+        "音読み|ゲン"
+      ]
+    },
+    {
+      "id": "kj-g6-呼",
+      "genreId": "kanji",
+      "prompt": "よぶ",
+      "answer": "呼",
+      "hintSource": [
+        "部首|口(くち)",
+        "画数|8画",
+        "音読み|コ"
+      ]
+    },
+    {
+      "id": "kj-g3-湖",
+      "genreId": "kanji",
+      "prompt": "みずうみ",
+      "answer": "湖",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|月・口・十",
+        "画数|12画",
+        "音読み|コ"
+      ]
+    },
+    {
+      "id": "kj-g4-候",
+      "genreId": "kanji",
+      "prompt": "そうろう",
+      "answer": "候",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "画数|10画",
+        "音読み|コウ"
+      ]
+    },
+    {
+      "id": "kj-g4-功",
+      "genreId": "kanji",
+      "prompt": "いさお",
+      "answer": "功",
+      "hintSource": [
+        "部首|力(ちから)",
+        "のこりのパーツ|工",
+        "画数|5画",
+        "音読み|コウ"
+      ]
+    },
+    {
+      "id": "kj-g3-向",
+      "genreId": "kanji",
+      "prompt": "むく",
+      "answer": "向",
+      "hintSource": [
+        "部首|口(くち)",
+        "のこりのパーツ|冂",
+        "画数|6画",
+        "音読み|コウ"
+      ]
+    },
+    {
+      "id": "kj-g6-后",
+      "genreId": "kanji",
+      "prompt": "きさき",
+      "answer": "后",
+      "hintSource": [
+        "部首|口(くち)",
+        "画数|6画",
+        "音読み|コウ"
+      ]
+    },
+    {
+      "id": "kj-g4-好",
+      "genreId": "kanji",
+      "prompt": "このむ",
+      "answer": "好",
+      "hintSource": [
+        "部首|女(おんな)",
+        "のこりのパーツ|子",
+        "画数|6画",
+        "音読み|コウ"
+      ]
+    },
+    {
+      "id": "kj-g5-構",
+      "genreId": "kanji",
+      "prompt": "かまえる",
+      "answer": "構",
+      "hintSource": [
+        "部首|木(き)",
+        "画数|14画",
+        "音読み|コウ"
+      ]
+    },
+    {
+      "id": "kj-g3-港",
+      "genreId": "kanji",
+      "prompt": "みなと",
+      "answer": "港",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|ハ・已・井",
+        "画数|12画",
+        "音読み|コウ"
+      ]
+    },
+    {
+      "id": "kj-g6-紅",
+      "genreId": "kanji",
+      "prompt": "べに",
+      "answer": "紅",
+      "hintSource": [
+        "部首|糸(いと)",
+        "のこりのパーツ|工",
+        "画数|9画",
+        "音読み|コウ"
+      ]
+    },
+    {
+      "id": "kj-g5-耕",
+      "genreId": "kanji",
+      "prompt": "たがやす",
+      "answer": "耕",
+      "hintSource": [
+        "部首|耒(らいすき)",
+        "画数|10画",
+        "音読み|コウ"
+      ]
+    },
+    {
+      "id": "kj-g5-鉱",
+      "genreId": "kanji",
+      "prompt": "あらがね",
+      "answer": "鉱",
+      "hintSource": [
+        "部首|金(かね)",
+        "のこりのパーツ|厶・广",
+        "画数|13画",
+        "音読み|コウ"
+      ]
+    },
+    {
+      "id": "kj-g6-鋼",
+      "genreId": "kanji",
+      "prompt": "はがね",
+      "answer": "鋼",
+      "hintSource": [
+        "部首|金(かね)",
+        "のこりのパーツ|岡",
+        "画数|16画",
+        "音読み|コウ"
+      ]
+    },
+    {
+      "id": "kj-g6-降",
+      "genreId": "kanji",
+      "prompt": "おりる",
+      "answer": "降",
+      "hintSource": [
+        "部首|阝(こざとへん)",
+        "のこりのパーツ|夂・十",
+        "画数|10画",
+        "音読み|コウ"
+      ]
+    },
+    {
+      "id": "kj-g3-号",
+      "genreId": "kanji",
+      "prompt": "さけぶ",
+      "answer": "号",
+      "hintSource": [
+        "部首|口(くち)",
+        "画数|5画",
+        "音読み|ゴウ"
+      ]
+    },
+    {
+      "id": "kj-g6-刻",
+      "genreId": "kanji",
+      "prompt": "きざむ",
+      "answer": "刻",
+      "hintSource": [
+        "部首|刂(りっとう)",
+        "画数|8画",
+        "音読み|コク"
+      ]
+    },
+    {
+      "id": "kj-g5-告",
+      "genreId": "kanji",
+      "prompt": "つげる",
+      "answer": "告",
+      "hintSource": [
+        "部首|口(くち)",
+        "画数|7画",
+        "音読み|コク"
+      ]
+    },
+    {
+      "id": "kj-g6-困",
+      "genreId": "kanji",
+      "prompt": "こまる",
+      "answer": "困",
+      "hintSource": [
+        "部首|囗(くにがまえ)",
+        "のこりのパーツ|木",
+        "画数|7画",
+        "音読み|コン"
+      ]
+    },
+    {
+      "id": "kj-g6-砂",
+      "genreId": "kanji",
+      "prompt": "すな",
+      "answer": "砂",
+      "hintSource": [
+        "部首|石(いし)",
+        "画数|9画",
+        "音読み|サ"
+      ]
+    },
+    {
+      "id": "kj-g6-座",
+      "genreId": "kanji",
+      "prompt": "すわる",
+      "answer": "座",
+      "hintSource": [
+        "部首|广(まだれ)",
+        "画数|10画",
+        "音読み|ザ"
+      ]
+    },
+    {
+      "id": "kj-g5-再",
+      "genreId": "kanji",
+      "prompt": "ふたたび",
+      "answer": "再",
+      "hintSource": [
+        "部首|冂(まきがまえ)",
+        "画数|6画",
+        "音読み|サイ"
+      ]
+    },
+    {
+      "id": "kj-g5-災",
+      "genreId": "kanji",
+      "prompt": "わざわい",
+      "answer": "災",
+      "hintSource": [
+        "部首|火(ひ)",
+        "のこりのパーツ|巛",
+        "画数|7画",
+        "音読み|サイ"
+      ]
+    },
+    {
+      "id": "kj-g3-祭",
+      "genreId": "kanji",
+      "prompt": "まつる",
+      "answer": "祭",
+      "hintSource": [
+        "部首|示(しめす)",
+        "のこりのパーツ|个・癶",
+        "画数|11画",
+        "音読み|サイ"
+      ]
+    },
+    {
+      "id": "kj-g5-際",
+      "genreId": "kanji",
+      "prompt": "きわ",
+      "answer": "際",
+      "hintSource": [
+        "部首|阝(こざとへん)",
+        "画数|14画",
+        "音読み|サイ"
+      ]
+    },
+    {
+      "id": "kj-g5-桜",
+      "genreId": "kanji",
+      "prompt": "さくら",
+      "answer": "桜",
+      "hintSource": [
+        "部首|木(き)",
+        "のこりのパーツ|女・尚",
+        "画数|10画",
+        "音読み|オウ"
+      ]
+    },
+    {
+      "id": "kj-g4-刷",
+      "genreId": "kanji",
+      "prompt": "する",
+      "answer": "刷",
+      "hintSource": [
+        "部首|刂(りっとう)",
+        "のこりのパーツ|巾・尸",
+        "画数|8画",
+        "音読み|サツ"
+      ]
+    },
+    {
+      "id": "kj-g5-殺",
+      "genreId": "kanji",
+      "prompt": "ころす",
+      "answer": "殺",
+      "hintSource": [
+        "部首|殳(ほこつくり)",
+        "画数|10画",
+        "音読み|サツ"
+      ]
+    },
+    {
+      "id": "kj-g5-雑",
+      "genreId": "kanji",
+      "prompt": "まじえる",
+      "answer": "雑",
+      "hintSource": [
+        "部首|隹(ふるとり)",
+        "のこりのパーツ|木・九",
+        "画数|14画",
+        "音読み|ザツ"
+      ]
+    },
+    {
+      "id": "kj-g4-参",
+      "genreId": "kanji",
+      "prompt": "まいる",
+      "answer": "参",
+      "hintSource": [
+        "部首|厶(む)",
+        "画数|8画",
+        "音読み|サン"
+      ]
+    },
+    {
+      "id": "kj-g4-産",
+      "genreId": "kanji",
+      "prompt": "うむ",
+      "answer": "産",
+      "hintSource": [
+        "部首|生",
+        "画数|11画",
+        "音読み|サン"
+      ]
+    },
+    {
+      "id": "kj-g6-蚕",
+      "genreId": "kanji",
+      "prompt": "かいこ",
+      "answer": "蚕",
+      "hintSource": [
+        "部首|虫(むし)",
+        "画数|10画",
+        "音読み|サン"
+      ]
+    },
+    {
+      "id": "kj-g5-酸",
+      "genreId": "kanji",
+      "prompt": "すい",
+      "answer": "酸",
+      "hintSource": [
+        "部首|酉(とり)",
+        "のこりのパーツ|儿・厶・夂",
+        "画数|14画",
+        "音読み|サン"
+      ]
+    },
+    {
+      "id": "kj-g4-残",
+      "genreId": "kanji",
+      "prompt": "のこる",
+      "answer": "残",
+      "hintSource": [
+        "部首|歹(がつへん)",
+        "のこりのパーツ|戈・二",
+        "画数|10画",
+        "音読み|ザン"
+      ]
+    },
+    {
+      "id": "kj-g4-司",
+      "genreId": "kanji",
+      "prompt": "つかさどる",
+      "answer": "司",
+      "hintSource": [
+        "部首|口(くち)",
+        "画数|5画",
+        "音読み|シ"
+      ]
+    },
+    {
+      "id": "kj-g6-姿",
+      "genreId": "kanji",
+      "prompt": "すがた",
+      "answer": "姿",
+      "hintSource": [
+        "部首|女(おんな)",
+        "のこりのパーツ|欠・冫",
+        "画数|9画",
+        "音読み|シ"
+      ]
+    },
+    {
+      "id": "kj-g5-志",
+      "genreId": "kanji",
+      "prompt": "シリング",
+      "answer": "志",
+      "hintSource": [
+        "部首|心(こころ)",
+        "のこりのパーツ|士",
+        "画数|7画",
+        "音読み|シ"
+      ]
+    },
+    {
+      "id": "kj-g3-指",
+      "genreId": "kanji",
+      "prompt": "ゆび",
+      "answer": "指",
+      "hintSource": [
+        "部首|扌(てへん)",
+        "のこりのパーツ|日・匕",
+        "画数|9画",
+        "音読み|シ"
+      ]
+    },
+    {
+      "id": "kj-g3-死",
+      "genreId": "kanji",
+      "prompt": "しぬ",
+      "answer": "死",
+      "hintSource": [
+        "部首|歹(がつへん)",
+        "画数|6画",
+        "音読み|シ"
+      ]
+    },
+    {
+      "id": "kj-g6-私",
+      "genreId": "kanji",
+      "prompt": "わたくし",
+      "answer": "私",
+      "hintSource": [
+        "部首|禾(のぎ)",
+        "のこりのパーツ|厶",
+        "画数|7画",
+        "音読み|シ"
+      ]
+    },
+    {
+      "id": "kj-g6-詞",
+      "genreId": "kanji",
+      "prompt": "ことば",
+      "answer": "詞",
+      "hintSource": [
+        "部首|言(ごんべん)",
+        "画数|12画",
+        "音読み|シ"
+      ]
+    },
+    {
+      "id": "kj-g3-詩",
+      "genreId": "kanji",
+      "prompt": "うた",
+      "answer": "詩",
+      "hintSource": [
+        "部首|言(ごんべん)",
+        "のこりのパーツ|寸・土",
+        "画数|13画",
+        "音読み|シ"
+      ]
+    },
+    {
+      "id": "kj-g4-試",
+      "genreId": "kanji",
+      "prompt": "こころみる",
+      "answer": "試",
+      "hintSource": [
+        "部首|言(ごんべん)",
+        "のこりのパーツ|工・弋",
+        "画数|13画",
+        "音読み|シ"
+      ]
+    },
+    {
+      "id": "kj-g5-似",
+      "genreId": "kanji",
+      "prompt": "にる",
+      "answer": "似",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "画数|7画",
+        "音読み|ジ"
+      ]
+    },
+    {
+      "id": "kj-g3-持",
+      "genreId": "kanji",
+      "prompt": "もつ",
+      "answer": "持",
+      "hintSource": [
+        "部首|扌(てへん)",
+        "のこりのパーツ|寸・土",
+        "画数|9画",
+        "音読み|ジ"
+      ]
+    },
+    {
+      "id": "kj-g4-辞",
+      "genreId": "kanji",
+      "prompt": "やめる",
+      "answer": "辞",
+      "hintSource": [
+        "部首|辛",
+        "のこりのパーツ|舌",
+        "画数|13画",
+        "音読み|ジ"
+      ]
+    },
+    {
+      "id": "kj-g5-識",
+      "genreId": "kanji",
+      "prompt": "しる",
+      "answer": "識",
+      "hintSource": [
+        "部首|言(ごんべん)",
+        "のこりのパーツ|音・戈",
+        "画数|19画",
+        "音読み|シキ"
+      ]
+    },
+    {
+      "id": "kj-g4-失",
+      "genreId": "kanji",
+      "prompt": "うしなう",
+      "answer": "失",
+      "hintSource": [
+        "部首|大",
+        "画数|5画",
+        "音読み|シツ"
+      ]
+    },
+    {
+      "id": "kj-g5-質",
+      "genreId": "kanji",
+      "prompt": "たち",
+      "answer": "質",
+      "hintSource": [
+        "部首|貝(かい)",
+        "のこりのパーツ|斤",
+        "画数|15画",
+        "音読み|シツ"
+      ]
+    },
+    {
+      "id": "kj-g6-捨",
+      "genreId": "kanji",
+      "prompt": "すてる",
+      "answer": "捨",
+      "hintSource": [
+        "部首|扌(てへん)",
+        "のこりのパーツ|口・土・个",
+        "画数|11画",
+        "音読み|シャ"
+      ]
+    },
+    {
+      "id": "kj-g4-借",
+      "genreId": "kanji",
+      "prompt": "かりる",
+      "answer": "借",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "のこりのパーツ|日・廾・二",
+        "画数|10画",
+        "音読み|シャク"
+      ]
+    },
+    {
+      "id": "kj-g6-若",
+      "genreId": "kanji",
+      "prompt": "わかい",
+      "answer": "若",
+      "hintSource": [
+        "部首|艹(くさかんむり)",
+        "画数|8画",
+        "音読み|ジャク"
+      ]
+    },
+    {
+      "id": "kj-g3-主",
+      "genreId": "kanji",
+      "prompt": "ぬし",
+      "answer": "主",
+      "hintSource": [
+        "部首|丶(てん)",
+        "のこりのパーツ|王",
+        "画数|5画",
+        "音読み|シュ"
+      ]
+    },
+    {
+      "id": "kj-g4-種",
+      "genreId": "kanji",
+      "prompt": "たね",
+      "answer": "種",
+      "hintSource": [
+        "部首|禾(のぎ)",
+        "画数|14画",
+        "音読み|シュ"
+      ]
+    },
+    {
+      "id": "kj-g3-酒",
+      "genreId": "kanji",
+      "prompt": "さけ",
+      "answer": "酒",
+      "hintSource": [
+        "部首|酉(とり)",
+        "のこりのパーツ|氵",
+        "画数|10画",
+        "音読み|シュ"
+      ]
+    },
+    {
+      "id": "kj-g5-授",
+      "genreId": "kanji",
+      "prompt": "さずける",
+      "answer": "授",
+      "hintSource": [
+        "部首|扌(てへん)",
+        "のこりのパーツ|爪・又・冖",
+        "画数|11画",
+        "音読み|ジュ"
+      ]
+    },
+    {
+      "id": "kj-g4-周",
+      "genreId": "kanji",
+      "prompt": "まわり",
+      "answer": "周",
+      "hintSource": [
+        "部首|口(くち)",
+        "のこりのパーツ|土・冂",
+        "画数|8画",
+        "音読み|シュウ"
+      ]
+    },
+    {
+      "id": "kj-g3-拾",
+      "genreId": "kanji",
+      "prompt": "ひろう",
+      "answer": "拾",
+      "hintSource": [
+        "部首|扌(てへん)",
+        "画数|9画",
+        "音読み|シュウ"
+      ]
+    },
+    {
+      "id": "kj-g6-衆",
+      "genreId": "kanji",
+      "prompt": "おおい",
+      "answer": "衆",
+      "hintSource": [
+        "部首|血",
+        "のこりのパーツ|糸",
+        "画数|12画",
+        "音読み|シュウ"
+      ]
+    },
+    {
+      "id": "kj-g3-集",
+      "genreId": "kanji",
+      "prompt": "あつまる",
+      "answer": "集",
+      "hintSource": [
+        "部首|隹(ふるとり)",
+        "のこりのパーツ|木",
+        "画数|12画",
+        "音読み|シュウ"
+      ]
+    },
+    {
+      "id": "kj-g6-従",
+      "genreId": "kanji",
+      "prompt": "したがう",
+      "answer": "従",
+      "hintSource": [
+        "部首|彳(ぎょうにんべん)",
+        "のこりのパーツ|并・疋",
+        "画数|10画",
+        "音読み|ジュウ"
+      ]
+    },
+    {
+      "id": "kj-g3-宿",
+      "genreId": "kanji",
+      "prompt": "やど",
+      "answer": "宿",
+      "hintSource": [
+        "部首|宀(うかんむり)",
+        "のこりのパーツ|亻・白",
+        "画数|11画",
+        "音読み|シュク"
+      ]
+    },
+    {
+      "id": "kj-g4-祝",
+      "genreId": "kanji",
+      "prompt": "いわう",
+      "answer": "祝",
+      "hintSource": [
+        "部首|礻(しめすへん)",
+        "のこりのパーツ|口・儿",
+        "画数|9画",
+        "音読み|シュク"
+      ]
+    },
+    {
+      "id": "kj-g6-縮",
+      "genreId": "kanji",
+      "prompt": "ちぢむ",
+      "answer": "縮",
+      "hintSource": [
+        "部首|糸(いと)",
+        "のこりのパーツ|亻・白・宀",
+        "画数|17画",
+        "音読み|シュク"
+      ]
+    },
+    {
+      "id": "kj-g6-熟",
+      "genreId": "kanji",
+      "prompt": "うれる",
+      "answer": "熟",
+      "hintSource": [
+        "部首|灬(れっか)",
+        "画数|15画",
+        "音読み|ジュク"
+      ]
+    },
+    {
+      "id": "kj-g5-術",
+      "genreId": "kanji",
+      "prompt": "すべ",
+      "answer": "術",
+      "hintSource": [
+        "部首|行",
+        "画数|11画",
+        "音読み|ジュツ"
+      ]
+    },
+    {
+      "id": "kj-g5-準",
+      "genreId": "kanji",
+      "prompt": "じゅんじる",
+      "answer": "準",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|十・隹",
+        "画数|13画",
+        "音読み|ジュン"
+      ]
+    },
+    {
+      "id": "kj-g4-初",
+      "genreId": "kanji",
+      "prompt": "はじめ",
+      "answer": "初",
+      "hintSource": [
+        "部首|刀(かたな)",
+        "のこりのパーツ|衤",
+        "画数|7画",
+        "音読み|ショ"
+      ]
+    },
+    {
+      "id": "kj-g6-諸",
+      "genreId": "kanji",
+      "prompt": "もろ",
+      "answer": "諸",
+      "hintSource": [
+        "部首|言(ごんべん)",
+        "のこりのパーツ|日・老",
+        "画数|15画",
+        "音読み|ショ"
+      ]
+    },
+    {
+      "id": "kj-g6-除",
+      "genreId": "kanji",
+      "prompt": "のぞく",
+      "answer": "除",
+      "hintSource": [
+        "部首|阝(こざとへん)",
+        "画数|10画",
+        "音読み|ジョ"
+      ]
+    },
+    {
+      "id": "kj-g3-商",
+      "genreId": "kanji",
+      "prompt": "あきなう",
+      "answer": "商",
+      "hintSource": [
+        "部首|口(くち)",
+        "画数|11画",
+        "音読み|ショウ"
+      ]
+    },
+    {
+      "id": "kj-g4-唱",
+      "genreId": "kanji",
+      "prompt": "となえる",
+      "answer": "唱",
+      "hintSource": [
+        "部首|口(くち)",
+        "のこりのパーツ|日",
+        "画数|11画",
+        "音読み|ショウ"
+      ]
+    },
+    {
+      "id": "kj-g6-承",
+      "genreId": "kanji",
+      "prompt": "うけたまわる",
+      "answer": "承",
+      "hintSource": [
+        "部首|手(て)",
+        "画数|8画",
+        "音読み|ショウ"
+      ]
+    },
+    {
+      "id": "kj-g5-招",
+      "genreId": "kanji",
+      "prompt": "まねく",
+      "answer": "招",
+      "hintSource": [
+        "部首|扌(てへん)",
+        "のこりのパーツ|口・刀",
+        "画数|8画",
+        "音読み|ショウ"
+      ]
+    },
+    {
+      "id": "kj-g3-消",
+      "genreId": "kanji",
+      "prompt": "きえる",
+      "answer": "消",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|月・尚",
+        "画数|10画",
+        "音読み|ショウ"
+      ]
+    },
+    {
+      "id": "kj-g4-焼",
+      "genreId": "kanji",
+      "prompt": "やく",
+      "answer": "焼",
+      "hintSource": [
+        "部首|火(ひ)",
+        "のこりのパーツ|十・儿",
+        "画数|12画",
+        "音読み|ショウ"
+      ]
+    },
+    {
+      "id": "kj-g4-省",
+      "genreId": "kanji",
+      "prompt": "かえりみる",
+      "answer": "省",
+      "hintSource": [
+        "部首|目(め)",
+        "画数|9画",
+        "音読み|セイ"
+      ]
+    },
+    {
+      "id": "kj-g4-笑",
+      "genreId": "kanji",
+      "prompt": "わらう",
+      "answer": "笑",
+      "hintSource": [
+        "部首|竹(たけかんむり)",
+        "のこりのパーツ|禾・大",
+        "画数|10画",
+        "音読み|ショウ"
+      ]
+    },
+    {
+      "id": "kj-g5-象",
+      "genreId": "kanji",
+      "prompt": "かたどる",
+      "answer": "象",
+      "hintSource": [
+        "部首|豕(いのこ)",
+        "画数|12画",
+        "音読み|ショウ"
+      ]
+    },
+    {
+      "id": "kj-g5-賞",
+      "genreId": "kanji",
+      "prompt": "ほめる",
+      "answer": "賞",
+      "hintSource": [
+        "部首|貝(かい)",
+        "のこりのパーツ|尚・冖",
+        "画数|15画",
+        "音読み|ショウ"
+      ]
+    },
+    {
+      "id": "kj-g6-障",
+      "genreId": "kanji",
+      "prompt": "さわる",
+      "answer": "障",
+      "hintSource": [
+        "部首|阝(こざとへん)",
+        "のこりのパーツ|音・十",
+        "画数|14画",
+        "音読み|ショウ"
+      ]
+    },
+    {
+      "id": "kj-g5-常",
+      "genreId": "kanji",
+      "prompt": "つね",
+      "answer": "常",
+      "hintSource": [
+        "部首|巾(はば)",
+        "のこりのパーツ|尚・冖",
+        "画数|11画",
+        "音読み|ジョウ"
+      ]
+    },
+    {
+      "id": "kj-g5-情",
+      "genreId": "kanji",
+      "prompt": "なさけ",
+      "answer": "情",
+      "hintSource": [
+        "部首|忄(りっしんべん)",
+        "のこりのパーツ|青",
+        "画数|11画",
+        "音読み|ジョウ"
+      ]
+    },
+    {
+      "id": "kj-g3-深",
+      "genreId": "kanji",
+      "prompt": "ふかい",
+      "answer": "深",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|木・儿・冖",
+        "画数|11画",
+        "音読み|シン"
+      ]
+    },
+    {
+      "id": "kj-g3-申",
+      "genreId": "kanji",
+      "prompt": "もうす",
+      "answer": "申",
+      "hintSource": [
+        "部首|田(た)",
+        "画数|5画",
+        "音読み|シン"
+      ]
+    },
+    {
+      "id": "kj-g3-進",
+      "genreId": "kanji",
+      "prompt": "すすむ",
+      "answer": "進",
+      "hintSource": [
+        "部首|辶(しんにょう)",
+        "のこりのパーツ|隹",
+        "画数|11画",
+        "音読み|シン"
+      ]
+    },
+    {
+      "id": "kj-g6-針",
+      "genreId": "kanji",
+      "prompt": "はり",
+      "answer": "針",
+      "hintSource": [
+        "部首|金(かね)",
+        "のこりのパーツ|十",
+        "画数|10画",
+        "音読み|シン"
+      ]
+    },
+    {
+      "id": "kj-g5-勢",
+      "genreId": "kanji",
+      "prompt": "いきおい",
+      "answer": "勢",
+      "hintSource": [
+        "部首|力(ちから)",
+        "画数|13画",
+        "音読み|セイ"
+      ]
+    },
+    {
+      "id": "kj-g5-性",
+      "genreId": "kanji",
+      "prompt": "さが",
+      "answer": "性",
+      "hintSource": [
+        "部首|忄(りっしんべん)",
+        "のこりのパーツ|生",
+        "画数|8画",
+        "音読み|セイ"
+      ]
+    },
+    {
+      "id": "kj-g4-成",
+      "genreId": "kanji",
+      "prompt": "なる",
+      "answer": "成",
+      "hintSource": [
+        "部首|戈(かのほこ)",
+        "画数|6画",
+        "音読み|セイ"
+      ]
+    },
+    {
+      "id": "kj-g4-清",
+      "genreId": "kanji",
+      "prompt": "きよい",
+      "answer": "清",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|青",
+        "画数|11画",
+        "音読み|セイ"
+      ]
+    },
+    {
+      "id": "kj-g6-盛",
+      "genreId": "kanji",
+      "prompt": "もる",
+      "answer": "盛",
+      "hintSource": [
+        "部首|皿",
+        "画数|11画",
+        "音読み|セイ"
+      ]
+    },
+    {
+      "id": "kj-g5-精",
+      "genreId": "kanji",
+      "prompt": "しらげる",
+      "answer": "精",
+      "hintSource": [
+        "部首|米(こめ)",
+        "のこりのパーツ|青",
+        "画数|14画",
+        "音読み|セイ"
+      ]
+    },
+    {
+      "id": "kj-g6-聖",
+      "genreId": "kanji",
+      "prompt": "ひじり",
+      "answer": "聖",
+      "hintSource": [
+        "部首|耳(みみ)",
+        "のこりのパーツ|王・口",
+        "画数|13画",
+        "音読み|セイ"
+      ]
+    },
+    {
+      "id": "kj-g4-席",
+      "genreId": "kanji",
+      "prompt": "むしろ",
+      "answer": "席",
+      "hintSource": [
+        "部首|巾(はば)",
+        "画数|10画",
+        "音読み|セキ"
+      ]
+    },
+    {
+      "id": "kj-g3-昔",
+      "genreId": "kanji",
+      "prompt": "むかし",
+      "answer": "昔",
+      "hintSource": [
+        "部首|日(ひ)",
+        "画数|8画",
+        "音読み|セキ"
+      ]
+    },
+    {
+      "id": "kj-g4-積",
+      "genreId": "kanji",
+      "prompt": "つむ",
+      "answer": "積",
+      "hintSource": [
+        "部首|禾(のぎ)",
+        "画数|16画",
+        "音読み|セキ"
+      ]
+    },
+    {
+      "id": "kj-g5-責",
+      "genreId": "kanji",
+      "prompt": "せめる",
+      "answer": "責",
+      "hintSource": [
+        "部首|貝(かい)",
+        "のこりのパーツ|土・亠・二",
+        "画数|11画",
+        "音読み|セキ"
+      ]
+    },
+    {
+      "id": "kj-g5-設",
+      "genreId": "kanji",
+      "prompt": "もうける",
+      "answer": "設",
+      "hintSource": [
+        "部首|言(ごんべん)",
+        "のこりのパーツ|殳",
+        "画数|11画",
+        "音読み|セツ"
+      ]
+    },
+    {
+      "id": "kj-g4-節",
+      "genreId": "kanji",
+      "prompt": "ふし",
+      "answer": "節",
+      "hintSource": [
+        "部首|竹(たけかんむり)",
+        "のこりのパーツ|艮・卩",
+        "画数|13画",
+        "音読み|セツ"
+      ]
+    },
+    {
+      "id": "kj-g5-絶",
+      "genreId": "kanji",
+      "prompt": "たえる",
+      "answer": "絶",
+      "hintSource": [
+        "部首|糸(いと)",
+        "のこりのパーツ|色",
+        "画数|12画",
+        "音読み|ゼツ"
+      ]
+    },
+    {
+      "id": "kj-g6-宣",
+      "genreId": "kanji",
+      "prompt": "のたまう",
+      "answer": "宣",
+      "hintSource": [
+        "部首|宀(うかんむり)",
+        "画数|9画",
+        "音読み|セン"
+      ]
+    },
+    {
+      "id": "kj-g6-専",
+      "genreId": "kanji",
+      "prompt": "もっぱら",
+      "answer": "専",
+      "hintSource": [
+        "部首|寸",
+        "のこりのパーツ|十・田",
+        "画数|9画",
+        "音読み|セン"
+      ]
+    },
+    {
+      "id": "kj-g6-泉",
+      "genreId": "kanji",
+      "prompt": "いずみ",
+      "answer": "泉",
+      "hintSource": [
+        "部首|水(みず)",
+        "のこりのパーツ|白",
+        "画数|9画",
+        "音読み|セン"
+      ]
+    },
+    {
+      "id": "kj-g4-浅",
+      "genreId": "kanji",
+      "prompt": "あさい",
+      "answer": "浅",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|戈・二",
+        "画数|9画",
+        "音読み|セン"
+      ]
+    },
+    {
+      "id": "kj-g6-洗",
+      "genreId": "kanji",
+      "prompt": "あらう",
+      "answer": "洗",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "画数|9画",
+        "音読み|セン"
+      ]
+    },
+    {
+      "id": "kj-g6-染",
+      "genreId": "kanji",
+      "prompt": "そめる",
+      "answer": "染",
+      "hintSource": [
+        "部首|木(き)",
+        "のこりのパーツ|九・氵",
+        "画数|9画",
+        "音読み|セン"
+      ]
+    },
+    {
+      "id": "kj-g6-銭",
+      "genreId": "kanji",
+      "prompt": "ぜに",
+      "answer": "銭",
+      "hintSource": [
+        "部首|金(かね)",
+        "のこりのパーツ|戈・二",
+        "画数|14画",
+        "音読み|セン"
+      ]
+    },
+    {
+      "id": "kj-g6-奏",
+      "genreId": "kanji",
+      "prompt": "かなでる",
+      "answer": "奏",
+      "hintSource": [
+        "部首|大",
+        "画数|9画",
+        "音読み|ソウ"
+      ]
+    },
+    {
+      "id": "kj-g3-想",
+      "genreId": "kanji",
+      "prompt": "おもう",
+      "answer": "想",
+      "hintSource": [
+        "部首|心(こころ)",
+        "のこりのパーツ|木・目",
+        "画数|13画",
+        "音読み|ソウ"
+      ]
+    },
+    {
+      "id": "kj-g6-操",
+      "genreId": "kanji",
+      "prompt": "みさお",
+      "answer": "操",
+      "hintSource": [
+        "部首|扌(てへん)",
+        "のこりのパーツ|木・品",
+        "画数|16画",
+        "音読み|ソウ"
+      ]
+    },
+    {
+      "id": "kj-g6-窓",
+      "genreId": "kanji",
+      "prompt": "まど",
+      "answer": "窓",
+      "hintSource": [
+        "部首|穴(あなかんむり)",
+        "のこりのパーツ|心・厶",
+        "画数|11画",
+        "音読み|ソウ"
+      ]
+    },
+    {
+      "id": "kj-g6-装",
+      "genreId": "kanji",
+      "prompt": "よそおう",
+      "answer": "装",
+      "hintSource": [
+        "部首|衣(ころも)",
+        "のこりのパーツ|士・爿",
+        "画数|12画",
+        "音読み|ソウ"
+      ]
+    },
+    {
+      "id": "kj-g3-送",
+      "genreId": "kanji",
+      "prompt": "おくる",
+      "answer": "送",
+      "hintSource": [
+        "部首|辶(しんにょう)",
+        "のこりのパーツ|并・大",
+        "画数|9画",
+        "音読み|ソウ"
+      ]
+    },
+    {
+      "id": "kj-g5-則",
+      "genreId": "kanji",
+      "prompt": "のっとる",
+      "answer": "則",
+      "hintSource": [
+        "部首|刂(りっとう)",
+        "のこりのパーツ|貝",
+        "画数|9画",
+        "音読み|ソク"
+      ]
+    },
+    {
+      "id": "kj-g3-息",
+      "genreId": "kanji",
+      "prompt": "いき",
+      "answer": "息",
+      "hintSource": [
+        "部首|心(こころ)",
+        "のこりのパーツ|自",
+        "画数|10画",
+        "音読み|ソク"
+      ]
+    },
+    {
+      "id": "kj-g4-束",
+      "genreId": "kanji",
+      "prompt": "たば",
+      "answer": "束",
+      "hintSource": [
+        "部首|木(き)",
+        "画数|7画",
+        "音読み|ソク"
+      ]
+    },
+    {
+      "id": "kj-g3-速",
+      "genreId": "kanji",
+      "prompt": "はやい",
+      "answer": "速",
+      "hintSource": [
+        "部首|辶(しんにょう)",
+        "画数|10画",
+        "音読み|ソク"
+      ]
+    },
+    {
+      "id": "kj-g4-続",
+      "genreId": "kanji",
+      "prompt": "つづく",
+      "answer": "続",
+      "hintSource": [
+        "部首|糸(いと)",
+        "のこりのパーツ|士・儿・冖",
+        "画数|13画",
+        "音読み|ゾク"
+      ]
+    },
+    {
+      "id": "kj-g4-卒",
+      "genreId": "kanji",
+      "prompt": "そっする",
+      "answer": "卒",
+      "hintSource": [
+        "部首|十",
+        "のこりのパーツ|人・亠",
+        "画数|8画",
+        "音読み|ソツ"
+      ]
+    },
+    {
+      "id": "kj-g6-存",
+      "genreId": "kanji",
+      "prompt": "ながらえる",
+      "answer": "存",
+      "hintSource": [
+        "部首|子(こ)",
+        "画数|6画",
+        "音読み|ソン"
+      ]
+    },
+    {
+      "id": "kj-g4-孫",
+      "genreId": "kanji",
+      "prompt": "まご",
+      "answer": "孫",
+      "hintSource": [
+        "部首|子(こ)",
+        "画数|10画",
+        "音読み|ソン"
+      ]
+    },
+    {
+      "id": "kj-g3-他",
+      "genreId": "kanji",
+      "prompt": "ほか",
+      "answer": "他",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "のこりのパーツ|也",
+        "画数|5画",
+        "音読み|タ"
+      ]
+    },
+    {
+      "id": "kj-g3-対",
+      "genreId": "kanji",
+      "prompt": "あいて",
+      "answer": "対",
+      "hintSource": [
+        "部首|寸",
+        "のこりのパーツ|文",
+        "画数|7画",
+        "音読み|タイ"
+      ]
+    },
+    {
+      "id": "kj-g4-帯",
+      "genreId": "kanji",
+      "prompt": "おびる",
+      "answer": "帯",
+      "hintSource": [
+        "部首|巾(はば)",
+        "画数|10画",
+        "音読み|タイ"
+      ]
+    },
+    {
+      "id": "kj-g5-態",
+      "genreId": "kanji",
+      "prompt": "わざと",
+      "answer": "態",
+      "hintSource": [
+        "部首|心(こころ)",
+        "のこりのパーツ|月・匕・厶",
+        "画数|14画",
+        "音読み|タイ"
+      ]
+    },
+    {
+      "id": "kj-g5-貸",
+      "genreId": "kanji",
+      "prompt": "かす",
+      "answer": "貸",
+      "hintSource": [
+        "部首|貝(かい)",
+        "のこりのパーツ|亻・弋",
+        "画数|12画",
+        "音読み|タイ"
+      ]
+    },
+    {
+      "id": "kj-g6-退",
+      "genreId": "kanji",
+      "prompt": "しりぞく",
+      "answer": "退",
+      "hintSource": [
+        "部首|辶(しんにょう)",
+        "のこりのパーツ|艮",
+        "画数|9画",
+        "音読み|タイ"
+      ]
+    },
+    {
+      "id": "kj-g4-単",
+      "genreId": "kanji",
+      "prompt": "ひとえ",
+      "answer": "単",
+      "hintSource": [
+        "部首|十",
+        "のこりのパーツ|尚・田",
+        "画数|9画",
+        "音読み|タン"
+      ]
+    },
+    {
+      "id": "kj-g6-担",
+      "genreId": "kanji",
+      "prompt": "かつぐ",
+      "answer": "担",
+      "hintSource": [
+        "部首|扌(てへん)",
+        "画数|8画",
+        "音読み|タン"
+      ]
+    },
+    {
+      "id": "kj-g6-探",
+      "genreId": "kanji",
+      "prompt": "さぐる",
+      "answer": "探",
+      "hintSource": [
+        "部首|扌(てへん)",
+        "のこりのパーツ|木・儿・冖",
+        "画数|11画",
+        "音読み|タン"
+      ]
+    },
+    {
+      "id": "kj-g3-炭",
+      "genreId": "kanji",
+      "prompt": "すみ",
+      "answer": "炭",
+      "hintSource": [
+        "部首|火(ひ)",
+        "のこりのパーツ|山・厂",
+        "画数|9画",
+        "音読み|タン"
+      ]
+    },
+    {
+      "id": "kj-g3-短",
+      "genreId": "kanji",
+      "prompt": "みじかい",
+      "answer": "短",
+      "hintSource": [
+        "部首|矢",
+        "のこりのパーツ|豆",
+        "画数|12画",
+        "音読み|タン"
+      ]
+    },
+    {
+      "id": "kj-g5-築",
+      "genreId": "kanji",
+      "prompt": "きずく",
+      "answer": "築",
+      "hintSource": [
+        "部首|竹(たけかんむり)",
+        "画数|16画",
+        "音読み|チク"
+      ]
+    },
+    {
+      "id": "kj-g3-着",
+      "genreId": "kanji",
+      "prompt": "きる",
+      "answer": "着",
+      "hintSource": [
+        "部首|目(め)",
+        "のこりのパーツ|羊",
+        "画数|12画",
+        "音読み|チャク"
+      ]
+    },
+    {
+      "id": "kj-g4-仲",
+      "genreId": "kanji",
+      "prompt": "なか",
+      "answer": "仲",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "画数|6画",
+        "音読み|チュウ"
+      ]
+    },
+    {
+      "id": "kj-g3-柱",
+      "genreId": "kanji",
+      "prompt": "はしら",
+      "answer": "柱",
+      "hintSource": [
+        "部首|木(き)",
+        "画数|9画",
+        "音読み|チュウ"
+      ]
+    },
+    {
+      "id": "kj-g3-注",
+      "genreId": "kanji",
+      "prompt": "そそぐ",
+      "answer": "注",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "画数|8画",
+        "音読み|チュウ"
+      ]
+    },
+    {
+      "id": "kj-g5-貯",
+      "genreId": "kanji",
+      "prompt": "ためる",
+      "answer": "貯",
+      "hintSource": [
+        "部首|貝(かい)",
+        "画数|12画",
+        "音読み|チョ"
+      ]
+    },
+    {
+      "id": "kj-g3-丁",
+      "genreId": "kanji",
+      "prompt": "ひのと",
+      "answer": "丁",
+      "hintSource": [
+        "部首|一",
+        "画数|2画",
+        "音読み|チョウ"
+      ]
+    },
+    {
+      "id": "kj-g4-兆",
+      "genreId": "kanji",
+      "prompt": "きざす",
+      "answer": "兆",
+      "hintSource": [
+        "部首|儿(にんにょう)",
+        "のこりのパーツ|冫",
+        "画数|6画",
+        "音読み|チョウ"
+      ]
+    },
+    {
+      "id": "kj-g6-庁",
+      "genreId": "kanji",
+      "prompt": "やくしょ",
+      "answer": "庁",
+      "hintSource": [
+        "部首|广(まだれ)",
+        "画数|5画",
+        "音読み|チョウ"
+      ]
+    },
+    {
+      "id": "kj-g5-張",
+      "genreId": "kanji",
+      "prompt": "はる",
+      "answer": "張",
+      "hintSource": [
+        "部首|弓(ゆみ)",
+        "のこりのパーツ|長",
+        "画数|11画",
+        "音読み|チョウ"
+      ]
+    },
+    {
+      "id": "kj-g6-頂",
+      "genreId": "kanji",
+      "prompt": "いただく",
+      "answer": "頂",
+      "hintSource": [
+        "部首|頁(おおがい)",
+        "画数|11画",
+        "音読み|チョウ"
+      ]
+    },
+    {
+      "id": "kj-g6-痛",
+      "genreId": "kanji",
+      "prompt": "いたい",
+      "answer": "痛",
+      "hintSource": [
+        "部首|疒(やまいだれ)",
+        "のこりのパーツ|用・マ",
+        "画数|12画",
+        "音読み|ツウ"
+      ]
+    },
+    {
+      "id": "kj-g4-低",
+      "genreId": "kanji",
+      "prompt": "ひくい",
+      "answer": "低",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "画数|7画",
+        "音読み|テイ"
+      ]
+    },
+    {
+      "id": "kj-g4-底",
+      "genreId": "kanji",
+      "prompt": "そこ",
+      "answer": "底",
+      "hintSource": [
+        "部首|广(まだれ)",
+        "のこりのパーツ|氏",
+        "画数|8画",
+        "音読み|テイ"
+      ]
+    },
+    {
+      "id": "kj-g3-庭",
+      "genreId": "kanji",
+      "prompt": "にわ",
+      "answer": "庭",
+      "hintSource": [
+        "部首|广(まだれ)",
+        "のこりのパーツ|王・廴",
+        "画数|10画",
+        "音読み|テイ"
+      ]
+    },
+    {
+      "id": "kj-g5-提",
+      "genreId": "kanji",
+      "prompt": "さげる",
+      "answer": "提",
+      "hintSource": [
+        "部首|扌(てへん)",
+        "のこりのパーツ|日・疋",
+        "画数|12画",
+        "音読み|テイ"
+      ]
+    },
+    {
+      "id": "kj-g5-程",
+      "genreId": "kanji",
+      "prompt": "ほど",
+      "answer": "程",
+      "hintSource": [
+        "部首|禾(のぎ)",
+        "のこりのパーツ|王・口",
+        "画数|12画",
+        "音読み|テイ"
+      ]
+    },
+    {
+      "id": "kj-g4-的",
+      "genreId": "kanji",
+      "prompt": "まと",
+      "answer": "的",
+      "hintSource": [
+        "部首|白",
+        "画数|8画",
+        "音読み|テキ"
+      ]
+    },
+    {
+      "id": "kj-g3-笛",
+      "genreId": "kanji",
+      "prompt": "ふえ",
+      "answer": "笛",
+      "hintSource": [
+        "部首|竹(たけかんむり)",
+        "画数|11画",
+        "音読み|テキ"
+      ]
+    },
+    {
+      "id": "kj-g3-鉄",
+      "genreId": "kanji",
+      "prompt": "くろがね",
+      "answer": "鉄",
+      "hintSource": [
+        "部首|金(かね)",
+        "のこりのパーツ|二・矢",
+        "画数|13画",
+        "音読み|テツ"
+      ]
+    },
+    {
+      "id": "kj-g3-転",
+      "genreId": "kanji",
+      "prompt": "ころがる",
+      "answer": "転",
+      "hintSource": [
+        "部首|車(くるま)",
+        "のこりのパーツ|二・厶",
+        "画数|11画",
+        "音読み|テン"
+      ]
+    },
+    {
+      "id": "kj-g4-伝",
+      "genreId": "kanji",
+      "prompt": "つたわる",
+      "answer": "伝",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "のこりのパーツ|二・厶",
+        "画数|6画",
+        "音読み|デン"
+      ]
+    },
+    {
+      "id": "kj-g4-徒",
+      "genreId": "kanji",
+      "prompt": "いたずら",
+      "answer": "徒",
+      "hintSource": [
+        "部首|彳(ぎょうにんべん)",
+        "のこりのパーツ|走",
+        "画数|10画",
+        "音読み|ト"
+      ]
+    },
+    {
+      "id": "kj-g3-登",
+      "genreId": "kanji",
+      "prompt": "のぼる",
+      "answer": "登",
+      "hintSource": [
+        "部首|癶(はつがしら)",
+        "のこりのパーツ|豆",
+        "画数|12画",
+        "音読み|トウ"
+      ]
+    },
+    {
+      "id": "kj-g3-都",
+      "genreId": "kanji",
+      "prompt": "みやこ",
+      "answer": "都",
+      "hintSource": [
+        "部首|阝(おおざと)",
+        "のこりのパーツ|日・老",
+        "画数|11画",
+        "音読み|ト"
+      ]
+    },
+    {
+      "id": "kj-g6-党",
+      "genreId": "kanji",
+      "prompt": "なかま",
+      "answer": "党",
+      "hintSource": [
+        "部首|儿(にんにょう)",
+        "のこりのパーツ|尚・冖",
+        "画数|10画",
+        "音読み|トウ"
+      ]
+    },
+    {
+      "id": "kj-g3-島",
+      "genreId": "kanji",
+      "prompt": "しま",
+      "answer": "島",
+      "hintSource": [
+        "部首|山(やま)",
+        "のこりのパーツ|鳥・白",
+        "画数|10画",
+        "音読み|トウ"
+      ]
+    },
+    {
+      "id": "kj-g3-投",
+      "genreId": "kanji",
+      "prompt": "なげる",
+      "answer": "投",
+      "hintSource": [
+        "部首|扌(てへん)",
+        "のこりのパーツ|殳",
+        "画数|7画",
+        "音読み|トウ"
+      ]
+    },
+    {
+      "id": "kj-g5-統",
+      "genreId": "kanji",
+      "prompt": "すべる",
+      "answer": "統",
+      "hintSource": [
+        "部首|糸(いと)",
+        "のこりのパーツ|亠・儿・厶",
+        "画数|12画",
+        "音読み|トウ"
+      ]
+    },
+    {
+      "id": "kj-g4-働",
+      "genreId": "kanji",
+      "prompt": "はたらく",
+      "answer": "働",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "画数|13画",
+        "音読み|ドウ"
+      ]
+    },
+    {
+      "id": "kj-g3-動",
+      "genreId": "kanji",
+      "prompt": "うごく",
+      "answer": "動",
+      "hintSource": [
+        "部首|力(ちから)",
+        "画数|11画",
+        "音読み|ドウ"
+      ]
+    },
+    {
+      "id": "kj-g5-導",
+      "genreId": "kanji",
+      "prompt": "みちびく",
+      "answer": "導",
+      "hintSource": [
+        "部首|寸",
+        "のこりのパーツ|辶・首",
+        "画数|15画",
+        "音読み|ドウ"
+      ]
+    },
+    {
+      "id": "kj-g3-童",
+      "genreId": "kanji",
+      "prompt": "わらべ",
+      "answer": "童",
+      "hintSource": [
+        "部首|立(たつ)",
+        "のこりのパーツ|里",
+        "画数|12画",
+        "音読み|ドウ"
+      ]
+    },
+    {
+      "id": "kj-g5-銅",
+      "genreId": "kanji",
+      "prompt": "あかがね",
+      "answer": "銅",
+      "hintSource": [
+        "部首|金(かね)",
+        "画数|14画",
+        "音読み|ドウ"
+      ]
+    },
+    {
+      "id": "kj-g5-独",
+      "genreId": "kanji",
+      "prompt": "ひとり",
+      "answer": "独",
+      "hintSource": [
+        "部首|犭(けものへん)",
+        "のこりのパーツ|虫",
+        "画数|9画",
+        "音読み|ドク"
+      ]
+    },
+    {
+      "id": "kj-g4-栃",
+      "genreId": "kanji",
+      "prompt": "とち",
+      "answer": "栃",
+      "hintSource": [
+        "部首|木(き)",
+        "のこりのパーツ|斤・厂",
+        "画数|9画"
+      ]
+    },
+    {
+      "id": "kj-g6-届",
+      "genreId": "kanji",
+      "prompt": "とどける",
+      "answer": "届",
+      "hintSource": [
+        "部首|尸(しかばね)",
+        "画数|8画",
+        "音読み|カイ"
+      ]
+    },
+    {
+      "id": "kj-g4-奈",
+      "genreId": "kanji",
+      "prompt": "いかん",
+      "answer": "奈",
+      "hintSource": [
+        "部首|大",
+        "のこりのパーツ|示",
+        "画数|8画",
+        "音読み|ナ"
+      ]
+    },
+    {
+      "id": "kj-g4-縄",
+      "genreId": "kanji",
+      "prompt": "なわ",
+      "answer": "縄",
+      "hintSource": [
+        "部首|糸(いと)",
+        "のこりのパーツ|亀",
+        "画数|15画",
+        "音読み|ジョウ"
+      ]
+    },
+    {
+      "id": "kj-g6-乳",
+      "genreId": "kanji",
+      "prompt": "ちち",
+      "answer": "乳",
+      "hintSource": [
+        "部首|乙(れ)",
+        "のこりのパーツ|子・爪",
+        "画数|8画",
+        "音読み|ニュウ"
+      ]
+    },
+    {
+      "id": "kj-g5-任",
+      "genreId": "kanji",
+      "prompt": "まかせる",
+      "answer": "任",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "画数|6画",
+        "音読み|ニン"
+      ]
+    },
+    {
+      "id": "kj-g6-認",
+      "genreId": "kanji",
+      "prompt": "みとめる",
+      "answer": "認",
+      "hintSource": [
+        "部首|言(ごんべん)",
+        "画数|14画",
+        "音読み|ニン"
+      ]
+    },
+    {
+      "id": "kj-g5-燃",
+      "genreId": "kanji",
+      "prompt": "もえる",
+      "answer": "燃",
+      "hintSource": [
+        "部首|火(ひ)",
+        "のこりのパーツ|犬・夕",
+        "画数|16画",
+        "音読み|ネン"
+      ]
+    },
+    {
+      "id": "kj-g5-破",
+      "genreId": "kanji",
+      "prompt": "やぶる",
+      "answer": "破",
+      "hintSource": [
+        "部首|石(いし)",
+        "のこりのパーツ|皮",
+        "画数|10画",
+        "音読み|ハ"
+      ]
+    },
+    {
+      "id": "kj-g6-拝",
+      "genreId": "kanji",
+      "prompt": "おがむ",
+      "answer": "拝",
+      "hintSource": [
+        "部首|扌(てへん)",
+        "画数|8画",
+        "音読み|ハイ"
+      ]
+    },
+    {
+      "id": "kj-g3-配",
+      "genreId": "kanji",
+      "prompt": "くばる",
+      "answer": "配",
+      "hintSource": [
+        "部首|酉(とり)",
+        "のこりのパーツ|已",
+        "画数|10画",
+        "音読み|ハイ"
+      ]
+    },
+    {
+      "id": "kj-g4-梅",
+      "genreId": "kanji",
+      "prompt": "うめ",
+      "answer": "梅",
+      "hintSource": [
+        "部首|木(き)",
+        "のこりのパーツ|乞",
+        "画数|10画",
+        "音読み|バイ"
+      ]
+    },
+    {
+      "id": "kj-g3-箱",
+      "genreId": "kanji",
+      "prompt": "はこ",
+      "answer": "箱",
+      "hintSource": [
+        "部首|竹(たけかんむり)",
+        "のこりのパーツ|木・目",
+        "画数|15画",
+        "音読み|ソウ"
+      ]
+    },
+    {
+      "id": "kj-g3-反",
+      "genreId": "kanji",
+      "prompt": "そる",
+      "answer": "反",
+      "hintSource": [
+        "部首|又",
+        "のこりのパーツ|厂",
+        "画数|4画",
+        "音読み|ハン"
+      ]
+    },
+    {
+      "id": "kj-g3-板",
+      "genreId": "kanji",
+      "prompt": "いた",
+      "answer": "板",
+      "hintSource": [
+        "部首|木(き)",
+        "のこりのパーツ|又・厂",
+        "画数|8画",
+        "音読み|ハン"
+      ]
+    },
+    {
+      "id": "kj-g4-飯",
+      "genreId": "kanji",
+      "prompt": "めし",
+      "answer": "飯",
+      "hintSource": [
+        "部首|食(しょく)",
+        "のこりのパーツ|又・厂",
+        "画数|12画",
+        "音読み|ハン"
+      ]
+    },
+    {
+      "id": "kj-g6-否",
+      "genreId": "kanji",
+      "prompt": "いな",
+      "answer": "否",
+      "hintSource": [
+        "部首|口(くち)",
+        "画数|7画",
+        "音読み|ヒ"
+      ]
+    },
+    {
+      "id": "kj-g6-秘",
+      "genreId": "kanji",
+      "prompt": "ひめる",
+      "answer": "秘",
+      "hintSource": [
+        "部首|禾(のぎ)",
+        "画数|10画",
+        "音読み|ヒ"
+      ]
+    },
+    {
+      "id": "kj-g5-費",
+      "genreId": "kanji",
+      "prompt": "ついやす",
+      "answer": "費",
+      "hintSource": [
+        "部首|貝(かい)",
+        "画数|12画",
+        "音読み|ヒ"
+      ]
+    },
+    {
+      "id": "kj-g3-美",
+      "genreId": "kanji",
+      "prompt": "うつくしい",
+      "answer": "美",
+      "hintSource": [
+        "部首|羊",
+        "のこりのパーツ|大",
+        "画数|9画",
+        "音読み|ビ"
+      ]
+    },
+    {
+      "id": "kj-g4-必",
+      "genreId": "kanji",
+      "prompt": "かならず",
+      "answer": "必",
+      "hintSource": [
+        "部首|心(こころ)",
+        "画数|5画",
+        "音読み|ヒツ"
+      ]
+    },
+    {
+      "id": "kj-g3-筆",
+      "genreId": "kanji",
+      "prompt": "ふで",
+      "answer": "筆",
+      "hintSource": [
+        "部首|竹(たけかんむり)",
+        "のこりのパーツ|聿",
+        "画数|12画",
+        "音読み|ヒツ"
+      ]
+    },
+    {
+      "id": "kj-g4-媛",
+      "genreId": "kanji",
+      "prompt": "ひめ",
+      "answer": "媛",
+      "hintSource": [
+        "部首|女(おんな)",
+        "画数|12画",
+        "音読み|エン"
+      ]
+    },
+    {
+      "id": "kj-g6-俵",
+      "genreId": "kanji",
+      "prompt": "たわら",
+      "answer": "俵",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "画数|10画",
+        "音読み|ヒョウ"
+      ]
+    },
+    {
+      "id": "kj-g4-標",
+      "genreId": "kanji",
+      "prompt": "しるべ",
+      "answer": "標",
+      "hintSource": [
+        "部首|木(き)",
+        "のこりのパーツ|示・西",
+        "画数|15画",
+        "音読み|ヒョウ"
+      ]
+    },
+    {
+      "id": "kj-g3-病",
+      "genreId": "kanji",
+      "prompt": "やむ",
+      "answer": "病",
+      "hintSource": [
+        "部首|疒(やまいだれ)",
+        "画数|10画",
+        "音読み|ビョウ"
+      ]
+    },
+    {
+      "id": "kj-g5-貧",
+      "genreId": "kanji",
+      "prompt": "まずしい",
+      "answer": "貧",
+      "hintSource": [
+        "部首|貝(かい)",
+        "のこりのパーツ|刀",
+        "画数|11画",
+        "音読み|ヒン"
+      ]
+    },
+    {
+      "id": "kj-g4-夫",
+      "genreId": "kanji",
+      "prompt": "おっと",
+      "answer": "夫",
+      "hintSource": [
+        "部首|大",
+        "のこりのパーツ|人・二・亠",
+        "画数|4画",
+        "音読み|フ"
+      ]
+    },
+    {
+      "id": "kj-g5-婦",
+      "genreId": "kanji",
+      "prompt": "よめ",
+      "answer": "婦",
+      "hintSource": [
+        "部首|女(おんな)",
+        "のこりのパーツ|ヨ・巾・冖",
+        "画数|11画",
+        "音読み|フ"
+      ]
+    },
+    {
+      "id": "kj-g4-富",
+      "genreId": "kanji",
+      "prompt": "とむ",
+      "answer": "富",
+      "hintSource": [
+        "部首|宀(うかんむり)",
+        "画数|12画",
+        "音読み|フ"
+      ]
+    },
+    {
+      "id": "kj-g5-布",
+      "genreId": "kanji",
+      "prompt": "ぬの",
+      "answer": "布",
+      "hintSource": [
+        "部首|巾(はば)",
+        "画数|5画",
+        "音読み|フ"
+      ]
+    },
+    {
+      "id": "kj-g3-負",
+      "genreId": "kanji",
+      "prompt": "まける",
+      "answer": "負",
+      "hintSource": [
+        "部首|貝(かい)",
+        "のこりのパーツ|勹",
+        "画数|9画",
+        "音読み|フ"
+      ]
+    },
+    {
+      "id": "kj-g5-武",
+      "genreId": "kanji",
+      "prompt": "たけ",
+      "answer": "武",
+      "hintSource": [
+        "部首|止",
+        "のこりのパーツ|弋",
+        "画数|8画",
+        "音読み|ブ"
+      ]
+    },
+    {
+      "id": "kj-g5-復",
+      "genreId": "kanji",
+      "prompt": "また",
+      "answer": "復",
+      "hintSource": [
+        "部首|彳(ぎょうにんべん)",
+        "のこりのパーツ|日・夂・乞",
+        "画数|12画",
+        "音読み|フク"
+      ]
+    },
+    {
+      "id": "kj-g5-仏",
+      "genreId": "kanji",
+      "prompt": "ほとけ",
+      "answer": "仏",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "のこりのパーツ|厶",
+        "画数|4画",
+        "音読み|ブツ"
+      ]
+    },
+    {
+      "id": "kj-g5-粉",
+      "genreId": "kanji",
+      "prompt": "デシメートル",
+      "answer": "粉",
+      "hintSource": [
+        "部首|米(こめ)",
+        "のこりのパーツ|刀・并・ハ",
+        "画数|10画",
+        "音読み|フン"
+      ]
+    },
+    {
+      "id": "kj-g6-閉",
+      "genreId": "kanji",
+      "prompt": "とじる",
+      "answer": "閉",
+      "hintSource": [
+        "部首|門(もんがまえ)",
+        "画数|11画",
+        "音読み|ヘイ"
+      ]
+    },
+    {
+      "id": "kj-g4-別",
+      "genreId": "kanji",
+      "prompt": "わかれる",
+      "answer": "別",
+      "hintSource": [
+        "部首|刂(りっとう)",
+        "のこりのパーツ|口・力・勹",
+        "画数|7画",
+        "音読み|ベツ"
+      ]
+    },
+    {
+      "id": "kj-g5-編",
+      "genreId": "kanji",
+      "prompt": "あむ",
+      "answer": "編",
+      "hintSource": [
+        "部首|糸(いと)",
+        "のこりのパーツ|戸・冊",
+        "画数|15画",
+        "音読み|ヘン"
+      ]
+    },
+    {
+      "id": "kj-g4-辺",
+      "genreId": "kanji",
+      "prompt": "あたり",
+      "answer": "辺",
+      "hintSource": [
+        "部首|辶(しんにょう)",
+        "のこりのパーツ|刀",
+        "画数|5画",
+        "音読み|ヘン"
+      ]
+    },
+    {
+      "id": "kj-g4-便",
+      "genreId": "kanji",
+      "prompt": "たより",
+      "answer": "便",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "画数|9画",
+        "音読み|ベン"
+      ]
+    },
+    {
+      "id": "kj-g5-弁",
+      "genreId": "kanji",
+      "prompt": "かんむり",
+      "answer": "弁",
+      "hintSource": [
+        "部首|廾(にじゅうあし)",
+        "のこりのパーツ|厶",
+        "画数|5画",
+        "音読み|ベン"
+      ]
+    },
+    {
+      "id": "kj-g6-補",
+      "genreId": "kanji",
+      "prompt": "おぎなう",
+      "answer": "補",
+      "hintSource": [
+        "部首|衤(ころもへん)",
+        "画数|12画",
+        "音読み|ホ"
+      ]
+    },
+    {
+      "id": "kj-g5-墓",
+      "genreId": "kanji",
+      "prompt": "はか",
+      "answer": "墓",
+      "hintSource": [
+        "部首|土(つち)",
+        "のこりのパーツ|大・日・艹",
+        "画数|13画",
+        "音読み|ボ"
+      ]
+    },
+    {
+      "id": "kj-g4-包",
+      "genreId": "kanji",
+      "prompt": "つつむ",
+      "answer": "包",
+      "hintSource": [
+        "部首|勹(つつみがまえ)",
+        "のこりのパーツ|已",
+        "画数|5画",
+        "音読み|ホウ"
+      ]
+    },
+    {
+      "id": "kj-g5-報",
+      "genreId": "kanji",
+      "prompt": "むくいる",
+      "answer": "報",
+      "hintSource": [
+        "部首|土(つち)",
+        "画数|12画",
+        "音読み|ホウ"
+      ]
+    },
+    {
+      "id": "kj-g6-訪",
+      "genreId": "kanji",
+      "prompt": "おとずれる",
+      "answer": "訪",
+      "hintSource": [
+        "部首|言(ごんべん)",
+        "のこりのパーツ|方",
+        "画数|11画",
+        "音読み|ホウ"
+      ]
+    },
+    {
+      "id": "kj-g5-豊",
+      "genreId": "kanji",
+      "prompt": "ゆたか",
+      "answer": "豊",
+      "hintSource": [
+        "部首|豆",
+        "画数|13画",
+        "音読み|ホウ"
+      ]
+    },
+    {
+      "id": "kj-g6-忘",
+      "genreId": "kanji",
+      "prompt": "わすれる",
+      "answer": "忘",
+      "hintSource": [
+        "部首|心(こころ)",
+        "のこりのパーツ|亡",
+        "画数|7画",
+        "音読み|ボウ"
+      ]
+    },
+    {
+      "id": "kj-g5-防",
+      "genreId": "kanji",
+      "prompt": "ふせぐ",
+      "answer": "防",
+      "hintSource": [
+        "部首|阝(こざとへん)",
+        "のこりのパーツ|方",
+        "画数|7画",
+        "音読み|ボウ"
+      ]
+    },
+    {
+      "id": "kj-g4-末",
+      "genreId": "kanji",
+      "prompt": "すえ",
+      "answer": "末",
+      "hintSource": [
+        "部首|木(き)",
+        "画数|5画",
+        "音読み|マツ"
+      ]
+    },
+    {
+      "id": "kj-g3-味",
+      "genreId": "kanji",
+      "prompt": "あじ",
+      "answer": "味",
+      "hintSource": [
+        "部首|口(くち)",
+        "画数|8画",
+        "音読み|ミ"
+      ]
+    },
+    {
+      "id": "kj-g4-未",
+      "genreId": "kanji",
+      "prompt": "いまだ",
+      "answer": "未",
+      "hintSource": [
+        "部首|木(き)",
+        "画数|5画",
+        "音読み|ミ"
+      ]
+    },
+    {
+      "id": "kj-g4-民",
+      "genreId": "kanji",
+      "prompt": "たみ",
+      "answer": "民",
+      "hintSource": [
+        "部首|氏",
+        "のこりのパーツ|口・尸",
+        "画数|5画",
+        "音読み|ミン"
+      ]
+    },
+    {
+      "id": "kj-g5-夢",
+      "genreId": "kanji",
+      "prompt": "ゆめ",
+      "answer": "夢",
+      "hintSource": [
+        "部首|夕",
+        "のこりのパーツ|買・冖・艹",
+        "画数|13画",
+        "音読み|ム"
+      ]
+    },
+    {
+      "id": "kj-g3-命",
+      "genreId": "kanji",
+      "prompt": "いのち",
+      "answer": "命",
+      "hintSource": [
+        "部首|口(くち)",
+        "画数|8画",
+        "音読み|メイ"
+      ]
+    },
+    {
+      "id": "kj-g5-迷",
+      "genreId": "kanji",
+      "prompt": "まよう",
+      "answer": "迷",
+      "hintSource": [
+        "部首|辶(しんにょう)",
+        "のこりのパーツ|米",
+        "画数|9画",
+        "音読み|メイ"
+      ]
+    },
+    {
+      "id": "kj-g4-約",
+      "genreId": "kanji",
+      "prompt": "つづまる",
+      "answer": "約",
+      "hintSource": [
+        "部首|糸(いと)",
+        "画数|9画",
+        "音読み|ヤク"
+      ]
+    },
+    {
+      "id": "kj-g3-薬",
+      "genreId": "kanji",
+      "prompt": "くすり",
+      "answer": "薬",
+      "hintSource": [
+        "部首|艹(くさかんむり)",
+        "のこりのパーツ|日・木・冫",
+        "画数|16画",
+        "音読み|ヤク"
+      ]
+    },
+    {
+      "id": "kj-g6-訳",
+      "genreId": "kanji",
+      "prompt": "わけ",
+      "answer": "訳",
+      "hintSource": [
+        "部首|言(ごんべん)",
+        "画数|11画",
+        "音読み|ヤク"
+      ]
+    },
+    {
+      "id": "kj-g3-油",
+      "genreId": "kanji",
+      "prompt": "あぶら",
+      "answer": "油",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "画数|8画",
+        "音読み|ユ"
+      ]
+    },
+    {
+      "id": "kj-g4-勇",
+      "genreId": "kanji",
+      "prompt": "いさむ",
+      "answer": "勇",
+      "hintSource": [
+        "部首|力(ちから)",
+        "のこりのパーツ|田・マ",
+        "画数|9画",
+        "音読み|ユウ"
+      ]
+    },
+    {
+      "id": "kj-g3-由",
+      "genreId": "kanji",
+      "prompt": "よし",
+      "answer": "由",
+      "hintSource": [
+        "部首|田(た)",
+        "画数|5画",
+        "音読み|ユ"
+      ]
+    },
+    {
+      "id": "kj-g3-遊",
+      "genreId": "kanji",
+      "prompt": "あそぶ",
+      "answer": "遊",
+      "hintSource": [
+        "部首|辶(しんにょう)",
+        "のこりのパーツ|子・方・乞",
+        "画数|12画",
+        "音読み|ユウ"
+      ]
+    },
+    {
+      "id": "kj-g3-予",
+      "genreId": "kanji",
+      "prompt": "あらかじめ",
+      "answer": "予",
+      "hintSource": [
+        "部首|亅(はねぼう)",
+        "画数|4画",
+        "音読み|ヨ"
+      ]
+    },
+    {
+      "id": "kj-g6-預",
+      "genreId": "kanji",
+      "prompt": "あずける",
+      "answer": "預",
+      "hintSource": [
+        "部首|頁(おおがい)",
+        "画数|13画",
+        "音読み|ヨ"
+      ]
+    },
+    {
+      "id": "kj-g6-幼",
+      "genreId": "kanji",
+      "prompt": "おさない",
+      "answer": "幼",
+      "hintSource": [
+        "部首|幺(いとがしら)",
+        "のこりのパーツ|力",
+        "画数|5画",
+        "音読み|ヨウ"
+      ]
+    },
+    {
+      "id": "kj-g3-様",
+      "genreId": "kanji",
+      "prompt": "さま",
+      "answer": "様",
+      "hintSource": [
+        "部首|木(き)",
+        "のこりのパーツ|水・羊",
+        "画数|14画",
+        "音読み|ヨウ"
+      ]
+    },
+    {
+      "id": "kj-g4-養",
+      "genreId": "kanji",
+      "prompt": "やしなう",
+      "answer": "養",
+      "hintSource": [
+        "部首|食(しょく)",
+        "のこりのパーツ|羊",
+        "画数|15画",
+        "音読み|ヨウ"
+      ]
+    },
+    {
+      "id": "kj-g6-欲",
+      "genreId": "kanji",
+      "prompt": "ほっする",
+      "answer": "欲",
+      "hintSource": [
+        "部首|欠(あくび)",
+        "のこりのパーツ|谷",
+        "画数|11画",
+        "音読み|ヨク"
+      ]
+    },
+    {
+      "id": "kj-g4-浴",
+      "genreId": "kanji",
+      "prompt": "あびる",
+      "answer": "浴",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|谷",
+        "画数|10画",
+        "音読み|ヨク"
+      ]
+    },
+    {
+      "id": "kj-g3-落",
+      "genreId": "kanji",
+      "prompt": "おちる",
+      "answer": "落",
+      "hintSource": [
+        "部首|艹(くさかんむり)",
+        "のこりのパーツ|口・氵・夂",
+        "画数|12画",
+        "音読み|ラク"
+      ]
+    },
+    {
+      "id": "kj-g6-乱",
+      "genreId": "kanji",
+      "prompt": "みだれる",
+      "answer": "乱",
+      "hintSource": [
+        "部首|乙(れ)",
+        "のこりのパーツ|舌",
+        "画数|7画",
+        "音読み|ラン"
+      ]
+    },
+    {
+      "id": "kj-g6-卵",
+      "genreId": "kanji",
+      "prompt": "たまご",
+      "answer": "卵",
+      "hintSource": [
+        "部首|卩(ふしづくり)",
+        "画数|7画",
+        "音読み|ラン"
+      ]
+    },
+    {
+      "id": "kj-g5-略",
+      "genreId": "kanji",
+      "prompt": "ほぼ",
+      "answer": "略",
+      "hintSource": [
+        "部首|田(た)",
+        "のこりのパーツ|口・夂",
+        "画数|11画",
+        "音読み|リャク"
+      ]
+    },
+    {
+      "id": "kj-g3-流",
+      "genreId": "kanji",
+      "prompt": "ながれる",
+      "answer": "流",
+      "hintSource": [
+        "部首|氵(さんずい)",
+        "のこりのパーツ|川・亠・厶",
+        "画数|10画",
+        "音読み|リュウ"
+      ]
+    },
+    {
+      "id": "kj-g5-領",
+      "genreId": "kanji",
+      "prompt": "えり",
+      "answer": "領",
+      "hintSource": [
+        "部首|頁(おおがい)",
+        "画数|14画",
+        "音読み|リョウ"
+      ]
+    },
+    {
+      "id": "kj-g3-緑",
+      "genreId": "kanji",
+      "prompt": "みどり",
+      "answer": "緑",
+      "hintSource": [
+        "部首|糸(いと)",
+        "のこりのパーツ|隶",
+        "画数|14画",
+        "音読み|リョク"
+      ]
+    },
+    {
+      "id": "kj-g4-類",
+      "genreId": "kanji",
+      "prompt": "たぐい",
+      "answer": "類",
+      "hintSource": [
+        "部首|頁(おおがい)",
+        "のこりのパーツ|大・米",
+        "画数|18画",
+        "音読み|ルイ"
+      ]
+    },
+    {
+      "id": "kj-g4-例",
+      "genreId": "kanji",
+      "prompt": "たとえる",
+      "answer": "例",
+      "hintSource": [
+        "部首|亻(にんべん)",
+        "のこりのパーツ|刂・歹",
+        "画数|8画",
+        "音読み|レイ"
+      ]
+    },
+    {
+      "id": "kj-g4-冷",
+      "genreId": "kanji",
+      "prompt": "つめたい",
+      "answer": "冷",
+      "hintSource": [
+        "部首|冫(にすい)",
+        "画数|7画",
+        "音読み|レイ"
+      ]
+    },
+    {
+      "id": "kj-g3-練",
+      "genreId": "kanji",
+      "prompt": "ねる",
+      "answer": "練",
+      "hintSource": [
+        "部首|糸(いと)",
+        "画数|14画",
+        "音読み|レン"
+      ]
+    },
+    {
+      "id": "kj-g4-連",
+      "genreId": "kanji",
+      "prompt": "つらなる",
+      "answer": "連",
+      "hintSource": [
+        "部首|辶(しんにょう)",
+        "のこりのパーツ|車",
+        "画数|10画",
+        "音読み|レン"
+      ]
+    },
+    {
+      "id": "kj-g4-労",
+      "genreId": "kanji",
+      "prompt": "ろうする",
+      "answer": "労",
+      "hintSource": [
+        "部首|力(ちから)",
+        "のこりのパーツ|尚・冖",
+        "画数|7画",
+        "音読み|ロウ"
+      ]
+    },
+    {
+      "id": "kj-g6-朗",
+      "genreId": "kanji",
+      "prompt": "ほがらか",
+      "answer": "朗",
+      "hintSource": [
+        "部首|月(つき)",
+        "のこりのパーツ|艮",
+        "画数|10画",
+        "音読み|ロウ"
+      ]
+    },
+    {
+      "id": "kj-g6-論",
+      "genreId": "kanji",
+      "prompt": "あげつらう",
+      "answer": "論",
+      "hintSource": [
+        "部首|言(ごんべん)",
+        "のこりのパーツ|个・冊",
+        "画数|15画",
+        "音読み|ロン"
+      ]
+    },
+    {
+      "id": "kj-g3-和",
+      "genreId": "kanji",
+      "prompt": "やわらぐ",
+      "answer": "和",
+      "hintSource": [
+        "部首|口(くち)",
+        "のこりのパーツ|禾",
+        "画数|8画",
+        "音読み|ワ"
+      ]
+    }
+  ]
+}
