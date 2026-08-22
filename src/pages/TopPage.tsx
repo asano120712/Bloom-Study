@@ -1,14 +1,10 @@
 import { Link } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
-import { BloomLogo } from '@/components/BloomLogo'
 
 export function TopPage() {
   return (
     <AppShell>
       <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
-        {/* 縦組みロゴ。花びらが開いてから文字が出るアニメーションはSVG側で完結している */}
-        <BloomLogo variant="vertical" className="w-56 max-w-full" />
-
         <p className="text-base leading-relaxed text-ink-600">
           答えはすぐに出しません。
           <br />
