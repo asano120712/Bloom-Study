@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { LOGO_SOURCES } from '@/assets/logos'
 import { markOpeningShown } from '@/services/openingSession'
 import { BloomLogo } from './BloomLogo'
+import { LoadingDots } from './LoadingDots'
 
 /**
  * ロゴを画面に出してから花が開き始めるまでの間。
@@ -14,15 +15,20 @@ const LOGO_MOTION_MS = 1300
 /** 完成したロゴを見せておく時間 */
 const HOLD_MS = 500
 const FADE_MS = 400
-
-type Phase = 'lead-in' | 'playing' | 'leaving'
+/** 読み込みが返ってこなくても、ここまで待ったら本編に進む */
+const MAX_WAIT_MS = 4000
 
 /**
  * 起動時のオープニング演出。
- * 少し間を置いてから縦組みロゴを全画面で1回再生し、フェードアウトして本編に渡す。
+ * 少し間を置いてから縦組みロゴを1回再生し、その下でローディングドットを回す。
+ * 演出の尺と実際の読み込み(Webフォント)の両方が終わったらフェードアウトする。
  */
 export function OpeningSplash({ onFinish }: { onFinish: () => void }) {
-  const [phase, setPhase] = useState<Phase>('lead-in')
+  const [hasLogoStarted, setHasLogoStarted] = useState(false)
+  const [isTimelineDone, setIsTimelineDone] = useState(false)
+  const [isAppReady, setIsAppReady] = useState(false)
+
+  const isLeaving = isTimelineDone && isAppReady
 
   useEffect(() => {
     let cancelled = false
@@ -33,7 +39,7 @@ export function OpeningSplash({ onFinish }: { onFinish: () => void }) {
     const waited = new Promise((resolve) => window.setTimeout(resolve, LEAD_IN_MS))
 
     void Promise.all([warmUp, waited]).then(() => {
-      if (!cancelled) setPhase('playing')
+      if (!cancelled) setHasLogoStarted(true)
     })
 
     return () => {
@@ -42,32 +48,43 @@ export function OpeningSplash({ onFinish }: { onFinish: () => void }) {
   }, [])
 
   useEffect(() => {
-    if (phase !== 'playing') return
-    const id = window.setTimeout(() => setPhase('leaving'), LOGO_MOTION_MS + HOLD_MS)
+    if (!hasLogoStarted) return
+    const id = window.setTimeout(() => setIsTimelineDone(true), LOGO_MOTION_MS + HOLD_MS)
     return () => window.clearTimeout(id)
-  }, [phase])
+  }, [hasLogoStarted])
+
+  // ローディングマークを飾りにしないため、実際の待ち(Webフォント)と連動させる
+  useEffect(() => {
+    const markReady = () => setIsAppReady(true)
+    const cap = window.setTimeout(markReady, MAX_WAIT_MS)
+    void document.fonts.ready.then(markReady, markReady)
+    return () => window.clearTimeout(cap)
+  }, [])
 
   useEffect(() => {
-    if (phase !== 'leaving') return
+    if (!isLeaving) return
     const id = window.setTimeout(() => {
       markOpeningShown()
       onFinish()
     }, FADE_MS)
     return () => window.clearTimeout(id)
-  }, [phase, onFinish])
+  }, [isLeaving, onFinish])
 
   return (
     <div
       // 演出であって情報ではないので支援技術からは隠す
       aria-hidden="true"
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-base-50 transition-opacity duration-[400ms] ${
-        phase === 'leaving' ? 'opacity-0' : 'opacity-100'
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 bg-base-50 transition-opacity duration-[400ms] ${
+        isLeaving ? 'opacity-0' : 'opacity-100'
       }`}
     >
-      {/* lead-in のあいだはマウントしない。<img> は挿入された時点でSMILが動き出すため */}
-      {phase !== 'lead-in' && (
-        <BloomLogo variant="vertical" animated className="w-64 max-w-[70vw]" />
-      )}
+      {/* ロゴが出た瞬間にドットが下へずれないよう、最初から場所を取っておく。
+          <img> はDOMに挿入された時点でSMILが動き出すため、lead-in 中はマウントしない。 */}
+      <div className="flex aspect-[400/360] w-64 max-w-[70vw] items-center justify-center">
+        {hasLogoStarted && <BloomLogo variant="vertical" animated className="w-full" />}
+      </div>
+
+      <LoadingDots />
     </div>
   )
 }

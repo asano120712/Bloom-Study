@@ -1,9 +1,11 @@
+import { prefersReducedMotion } from '@/utils/motion'
+
 /** オープニング演出をこのタブで再生済みかどうかを覚えておく */
 const SESSION_KEY = 'bloomstudy:opening-shown'
 
 /** 再生すべきか。1セッションにつき1回だけ、かつ動きを減らす設定なら出さない */
 export function shouldPlayOpening(): boolean {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
+  if (prefersReducedMotion()) return false
   try {
     return sessionStorage.getItem(SESSION_KEY) !== '1'
   } catch {

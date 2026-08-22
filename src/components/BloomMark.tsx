@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { prefersReducedMotion } from '@/utils/motion'
 
 /** ロゴ(public/bloomstudy_logo.svg)と同じ花びらの配色 */
 const PETAL_COLORS = ['#5DCAA5', '#3FBE93', '#5DCAA5', '#3FBE93', '#5DCAA5']
@@ -6,10 +7,6 @@ const CENTER_COLOR = '#0F6E56'
 
 /** bloom: 1回だけ開く / loop: 開閉を繰り返す(ローディング用) / none: 静止 */
 export type BloomMotion = 'bloom' | 'loop' | 'none'
-
-function prefersReducedMotion(): boolean {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-}
 
 /**
  * ロゴの花びらモチーフ(文字なし)。
