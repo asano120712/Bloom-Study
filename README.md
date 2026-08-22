@@ -83,6 +83,37 @@ KANJIDIC2 の部首名は214個中97個しか無く、KRADFILE は部首を代�
 `hintSource` は `見出し|本文` 形式(`部首|亻(にんべん)`)。
 出せるヒントの種類は字ごとに変わるので、見出しは並び順ではなくデータ側が持つ。
 
+### 英単語問題の生成
+
+JMdict(common語のみ)と NGSL から生成する。漢字と同じく開発時に生成して JSON をコミットする。
+
+```bash
+npm run questions:english                  # 既定 → 1714問
+npm run questions:english -- --bands=1000  # NGSL上位1000語の範囲だけ
+npm run questions:english -- --report      # 書き出さず、内訳と無作為20問だけ確認
+```
+
+出力は `src/data/questions.english.generated.json`。
+出題語は漢字表記(`uk` タグの語はかな表記)、答えは第一訳、同じ語義の別訳は
+`acceptableAnswers` に入れて正解扱いにする。
+
+**答えの難易度は NGSL(学習者向け基本語2801語)で制御している。** これが無いと
+militarism・lipstick のような優先度の低い語まで問題になる。
+頻度で訳語を選び直すと訳が壊れる(顔ぶれ → members)ため、
+**第一訳をそのまま答えにして、それが NGSL に無ければ問題ごと捨てる**方針にしている。
+
+| 除外 | 理由 |
+|---|---|
+| 1語の英単語にならない | 複数語の訳(to live on など)は判定にも1文字ずつのヒントにも向かない |
+| 答えがNGSLに無い | 学習の優先度が低い |
+| カタカナ語 | 出題語が答えそのものになる(テーブル → table) |
+| 答えが他の問題と重複 | 同じ答えの問題を作らない |
+| 答えが4〜10文字の外 | 短いとヒントが2段階しか作れず、長いと開放しきらない |
+
+JMdict のタグでは弾けない問題(`おなら` → wind など)は
+`scripts/english-denylist.ts` に出題語を書いて除外する。
+生成JSONを直接編集しても次回生成で消える。
+
 ### ジャンルを追加するとき
 
 ヒントの出しかたはジャンルごとに個別設計する方針のため、共通ロジックには寄せない。
@@ -216,12 +247,20 @@ QuizPage → useQuizSession → quizSource.startSession(genreId) → QuizSession
 
 ## クレジット
 
-漢字問題の生成に、Electronic Dictionary Research and Development Group (EDRDG) の
-KANJIDIC2 と KRADFILE を使用している。いずれも **CC BY-SA 4.0**。
+問題の生成に以下を使用している。**いずれも CC BY-SA 4.0**。
 
-- [KANJIDIC Project](https://www.edrdg.org/wiki/index.php/KANJIDIC_Project)
+| データ | 用途 |
+|---|---|
+| [JMdict](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project) (EDRDG) | 英単語ジャンルの語義 |
+| [KANJIDIC2 / KRADFILE](https://www.edrdg.org/wiki/index.php/KANJIDIC_Project) (EDRDG) | 漢字ジャンルの部首・画数・パーツ |
+| [NGSL](https://www.newgeneralservicelist.com/) (Browne, Culligan & Phillips) | 英単語の難易度制御 |
+
 - [EDRDG License](https://www.edrdg.org/edrdg/licence.html)
-- JSON 化: [jmdict-simplified](https://github.com/scriptin/jmdict-simplified)
+- JSON 化: [jmdict-simplified](https://github.com/scriptin/jmdict-simplified) / [machine_readable_wordlists](https://github.com/lpmi-13/machine_readable_wordlists)
+
+**採用を見送ったもの**: 英語頻度リスト
+[google-10000-english](https://github.com/first20hours/google-10000-english) は
+「商用利用は LDC のライセンス取得なしには推奨しない」と明記されているため使っていない。
 
 ライセンス上、**アプリ内に出典を掲示する画面が必要**(起動時の一瞬の表示では要件を満たさない)。
 マイページなどに固定の表示先を用意すること。ShareAlike のため、生成した問題データを
