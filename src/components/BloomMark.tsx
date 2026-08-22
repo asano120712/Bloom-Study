@@ -4,20 +4,53 @@ import { useEffect, useRef } from 'react'
 const PETAL_COLORS = ['#5DCAA5', '#3FBE93', '#5DCAA5', '#3FBE93', '#5DCAA5']
 const CENTER_COLOR = '#0F6E56'
 
+/** bloom: 1回だけ開く / loop: 開閉を繰り返す(ローディング用) / none: 静止 */
+export type BloomMotion = 'bloom' | 'loop' | 'none'
+
+function prefersReducedMotion(): boolean {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
 /**
  * ロゴの花びらモチーフ(文字なし)。
  * UI内の演出のため、SVGファイル側のSMILではなく Web Animations API で制御する。
  * 形状・配色はロゴアセットと揃えてあるので、片方を変えたらもう片方も合わせること。
  */
-export function BloomMark({ size = 96, animate = true }: { size?: number; animate?: boolean }) {
+export function BloomMark({
+  size = 96,
+  motion = 'bloom',
+}: {
+  size?: number
+  motion?: BloomMotion
+}) {
   const rootRef = useRef<SVGSVGElement>(null)
 
   useEffect(() => {
-    if (!animate) return
+    if (motion === 'none' || prefersReducedMotion()) return
+
     const parts = rootRef.current?.querySelectorAll<SVGElement>('[data-bloom-part]')
-    parts?.forEach((part, index) => {
+    if (!parts) return
+
+    const animations = [...parts].map((part, index) => {
       const isCenter = part.dataset.bloomPart === 'center'
-      part.animate(
+
+      if (motion === 'loop') {
+        return part.animate(
+          [
+            { opacity: 0.2, transform: 'scale(0.8)' },
+            { opacity: 1, transform: 'scale(1)' },
+            { opacity: 0.2, transform: 'scale(0.8)' },
+          ],
+          {
+            duration: 1600,
+            delay: index * 130,
+            iterations: Number.POSITIVE_INFINITY,
+            easing: 'ease-in-out',
+          },
+        )
+      }
+
+      return part.animate(
         [
           { opacity: 0, transform: isCenter ? 'scale(0)' : 'scale(0.15)', offset: 0 },
           { opacity: 1, transform: 'scale(1.1)', offset: 0.6 },
@@ -31,7 +64,9 @@ export function BloomMark({ size = 96, animate = true }: { size?: number; animat
         },
       )
     })
-  }, [animate])
+
+    return () => animations.forEach((animation) => animation.cancel())
+  }, [motion])
 
   return (
     <svg

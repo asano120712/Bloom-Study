@@ -3,6 +3,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
 import { HintList } from '@/components/HintList'
+import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { TRIAL_LIMIT } from '@/config'
 import { findGenre } from '@/data/genres'
@@ -49,7 +50,7 @@ export function QuizPage() {
   if (isLoading || trialLeft === 0) {
     return (
       <AppShell>
-        <p className="m-auto text-ink-400">よみこみ中…</p>
+        <Loading />
       </AppShell>
     )
   }

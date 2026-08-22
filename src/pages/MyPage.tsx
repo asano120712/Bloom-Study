@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
+import { Loading } from '@/components/Loading'
 import { TRIAL_LIMIT } from '@/config'
 import { findGenre } from '@/data/genres'
 import { findQuestion } from '@/data/questions'
@@ -20,7 +21,7 @@ export function MyPage() {
   if (isLoading) {
     return (
       <AppShell>
-        <p className="m-auto text-ink-400">よみこみ中…</p>
+        <Loading message="記録をよみこみ中" />
       </AppShell>
     )
   }
