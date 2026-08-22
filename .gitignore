@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# 漢字辞書データのダウンロードキャッシュ(再取得できるうえ十数MBあるため追跡しない)
+.dict-cache/
+
+# 環境変数(BaaS のキーなどを入れる想定。共有用の雛形だけ追跡する)
+.env
+.env.*
+!.env.example
+
+# 問題生成に使う辞書データ(npm run dict:fetch で取得)
+.dict-cache
