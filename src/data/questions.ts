@@ -1,4 +1,5 @@
 import type { GenreId, Question } from '@/types'
+import generatedEnglish from './questions.english.generated.json'
 import generatedKanji from './questions.kanji.generated.json'
 
 /**
@@ -29,10 +30,13 @@ const MANUAL_QUESTIONS: Question[] = [
 ]
 
 /**
- * KANJIDIC2 + KRADFILE から生成した漢字問題。
- * 生成は scripts/build-kanji-questions.ts。中身を直接編集しても次回生成で消える。
+ * 辞書から生成した問題。中身を直接編集しても次回生成で消える。
+ * 漢字: scripts/build-kanji-questions.ts / 英単語: scripts/build-english-questions.ts
  */
-const GENERATED_QUESTIONS = generatedKanji.questions as Question[]
+const GENERATED_QUESTIONS = [
+  ...generatedKanji.questions,
+  ...generatedEnglish.questions,
+] as Question[]
 
 const manualAnswers = new Set(MANUAL_QUESTIONS.map((question) => question.answer))
 

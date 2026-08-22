@@ -9,6 +9,7 @@
     "lint": "oxlint",
     "dict:fetch": "node scripts/fetch-dict.ts",
     "questions:kanji": "node scripts/build-kanji-questions.ts",
+    "questions:english": "node scripts/build-english-questions.ts",
     "preview": "vite preview"
   },
   "dependencies": {

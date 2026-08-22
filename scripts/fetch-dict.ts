@@ -1,9 +1,11 @@
 /**
  * 問題生成に使う辞書データを .dict-cache/ に取得する。
  *
- * 取得元: jmdict-simplified (https://github.com/scriptin/jmdict-simplified)
- * EDRDG の JMdict / KANJIDIC2 / KRADFILE を JSON 化して毎週リリースしているもの。
- * 元データは CC BY-SA 4.0。README のクレジット記載を消さないこと。
+ * - JMdict / KANJIDIC2 / KRADFILE: EDRDG。CC BY-SA 4.0。
+ *   jmdict-simplified が JSON 化して毎週リリースしているものを使う。
+ * - NGSL: 学習者向けの英語基本語2801語。CC BY-SA 4.0。
+ *
+ * いずれも README のクレジット記載を消さないこと。
  *
  * 使い方: npm run dict:fetch
  */
@@ -13,29 +15,37 @@ import { join } from 'node:path'
 
 import { CACHE_DIR } from './dict-cache.ts'
 
-/** 今回の生成に必要なアセットだけ。JMdict(英単語ジャンル)は使うときに足す。 */
-const ASSETS = ['kanjidic2-en', 'kradfile']
+/** jmdict-simplified のリリースから取るアセット */
+const JMDICT_ASSETS = ['kanjidic2-en', 'kradfile', 'jmdict-eng-common']
 
 const RELEASE_API = 'https://api.github.com/repos/scriptin/jmdict-simplified/releases/latest'
 
-async function main(): Promise<void> {
+/**
+ * NGSL の機械可読版。
+ * 本家(newgeneralservicelist.com)は xlsx 配布のため、CC0 で JSON 化したものを使う。
+ */
+const NGSL_URL = 'https://raw.githubusercontent.com/lpmi-13/machine_readable_wordlists/master/General/NGSL/NGSL.json'
+const NGSL_FILE = 'ngsl.json'
+
+/** 前方一致で既に展開済みかどうか */
+function alreadyHave(prefix: string): boolean {
+  return readdirSync(CACHE_DIR).some((name) => name.startsWith(prefix) && name.endsWith('.json'))
+}
+
+async function fetchJmdict(): Promise<void> {
   const release = (await (await fetch(RELEASE_API)).json()) as { tag_name: string }
   const tag = release.tag_name
   console.log(`jmdict-simplified ${tag}`)
 
-  mkdirSync(CACHE_DIR, { recursive: true })
-
-  for (const asset of ASSETS) {
-    // タグに含まれる + は URL 上ではエンコードが必要
-    const url = `https://github.com/scriptin/jmdict-simplified/releases/download/${encodeURIComponent(tag)}/${asset}-${tag}.json.tgz`
-    const archive = join(CACHE_DIR, `${asset}.json.tgz`)
-
-    const alreadyExtracted = existsSync(CACHE_DIR)
-      && readdirSync(CACHE_DIR).some((name) => name.startsWith(asset) && name.endsWith('.json'))
-    if (alreadyExtracted) {
+  for (const asset of JMDICT_ASSETS) {
+    if (alreadyHave(asset)) {
       console.log(`  ${asset}: すでにある(消せば再取得)`)
       continue
     }
+
+    // タグに含まれる + は URL 上ではエンコードが必要
+    const url = `https://github.com/scriptin/jmdict-simplified/releases/download/${encodeURIComponent(tag)}/${asset}-${tag}.json.tgz`
+    const archive = join(CACHE_DIR, `${asset}.json.tgz`)
 
     process.stdout.write(`  ${asset}: 取得中... `)
     const response = await fetch(url)
@@ -46,4 +56,20 @@ async function main(): Promise<void> {
   }
 }
 
-await main()
+async function fetchNgsl(): Promise<void> {
+  console.log('NGSL')
+  if (existsSync(join(CACHE_DIR, NGSL_FILE))) {
+    console.log('  ngsl: すでにある(消せば再取得)')
+    return
+  }
+
+  process.stdout.write('  ngsl: 取得中... ')
+  const response = await fetch(NGSL_URL)
+  if (!response.ok) throw new Error(`NGSL の取得に失敗: ${response.status} ${NGSL_URL}`)
+  writeFileSync(join(CACHE_DIR, NGSL_FILE), await response.text())
+  console.log('完了')
+}
+
+mkdirSync(CACHE_DIR, { recursive: true })
+await fetchJmdict()
+await fetchNgsl()
