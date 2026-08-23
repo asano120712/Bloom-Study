@@ -3,15 +3,17 @@ import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-
 import { AppShell } from '@/components/AppShell'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
 import { HintList } from '@/components/HintList'
+import { PartsInput } from '@/components/PartsInput'
 import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { findGenre } from '@/data/genres'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
-import { judgeHandwriting, judgeTyping } from '@/features/judge'
+import { judgeHandwriting, judgeParts, judgeTyping } from '@/features/judge'
 import { useHintTimer } from '@/hooks/useHintTimer'
 import { useQuizSession } from '@/hooks/useQuizSession'
 import { useStats } from '@/hooks/useStats'
 import type { AnswerRecord, InputMode, JudgeResult } from '@/types'
+import { shuffleWithSeed } from '@/utils/shuffle'
 import type { ResultState } from './ResultPage'
 
 export function QuizPage() {
@@ -21,23 +23,36 @@ export function QuizPage() {
   const genre = findGenre(genreId ?? '')
   const { stats, isLoading: isStatsLoading, record } = useStats()
 
-  // 何問配られるかは quizSource が決める。画面はこれがすべてだとして扱う
-  const { questions, cursor, isLoading: isSessionLoading, commitAdvance } = useQuizSession(genre?.id)
-  const question = questions[cursor]
-
   /**
    * 入力方法はジャンル選択のシートで決めて URL で受け取る。
    * 直接 URL を叩かれた場合だけジャンルの既定にフォールバックする。
    */
   const modeParam = searchParams.get('mode')
   const inputMode: InputMode =
-    modeParam === 'typing' || modeParam === 'handwriting'
+    modeParam === 'typing' || modeParam === 'handwriting' || modeParam === 'assemble'
       ? modeParam
       : (genre?.defaultInputMode ?? 'typing')
+
+  // 出せる問題は入力方法で変わる(assemble は部品のタイルを持つ問題だけ)
+  const { questions, cursor, isLoading: isSessionLoading, commitAdvance } = useQuizSession(
+    genre?.id,
+    inputMode,
+  )
+  const question = questions[cursor]
   /** 手書きモードで「かけた」を押した後、自己申告を待っている状態 */
   const [selfReport, setSelfReport] = useState<{ hintsUsed: number } | null>(null)
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
+
+  /**
+   * assemble モードの部品タイル。並びは問題IDから決まるので、再描画しても動かない
+   * (押そうとした瞬間に位置が入れ替わるのを避ける)。
+   */
+  const partTiles = useMemo(
+    () => (question?.partTiles?.length ? shuffleWithSeed(question.partTiles, question.id) : []),
+    [question],
+  )
+
   const { revealedCount, secondsToNext } = useHintTimer({
     totalHints: hints.length,
     paused: selfReport !== null,
@@ -144,15 +159,24 @@ export function QuizPage() {
           </div>
         ) : (
           <>
-            {inputMode === 'typing' ? (
+            {inputMode === 'typing' && (
               <TypingInput
                 key={`typing-${question.id}`}
                 onSubmit={(value) => finish(judgeTyping(question, value), revealedCount)}
               />
-            ) : (
+            )}
+            {inputMode === 'handwriting' && (
               <HandwritingCanvas
                 key={`handwriting-${question.id}`}
                 onSubmit={() => setSelfReport({ hintsUsed: revealedCount })}
+              />
+            )}
+            {inputMode === 'assemble' && (
+              <PartsInput
+                key={`assemble-${question.id}`}
+                tiles={partTiles}
+                requiredCount={question.parts?.length ?? 0}
+                onSubmit={(selected) => finish(judgeParts(question, selected), revealedCount)}
               />
             )}
           </>

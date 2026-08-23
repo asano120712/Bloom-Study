@@ -60,3 +60,21 @@ export function judgeHandwriting(question: Question, didRecall: boolean): JudgeR
     answer: question.answer,
   }
 }
+
+/**
+ * assemble モードの判定。
+ *
+ * パーツは順不同なので集合として比べる。並べ方(左右・上下)は問わない。
+ * KRADFILE に配置の情報が無く、画数から推測すると同画数の字で誤るため。
+ */
+export function judgeParts(question: Question, selected: string[]): JudgeResult {
+  const correct = question.parts ?? []
+  const isCorrect =
+    selected.length === correct.length && correct.every((part) => selected.includes(part))
+
+  return {
+    verdict: isCorrect ? 'correct' : 'incorrect',
+    isCorrect,
+    answer: question.answer,
+  }
+}

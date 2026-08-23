@@ -1,5 +1,5 @@
 import { questionsOf } from '@/data/questions'
-import type { GenreId, Question } from '@/types'
+import type { GenreId, InputMode, Question } from '@/types'
 
 /**
  * 1回分の出題セット。
@@ -20,7 +20,18 @@ export interface QuizSession {
  * 制限を足すときも画面を触らずに済む。
  */
 export interface QuizSource {
-  startSession(genreId: GenreId): Promise<QuizSession>
+  startSession(genreId: GenreId, inputMode: InputMode): Promise<QuizSession>
+}
+
+/**
+ * その入力方法で出題できる問題か。
+ *
+ * assemble はパーツのタイルが要る。持たない問題を混ぜると、選んだはずの
+ * こたえかたと違う画面が出てしまうので、最初から配らない。
+ */
+function isAnswerable(question: Question, inputMode: InputMode): boolean {
+  if (inputMode === 'assemble') return Boolean(question.parts?.length && question.partTiles?.length)
+  return true
 }
 
 /** Fisher-Yates。出題順を決めるのも取得側の責務なのでここで混ぜる。 */
@@ -34,17 +45,17 @@ function shuffle<T>(items: T[]): T[] {
 }
 
 /**
- * MVP用。回数制限を設けず、そのジャンルの全問をシャッフルして返す。
+ * MVP用。回数制限を設けず、その入力方法で出せる問題を全部シャッフルして返す。
  *
  * 出題数の上限(無料トライアル、プラン別の出し分け)を入れるときは、
  * この関数の中で切るか、同じ QuizSource を実装したサーバー版に差し替える。
  * 画面は返ってきた数がすべてだとして扱うので、どちらでも QuizPage は変わらない。
  */
 export const localQuizSource: QuizSource = {
-  async startSession(genreId) {
+  async startSession(genreId, inputMode) {
     return {
       genreId,
-      questions: shuffle(questionsOf(genreId)),
+      questions: shuffle(questionsOf(genreId).filter((q) => isAnswerable(q, inputMode))),
     }
   },
 }

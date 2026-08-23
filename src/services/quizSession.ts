@@ -1,4 +1,4 @@
-import type { GenreId, Question } from '@/types'
+import type { GenreId, InputMode, Question } from '@/types'
 
 /**
  * 進行中の出題セットと、その中での位置。
@@ -15,9 +15,12 @@ export interface StoredSession {
 
 const KEY_PREFIX = 'bloomstudy:session:'
 
-export function readSession(genreId: GenreId): StoredSession | null {
+/** 入力方法で出せる問題が変わるため、セッションはこたえかたごとに分ける */
+const keyOf = (genreId: GenreId, inputMode: InputMode) => `${KEY_PREFIX}${genreId}:${inputMode}`
+
+export function readSession(genreId: GenreId, inputMode: InputMode): StoredSession | null {
   try {
-    const raw = sessionStorage.getItem(KEY_PREFIX + genreId)
+    const raw = sessionStorage.getItem(keyOf(genreId, inputMode))
     if (!raw) return null
 
     const parsed = JSON.parse(raw) as Partial<StoredSession>
@@ -32,9 +35,9 @@ export function readSession(genreId: GenreId): StoredSession | null {
   }
 }
 
-export function writeSession(genreId: GenreId, session: StoredSession): void {
+export function writeSession(genreId: GenreId, inputMode: InputMode, session: StoredSession): void {
   try {
-    sessionStorage.setItem(KEY_PREFIX + genreId, JSON.stringify(session))
+    sessionStorage.setItem(keyOf(genreId, inputMode), JSON.stringify(session))
   } catch {
     // 保存できなくても、そのタブ内での出題は最後まで続けられる
   }

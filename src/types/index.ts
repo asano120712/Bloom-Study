@@ -1,7 +1,12 @@
 /** 出題ジャンル。ジャンル追加時はここと hints のレジストリの両方に登録する。 */
 export type GenreId = 'english' | 'kanji'
 
-export type InputMode = 'typing' | 'handwriting'
+/**
+ * 答えの入力方法。
+ * assemble は部品を選んで組み立てる方式。部品は思い出したと申告するまで
+ * 見せない(先に見せると再認になり、思い出す練習にならないため)。
+ */
+export type InputMode = 'typing' | 'handwriting' | 'assemble'
 
 export interface Genre {
   id: GenreId
@@ -32,6 +37,10 @@ export interface Question {
   answer: string
   /** 正解と同等に扱う表記ゆれ(送りがな違い、別綴りなど) */
   acceptableAnswers?: string[]
+  /** assemble モードの正解パーツ。順不同の集合として照合する */
+  parts?: string[]
+  /** assemble モードで並べるタイル(正解パーツ + 見分けにくいダミー) */
+  partTiles?: string[]
   /**
    * ジャンル固有のヒント素材。ジャンルのヒント分解ルールだけが解釈する。
    * 漢字ジャンルでは `見出し|本文` 形式のパーツ列

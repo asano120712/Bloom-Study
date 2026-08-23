@@ -14,7 +14,9 @@ import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 import { readDict } from './dict-cache.ts'
-import { KRAD_VARIANTS, RADICAL_NAMES, VARIANT_NAMES, radicalGlyph } from './kanji-radicals.ts'
+import { JUKUGO_DENYLIST } from './jukugo-denylist.ts'
+import { isUnsuitable } from './unsuitable.ts'
+import { CONFUSABLE_OF, KRAD_VARIANTS, VARIANT_STROKES } from './kanji-radicals.ts'
 
 // ---------------------------------------------------------------- 辞書側の型
 
@@ -43,17 +45,18 @@ interface Kradfile {
   kanji: Record<string, string[]>
 }
 
+interface Jmdict {
+  words: {
+    kanji: { common: boolean; text: string }[]
+    kana: { common: boolean; text: string }[]
+    sense: { partOfSpeech: string[]; misc: string[]; gloss: { text: string }[] }[]
+  }[]
+}
+
 // ------------------------------------------------------------------ 生成設定
 
 /** ヒントは最低この数を確保できないと問題として出さない。 */
 const MIN_HINTS = 3
-
-/**
- * 「のこりのパーツ」に挙げる数の上限。
- * KRADFILE は複雑な字を筆画レベルまで割ることがあり(悪 → ｜/一/口/心)、
- * 4つ以上並べても字形が像を結ばずヒントとして機能しない。
- */
-const MAX_REST_PARTS = 3
 
 /**
  * 出題文に使ってよい訓読みの、辞書内での順位(0 = 主要な読み)。
@@ -68,10 +71,15 @@ const MAX_READING_RANK = 0
  */
 const MIN_PROMPT_LENGTH = 2
 
+/** ヒントに出す熟語の数 */
+const JUKUGO_HINTS = 3
+
+/** assemble モードで並べる部品タイルの総数(正解 + ダミー) */
+const PART_TILE_COUNT = 8
+
 /**
  * 単独では字形の像を結ばない筆画レベルのパーツ。
- * KRADFILE がこれらを返す字は分解が筆画まで降りているので、
- * 「のこりのパーツ」ヒントは作らない(悪 → ｜/一/口 は亜を指せていない)。
+ * これを含む字は組み立てても字形にならないので、パーツ選択の対象から外す。
  */
 const STROKE_PRIMITIVES = new Set(['｜', '一', 'ノ', '丿', '丶', '乙', '亅'])
 
@@ -90,32 +98,6 @@ function displayGlyph(component: string): string {
   return KRAD_VARIANTS[component]?.glyph ?? component
 }
 
-/** その構成パーツが、この漢字の部首にあたるか。 */
-function isRadicalComponent(component: string, radicalNumber: number): boolean {
-  const variant = KRAD_VARIANTS[component]
-  if (variant) return variant.radical === radicalNumber
-  return component === radicalGlyph(radicalNumber)
-}
-
-/**
- * KANJIDIC2 の radicalNames は「その部首にあたる漢字」の側にしか入っていない
- * (安には無く、宀の項に「うかんむり」がある)。番号引きできるよう先に集約する。
- */
-function collectKanjidicRadicalNames(kanjidic: Kanjidic2): Map<number, string> {
-  const names = new Map<number, string>()
-  for (const char of kanjidic.characters) {
-    if (!char.misc.radicalNames.length) continue
-    const number = char.radicals.find((r) => r.type === 'classical')?.value
-    if (number !== undefined && !names.has(number)) names.set(number, char.misc.radicalNames[0])
-  }
-  return names
-}
-
-function radicalLabel(glyph: string, radicalNumber: number, fallbackNames: Map<number, string>): string {
-  const name = VARIANT_NAMES[glyph] ?? RADICAL_NAMES[radicalNumber] ?? fallbackNames.get(radicalNumber)
-  return name ? `${glyph}(${name})` : glyph
-}
-
 /**
  * KRADFILE は入れ子のパーツを重複して並べる(暗 → 日/音/立。立は音の一部)。
  * 他のパーツに含まれるものを落として、いちばん大きい単位だけ残す。
@@ -131,6 +113,60 @@ function dropNestedParts(components: string[], kradfile: Kradfile): string[] {
   })
 }
 
+const ALL_KANJI = /^[一-龯々]+$/
+
+/**
+ * 漢字 → その字を含む常用の熟語。
+ *
+ * ヒントに部首やパーツを出すと、パーツを答えさせるモードでは答えそのものになる。
+ * 熟語なら字形を一切漏らさずに、意味と読みの手がかりだけ渡せる。
+ * 送りがな付き(悪さ など)は手がかりが弱いので、漢字だけの語に絞る。
+ */
+function indexJukugo(jmdict: Jmdict): Map<string, { text: string; reading: string }[]> {
+  const index = new Map<string, { text: string; reading: string }[]>()
+
+  for (const word of jmdict.words) {
+    const kanji = word.kanji.find((k) => k.common)
+    const kana = word.kana.find((k) => k.common)
+    if (!kanji || !kana) continue
+    if (!ALL_KANJI.test(kanji.text)) continue
+    if (kanji.text.length < 2 || kanji.text.length > 3) continue
+
+    const sense = word.sense[0]
+    if (!sense?.partOfSpeech.some((pos) => pos === 'n' || pos === 'vs')) continue
+    if (sense.misc.some((m) => REJECTED_MISC.has(m))) continue
+
+    if (JUKUGO_DENYLIST.has(kanji.text)) continue
+    if (isUnsuitable(sense.gloss.map((gl) => gl.text).join(' / '))) continue
+
+    for (const char of new Set(kanji.text)) {
+      if (!index.has(char)) index.set(char, [])
+      index.get(char)!.push({ text: kanji.text, reading: kana.text })
+    }
+  }
+
+  // 短い語を先に。同系語(委員 → 委員会)が並ばないよう、後で包含関係を見る
+  for (const list of index.values()) list.sort((a, b) => a.text.length - b.text.length)
+  return index
+}
+
+/** 出題する漢字を ◯ で伏せた熟語ヒントを最大 JUKUGO_HINTS 個作る */
+function jukugoHints(literal: string, index: Map<string, { text: string; reading: string }[]>): string[] {
+  const chosen: { text: string; reading: string }[] = []
+
+  for (const word of index.get(literal) ?? []) {
+    if (chosen.length >= JUKUGO_HINTS) break
+    // 委員 を採ったあとに 委員会・委員長 を並べても手がかりが増えない
+    if (chosen.some((c) => word.text.includes(c.text) || c.text.includes(word.text))) continue
+    chosen.push(word)
+  }
+
+  return chosen.map((w) => `熟語|「${w.text.replaceAll(literal, '◯')}」${w.reading}`)
+}
+
+/** 学習用の語義タグの除外は熟語側でも使う */
+const REJECTED_MISC = new Set(['arch', 'obs', 'obsc', 'rare', 'dated', 'hist', 'sl', 'm-sl', 'col', 'vulg', 'derog', 'abbr', 'yoji', 'sens', 'X'])
+
 interface BuildResult {
   hints: string[]
   /** 生成できなかった場合の理由。レポート用 */
@@ -139,51 +175,58 @@ interface BuildResult {
 
 function buildHintSource(
   char: Kanjidic2['characters'][number],
-  components: string[],
-  kradfile: Kradfile,
-  radicalNames: Map<number, string>,
+  jukugo: Map<string, { text: string; reading: string }[]>,
 ): BuildResult {
   const literal = char.literal
-  const radicalNumber = char.radicals.find((r) => r.type === 'classical')?.value
-  if (!radicalNumber) return { hints: [], skipReason: '部首番号なし' }
+  const hints = jukugoHints(literal, jukugo)
 
-  /** 見出しと本文を `|` で連結する。分解は kanjiHintRule 側で行う。 */
-  const hints: string[] = []
-  const push = (caption: string, text: string) => {
-    // 答えそのものを含むヒントは出さない
-    if (!text.includes(literal)) hints.push(`${caption}|${text}`)
+  // 熟語が足りない字だけ、字形を漏らさない範囲で補う。
+  // 部首やパーツは出さない(パーツを答えさせるモードで答えになってしまう)。
+  if (hints.length < MIN_HINTS) {
+    const onReading = char.readingMeaning?.groups
+      .flatMap((g) => g.readings)
+      .find((r) => r.type === 'ja_on')?.value
+    if (onReading) hints.push(`音読み|${onReading}`)
+
+    const strokes = char.misc.strokeCounts[0]
+    if (strokes) hints.push(`画数|${strokes}画`)
   }
-
-  const parts = dropNestedParts(components, kradfile)
-  const radicalParts = parts.filter((c) => isRadicalComponent(c, radicalNumber))
-  const restParts = parts.filter((c) => !isRadicalComponent(c, radicalNumber))
-
-  // 構成パーツのどれとも部首が一致しない字(育の部首は肉だが、字形上は月)では、
-  // どのパーツを指しているか特定できない。憶測で書かず、部首ヒント自体を出さない。
-  const radical = radicalParts.length ? displayGlyph(radicalParts[0]) : null
-
-  // 部首が漢字そのものの字(木・山など)では、部首ヒントが答えになってしまう
-  if (radical && radical !== literal) {
-    push('部首', radicalLabel(radical, radicalNumber, radicalNames))
-
-    const strokeLevel = restParts.some((c) => STROKE_PRIMITIVES.has(displayGlyph(c)))
-    if (restParts.length && restParts.length <= MAX_REST_PARTS && !strokeLevel) {
-      push('のこりのパーツ', restParts.map(displayGlyph).join('・'))
-    }
-  }
-
-  const strokes = char.misc.strokeCounts[0]
-  if (strokes) push('画数', `${strokes}画`)
-
-  const onReading = char.readingMeaning?.groups
-    .flatMap((g) => g.readings)
-    .find((r) => r.type === 'ja_on')?.value
-  if (onReading) push('音読み', onReading)
 
   if (hints.length < MIN_HINTS) {
     return { hints, skipReason: `ヒントが${hints.length}個しか作れない` }
   }
   return { hints }
+}
+
+/**
+ * assemble モードの部品タイル。正解の部品にダミーを混ぜて PART_TILE_COUNT 個にする。
+ *
+ * ダミーは「見分けにくい部品」を優先し、足りない分を同じ画数の常用部品で埋める。
+ * 形が違いすぎる部品を混ぜると、思い出さなくても消去法で解けてしまう。
+ */
+function buildPartTiles(
+  correct: string[],
+  poolByStrokes: Map<number, string[]>,
+  strokesOf: (part: string) => number | undefined,
+): string[] {
+  const tiles = new Set(correct)
+
+  for (const part of correct) {
+    for (const similar of CONFUSABLE_OF[part] ?? []) {
+      if (tiles.size >= PART_TILE_COUNT) break
+      if (!correct.includes(similar)) tiles.add(similar)
+    }
+  }
+
+  for (const part of correct) {
+    if (tiles.size >= PART_TILE_COUNT) break
+    for (const candidate of poolByStrokes.get(strokesOf(part) ?? -1) ?? []) {
+      if (tiles.size >= PART_TILE_COUNT) break
+      if (!tiles.has(candidate)) tiles.add(candidate)
+    }
+  }
+
+  return [...tiles]
 }
 
 // ---------------------------------------------------------------------- 本体
@@ -208,7 +251,28 @@ function usableKunReadings(char: Kanjidic2['characters'][number]): string[] {
 function main(): void {
   const kanjidic = readDict<Kanjidic2>('kanjidic2-en')
   const kradfile = readDict<Kradfile>('kradfile')
-  const radicalNames = collectKanjidicRadicalNames(kanjidic)
+  const jukugo = indexJukugo(readDict<Jmdict>('jmdict-eng-common'))
+
+  /** 部品の画数。KANJIDIC に無い変体は手持ちの表で補う */
+  const kanjiStrokes = new Map(kanjidic.characters.map((c) => [c.literal, c.misc.strokeCounts[0]]))
+  const strokesOf = (part: string) => VARIANT_STROKES[part] ?? kanjiStrokes.get(part)
+
+  /** ダミーを埋めるための、画数ごとの常用部品 */
+  const usage = new Map<string, number>()
+  for (const list of Object.values(kradfile.kanji)) {
+    for (const raw of list) {
+      const part = displayGlyph(raw)
+      usage.set(part, (usage.get(part) ?? 0) + 1)
+    }
+  }
+  const poolByStrokes = new Map<number, string[]>()
+  for (const [part, count] of [...usage].sort((a, b) => b[1] - a[1])) {
+    if (count < 20) continue
+    const strokes = strokesOf(part)
+    if (strokes === undefined) continue
+    if (!poolByStrokes.has(strokes)) poolByStrokes.set(strokes, [])
+    poolByStrokes.get(strokes)!.push(part)
+  }
 
   const selected = kanjidic.characters.filter((c) => c.misc.grade !== null && GRADES.includes(c.misc.grade))
 
@@ -228,6 +292,8 @@ function main(): void {
     prompt: string
     answer: string
     hintSource: string[]
+    parts?: string[]
+    partTiles?: string[]
   }[] = []
   const skipped: Record<string, number> = {}
   const skip = (reason: string) => { skipped[reason] = (skipped[reason] ?? 0) + 1 }
@@ -245,8 +311,15 @@ function main(): void {
     if (!usable.length) { skip('主要な訓読みが他の漢字と重複'); continue }
     if (usable[0].length < MIN_PROMPT_LENGTH) { skip('訓読みが1文字で絞り込めない'); continue }
 
-    const { hints, skipReason } = buildHintSource(char, components, kradfile, radicalNames)
+    const { hints, skipReason } = buildHintSource(char, jukugo)
     if (skipReason) { skip(skipReason); continue }
+
+    // assemble モード用。筆画レベルまで割れる字は組み立てても字形を成さない
+    const maximal = dropNestedParts(components, kradfile).map(displayGlyph)
+    const assemblable = maximal.length >= 2 && maximal.length <= 4
+      && !maximal.some((c) => STROKE_PRIMITIVES.has(c))
+    const parts = assemblable ? maximal : undefined
+    const partTiles = parts ? buildPartTiles(parts, poolByStrokes, strokesOf) : undefined
 
     questions.push({
       id: `kj-g${char.misc.grade}-${char.literal}`,
@@ -254,11 +327,13 @@ function main(): void {
       prompt: usable[0],
       answer: char.literal,
       hintSource: hints,
+      ...(parts && partTiles && partTiles.length === PART_TILE_COUNT ? { parts, partTiles } : {}),
     })
   }
 
   console.log(`対象(配当学年 ${GRADES.join('/')}): ${selected.length}字`)
   console.log(`生成できた問題: ${questions.length}問`)
+  console.log(`  うちパーツ選択にできる: ${questions.filter((q) => q.parts).length}問`)
   console.log('除外:')
   for (const [reason, count] of Object.entries(skipped).sort((a, b) => b[1] - a[1])) {
     console.log(`  ${reason}: ${count}`)

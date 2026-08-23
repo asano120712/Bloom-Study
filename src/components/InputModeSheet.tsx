@@ -10,6 +10,7 @@ interface InputModeSheetProps {
 const MODE_LABEL: Record<InputMode, { label: string; note: string }> = {
   typing: { label: 'タイピング', note: 'キーボードで入力する' },
   handwriting: { label: '手書き', note: '指でなぞって書く' },
+  assemble: { label: 'パーツを組む', note: '思い出してから部品をえらんで組み立てる' },
 }
 
 /**

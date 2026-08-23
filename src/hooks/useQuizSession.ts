@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { quizSource } from '@/services/quizSource'
 import { readSession, writeSession } from '@/services/quizSession'
-import type { GenreId, Question } from '@/types'
+import type { GenreId, InputMode, Question } from '@/types'
 
 /**
  * ジャンルの出題セットを用意する。
@@ -12,10 +12,10 @@ import type { GenreId, Question } from '@/types'
  * 同じ画面のまま genreId だけ差し替える導線を足すときは、
  * 復元処理を genreId の変化に追従させること。
  */
-export function useQuizSession(genreId: GenreId | undefined) {
+export function useQuizSession(genreId: GenreId | undefined, inputMode: InputMode) {
   // sessionStorage は同期に読めるので、初回描画の時点で確定させる。
   // effect の中で復元すると、問題が無い状態が1フレーム描画される。
-  const [restored] = useState(() => (genreId ? readSession(genreId) : null))
+  const [restored] = useState(() => (genreId ? readSession(genreId, inputMode) : null))
   const [questions, setQuestions] = useState<Question[]>(restored?.questions ?? [])
   const [isLoading, setIsLoading] = useState(restored === null)
 
@@ -26,9 +26,9 @@ export function useQuizSession(genreId: GenreId | undefined) {
     if (!genreId || restored) return
 
     let active = true
-    quizSource.startSession(genreId).then((session) => {
+    quizSource.startSession(genreId, inputMode).then((session) => {
       if (!active) return
-      writeSession(genreId, { questions: session.questions, cursor: 0 })
+      writeSession(genreId, inputMode, { questions: session.questions, cursor: 0 })
       setQuestions(session.questions)
       setIsLoading(false)
     })
@@ -36,7 +36,7 @@ export function useQuizSession(genreId: GenreId | undefined) {
     return () => {
       active = false
     }
-  }, [genreId, restored])
+  }, [genreId, inputMode, restored])
 
   /**
    * 1問進んだことを記録する。
@@ -45,8 +45,8 @@ export function useQuizSession(genreId: GenreId | undefined) {
    */
   const commitAdvance = useCallback(() => {
     if (!genreId) return
-    writeSession(genreId, { questions, cursor: cursor + 1 })
-  }, [genreId, questions, cursor])
+    writeSession(genreId, inputMode, { questions, cursor: cursor + 1 })
+  }, [genreId, inputMode, questions, cursor])
 
   return { questions, cursor, isLoading, commitAdvance }
 }

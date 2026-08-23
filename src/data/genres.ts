@@ -14,7 +14,7 @@ export const GENRES: Genre[] = [
     label: '漢字',
     description: '読みを見て、漢字を書いて思い出す',
     // 漢字を打つには IME が要り、変換候補に答えが出てしまうためタイピングは置かない
-    inputModes: ['handwriting'],
+    inputModes: ['handwriting', 'assemble'],
     defaultInputMode: 'handwriting',
   },
 ]
