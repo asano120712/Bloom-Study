@@ -5,8 +5,10 @@ export const GENRES: Genre[] = [
     id: 'english',
     label: '英単語',
     description: '日本語の出題語を見て、英単語を思い出す',
-    inputModes: ['typing', 'handwriting'],
-    defaultInputMode: 'typing',
+    // 手書きを先頭に置く。書いて思い出すのが基本のこたえかたなので、
+    // シートでも最初に目に入る位置にする(並び順がそのままシートの並びになる)
+    inputModes: ['handwriting', 'typing'],
+    defaultInputMode: 'handwriting',
     speechLang: 'en-US',
   },
   {
