@@ -15,6 +15,7 @@ import { fileURLToPath } from 'node:url'
 
 import { readDict } from './dict-cache.ts'
 import { ENGLISH_DENYLIST } from './english-denylist.ts'
+import { isUnsuitable } from './unsuitable.ts'
 
 // ---------------------------------------------------------------- 辞書側の型
 
@@ -182,6 +183,10 @@ function main(): void {
 
     // 頻度で訳語を選び直すと訳が壊れる(顔ぶれ → members)。
     // 第一訳をそのまま答えにして、それが NGSL に無ければ問題ごと捨てる。
+    // 答えの側で判定する。acceptableAnswers まで見ると、
+    // 二次的な訳語を持つだけの普通の語が落ちる(営み → activity / execution)
+    if (isUnsuitable(glosses[0])) { skip('学習に出すのに向かない語'); continue }
+
     const answer = glosses[0]
     if (answer.length < MIN_ANSWER_LENGTH || answer.length > MAX_ANSWER_LENGTH) {
       skip(`答えが${MIN_ANSWER_LENGTH}〜${MAX_ANSWER_LENGTH}文字の外`)

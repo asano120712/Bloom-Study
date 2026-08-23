@@ -9,4 +9,5 @@
  */
 export const ENGLISH_DENYLIST = new Set<string>([
   'おなら', // 第一訳が wind(婉曲表現)で、学習語彙として成立しない
+  '遺体', // 第一訳は body だが、出題語そのものが学習向きでない
 ])

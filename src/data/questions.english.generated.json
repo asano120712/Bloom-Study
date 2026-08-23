@@ -1,7 +1,7 @@
 {
   "_source": {
     "note": "自動生成。編集しても npm run questions:english で上書きされる",
-    "generatedAt": "2026-08-22T19:18:53.206Z",
+    "generatedAt": "2026-08-23T03:26:55.239Z",
     "grades": [
       1,
       2,
@@ -923,16 +923,6 @@
       ]
     },
     {
-      "id": "en-1159430",
-      "genreId": "english",
-      "prompt": "遺体",
-      "answer": "body",
-      "acceptableAnswers": [
-        "corpse",
-        "remains"
-      ]
-    },
-    {
       "id": "en-1159500",
       "genreId": "english",
       "prompt": "遺伝子",
@@ -1133,6 +1123,19 @@
       "acceptableAnswers": [
         "lifetime",
         "age"
+      ]
+    },
+    {
+      "id": "en-1164680",
+      "genreId": "english",
+      "prompt": "一団",
+      "answer": "body",
+      "acceptableAnswers": [
+        "group",
+        "party",
+        "gang",
+        "troupe",
+        "troop"
       ]
     },
     {
@@ -7807,27 +7810,6 @@
       ]
     },
     {
-      "id": "en-1299000",
-      "genreId": "english",
-      "prompt": "殺し",
-      "answer": "murder",
-      "acceptableAnswers": [
-        "killing",
-        "murderer"
-      ]
-    },
-    {
-      "id": "en-1299030",
-      "genreId": "english",
-      "prompt": "殺す",
-      "answer": "kill",
-      "acceptableAnswers": [
-        "slay",
-        "murder",
-        "slaughter"
-      ]
-    },
-    {
       "id": "en-1299190",
       "genreId": "english",
       "prompt": "殺到",
@@ -8220,12 +8202,6 @@
         "drop",
         "quit"
       ]
-    },
-    {
-      "id": "en-1310720",
-      "genreId": "english",
-      "prompt": "死",
-      "answer": "death"
     },
     {
       "id": "en-1311290",
@@ -10435,12 +10411,6 @@
       ]
     },
     {
-      "id": "en-1375430",
-      "genreId": "english",
-      "prompt": "性的",
-      "answer": "sexual"
-    },
-    {
       "id": "en-1375610",
       "genreId": "english",
       "prompt": "なる",
@@ -11395,15 +11365,6 @@
       "answer": "diversity",
       "acceptableAnswers": [
         "variety"
-      ]
-    },
-    {
-      "id": "en-1408460",
-      "genreId": "english",
-      "prompt": "堕胎",
-      "answer": "abortion",
-      "acceptableAnswers": [
-        "feticide"
       ]
     },
     {
