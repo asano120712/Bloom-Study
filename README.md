@@ -36,16 +36,19 @@ npm run lint    # oxlint
 src/
 ├── assets/       ロゴアセットのパス定義(logos.ts)
 ├── components/   共通UI(AppShell, AppHeader, OpeningSplash, Loading, LoadingDots,
-│                        HintList, TypingInput, HandwritingCanvas, BloomLogo, BloomMark)
+│                        HintList, BloomLogo, BloomMark)
+│                 こたえかたの入力(TypingInput, OnScreenKeyboard,
+│                        HandwritingCanvas, PartsInput, InputModeSheet)
 ├── config/       ヒント間隔・トライアル上限・編集距離の許容量など調整パラメータ
-├── data/         ジャンル定義とサンプル問題セット
+├── data/         ジャンル定義と問題データ(手書き分 + 生成JSON)
 ├── features/
 │   ├── hints/    ジャンル別ヒント分解ルール(english / kanji)とレジストリ
-│   └── judge/    正誤判定(レベル1: 正規化一致 / レベル2: 編集距離)
-├── hooks/        useHintTimer, useStats
+│   └── judge/    正誤判定(正規化一致 / 編集距離 / パーツの集合一致)
+├── hooks/        useHintTimer, useStats, useQuizSession, useHasFinePointer
 ├── pages/        画面(トップ / ジャンル選択 / 出題 / 結果 / マイページ / トライアル終了)
-├── utils/        小さな共通処理(prefersReducedMotion)
-├── services/     永続化(statsRepository, quizSession, openingSession)
+├── utils/        小さな共通処理(prefersReducedMotion, shuffleWithSeed)
+├── services/     出題の取得(quizSource) / 永続化(statsRepository, quizSession,
+│                 openingSession) / 読み上げ(speech)
 └── types/        ドメイン型
 ```
 
@@ -53,12 +56,12 @@ src/
 
 ### 漢字問題の生成
 
-漢字ジャンルの問題は KANJIDIC2(部首・画数・音読み)と KRADFILE(構成パーツ)から
-生成している。**実行時に辞書APIを叩くのではなく、開発時に生成して JSON をコミットする。**
+漢字ジャンルの問題は KANJIDIC2 · KRADFILE · JMdict から生成している。
+**実行時に辞書APIを叩くのではなく、開発時に生成して JSON をコミットする。**
 
 ```bash
 npm run dict:fetch                          # 初回のみ
-npm run questions:kanji                     # 既定は小学3〜6年配当 → 333問
+npm run questions:kanji                     # 既定は小学3〜6年配当 → 378問
 npm run questions:kanji -- --grades=8       # 中学以上の常用漢字
 npm run questions:kanji -- --report         # 書き出さず、内訳と先頭20問だけ確認
 ```
@@ -66,21 +69,48 @@ npm run questions:kanji -- --report         # 書き出さず、内訳と先頭2
 出力は `src/data/questions.kanji.generated.json`。直接編集しても次回生成で消える。
 手で直したい問題は `src/data/questions.ts` の `MANUAL_QUESTIONS` に置く(同じ `answer` があれば生成側を捨てる)。
 
-生成側は「作れないヒントは書かない」方針で、次の条件に当てはまる字は問題にしない。
+#### ヒントは熟語だけを出す
+
+**部首・パーツ・画数は出さない。** その字を含む熟語を3つ、対象の字を `◯` で伏せて出す。
+
+```
+運(はこぶ) → 「◯営」うんえい /「◯河」うんが /「◯休」うんきゅう
+```
+
+字形の手がかりを渡さないため。部品を答えさせる assemble モードでは、
+部首やパーツのヒントが答えそのものになってしまう。
+熟語なら意味と読みだけを渡せるので、**こたえかたごとにヒントを切り替える必要が無い**。
+
+熟語が3つ揃わない字だけ、音読みと画数で補う(`MIN_HINTS` を満たすまで)。
+同系語が並ばないよう、既に採った語を含む語は飛ばす(`委員` を採ったら `委員会` は使わない)。
+
+#### assemble モード用のパーツ
+
+KRADFILE の分解から、正解パーツと部品タイル(正解 + ダミー)を生成する。
+
+ダミーは**見分けにくい部品**を優先する(`辶` に対して `廴` `走`)。
+形が違いすぎる部品を混ぜると、思い出さなくても消去法で解けてしまう。
+機械的に「似ている」を判定する手段が無いため、`scripts/kanji-radicals.ts` の
+`CONFUSABLE_GROUPS` に35組を手で持っている。足りない分は同じ画数の常用部品で埋める。
+
+**ダミーが簡単すぎると気づいたら、この表に足すこと。**
+
+#### 除外の条件
+
+生成側は「作れないものは書かない」方針で、次に当てはまる字は問題にしない。
 `--report` の除外内訳で数が見える。
 
 | 除外 | 理由 |
 |---|---|
 | 主要な訓読みが他の漢字と重複 | 「あつい」→熱/暑/厚 のように出題文から答えが一意に決まらない |
 | 単独で出せる訓読みが無い | 音読みのみの字、熟語内でしか現れない読み(`-じるし`)しか無い字 |
-| ヒントが3個未満 | 部首が字そのもの(木・山)で部首ヒントを作れない字など |
+| ヒントが3個未満 | 熟語も音読みも画数も足りない字 |
 | 訓読みが1文字 | 「や」→屋 は一意でも手がかりにならない |
 
-部首まわりの手入力テーブルは `scripts/kanji-radicals.ts`。
-KANJIDIC2 の部首名は214個中97個しか無く、KRADFILE は部首を代表字に正規化している
-(亻→化、艹→艾)ため、ここを人手で補っている。ヒントの字が違うときはこの表を見る。
+パーツは 2〜4個に割れて、かつ筆画レベルまで降りていない字だけに付ける
+(`悪` → `｜`/`一`/`口` は `亜` を指せていない)。付かない字は assemble モードでは出題されない。
 
-`hintSource` は `見出し|本文` 形式(`部首|亻(にんべん)`)。
+`hintSource` は `見出し|本文` 形式(`熟語|「◯営」うんえい`)。
 出せるヒントの種類は字ごとに変わるので、見出しは並び順ではなくデータ側が持つ。
 
 ### 英単語問題の生成
@@ -88,7 +118,7 @@ KANJIDIC2 の部首名は214個中97個しか無く、KRADFILE は部首を代�
 JMdict(common語のみ)と NGSL から生成する。漢字と同じく開発時に生成して JSON をコミットする。
 
 ```bash
-npm run questions:english                  # 既定 → 1714問
+npm run questions:english                  # 既定 → 1709問
 npm run questions:english -- --bands=1000  # NGSL上位1000語の範囲だけ
 npm run questions:english -- --report      # 書き出さず、内訳と無作為20問だけ確認
 ```
@@ -109,10 +139,46 @@ militarism・lipstick のような優先度の低い語まで問題になる。
 | カタカナ語 | 出題語が答えそのものになる(テーブル → table) |
 | 答えが他の問題と重複 | 同じ答えの問題を作らない |
 | 答えが4〜10文字の外 | 短いとヒントが2段階しか作れず、長いと開放しきらない |
+| 学習に出すのに向かない語 | 下記「不適切な語の除外」を参照 |
 
 JMdict のタグでは弾けない問題(`おなら` → wind など)は
 `scripts/english-denylist.ts` に出題語を書いて除外する。
 生成JSONを直接編集しても次回生成で消える。
+
+### 不適切な語の除外
+
+**辞書をそのまま流すと、性的・排泄・死や暴力に関する語が出題やヒントに混ざる。**
+小学校配当の漢字を扱うアプリなので、生成の段階で落とす。
+
+判定は `scripts/unsuitable.ts` に集約してあり、漢字・英単語の両方の生成が使う。
+
+**JMdict のタグでは弾けない。** `射精` `精液` は俗語でも古語でもなく医学用語として
+登録されているため、`vulg` も `sens` も付かない。英語の語義に現れる語で見分けるのが、
+いまのところ唯一の機械的な方法。
+
+**判定は必ず第一語義(その語の主要な意味)だけに掛けること。** 全語義を見ると、
+二次的な意味を持つだけの普通の語まで落ちる。
+
+```
+関係 → relation …(後の語義に sexual relations)   残す
+国際 → international …(diplomatic intercourse)  残す
+営み → activity …(execution)                    残す
+射精 → ejaculation(第一語義そのもの)              除外
+```
+
+語義に手がかりが出ない語(`遺体` は第一訳が body)は、denylist で個別に落とす。
+
+| ファイル | 用途 |
+|---|---|
+| `scripts/unsuitable.ts` | 語義から機械的に判定する語のリスト |
+| `scripts/jukugo-denylist.ts` | 漢字ヒントの熟語を個別に除外 |
+| `scripts/english-denylist.ts` | 英単語の出題語を個別に除外 |
+
+**同種の語を見つけたら、1件ずつ生成JSONから消すのではなく、上のどれかに足すこと。**
+生成JSONを直接編集しても次回生成で戻る。
+
+なお `death` `kill` `murder` `suicide` など、性的でない語も同じリストで落としている。
+過剰だと感じたら `unsuitable.ts` の `TERMS` から外せる。
 
 ### ジャンルを追加するとき
 
@@ -120,7 +186,12 @@ JMdict のタグでは弾けない問題(`おなら` → wind など)は
 
 1. `src/types/index.ts` の `GenreId` に ID を追加
 2. `src/features/hints/<genre>.ts` にヒント分解ルールを実装し、`src/features/hints/index.ts` の `HINT_RULES` に登録
-3. `src/data/genres.ts` と `src/data/questions.ts` にジャンル・問題を追加
+   (`layout` に `inline`(横に連ねる) か `stacked`(行を積む) を指定する)
+3. `src/data/genres.ts` にジャンルと `inputModes` を追加
+4. 問題は `src/data/questions.ts` に手で書くか、`scripts/` に生成スクリプトを足す
+
+そのジャンルで新しいこたえかたが要るなら、`InputMode` に足したうえで
+`InputModeSheet` のラベル・`QuizPage` の分岐・`quizSource` の `isAnswerable` を揃えること。
 
 ### ロゴと配色
 
@@ -202,17 +273,49 @@ JMdict のタグでは弾けない問題(`おなら` → wind など)は
 
 正誤は色だけに頼らず、⭕️/✖️ アイコンとテキストを併記する。
 
+### こたえかた(入力方法)
+
+ジャンルごとに選べるこたえかたを `Genre.inputModes` に持つ。**並び順がそのまま
+開始シートの並びになる**ので、勧めたいものを先頭に置く。強調されるのは `defaultInputMode`。
+
+| こたえかた | ジャンル | 採点 | 出題数 |
+|---|---|---|---|
+| `handwriting` | 英単語 / 漢字 | 自己申告 | 全問 |
+| `typing` | 英単語のみ | 自動 | 全問 |
+| `assemble` | 漢字のみ | 自動 | 部品タイルを持つ問題のみ |
+
+**漢字にタイピングは置かない。** 漢字を打つには IME が要り、変換候補に答えが出てしまう。
+画面内キーボードでは漢字変換を肩代わりできない。
+
+**`typing` は OS のキーボードを使わない。** iOS の予測変換バーは
+`autocomplete` / `autocorrect` / `spellcheck` では消せず、「lib」まで打つと候補に
+library が並んでしまう。フォーカス可能な `input` を置かず、`OnScreenKeyboard` だけで入力する。
+マウス操作の端末では畳む(判定は画面幅ではなく `(hover: hover) and (pointer: fine)`。
+幅で判定すると、キーボードを持たないタブレットで入力手段が無くなる)。
+
+**`assemble` は部品を「思い出した」を押すまで見せない。** 先に並べると、思い出さずに
+見比べて選べてしまい、再認の練習にしかならない。判定は集合比較で、
+並べ方(左右・上下)は問わない。KRADFILE に配置の情報が無く、画数から推測すると
+`各`(口+夂 どちらも3画)のような字で誤るため。
+
+タイルの並びは問題IDを種にした `shuffleWithSeed` で決める。描画中に `Math.random()` を
+呼ぶと、再描画のたびに並びが変わって押そうとした瞬間に入れ替わる。
+
 ### 出題データの取り出しかた
 
 出題は「全問リストを取得して画面が切り出す」形にしていない。
 **1回分の出題セットを受け取り、返ってきた数がすべてとして扱う。**
 
 ```
-QuizPage → useQuizSession → quizSource.startSession(genreId) → QuizSession { questions }
+QuizPage → useQuizSession → quizSource.startSession(genreId, inputMode) → QuizSession { questions }
                          ↘ quizSession(sessionStorage) で結果画面をはさんでも復元
 ```
 
-**いまは回数制限を設けていない**(ジャンルの全問をシャッフルして返す)。
+**こたえかたによって出せる問題が変わる。** assemble は部品のタイルを持つ問題しか出せない。
+持たない問題を混ぜると、選んだはずのこたえかたと違う画面が出るので、
+`quizSource` が最初から配らない(セッションの保存もこたえかたごとに分けている)。
+
+**いまは回数制限を設けていない**(そのこたえかたで出せる問題を全部シャッフルして返す)。
 そのうえで、何問返すか・どの順で返すかを決めるのは
 [src/services/quizSource.ts](src/services/quizSource.ts) の責務に寄せてあり、
 画面はカタログの総数も未出題の残りも知らない。
@@ -223,7 +326,7 @@ QuizPage → useQuizSession → quizSource.startSession(genreId) → QuizSession
 | | いまの実装 | 制限・課金を入れた後 |
 |---|---|---|
 | 出題元 | バンドルした生成JSON | `fetch('/api/session')` |
-| 何問返すか | 全問(制限なし) | サーバーがプランを見て決める |
+| 何問返すか | そのこたえかたで出せる全問 | サーバーがプランを見て決める |
 | 出題順 | シャッフル | 復習・間隔反復をサーバー側で |
 
 差し替えるのは `quizSource` の実装1つで、`QuizSource` / `QuizSession` の形も画面側も変えない。
@@ -239,6 +342,24 @@ QuizPage → useQuizSession → quizSource.startSession(genreId) → QuizSession
 差し替え点は `src/services/statsRepository.ts` の `StatsRepository` インターフェースに閉じてあるので、
 採用時は同じインターフェースの実装を足して `statsRepository` を差し替える。
 
+### 答えの読み上げ
+
+英単語の結果画面で答えを読み上げる(`src/services/speech.ts`)。
+ブラウザ内蔵の Web Speech API を使い、外部の音声合成APIは使わない
+(通信・利用料・ライセンスがどれも増えるため)。読み上げ言語は `Genre.speechLang` に持つ。
+
+**鳴らない条件が多く、それぞれ対処が要った。** 触るときはこの4点を壊さないこと。
+
+| 症状 | 原因 | 対処 |
+|---|---|---|
+| PCで無音 | Chrome は音声一覧を非同期に読む。読み込み前の `speak()` は無音になる | `voiceschanged` を待つ |
+| 声がおかしい | macOS の `en-US` 一覧は先頭がネタ音声。前方一致だと Albert を掴む | 端末の既定を優先し、ネタ音声18種を除外 |
+| 途中で止まる | Chrome は発話中の utterance が GC されると無音のまま止まる | モジュール側で参照を保持 |
+| iOSで初回だけ鳴らない | ユーザー操作を伴わない初回の発話を弾く | 最初のタップで無音の発話を1度通す(`primeSpeech`) |
+
+読み上げは補助機能として扱う。鳴らなくても学習の流れは止めない。
+自動再生が鳴らない場合に備えて「読み方を聞く」ボタンも置いてある。
+
 ### 未実装(将来フェーズ)
 
 - レベル3(LanguageTool API による文法チェック)
@@ -251,8 +372,8 @@ QuizPage → useQuizSession → quizSource.startSession(genreId) → QuizSession
 
 | データ | 用途 |
 |---|---|
-| [JMdict](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project) (EDRDG) | 英単語ジャンルの語義 |
-| [KANJIDIC2 / KRADFILE](https://www.edrdg.org/wiki/index.php/KANJIDIC_Project) (EDRDG) | 漢字ジャンルの部首・画数・パーツ |
+| [JMdict](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project) (EDRDG) | 英単語ジャンルの語義、漢字ヒントの熟語 |
+| [KANJIDIC2 / KRADFILE](https://www.edrdg.org/wiki/index.php/KANJIDIC_Project) (EDRDG) | 漢字の読み・画数・構成パーツ |
 | [NGSL](https://www.newgeneralservicelist.com/) (Browne, Culligan & Phillips) | 英単語の難易度制御 |
 
 - [EDRDG License](https://www.edrdg.org/edrdg/licence.html)
