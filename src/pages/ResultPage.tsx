@@ -1,12 +1,14 @@
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { BloomMark } from '@/components/BloomMark'
-import type { GenreId, JudgeResult } from '@/types'
+import type { GenreId, InputMode, JudgeResult } from '@/types'
 
 export interface ResultState {
   result: JudgeResult
   prompt: string
   genreId: GenreId
+  /** 「つぎの問題へ」で同じこたえかたを引き継ぐ */
+  inputMode: InputMode
   hasNext: boolean
   currentStreak: number
 }
@@ -24,7 +26,7 @@ export function ResultPage() {
   const { state } = useLocation() as { state: ResultState | null }
   if (!state) return <Navigate to="/genres" replace />
 
-  const { result, prompt, genreId, hasNext, currentStreak } = state
+  const { result, prompt, genreId, inputMode, hasNext, currentStreak } = state
 
   return (
     <AppShell>
@@ -49,7 +51,7 @@ export function ResultPage() {
         <div className="flex w-full flex-col gap-3">
           {hasNext ? (
             <Link
-              to={`/quiz/${genreId}`}
+              to={`/quiz/${genreId}?mode=${inputMode}`}
               className="flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
             >
               つぎの問題へ

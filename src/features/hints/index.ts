@@ -1,4 +1,4 @@
-import type { GenreId, HintRule, HintStep, Question } from '@/types'
+import type { GenreId, HintLayout, HintRule, HintStep, Question } from '@/types'
 import { englishHintRule } from './english'
 import { kanjiHintRule } from './kanji'
 
@@ -9,6 +9,11 @@ import { kanjiHintRule } from './kanji'
 const HINT_RULES: Record<GenreId, HintRule> = {
   english: englishHintRule,
   kanji: kanjiHintRule,
+}
+
+/** ジャンルごとのヒントの並べかた */
+export function hintLayoutOf(genreId: GenreId): HintLayout {
+  return HINT_RULES[genreId].layout
 }
 
 /** 出題語に対する全ヒント段階を生成する */

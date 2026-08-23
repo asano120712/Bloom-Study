@@ -18,6 +18,7 @@ function splitCaption(source: string): { caption?: string; text: string } {
  */
 export const kanjiHintRule: HintRule = {
   genreId: 'kanji',
+  layout: 'stacked',
   build: (question: Question): HintStep[] =>
     (question.hintSource ?? []).map((source, index) => ({
       index,

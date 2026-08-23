@@ -2,19 +2,21 @@ import type { HintRule, HintStep, Question } from '@/types'
 
 /**
  * 英語ジャンルのヒント分解ルール。
- * 英数字を1文字ずつ増やして出す(i → ic → ich → ichi → …)。
+ *
+ * 綴りを先頭から1文字ずつ開放する。表示側が1つの枠に連ねていくため、
+ * 各段階が持つのは「その段階で増える1文字」だけ(l → i → b)。
  * 最後の1文字は開放しない(答えそのものになってしまうため)。
  */
 export const englishHintRule: HintRule = {
   genreId: 'english',
+  layout: 'inline',
   build: (question: Question): HintStep[] => {
     const letters = [...question.answer]
-    const maxSteps = Math.max(0, letters.length - 1)
+    const revealable = Math.max(0, letters.length - 1)
 
-    return Array.from({ length: maxSteps }, (_, index) => ({
+    return letters.slice(0, revealable).map((letter, index) => ({
       index,
-      caption: `${index + 1}文字目まで`,
-      text: letters.slice(0, index + 1).join(''),
+      text: letter,
     }))
   },
 }

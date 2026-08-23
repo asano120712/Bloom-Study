@@ -18,28 +18,54 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
   const drawingRef = useRef(false)
   const [hasStroke, setHasStroke] = useState(false)
 
-  /** 表示サイズに合わせて描画バッファを取り直す(高解像度ディスプレイ対応) */
+  /**
+   * 表示サイズに合わせて描画バッファを取り直す(高解像度ディスプレイ対応)。
+   *
+   * canvas は width/height を代入した時点で中身が消えるため、
+   * サイズが実際に変わったときだけ作り直し、書きかけの字は退避して描き戻す。
+   * (画面回転やアドレスバーの開閉でも発火するので、素直に作り直すと字が消える)
+   */
   const resize = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-    const context = canvas.getContext('2d')
-    if (!context) return
 
     const ratio = window.devicePixelRatio || 1
     const { width, height } = canvas.getBoundingClientRect()
-    canvas.width = Math.round(width * ratio)
-    canvas.height = Math.round(height * ratio)
+    if (!width || !height) return
+
+    const nextWidth = Math.round(width * ratio)
+    const nextHeight = Math.round(height * ratio)
+    if (canvas.width === nextWidth && canvas.height === nextHeight) return
+
+    const previous = canvas.width && canvas.height ? document.createElement('canvas') : null
+    if (previous) {
+      previous.width = canvas.width
+      previous.height = canvas.height
+      previous.getContext('2d')?.drawImage(canvas, 0, 0)
+    }
+
+    canvas.width = nextWidth
+    canvas.height = nextHeight
+
+    const context = canvas.getContext('2d')
+    if (!context) return
     context.scale(ratio, ratio)
     context.lineCap = 'round'
     context.lineJoin = 'round'
     context.lineWidth = LINE_WIDTH
     context.strokeStyle = STROKE_COLOR
+    // scale 済みなので CSS ピクセルの座標系で描き戻す
+    if (previous) context.drawImage(previous, 0, 0, width, height)
   }, [])
 
   useEffect(() => {
     resize()
-    window.addEventListener('resize', resize)
-    return () => window.removeEventListener('resize', resize)
+    // window の resize はサイズが変わらない場面でも飛ぶため、要素の実寸を見る
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const observer = new ResizeObserver(resize)
+    observer.observe(canvas)
+    return () => observer.disconnect()
   }, [resize])
 
   const positionOf = (event: React.PointerEvent<HTMLCanvasElement>) => {
@@ -81,7 +107,12 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex min-h-0 flex-1 flex-col gap-3">
+      {/*
+        min-h-0 が要る。canvas は width/height 属性(デバイスピクセル値)が固有サイズになり、
+        flex の min-height:auto がそれを下限にするため、付けないとボタンを画面外へ押し出す。
+        高さの余りはこのキャンバスで吸収し、ボタンは shrink-0 で必ず残す。
+      */}
       <canvas
         ref={canvasRef}
         onPointerDown={startStroke}
@@ -89,9 +120,9 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
         onPointerUp={endStroke}
         onPointerCancel={endStroke}
         aria-label="手書き入力エリア"
-        className="h-64 w-full touch-none rounded-2xl border-2 border-bloom-200 bg-white"
+        className="w-full min-h-0 flex-1 touch-none rounded-2xl border-2 border-bloom-200 bg-white"
       />
-      <div className="flex gap-3">
+      <div className="flex shrink-0 gap-3">
         <button
           type="button"
           onClick={clear}

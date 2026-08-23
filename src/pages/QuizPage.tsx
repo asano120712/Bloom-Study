@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
 import { HintList } from '@/components/HintList'
 import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { findGenre } from '@/data/genres'
-import { buildHints, revealedHints } from '@/features/hints'
+import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeTyping } from '@/features/judge'
 import { useHintTimer } from '@/hooks/useHintTimer'
 import { useQuizSession } from '@/hooks/useQuizSession'
@@ -16,6 +16,7 @@ import type { ResultState } from './ResultPage'
 
 export function QuizPage() {
   const { genreId } = useParams<{ genreId: string }>()
+  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const genre = findGenre(genreId ?? '')
   const { stats, isLoading: isStatsLoading, record } = useStats()
@@ -24,7 +25,15 @@ export function QuizPage() {
   const { questions, cursor, isLoading: isSessionLoading, commitAdvance } = useQuizSession(genre?.id)
   const question = questions[cursor]
 
-  const [inputMode, setInputMode] = useState<InputMode>(genre?.defaultInputMode ?? 'typing')
+  /**
+   * 入力方法はジャンル選択のシートで決めて URL で受け取る。
+   * 直接 URL を叩かれた場合だけジャンルの既定にフォールバックする。
+   */
+  const modeParam = searchParams.get('mode')
+  const inputMode: InputMode =
+    modeParam === 'typing' || modeParam === 'handwriting'
+      ? modeParam
+      : (genre?.defaultInputMode ?? 'typing')
   /** 手書きモードで「かけた」を押した後、自己申告を待っている状態 */
   const [selfReport, setSelfReport] = useState<{ hintsUsed: number } | null>(null)
 
@@ -76,6 +85,7 @@ export function QuizPage() {
       result,
       prompt: question.prompt,
       genreId: genre.id,
+      inputMode,
       // この出題セットに次の問題が残っているときだけ「つぎへ」を出す
       hasNext: cursor + 1 < questions.length,
       currentStreak: next.currentStreak,
@@ -84,7 +94,7 @@ export function QuizPage() {
   }
 
   return (
-    <AppShell>
+    <AppShell fitViewport>
       <header className="flex items-center justify-between text-sm text-ink-600">
         <span>{genre.label}</span>
         <span aria-live="polite">
@@ -92,16 +102,22 @@ export function QuizPage() {
         </span>
       </header>
 
-      <section className="mt-8 text-center">
+      <section className="mt-4 shrink-0 text-center">
         <p className="text-xs text-ink-400">この言葉を思い出そう</p>
-        <p className="mt-2 text-4xl font-bold tracking-wide">{question.prompt}</p>
+        <p className="mt-1 text-3xl font-bold tracking-wide">{question.prompt}</p>
       </section>
 
-      <section className="mt-8">
-        <HintList hints={revealedHints(hints, revealedCount)} secondsToNext={secondsToNext} />
+      {/* ヒント枠は余りを分け合うが、上限を決めて残りは入力側(特にキャンバス)へ回す */}
+      <section className="mt-4 flex max-h-44 min-h-0 flex-1 flex-col">
+        <HintList
+          hints={revealedHints(hints, revealedCount)}
+          layout={hintLayoutOf(genre.id)}
+          secondsToNext={secondsToNext}
+        />
       </section>
 
-      <section className="mt-auto pt-8">
+      {/* 余りは入力側へ多めに配る(ヒント枠と 2:1)。キャンバスとキーはここで伸びる */}
+      <section className="mt-auto flex min-h-0 flex-2 flex-col justify-end pt-4">
         {selfReport ? (
           // 手書きは自動判定しない。正解を提示したうえで自己申告してもらう
           <div className="flex flex-col gap-4">
@@ -128,27 +144,6 @@ export function QuizPage() {
           </div>
         ) : (
           <>
-            <div
-              role="group"
-              aria-label="入力モード切替"
-              className="mb-4 flex rounded-full bg-bloom-100 p-1"
-            >
-              {(['typing', 'handwriting'] as const).map((mode) => (
-                <button
-                  key={mode}
-                  type="button"
-                  aria-pressed={inputMode === mode}
-                  // 切替時は入力コンポーネントごと差し替わり、入力内容はリセットされる
-                  onClick={() => setInputMode(mode)}
-                  className={`min-h-12 flex-1 rounded-full text-base font-bold ${
-                    inputMode === mode ? 'bg-white text-bloom-700' : 'text-ink-600'
-                  }`}
-                >
-                  {mode === 'typing' ? 'タイピング' : '手書き'}
-                </button>
-              ))}
-            </div>
-
             {inputMode === 'typing' ? (
               <TypingInput
                 key={`typing-${question.id}`}

@@ -7,7 +7,13 @@ export interface Genre {
   id: GenreId
   label: string
   description: string
-  /** 手書き入力を主とするジャンルかどうか(初期表示モードの決定に使う) */
+  /**
+   * そのジャンルで選べる入力方法。
+   * 漢字のタイピングのように、答えを打つのに IME が要るジャンルはここから外す。
+   * (IME の変換候補に答えが出てしまい、自前キーボードでも変換は肩代わりできない)
+   */
+  inputModes: InputMode[]
+  /** 開始シートで最初に強調する入力方法 */
   defaultInputMode: InputMode
 }
 
@@ -31,19 +37,30 @@ export interface Question {
 /**
  * 開放済みヒントの1段階。
  * ヒント分解ルールはジャンルごとに個別設計する(共通ロジックでは対応しない)。
+ *
+ * text は前段階までの内容を含まない「その段階で増える分」だけを持つ。
+ * 表示側が積み上げるので、累積させると同じ内容が二重に出る。
  */
 export interface HintStep {
   /** 0 始まり。経過時間から算出した開放インデックス */
   index: number
-  /** 画面に表示するヒント本文 */
+  /** その段階で新しく現れる分だけ */
   text: string
-  /** 「部首」「1文字目」などの見出し。無い場合もある */
+  /** 「部首」などの見出し。inline レイアウトでは使わない */
   caption?: string
 }
+
+/**
+ * ヒントの並べかた。ひとつの枠の中で、段階が増えるたびに追記していく。
+ * inline  = 横に連ねる(英単語の綴りが1文字ずつ伸びる)
+ * stacked = 行を積む(漢字の部首・パーツ・画数)
+ */
+export type HintLayout = 'inline' | 'stacked'
 
 /** ジャンル別ヒント分解ルール */
 export interface HintRule {
   genreId: GenreId
+  layout: HintLayout
   /** 出題語1問あたりの全ヒント段階を生成する */
   build: (question: Question) => HintStep[]
 }
