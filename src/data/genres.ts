@@ -7,6 +7,7 @@ export const GENRES: Genre[] = [
     description: '日本語の出題語を見て、英単語を思い出す',
     inputModes: ['typing', 'handwriting'],
     defaultInputMode: 'typing',
+    speechLang: 'en-US',
   },
   {
     id: 'kanji',

@@ -15,6 +15,12 @@ export interface Genre {
   inputModes: InputMode[]
   /** 開始シートで最初に強調する入力方法 */
   defaultInputMode: InputMode
+  /**
+   * 結果画面で答えを読み上げるときの言語(BCP 47)。
+   * 読み方も一緒に覚えられるようにするためのもので、
+   * 出題語そのものが読みになっているジャンル(漢字)では設定しない。
+   */
+  speechLang?: string
 }
 
 export interface Question {
