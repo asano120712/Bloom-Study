@@ -204,14 +204,23 @@ JMdict のタグでは弾けない問題(`おなら` → wind など)は
 | `public/bloomstudy_icon_static.svg` | 縦組みロゴ・静止版(アニメーションを外しただけ) |
 | `public/bloomstudy_logo_static.svg` | 横組みロゴ・静止版。ヘッダーで使用。ヘッダーに収まるよう、図形の座標はそのままに viewBox をコンテンツの実測値に合わせて詰めてある |
 | `public/favicon.svg` | 花びらモチーフを正方形に切り出した静止版。ファビコン専用 |
+| `public/bloomstudy_hero.svg` | トップの挿絵・アニメーション版。花が回り、ペンが `Bloomstudy` を1文字ずつ書き上げる11秒ループ |
+| `public/bloomstudy_hero_static.svg` | トップの挿絵・静止版(書き上がった状態。ペンなし) |
 
-`BloomLogo` が `variant`(縦組み / 横組み)と `animated`(既定 false)でこの4ファイルを出し分ける。
+`BloomLogo` が `variant`(縦組み / 横組み)と `animated`(既定 false)でロゴ4ファイルを出し分ける。
+挿絵は `HeroVisual` が担当し、`prefers-reduced-motion: reduce` のときだけ静止版に差し替える。
+パスの定義はどちらも `src/assets/logos.ts` に集約している。
 
 ロゴ単体ファイルのアニメーションはSVG内のSMILで完結しているため `<img>` で読み込む。
 アニメーションは `repeatCount="1"` + `fill="freeze"` で**1回だけ再生して完成形で止まる**。
 ループさせると2.4秒ごとにロゴが消えて出直すうえ、静止画としてラスタライズされる場面
 (ファビコン・OGP画像など)で `opacity:0` の途中フレームが出てしまうため、
 ファビコンにはアニメーションを含まない `favicon.svg` を使っている。
+
+トップの挿絵だけは例外で、`repeatCount="indefinite"` のループにしてある。
+書き上がりを2.4秒見せてから文字を消して書き直す構成で、尺は `dur="11s"` に揃えてある
+(各要素の `keyTimes` は 11 秒を 1 とした比率で並んでいるので、
+尺を変えるときはファイル内の `dur` をまとめて書き換えること)。
 
 ### ヘッダーとオープニング演出
 

@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
+import { HeroVisual } from '@/components/HeroVisual'
 import { OpeningSplash } from '@/components/OpeningSplash'
 import { shouldPlayOpening } from '@/services/openingSession'
 
@@ -14,6 +15,8 @@ export function TopPage() {
 
       <AppShell>
         <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
+          <HeroVisual className="w-full rounded-3xl" />
+
           <p className="text-base leading-relaxed text-ink-600">
             答えはすぐに出しません。
             <br />
