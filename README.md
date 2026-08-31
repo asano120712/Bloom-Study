@@ -1,1 +1,413 @@
-# Bloom-Stady
+# Bloomstudy
+
+ヒントが花びらのようにひとつずつ浮かびあがるあいだに、答えを「思い出す」ゲーム型の学習ウェブアプリ。
+
+- [要件定義書](Bloomstudy_要件定義書.md) — コンセプト・ビジネスモデル
+- [機能要件書](Bloomstudy_機能要件書.md) — 画面一覧・機能要件
+- [技術選定書](Bloomstudy_技術選定書.md) — 技術スタックと選定理由
+
+## 開発環境
+
+| 項目 | 内容 |
+|---|---|
+| 言語 | TypeScript |
+| フレームワーク | React 19 |
+| ビルドツール | Vite |
+| スタイリング | Tailwind CSS v4(`@tailwindcss/vite` プラグイン) |
+| ルーティング | React Router |
+| 判定(レベル2) | `fast-levenshtein` |
+| Lint | oxlint |
+
+必要なもの: Node.js 20 以上(開発は v24 で確認)、npm。
+
+## セットアップ
+
+```bash
+npm install
+npm run dev     # 開発サーバー(--host 有効。スマホ実機からは表示される Network URL で確認)
+npm run build   # 型チェック + 本番ビルド
+npm run preview # ビルド結果の確認
+npm run lint    # oxlint
+```
+
+## ディレクトリ構成
+
+```
+src/
+├── assets/       ロゴアセットのパス定義(logos.ts)
+├── components/   共通UI(AppShell, AppHeader, OpeningSplash, Loading, LoadingDots,
+│                        HintList, BloomLogo, BloomMark)
+│                 こたえかたの入力(TypingInput, OnScreenKeyboard,
+│                        HandwritingCanvas, PartsInput, InputModeSheet)
+├── config/       ヒント間隔・トライアル上限・編集距離の許容量など調整パラメータ
+├── data/         ジャンル定義と問題データ(手書き分 + 生成JSON)
+├── features/
+│   ├── hints/    ジャンル別ヒント分解ルール(english / kanji)とレジストリ
+│   └── judge/    正誤判定(正規化一致 / 編集距離 / パーツの集合一致)
+├── hooks/        useHintTimer, useStats, useQuizSession, useHasFinePointer
+├── pages/        画面(トップ / ジャンル選択 / 出題 / 結果 / マイページ / トライアル終了)
+├── utils/        小さな共通処理(prefersReducedMotion, shuffleWithSeed)
+├── services/     出題の取得(quizSource) / 永続化(statsRepository, quizSession,
+│                 openingSession) / 読み上げ(speech)
+└── types/        ドメイン型
+```
+
+## 実装上のメモ
+
+### 漢字問題の生成
+
+漢字ジャンルの問題は KANJIDIC2 · KRADFILE · JMdict から生成している。
+**実行時に辞書APIを叩くのではなく、開発時に生成して JSON をコミットする。**
+
+```bash
+npm run dict:fetch                          # 初回のみ
+npm run questions:kanji                     # 既定は小学3〜6年配当 → 378問
+npm run questions:kanji -- --grades=8       # 中学以上の常用漢字
+npm run questions:kanji -- --report         # 書き出さず、内訳と先頭20問だけ確認
+```
+
+出力は `src/data/questions.kanji.generated.json`。直接編集しても次回生成で消える。
+手で直したい問題は `src/data/questions.ts` の `MANUAL_QUESTIONS` に置く(同じ `answer` があれば生成側を捨てる)。
+
+#### ヒントは熟語だけを出す
+
+**部首・パーツ・画数は出さない。** その字を含む熟語を3つ、対象の字を `◯` で伏せて出す。
+
+```
+運(はこぶ) → 「◯営」うんえい /「◯河」うんが /「◯休」うんきゅう
+```
+
+字形の手がかりを渡さないため。部品を答えさせる assemble モードでは、
+部首やパーツのヒントが答えそのものになってしまう。
+熟語なら意味と読みだけを渡せるので、**こたえかたごとにヒントを切り替える必要が無い**。
+
+熟語が3つ揃わない字だけ、音読みと画数で補う(`MIN_HINTS` を満たすまで)。
+同系語が並ばないよう、既に採った語を含む語は飛ばす(`委員` を採ったら `委員会` は使わない)。
+
+#### assemble モード用のパーツ
+
+KRADFILE の分解から、正解パーツと部品タイル(正解 + ダミー)を生成する。
+
+ダミーは**見分けにくい部品**を優先する(`辶` に対して `廴` `走`)。
+形が違いすぎる部品を混ぜると、思い出さなくても消去法で解けてしまう。
+機械的に「似ている」を判定する手段が無いため、`scripts/kanji-radicals.ts` の
+`CONFUSABLE_GROUPS` に35組を手で持っている。足りない分は同じ画数の常用部品で埋める。
+
+**ダミーが簡単すぎると気づいたら、この表に足すこと。**
+
+#### 除外の条件
+
+生成側は「作れないものは書かない」方針で、次に当てはまる字は問題にしない。
+`--report` の除外内訳で数が見える。
+
+| 除外 | 理由 |
+|---|---|
+| 主要な訓読みが他の漢字と重複 | 「あつい」→熱/暑/厚 のように出題文から答えが一意に決まらない |
+| 単独で出せる訓読みが無い | 音読みのみの字、熟語内でしか現れない読み(`-じるし`)しか無い字 |
+| ヒントが3個未満 | 熟語も音読みも画数も足りない字 |
+| 訓読みが1文字 | 「や」→屋 は一意でも手がかりにならない |
+
+パーツは 2〜4個に割れて、かつ筆画レベルまで降りていない字だけに付ける
+(`悪` → `｜`/`一`/`口` は `亜` を指せていない)。付かない字は assemble モードでは出題されない。
+
+`hintSource` は `見出し|本文` 形式(`熟語|「◯営」うんえい`)。
+出せるヒントの種類は字ごとに変わるので、見出しは並び順ではなくデータ側が持つ。
+
+### 英単語問題の生成
+
+JMdict(common語のみ)と NGSL から生成する。漢字と同じく開発時に生成して JSON をコミットする。
+
+```bash
+npm run questions:english                  # 既定 → 1709問
+npm run questions:english -- --bands=1000  # NGSL上位1000語の範囲だけ
+npm run questions:english -- --report      # 書き出さず、内訳と無作為20問だけ確認
+```
+
+出力は `src/data/questions.english.generated.json`。
+出題語は漢字表記(`uk` タグの語はかな表記)、答えは第一訳、同じ語義の別訳は
+`acceptableAnswers` に入れて正解扱いにする。
+
+**答えの難易度は NGSL(学習者向け基本語2801語)で制御している。** これが無いと
+militarism・lipstick のような優先度の低い語まで問題になる。
+頻度で訳語を選び直すと訳が壊れる(顔ぶれ → members)ため、
+**第一訳をそのまま答えにして、それが NGSL に無ければ問題ごと捨てる**方針にしている。
+
+| 除外 | 理由 |
+|---|---|
+| 1語の英単語にならない | 複数語の訳(to live on など)は判定にも1文字ずつのヒントにも向かない |
+| 答えがNGSLに無い | 学習の優先度が低い |
+| カタカナ語 | 出題語が答えそのものになる(テーブル → table) |
+| 答えが他の問題と重複 | 同じ答えの問題を作らない |
+| 答えが4〜10文字の外 | 短いとヒントが2段階しか作れず、長いと開放しきらない |
+| 学習に出すのに向かない語 | 下記「不適切な語の除外」を参照 |
+
+JMdict のタグでは弾けない問題(`おなら` → wind など)は
+`scripts/english-denylist.ts` に出題語を書いて除外する。
+生成JSONを直接編集しても次回生成で消える。
+
+### 不適切な語の除外
+
+**辞書をそのまま流すと、性的・排泄・死や暴力に関する語が出題やヒントに混ざる。**
+小学校配当の漢字を扱うアプリなので、生成の段階で落とす。
+
+判定は `scripts/unsuitable.ts` に集約してあり、漢字・英単語の両方の生成が使う。
+
+**JMdict のタグでは弾けない。** `射精` `精液` は俗語でも古語でもなく医学用語として
+登録されているため、`vulg` も `sens` も付かない。英語の語義に現れる語で見分けるのが、
+いまのところ唯一の機械的な方法。
+
+**判定は必ず第一語義(その語の主要な意味)だけに掛けること。** 全語義を見ると、
+二次的な意味を持つだけの普通の語まで落ちる。
+
+```
+関係 → relation …(後の語義に sexual relations)   残す
+国際 → international …(diplomatic intercourse)  残す
+営み → activity …(execution)                    残す
+射精 → ejaculation(第一語義そのもの)              除外
+```
+
+語義に手がかりが出ない語(`遺体` は第一訳が body)は、denylist で個別に落とす。
+
+| ファイル | 用途 |
+|---|---|
+| `scripts/unsuitable.ts` | 語義から機械的に判定する語のリスト |
+| `scripts/jukugo-denylist.ts` | 漢字ヒントの熟語を個別に除外 |
+| `scripts/english-denylist.ts` | 英単語の出題語を個別に除外 |
+
+**同種の語を見つけたら、1件ずつ生成JSONから消すのではなく、上のどれかに足すこと。**
+生成JSONを直接編集しても次回生成で戻る。
+
+なお `death` `kill` `murder` `suicide` など、性的でない語も同じリストで落としている。
+過剰だと感じたら `unsuitable.ts` の `TERMS` から外せる。
+
+### ジャンルを追加するとき
+
+ヒントの出しかたはジャンルごとに個別設計する方針のため、共通ロジックには寄せない。
+
+1. `src/types/index.ts` の `GenreId` に ID を追加
+2. `src/features/hints/<genre>.ts` にヒント分解ルールを実装し、`src/features/hints/index.ts` の `HINT_RULES` に登録
+   (`layout` に `inline`(横に連ねる) か `stacked`(行を積む) を指定する)
+3. `src/data/genres.ts` にジャンルと `inputModes` を追加
+4. 問題は `src/data/questions.ts` に手で書くか、`scripts/` に生成スクリプトを足す
+
+そのジャンルで新しいこたえかたが要るなら、`InputMode` に足したうえで
+`InputModeSheet` のラベル・`QuizPage` の分岐・`quizSource` の `isAnswerable` を揃えること。
+
+### ロゴと配色
+
+ロゴアセットは `public/` に置いてある。
+
+| ファイル | 用途 |
+|---|---|
+| `public/bloomstudy_icon.svg` | 縦組みロゴ・アニメーション版。オープニング演出で使用 |
+| `public/bloomstudy_logo.svg` | 横組みロゴ・アニメーション版 |
+| `public/bloomstudy_icon_static.svg` | 縦組みロゴ・静止版(アニメーションを外しただけ) |
+| `public/bloomstudy_logo_static.svg` | 横組みロゴ・静止版。ヘッダーで使用。ヘッダーに収まるよう、図形の座標はそのままに viewBox をコンテンツの実測値に合わせて詰めてある |
+| `public/favicon.svg` | 花びらモチーフを正方形に切り出した静止版。ファビコン専用 |
+| `public/bloomstudy_hero.svg` | トップの挿絵・アニメーション版。花が回り、ペンが `Bloomstudy` を1文字ずつ書き上げる11秒ループ |
+| `public/bloomstudy_hero_static.svg` | トップの挿絵・静止版(書き上がった状態。ペンなし) |
+
+`BloomLogo` が `variant`(縦組み / 横組み)と `animated`(既定 false)でロゴ4ファイルを出し分ける。
+挿絵は `HeroVisual` が担当し、`prefers-reduced-motion: reduce` のときだけ静止版に差し替える。
+パスの定義はどちらも `src/assets/logos.ts` に集約している。
+
+ロゴ単体ファイルのアニメーションはSVG内のSMILで完結しているため `<img>` で読み込む。
+アニメーションは `repeatCount="1"` + `fill="freeze"` で**1回だけ再生して完成形で止まる**。
+ループさせると2.4秒ごとにロゴが消えて出直すうえ、静止画としてラスタライズされる場面
+(ファビコン・OGP画像など)で `opacity:0` の途中フレームが出てしまうため、
+ファビコンにはアニメーションを含まない `favicon.svg` を使っている。
+
+トップの挿絵だけは例外で、`repeatCount="indefinite"` のループにしてある。
+書き上がりを2.4秒見せてから文字を消して書き直す構成で、尺は `dur="11s"` に揃えてある
+(各要素の `keyTimes` は 11 秒を 1 とした比率で並んでいるので、
+尺を変えるときはファイル内の `dur` をまとめて書き換えること)。
+
+### ヘッダーとオープニング演出
+
+- `AppHeader` を `AppShell` に組み込んであるので、全画面のヘッダー左に横組みロゴ(静止版)が出る。ロゴはトップへのリンク。右側は今後のナビゲーション用に空けてある
+- `OpeningSplash` がトップ画面を開いたときに縦組みロゴを全画面で1回再生し、フェードアウトして本編に渡す
+- 再生は**1セッションにつき1回**。判定は `src/services/openingSession.ts`(`sessionStorage`)。他画面から戻ってきても再生しない
+- `prefers-reduced-motion: reduce` のときは演出をスキップする
+
+演出の尺は `OpeningSplash.tsx` の定数で調整する。
+
+| 定数 | 既定 | 意味 |
+|---|---|---|
+| `LEAD_IN_MS` | 600ms | ロゴを出してから花が開き始めるまでの間 |
+| `LOGO_MOTION_MS` | 1300ms | SVG側の動きが完成形に達するまで(`dur="2.4s"` × 文字が出そろう `keyTimes` 0.5417) |
+| `HOLD_MS` | 500ms | 完成したロゴを見せておく時間 |
+| `FADE_MS` | 400ms | フェードアウト |
+| `MAX_WAIT_MS` | 4000ms | 読み込みが返ってこなくても本編に進む上限 |
+
+ロゴの下には `LoadingDots`(3点が順に跳ねるマーク)を出す。これは飾りではなく、
+**演出の尺と実際の読み込み(`document.fonts.ready`)の両方が終わるまで**スプラッシュが閉じない。
+フォントが遅い回線では演出が終わってもドットが回り続け、揃った時点でフェードアウトする。
+ロゴが出た瞬間にドットが下へずれないよう、ロゴの領域は `aspect-[400/360]` で最初から確保している。
+
+`<img>` はDOMに挿入された時点でSMILが動き出すため、**lead-in のあいだは `<img>` をマウントしない**。
+同じ理由で、先読みは `<img>` ではなく `fetch()` で行っている(画像として先読みすると時計が先に動く)。
+`LOGO_MOTION_MS` はSVG側の `dur` に依存しているので、**SVGの尺を変えたらこちらも合わせること**。
+
+### ローディング表示
+
+ローディング表示は2種類ある。用途で使い分ける。
+
+| コンポーネント | 見た目 | 用途 |
+|---|---|---|
+| `Loading` | 花びらが開閉 + 文言 | 画面の中身を待つとき(マイページ、出題画面など) |
+| `LoadingDots` | 3点のドット | 花のモチーフと重ねたくない場所。オープニングのロゴ下 |
+
+`Loading` が花びらの開閉アニメーション(`BloomMark motion="loop"`)と文言を出す。
+
+- `delayMs`(既定 200ms)を過ぎるまで何も描かないので、一瞬で終わる読み込みではチラつかない
+- 数秒以上かかる処理では `hint` に待ち時間の見込みを添える。機能要件書3章の通り、
+  レベル4(Transformers.js)の初回モデル読み込みを入れるときは必ず明示すること
+
+```tsx
+<Loading />
+<Loading message="記録をよみこみ中" />
+<Loading message="判定の準備をしています" hint="初回だけ十数秒かかります" delayMs={0} />
+```
+一方、UI内の演出(結果画面など)は `BloomMark` が同じ形状・配色を Web Animations API で描き直している。
+**片方の形や色を変えたら、もう片方も合わせること。**
+
+配色トークンは `src/index.css` の `@theme` にあり、すべてロゴから採色している。
+
+| トークン | 値 | 由来 |
+|---|---|---|
+| `bloom-400` / `bloom-500` | `#5DCAA5` / `#3FBE93` | 花びら |
+| `bloom-700` | `#0F6E56` | 花の中心。主要ボタン・正解表示に使う |
+| `ink-900` | `#23292B` | ロゴのワードマーク |
+| `warm-500` / `warm-600` | `#E07A5F` / `#C25A3E` | 不正解・「ちがった」の表現(緑一色の中で区別をつけるため) |
+
+正誤は色だけに頼らず、⭕️/✖️ アイコンとテキストを併記する。
+
+### こたえかた(入力方法)
+
+ジャンルごとに選べるこたえかたを `Genre.inputModes` に持つ。**並び順がそのまま
+開始シートの並びになる**ので、勧めたいものを先頭に置く。強調されるのは `defaultInputMode`。
+
+| こたえかた | ジャンル | 採点 | 出題数 |
+|---|---|---|---|
+| `handwriting` | 英単語 / 漢字 | 自己申告 | 全問 |
+| `typing` | 英単語のみ | 自動 | 全問 |
+| `assemble` | 漢字のみ | 自動 | 部品タイルを持つ問題のみ |
+
+**漢字にタイピングは置かない。** 漢字を打つには IME が要り、変換候補に答えが出てしまう。
+画面内キーボードでは漢字変換を肩代わりできない。
+
+**`typing` は OS のキーボードを使わない。** iOS の予測変換バーは
+`autocomplete` / `autocorrect` / `spellcheck` では消せず、「lib」まで打つと候補に
+library が並んでしまう。フォーカス可能な `input` を置かず、`OnScreenKeyboard` だけで入力する。
+マウス操作の端末では畳む(判定は画面幅ではなく `(hover: hover) and (pointer: fine)`。
+幅で判定すると、キーボードを持たないタブレットで入力手段が無くなる)。
+
+**`assemble` は部品を「思い出した」を押すまで見せない。** 先に並べると、思い出さずに
+見比べて選べてしまい、再認の練習にしかならない。判定は集合比較で、
+並べ方(左右・上下)は問わない。KRADFILE に配置の情報が無く、画数から推測すると
+`各`(口+夂 どちらも3画)のような字で誤るため。
+
+タイルの並びは問題IDを種にした `shuffleWithSeed` で決める。描画中に `Math.random()` を
+呼ぶと、再描画のたびに並びが変わって押そうとした瞬間に入れ替わる。
+
+### 出題データの取り出しかた
+
+出題は「全問リストを取得して画面が切り出す」形にしていない。
+**1回分の出題セットを受け取り、返ってきた数がすべてとして扱う。**
+
+```
+QuizPage → useQuizSession → quizSource.startSession(genreId, inputMode) → QuizSession { questions }
+                         ↘ quizSession(sessionStorage) で結果画面をはさんでも復元
+```
+
+**こたえかたによって出せる問題が変わる。** assemble は部品のタイルを持つ問題しか出せない。
+持たない問題を混ぜると、選んだはずのこたえかたと違う画面が出るので、
+`quizSource` が最初から配らない(セッションの保存もこたえかたごとに分けている)。
+
+**いまは回数制限を設けていない**(そのこたえかたで出せる問題を全部シャッフルして返す)。
+そのうえで、何問返すか・どの順で返すかを決めるのは
+[src/services/quizSource.ts](src/services/quizSource.ts) の責務に寄せてあり、
+画面はカタログの総数も未出題の残りも知らない。
+
+要件定義書7章の「プランに応じて問題数が増える」を後から入れるときは、
+`startSession` の中で切るか、同じ `QuizSource` を実装したサーバー版に差し替える。
+
+| | いまの実装 | 制限・課金を入れた後 |
+|---|---|---|
+| 出題元 | バンドルした生成JSON | `fetch('/api/session')` |
+| 何問返すか | そのこたえかたで出せる全問 | サーバーがプランを見て決める |
+| 出題順 | シャッフル | 復習・間隔反復をサーバー側で |
+
+差し替えるのは `quizSource` の実装1つで、`QuizSource` / `QuizSession` の形も画面側も変えない。
+`statsRepository` と同じ差し替えかた。
+
+出題数に上限を入れると、出題セットが空になりうる。その行き先は `/trial-end` に配線済み
+(いまは到達しない)。`TRIAL_LIMIT` と `UserStats.trialUsed` も、
+そのときに使う想定で残してある。
+
+### バックエンド(Firebase / Supabase)
+
+技術選定書 6章の通り採用は未確定のため、MVP では `localStorage` 実装で動かしている。
+差し替え点は `src/services/statsRepository.ts` の `StatsRepository` インターフェースに閉じてあるので、
+採用時は同じインターフェースの実装を足して `statsRepository` を差し替える。
+
+### 答えの読み上げ
+
+英単語の結果画面で答えを読み上げる(`src/services/speech.ts`)。
+ブラウザ内蔵の Web Speech API を使い、外部の音声合成APIは使わない
+(通信・利用料・ライセンスがどれも増えるため)。読み上げ言語は `Genre.speechLang` に持つ。
+
+**鳴らない条件が多く、それぞれ対処が要った。** 触るときはこの4点を壊さないこと。
+
+| 症状 | 原因 | 対処 |
+|---|---|---|
+| PCで無音 | Chrome は音声一覧を非同期に読む。読み込み前の `speak()` は無音になる | `voiceschanged` を待つ |
+| 声がおかしい | macOS の `en-US` 一覧は先頭がネタ音声。前方一致だと Albert を掴む | 端末の既定を優先し、ネタ音声18種を除外 |
+| 途中で止まる | Chrome は発話中の utterance が GC されると無音のまま止まる | モジュール側で参照を保持 |
+| iOSで初回だけ鳴らない | ユーザー操作を伴わない初回の発話を弾く | 最初のタップで無音の発話を1度通す(`primeSpeech`) |
+
+読み上げは補助機能として扱う。鳴らなくても学習の流れは止めない。
+自動再生が鳴らない場合に備えて「読み方を聞く」ボタンも置いてある。
+
+### 未実装(将来フェーズ)
+
+- レベル3(LanguageTool API による文法チェック)
+- レベル4(Transformers.js + `all-MiniLM-L6-v2` による意味的類似度判定)
+- サブスク決済(Stripe)
+
+## クレジット
+
+問題の生成に以下を使用している。**いずれも CC BY-SA 4.0**。
+
+| データ | 用途 |
+|---|---|
+| [JMdict](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project) (EDRDG) | 英単語ジャンルの語義、漢字ヒントの熟語 |
+| [KANJIDIC2 / KRADFILE](https://www.edrdg.org/wiki/index.php/KANJIDIC_Project) (EDRDG) | 漢字の読み・画数・構成パーツ |
+| [NGSL](https://www.newgeneralservicelist.com/) (Browne, Culligan & Phillips) | 英単語の難易度制御 |
+
+- [EDRDG License](https://www.edrdg.org/edrdg/licence.html)
+- JSON 化: [jmdict-simplified](https://github.com/scriptin/jmdict-simplified) / [machine_readable_wordlists](https://github.com/lpmi-13/machine_readable_wordlists)
+
+**採用を見送ったもの**: 英語頻度リスト
+[google-10000-english](https://github.com/first20hours/google-10000-english) は
+「商用利用は LDC のライセンス取得なしには推奨しない」と明記されているため使っていない。
+
+ライセンス上、**アプリ内に出典を掲示する画面が必要**(起動時の一瞬の表示では要件を満たさない)。
+マイページなどに固定の表示先を用意すること。ShareAlike のため、生成した問題データを
+再配布する場合も同じライセンスになる。
+
+## 追跡しないファイル
+
+`.gitignore` に入れてあるもののうち、意図が分かりにくいもの:
+
+| パターン | 理由 |
+|---|---|
+| `.dict-cache/` | KANJIDIC2 / KRADFILE のダウンロードキャッシュ。十数MBあり、スクリプトで再取得できる |
+| `.env` / `.env.*` | BaaS のキーなどを入れる想定。共有用の `.env.example` だけ例外的に追跡する |
+
+逆に `src/data/questions.kanji.generated.json` は自動生成だが**追跡する**。
+100KB弱でビルドに必要なアプリデータであり、辞書データを持っていない環境でもビルドできるようにするため。
+
+## デプロイ
+
+Vercel を想定。`vercel.json` で SPA のフォールバックを設定済み(ビルドコマンド `npm run build`、出力 `dist`)。

@@ -1,0 +1,166 @@
+<svg width="780" height="420" viewBox="0 0 390 210" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Bloomstudy ヒーロー画像(アニメーション)</title>
+<desc>3つの花がゆっくり回転し続け、ノートの上ではペンが軽く上下に揺れながら左から右へ進み、Bloomstudy の文字を1文字ずつ書き上げるループアニメーション</desc>
+
+<rect x="0" y="0" width="390" height="210" fill="#F3EEDD"/>
+
+<circle cx="40" cy="28" r="3" fill="#E8A34C" opacity="0.53">
+  <animateTransform attributeName="transform" type="translate"
+    values="0 0;0 -5;0 0" dur="6s" begin="0s" repeatCount="indefinite"/>
+</circle>
+<circle cx="342" cy="24" r="4" fill="#E8A34C" opacity="0.62">
+  <animateTransform attributeName="transform" type="translate"
+    values="0 0;0 -5;0 0" dur="7s" begin="1.2s" repeatCount="indefinite"/>
+</circle>
+<circle cx="357" cy="95" r="3" fill="#3FBE93" opacity="0.44">
+  <animateTransform attributeName="transform" type="translate"
+    values="0 0;0 -5;0 0" dur="5.5s" begin="0.6s" repeatCount="indefinite"/>
+</circle>
+<circle cx="22" cy="90" r="3.5" fill="#3FBE93" opacity="0.58">
+  <animateTransform attributeName="transform" type="translate"
+    values="0 0;0 -5;0 0" dur="6.5s" begin="2s" repeatCount="indefinite"/>
+</circle>
+
+<g stroke="#E8A34C" stroke-width="1.5" fill="none">
+  <path d="M75 18 L75 30 M69 24 L81 24" stroke-linecap="round" opacity="0.56">
+    <animate attributeName="opacity" values="0.56;0.15;0.56" dur="4s" begin="0s"
+      repeatCount="indefinite"/>
+  </path>
+  <path d="M310 42 L310 52 M305 47 L315 47" stroke-linecap="round" opacity="0.53">
+    <animate attributeName="opacity" values="0.53;0.15;0.53" dur="5s" begin="1.5s"
+      repeatCount="indefinite"/>
+  </path>
+</g>
+
+<g transform="translate(95,72) scale(0.9)">
+  <g>
+    <animateTransform attributeName="transform" type="rotate"
+      from="0" to="360" dur="26s" repeatCount="indefinite"/>
+    <g transform="rotate(15)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/></g>
+    <g transform="rotate(87)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#3FBE93"/></g>
+    <g transform="rotate(159)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/></g>
+    <g transform="rotate(231)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#3FBE93"/></g>
+    <g transform="rotate(303)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/></g>
+    <circle cx="0" cy="0" r="4" fill="#0F6E56"/>
+  </g>
+</g>
+
+<g transform="translate(195,52) scale(1.3)">
+  <g>
+    <animateTransform attributeName="transform" type="rotate"
+      from="0" to="360" dur="18s" repeatCount="indefinite"/>
+    <g transform="rotate(0)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#3FBE93"/></g>
+    <g transform="rotate(72)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/></g>
+    <g transform="rotate(144)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#3FBE93"/></g>
+    <g transform="rotate(216)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/></g>
+    <g transform="rotate(288)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#3FBE93"/></g>
+    <circle cx="0" cy="0" r="4.5" fill="#0F6E56"/>
+  </g>
+</g>
+
+<g transform="translate(288,68) scale(0.6)">
+  <g>
+    <animateTransform attributeName="transform" type="rotate"
+      from="0" to="360" dur="32s" repeatCount="indefinite"/>
+    <g transform="rotate(10)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#E8A34C"/></g>
+    <g transform="rotate(82)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#F0BC6E"/></g>
+    <g transform="rotate(154)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#E8A34C"/></g>
+    <g transform="rotate(226)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#F0BC6E"/></g>
+    <g transform="rotate(298)"><ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#E8A34C"/></g>
+    <circle cx="0" cy="0" r="3.5" fill="#B9762A"/>
+  </g>
+</g>
+
+<rect x="20" y="110" width="350" height="72" rx="10" fill="#FFFFFF" stroke="#E4DFCC" stroke-width="1"/>
+<line x1="45" y1="132" x2="340" y2="132" stroke="#EDE8D6" stroke-width="1.5"/>
+<line x1="45" y1="152" x2="340" y2="152" stroke="#EDE8D6" stroke-width="1.5"/>
+<line x1="45" y1="172" x2="280" y2="172" stroke="#EDE8D6" stroke-width="1.5"/>
+
+<g>
+  <animate attributeName="opacity" values="1;1;0;0;1"
+    keyTimes="0;0.9;0.9364;0.9636;1" dur="11.0s" repeatCount="indefinite"/>
+  <path d="M45,108 L45,128 M45,108 C55,108 55,117 45,118 M45,118 C56,118 56,128 45,128" pathLength="100" fill="none" stroke="#23292B" stroke-width="2.2" stroke-linecap="butt" stroke-linejoin="round"
+    stroke-dasharray="100" stroke-dashoffset="100">
+    <animate attributeName="stroke-dashoffset"
+      values="100;100;0;0;100;100"
+      keyTimes="0;0.0545;0.1091;0.9364;0.9545;1"
+      dur="11.0s" repeatCount="indefinite"/>
+  </path>
+  <path d="M66,104 L66,128" pathLength="100" fill="none" stroke="#23292B" stroke-width="2.2" stroke-linecap="butt"
+    stroke-dasharray="100" stroke-dashoffset="100">
+    <animate attributeName="stroke-dashoffset"
+      values="100;100;0;0;100;100"
+      keyTimes="0;0.1182;0.1727;0.9364;0.9545;1"
+      dur="11.0s" repeatCount="indefinite"/>
+  </path>
+  <path d="M75,120 C75,112 85,112 85,120 C85,128 75,128 75,120" pathLength="100" fill="none" stroke="#23292B" stroke-width="2.2" stroke-linecap="butt"
+    stroke-dasharray="100" stroke-dashoffset="100">
+    <animate attributeName="stroke-dashoffset"
+      values="100;100;0;0;100;100"
+      keyTimes="0;0.1818;0.2364;0.9364;0.9545;1"
+      dur="11.0s" repeatCount="indefinite"/>
+  </path>
+  <path d="M92,120 C92,112 102,112 102,120 C102,128 92,128 92,120" pathLength="100" fill="none" stroke="#23292B" stroke-width="2.2" stroke-linecap="butt"
+    stroke-dasharray="100" stroke-dashoffset="100">
+    <animate attributeName="stroke-dashoffset"
+      values="100;100;0;0;100;100"
+      keyTimes="0;0.2455;0.3;0.9364;0.9545;1"
+      dur="11.0s" repeatCount="indefinite"/>
+  </path>
+  <path d="M107,128 L107,116 C107,112 113,112 113,116 L113,128 M113,116 C113,112 119,112 119,116 L119,128" pathLength="100" fill="none" stroke="#23292B" stroke-width="2.2" stroke-linecap="butt" stroke-linejoin="round"
+    stroke-dasharray="100" stroke-dashoffset="100">
+    <animate attributeName="stroke-dashoffset"
+      values="100;100;0;0;100;100"
+      keyTimes="0;0.3091;0.3636;0.9364;0.9545;1"
+      dur="11.0s" repeatCount="indefinite"/>
+  </path>
+  <path d="M135,114 C127,110 125,118 131,120 C137,122 135,128 127,126" pathLength="100" fill="none" stroke="#23292B" stroke-width="2.2" stroke-linecap="butt"
+    stroke-dasharray="100" stroke-dashoffset="100">
+    <animate attributeName="stroke-dashoffset"
+      values="100;100;0;0;100;100"
+      keyTimes="0;0.3727;0.4273;0.9364;0.9545;1"
+      dur="11.0s" repeatCount="indefinite"/>
+  </path>
+  <path d="M145,106 L145,124 C145,128 149,128 151,126 M139,112 L151,112" pathLength="100" fill="none" stroke="#23292B" stroke-width="2.2" stroke-linecap="butt" stroke-linejoin="round"
+    stroke-dasharray="100" stroke-dashoffset="100">
+    <animate attributeName="stroke-dashoffset"
+      values="100;100;0;0;100;100"
+      keyTimes="0;0.4364;0.4909;0.9364;0.9545;1"
+      dur="11.0s" repeatCount="indefinite"/>
+  </path>
+  <path d="M159,112 L159,124 C159,128 167,128 167,124 L167,112" pathLength="100" fill="none" stroke="#23292B" stroke-width="2.2" stroke-linecap="butt"
+    stroke-dasharray="100" stroke-dashoffset="100">
+    <animate attributeName="stroke-dashoffset"
+      values="100;100;0;0;100;100"
+      keyTimes="0;0.5;0.5545;0.9364;0.9545;1"
+      dur="11.0s" repeatCount="indefinite"/>
+  </path>
+  <path d="M185,104 L185,128 M185,120 C185,112 175,112 175,120 C175,128 185,128 185,120" pathLength="100" fill="none" stroke="#23292B" stroke-width="2.2" stroke-linecap="butt" stroke-linejoin="round"
+    stroke-dasharray="100" stroke-dashoffset="100">
+    <animate attributeName="stroke-dashoffset"
+      values="100;100;0;0;100;100"
+      keyTimes="0;0.5636;0.6182;0.9364;0.9545;1"
+      dur="11.0s" repeatCount="indefinite"/>
+  </path>
+  <path d="M193,112 L198,124 M203,112 L195,136" pathLength="100" fill="none" stroke="#23292B" stroke-width="2.2" stroke-linecap="butt"
+    stroke-dasharray="100" stroke-dashoffset="100">
+    <animate attributeName="stroke-dashoffset"
+      values="100;100;0;0;100;100"
+      keyTimes="0;0.6273;0.6818;0.9364;0.9545;1"
+      dur="11.0s" repeatCount="indefinite"/>
+  </path>
+</g>
+
+<g transform="translate(43,117)">
+  <animateTransform attributeName="transform" type="translate"
+    values="45,119;45,119;58,123;66,121;69,118;75,119;87,123;92,121;104,118;107,119;121,123;127,121;137,118;139,119;153,123;159,121;169,118;175,119;187,123;193,121;205,118;215,96;45,119;45,119"
+    keyTimes="0.0;0.0545;0.1091;0.1182;0.1727;0.1818;0.2364;0.2455;0.3;0.3091;0.3636;0.3727;0.4273;0.4364;0.4909;0.5;0.5545;0.5636;0.6182;0.6273;0.6818;0.7545;0.9636;1.0"
+    dur="11.0s" repeatCount="indefinite"/>
+  <g transform="scale(0.55) rotate(-15)" opacity="0">
+    <animate attributeName="opacity" values="0;0;1;1;0;0"
+      keyTimes="0;0.03;0.05;0.6909;0.7545;1" dur="11.0s" repeatCount="indefinite"/>
+    <path d="M0 0 L 34 -34 L 28 -40 L -6 -6 Z" fill="#3C3489"/>
+    <path d="M28 -40 L 40 -52 L 34 -58 L 22 -46 Z" fill="#23292B"/>
+  </g>
+</g>
+</svg>
