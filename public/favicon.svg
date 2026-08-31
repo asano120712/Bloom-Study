@@ -1,0 +1,15 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Bloomstudy</title>
+  <!-- bloomstudy_icon.svg の花びらモチーフを、座標・配色そのままに正方形へ切り出した静止版。
+       ブラウザはファビコンを静止画としてラスタライズするため、
+       アニメーション付きSVGだと opacity:0 の途中フレームが出てしまう。
+       16px でも形が潰れないよう、文字も含めない。 -->
+  <g transform="translate(32,32) scale(1.5)">
+    <ellipse transform="rotate(0)" cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/>
+    <ellipse transform="rotate(72)" cx="0" cy="-10" rx="6.5" ry="9.5" fill="#3FBE93"/>
+    <ellipse transform="rotate(144)" cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/>
+    <ellipse transform="rotate(216)" cx="0" cy="-10" rx="6.5" ry="9.5" fill="#3FBE93"/>
+    <ellipse transform="rotate(288)" cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/>
+    <circle cx="0" cy="0" r="4.5" fill="#0F6E56"/>
+  </g>
+</svg>

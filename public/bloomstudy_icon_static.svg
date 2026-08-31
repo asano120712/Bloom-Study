@@ -1,0 +1,47 @@
+<svg width="400" height="360" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Bloomstudy ロゴ(縦組み・静止)</title>
+<desc>bloomstudy_icon.svg からアニメーションを外した静止版</desc>
+
+<g transform="translate(100,55) scale(2)">
+
+  <g transform="rotate(0)">
+    <g>
+      <ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/>
+    </g>
+  </g>
+
+  <g transform="rotate(72)">
+    <g>
+      <ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#3FBE93"/>
+    </g>
+  </g>
+
+  <g transform="rotate(144)">
+    <g>
+      <ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/>
+    </g>
+  </g>
+
+  <g transform="rotate(216)">
+    <g>
+      <ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#3FBE93"/>
+    </g>
+  </g>
+
+  <g transform="rotate(288)">
+    <g>
+      <ellipse cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/>
+    </g>
+  </g>
+
+  <g>
+    <circle cx="0" cy="0" r="4.5" fill="#0F6E56"/>
+  </g>
+
+</g>
+
+<text x="100" y="140" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="500" font-size="34" fill="#23292B">
+  Bloomstudy
+</text>
+
+</svg>
