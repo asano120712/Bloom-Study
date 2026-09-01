@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface HandwritingCanvasProps {
-  /** 「かけた」を押したとき。自動判定は行わず、正解提示に進む */
-  onSubmit: () => void
+  /**
+   * 「かけた」を押したとき。自動判定は行わず、正解提示に進む。
+   * 書いた字を結果画面で見せるため、キャンバスを PNG(dataURL)にして渡す。
+   */
+  onSubmit: (imageDataUrl: string) => void
   disabled?: boolean
 }
 
@@ -77,6 +80,8 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
     if (disabled) return
     const context = canvasRef.current?.getContext('2d')
     if (!context) return
+    // ドラッグで周りの文字やキャンバスが範囲選択されるのを止める(青い選択枠が出る)
+    event.preventDefault()
     event.currentTarget.setPointerCapture(event.pointerId)
     drawingRef.current = true
     const { x, y } = positionOf(event)
@@ -89,6 +94,7 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
     if (!drawingRef.current) return
     const context = canvasRef.current?.getContext('2d')
     if (!context) return
+    event.preventDefault()
     const { x, y } = positionOf(event)
     context.lineTo(x, y)
     context.stroke()
@@ -96,6 +102,24 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
 
   const endStroke = () => {
     drawingRef.current = false
+  }
+
+  /**
+   * 書いた字を PNG にして返す。キャンバスの背景は透明なので、
+   * 結果画面のどこに置いても読めるよう、白地に合成してから書き出す。
+   */
+  const exportImage = (): string => {
+    const canvas = canvasRef.current
+    if (!canvas) return ''
+    const flattened = document.createElement('canvas')
+    flattened.width = canvas.width
+    flattened.height = canvas.height
+    const context = flattened.getContext('2d')
+    if (!context) return canvas.toDataURL('image/png')
+    context.fillStyle = '#ffffff'
+    context.fillRect(0, 0, flattened.width, flattened.height)
+    context.drawImage(canvas, 0, 0)
+    return flattened.toDataURL('image/png')
   }
 
   const clear = () => {
@@ -107,7 +131,7 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-3">
+    <div className="flex min-h-0 flex-1 flex-col gap-3 select-none">
       {/*
         min-h-0 が要る。canvas は width/height 属性(デバイスピクセル値)が固有サイズになり、
         flex の min-height:auto がそれを下限にするため、付けないとボタンを画面外へ押し出す。
@@ -119,8 +143,10 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
         onPointerMove={extendStroke}
         onPointerUp={endStroke}
         onPointerCancel={endStroke}
+        draggable={false}
         aria-label="手書き入力エリア"
-        className="w-full min-h-0 flex-1 touch-none rounded-2xl border-2 border-bloom-200 bg-white"
+        // select-none: なぞったときに周りが範囲選択される(青い枠)のを防ぐ
+        className="w-full min-h-0 flex-1 touch-none select-none rounded-2xl border-2 border-bloom-200 bg-white"
       />
       <div className="flex shrink-0 gap-3">
         <button
@@ -133,7 +159,7 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
         </button>
         <button
           type="button"
-          onClick={onSubmit}
+          onClick={() => onSubmit(exportImage())}
           disabled={disabled || !hasStroke}
           className="min-h-14 flex-2 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
         >

@@ -1,9 +1,9 @@
-import { useEffect, useRef } from 'react'
-import type { Genre, InputMode } from '@/types'
+import { useEffect, useRef, useState } from 'react'
+import { DIFFICULTIES, type Difficulty, type Genre, type InputMode } from '@/types'
 
 interface InputModeSheetProps {
   genre: Genre
-  onStart: (mode: InputMode) => void
+  onStart: (mode: InputMode, difficulty: Difficulty) => void
   onClose: () => void
 }
 
@@ -22,6 +22,8 @@ const MODE_LABEL: Record<InputMode, { label: string; note: string }> = {
  */
 export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps) {
   const dialogRef = useRef<HTMLDivElement>(null)
+  /** 難易度は最初「ふつう」を選んでおき、こたえかたを押した時点で確定する */
+  const [difficulty, setDifficulty] = useState<Difficulty>('normal')
 
   // 開いた直後にシート内へフォーカスを移し、Esc で閉じられるようにする
   useEffect(() => {
@@ -51,16 +53,42 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
         className="animate-bloom-in relative w-full max-w-md rounded-3xl bg-base-50 px-5 pt-6 pb-6 outline-none"
       >
         <p className="text-center text-sm text-ink-400">{genre.label}</p>
-        <h2 className="mt-1 text-center text-xl font-bold">
-          {genre.inputModes.length > 1 ? 'こたえかたをえらぶ' : 'はじめる'}
-        </h2>
+        <h2 className="mt-1 text-center text-xl font-bold">はじめる</h2>
 
-        <div className="mt-6 flex flex-col gap-3">
+        <div className="mt-6">
+          <p className="text-sm font-bold text-ink-600">なんいど</p>
+          <div className="mt-2 grid grid-cols-3 gap-2">
+            {DIFFICULTIES.map((option) => {
+              const isSelected = difficulty === option.id
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  aria-pressed={isSelected}
+                  onClick={() => setDifficulty(option.id)}
+                  className={`flex min-h-16 flex-col items-center justify-center rounded-2xl px-2 text-center ${
+                    isSelected
+                      ? 'border-2 border-bloom-700 bg-bloom-100 text-bloom-700'
+                      : 'border-2 border-bloom-200 text-ink-600'
+                  }`}
+                >
+                  <span className="text-base font-bold">{option.label}</span>
+                  <span className="mt-0.5 text-xs text-ink-400">{option.note}</span>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        <p className="mt-6 text-sm font-bold text-ink-600">
+          {genre.inputModes.length > 1 ? 'こたえかた' : 'はじめかた'}
+        </p>
+        <div className="mt-2 flex flex-col gap-3">
           {genre.inputModes.map((mode) => (
             <button
               key={mode}
               type="button"
-              onClick={() => onStart(mode)}
+              onClick={() => onStart(mode, difficulty)}
               className={`flex min-h-16 flex-col justify-center rounded-2xl px-5 text-left ${
                 genre.defaultInputMode === mode
                   ? 'bg-bloom-700 text-white'

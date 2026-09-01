@@ -21,6 +21,7 @@
       "genreId": "kanji",
       "prompt": "いとしい",
       "answer": "愛",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯嬌」あいきょう",
         "熟語|「◯犬」あいけん",
@@ -48,6 +49,7 @@
       "genreId": "kanji",
       "prompt": "わるい",
       "answer": "悪",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯意」あくい",
         "熟語|「◯化」あっか",
@@ -59,6 +61,7 @@
       "genreId": "kanji",
       "prompt": "かこむ",
       "answer": "囲",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯碁」いご",
         "熟語|「周◯」しゅうい",
@@ -84,6 +87,7 @@
       "genreId": "kanji",
       "prompt": "ゆだねる",
       "answer": "委",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯員」いいん",
         "熟語|「◯託」いたく",
@@ -109,6 +113,7 @@
       "genreId": "kanji",
       "prompt": "ころも",
       "answer": "衣",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯装」いしょう",
         "熟語|「◯服」いふく",
@@ -120,6 +125,7 @@
       "genreId": "kanji",
       "prompt": "いやす",
       "answer": "医",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯院」いいん",
         "熟語|「◯科」いか",
@@ -145,6 +151,7 @@
       "genreId": "kanji",
       "prompt": "そだつ",
       "answer": "育",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯英」いくえい",
         "熟語|「◯児」いくじ",
@@ -171,6 +178,7 @@
       "genreId": "kanji",
       "prompt": "のむ",
       "answer": "飲",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯酒」いんしゅ",
         "熟語|「◯食」いんしょく",
@@ -196,6 +204,7 @@
       "genreId": "kanji",
       "prompt": "はこぶ",
       "answer": "運",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯営」うんえい",
         "熟語|「◯河」うんが",
@@ -222,6 +231,7 @@
       "genreId": "kanji",
       "prompt": "いとなむ",
       "answer": "営",
+      "level": "normal",
       "hintSource": [
         "熟語|「運◯」うんえい",
         "熟語|「◯業」えいぎょう",
@@ -233,6 +243,7 @@
       "genreId": "kanji",
       "prompt": "さかえる",
       "answer": "栄",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯冠」えいかん",
         "熟語|「◯枯」えいこ",
@@ -259,6 +270,7 @@
       "genreId": "kanji",
       "prompt": "ながい",
       "answer": "永",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯遠」えいえん",
         "熟語|「◯住」えいじゅう",
@@ -270,6 +282,7 @@
       "genreId": "kanji",
       "prompt": "およぐ",
       "answer": "泳",
+      "level": "easy",
       "hintSource": [
         "熟語|「遠◯」えんえい",
         "熟語|「競◯」きょうえい",
@@ -281,6 +294,7 @@
       "genreId": "kanji",
       "prompt": "はなぶさ",
       "answer": "英",
+      "level": "easy",
       "hintSource": [
         "熟語|「育◯」いくえい",
         "熟語|「◯気」えいき",
@@ -307,6 +321,7 @@
       "genreId": "kanji",
       "prompt": "のびる",
       "answer": "延",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯期」えんき",
         "熟語|「◯滞」えんたい",
@@ -318,6 +333,7 @@
       "genreId": "kanji",
       "prompt": "そう",
       "answer": "沿",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯海」えんかい",
         "熟語|「◯革」えんかく",
@@ -344,6 +360,7 @@
       "genreId": "kanji",
       "prompt": "いく",
       "answer": "往",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯診」おうしん",
         "熟語|「◯生」おうじょう",
@@ -355,6 +372,7 @@
       "genreId": "kanji",
       "prompt": "あたる",
       "answer": "応",
+      "level": "normal",
       "hintSource": [
         "熟語|「一◯」いちおう",
         "熟語|「◯援」おうえん",
@@ -380,6 +398,7 @@
       "genreId": "kanji",
       "prompt": "よこ",
       "answer": "横",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯顔」よこがお",
         "熟語|「◯綱」よこづな",
@@ -391,6 +410,7 @@
       "genreId": "kanji",
       "prompt": "おき",
       "answer": "沖",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯縄」おきなわ",
         "熟語|「◯合」おきあい",
@@ -403,6 +423,7 @@
       "genreId": "kanji",
       "prompt": "ばける",
       "answer": "化",
+      "level": "easy",
       "hintSource": [
         "熟語|「悪◯」あっか",
         "熟語|「液◯」えきか",
@@ -414,6 +435,7 @@
       "genreId": "kanji",
       "prompt": "くわえる",
       "answer": "加",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯圧」かあつ",
         "熟語|「◯減」かげん",
@@ -439,6 +461,7 @@
       "genreId": "kanji",
       "prompt": "すぎる",
       "answer": "過",
+      "level": "normal",
       "hintSource": [
         "熟語|「一◯」いっか",
         "熟語|「◯去」かこ",
@@ -465,6 +488,7 @@
       "genreId": "kanji",
       "prompt": "われ",
       "answer": "我",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯慢」がまん",
         "熟語|「◯儘」わがまま",
@@ -476,6 +500,7 @@
       "genreId": "kanji",
       "prompt": "こころよい",
       "answer": "快",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯楽」かいらく",
         "熟語|「◯感」かいかん",
@@ -487,6 +512,7 @@
       "genreId": "kanji",
       "prompt": "あらためる",
       "answer": "改",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯革」かいかく",
         "熟語|「◯憲」かいけん",
@@ -512,6 +538,7 @@
       "genreId": "kanji",
       "prompt": "かせ",
       "answer": "械",
+      "level": "easy",
       "hintSource": [
         "熟語|「機◯」きかい",
         "音読み|カイ",
@@ -538,6 +565,7 @@
       "genreId": "kanji",
       "prompt": "はい",
       "answer": "灰",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯皿」はいざら",
         "熟語|「◯色」はいいろ",
@@ -563,6 +591,7 @@
       "genreId": "kanji",
       "prompt": "ひらく",
       "answer": "開",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯演」かいえん",
         "熟語|「◯花」かいか",
@@ -574,6 +603,7 @@
       "genreId": "kanji",
       "prompt": "きざはし",
       "answer": "階",
+      "level": "easy",
       "hintSource": [
         "熟語|「一◯」いっかい",
         "熟語|「音◯」おんかい",
@@ -600,6 +630,7 @@
       "genreId": "kanji",
       "prompt": "まち",
       "answer": "街",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯角」まちかど",
         "熟語|「◯灯」がいとう",
@@ -625,6 +656,7 @@
       "genreId": "kanji",
       "prompt": "おのおの",
       "answer": "各",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯位」かくい",
         "熟語|「◯国」かっこく",
@@ -650,6 +682,7 @@
       "genreId": "kanji",
       "prompt": "ひろがる",
       "answer": "拡",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯散」かくさん",
         "熟語|「◯充」かくじゅう",
@@ -676,6 +709,7 @@
       "genreId": "kanji",
       "prompt": "たしか",
       "answer": "確",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯執」かくしつ",
         "熟語|「◯実」かくじつ",
@@ -702,6 +736,7 @@
       "genreId": "kanji",
       "prompt": "おぼえる",
       "answer": "覚",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯悟」かくご",
         "熟語|「感◯」かんかく",
@@ -728,6 +763,7 @@
       "genreId": "kanji",
       "prompt": "ひたい",
       "answer": "額",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯縁」がくぶち",
         "熟語|「◯面」がくめん",
@@ -755,6 +791,7 @@
       "genreId": "kanji",
       "prompt": "わる",
       "answer": "割",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯譲」かつじょう",
         "熟語|「二◯」にわり",
@@ -766,6 +803,7 @@
       "genreId": "kanji",
       "prompt": "かぶ",
       "answer": "株",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯価」かぶか",
         "熟語|「◯券」かぶけん",
@@ -791,6 +829,7 @@
       "genreId": "kanji",
       "prompt": "さむい",
       "answer": "寒",
+      "level": "easy",
       "hintSource": [
         "熟語|「悪◯」おかん",
         "熟語|「◯気」さむけ",
@@ -802,6 +841,7 @@
       "genreId": "kanji",
       "prompt": "まく",
       "answer": "巻",
+      "level": "hard",
       "hintSource": [
         "熟語|「圧◯」あっかん",
         "熟語|「絵◯」えまき",
@@ -828,6 +868,7 @@
       "genreId": "kanji",
       "prompt": "ほす",
       "answer": "干",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯潟」ひがた",
         "熟語|「◯渉」かんしょう",
@@ -839,6 +880,7 @@
       "genreId": "kanji",
       "prompt": "みき",
       "answer": "幹",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯事」かんじ",
         "熟語|「◯線」かんせん",
@@ -865,6 +907,7 @@
       "genreId": "kanji",
       "prompt": "なれる",
       "answer": "慣",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯行」かんこう",
         "熟語|「◯習」かんしゅう",
@@ -890,6 +933,7 @@
       "genreId": "kanji",
       "prompt": "くだ",
       "answer": "管",
+      "level": "easy",
       "hintSource": [
         "熟語|「移◯」いかん",
         "熟語|「◯轄」かんかつ",
@@ -901,6 +945,7 @@
       "genreId": "kanji",
       "prompt": "せき",
       "answer": "関",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯係」かんけい",
         "熟語|「◯心」かんしん",
@@ -912,6 +957,7 @@
       "genreId": "kanji",
       "prompt": "やかた",
       "answer": "館",
+      "level": "easy",
       "hintSource": [
         "熟語|「開◯」かいかん",
         "熟語|「◯長」かんちょう",
@@ -923,6 +969,7 @@
       "genreId": "kanji",
       "prompt": "きし",
       "answer": "岸",
+      "level": "easy",
       "hintSource": [
         "熟語|「沿◯」えんがん",
         "熟語|「海◯」かいがん",
@@ -949,6 +996,7 @@
       "genreId": "kanji",
       "prompt": "まなこ",
       "answer": "眼",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯科」がんか",
         "熟語|「近◯」きんがん",
@@ -974,6 +1022,7 @@
       "genreId": "kanji",
       "prompt": "ねがう",
       "answer": "願",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯書」がんしょ",
         "熟語|「祈◯」きがん",
@@ -1001,6 +1050,7 @@
       "genreId": "kanji",
       "prompt": "あぶない",
       "answer": "危",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯害」きがい",
         "熟語|「◯機」きき",
@@ -1027,6 +1077,7 @@
       "genreId": "kanji",
       "prompt": "よろこぶ",
       "answer": "喜",
+      "level": "normal",
       "hintSource": [
         "熟語|「歓◯」かんき",
         "熟語|「◯劇」きげき",
@@ -1052,6 +1103,7 @@
       "genreId": "kanji",
       "prompt": "うつわ",
       "answer": "器",
+      "level": "easy",
       "hintSource": [
         "熟語|「火◯」かき",
         "熟語|「楽◯」がっき",
@@ -1077,6 +1129,7 @@
       "genreId": "kanji",
       "prompt": "まれ",
       "answer": "希",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯望」きぼう",
         "熟語|「◯少」きしょう",
@@ -1088,6 +1141,7 @@
       "genreId": "kanji",
       "prompt": "おきる",
       "answer": "起",
+      "level": "easy",
       "hintSource": [
         "熟語|「縁◯」えんぎ",
         "熟語|「喚◯」かんき",
@@ -1113,6 +1167,7 @@
       "genreId": "kanji",
       "prompt": "うたがう",
       "answer": "疑",
+      "level": "hard",
       "hintSource": [
         "熟語|「懐◯」かいぎ",
         "熟語|「◯義」ぎぎ",
@@ -1140,6 +1195,7 @@
       "genreId": "kanji",
       "prompt": "ひさしい",
       "answer": "久",
+      "level": "normal",
       "hintSource": [
         "熟語|「恒◯」こうきゅう",
         "熟語|「持◯」じきゅう",
@@ -1151,6 +1207,7 @@
       "genreId": "kanji",
       "prompt": "すう",
       "answer": "吸",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯引」きゅういん",
         "熟語|「◯収」きゅうしゅう",
@@ -1176,6 +1233,7 @@
       "genreId": "kanji",
       "prompt": "みや",
       "answer": "宮",
+      "level": "easy",
       "hintSource": [
         "熟語|「王◯」おうきゅう",
         "熟語|「◯中」きゅうちゅう",
@@ -1187,6 +1245,7 @@
       "genreId": "kanji",
       "prompt": "いそぐ",
       "answer": "急",
+      "level": "easy",
       "hintSource": [
         "熟語|「応◯」おうきゅう",
         "熟語|「緩◯」かんきゅう",
@@ -1213,6 +1272,7 @@
       "genreId": "kanji",
       "prompt": "もとめる",
       "answer": "求",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯刑」きゅうけい",
         "熟語|「◯職」きゅうしょく",
@@ -1224,6 +1284,7 @@
       "genreId": "kanji",
       "prompt": "なく",
       "answer": "泣",
+      "level": "easy",
       "hintSource": [
         "熟語|「号◯」ごうきゅう",
         "音読み|キュウ",
@@ -1249,6 +1310,7 @@
       "genreId": "kanji",
       "prompt": "たま",
       "answer": "球",
+      "level": "easy",
       "hintSource": [
         "熟語|「気◯」ききゅう",
         "熟語|「◯技」きゅうぎ",
@@ -1260,6 +1322,7 @@
       "genreId": "kanji",
       "prompt": "たまう",
       "answer": "給",
+      "level": "easy",
       "hintSource": [
         "熟語|「恩◯」おんきゅう",
         "熟語|「◯食」きゅうしょく",
@@ -1271,6 +1334,7 @@
       "genreId": "kanji",
       "prompt": "あげる",
       "answer": "挙",
+      "level": "easy",
       "hintSource": [
         "熟語|「一◯」いっきょ",
         "熟語|「快◯」かいきょ",
@@ -1297,6 +1361,7 @@
       "genreId": "kanji",
       "prompt": "ゆるす",
       "answer": "許",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯可」きょか",
         "熟語|「◯諾」きょだく",
@@ -1323,6 +1388,7 @@
       "genreId": "kanji",
       "prompt": "あさる",
       "answer": "漁",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯獲」ぎょかく",
         "熟語|「◯業」ぎょぎょう",
@@ -1348,6 +1414,7 @@
       "genreId": "kanji",
       "prompt": "きそう",
       "answer": "競",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯泳」きょうえい",
         "熟語|「◯演」きょうえん",
@@ -1374,6 +1441,7 @@
       "genreId": "kanji",
       "prompt": "さかい",
       "answer": "境",
+      "level": "normal",
       "hintSource": [
         "熟語|「越◯」えっきょう",
         "熟語|「佳◯」かきょう",
@@ -1400,6 +1468,7 @@
       "genreId": "kanji",
       "prompt": "はし",
       "answer": "橋",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯脚」きょうきゃく",
         "熟語|「桟◯」さんばし",
@@ -1411,6 +1480,7 @@
       "genreId": "kanji",
       "prompt": "さと",
       "answer": "郷",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯愁」きょうしゅう",
         "熟語|「◯土」きょうど",
@@ -1437,6 +1507,7 @@
       "genreId": "kanji",
       "prompt": "かがみ",
       "answer": "鏡",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯台」きょうだい",
         "熟語|「眼◯」メガネ",
@@ -1463,6 +1534,7 @@
       "genreId": "kanji",
       "prompt": "つぼね",
       "answer": "局",
+      "level": "easy",
       "hintSource": [
         "熟語|「医◯」いきょく",
         "熟語|「一◯」いっきょく",
@@ -1488,6 +1560,7 @@
       "genreId": "kanji",
       "prompt": "まがる",
       "answer": "曲",
+      "level": "easy",
       "hintSource": [
         "熟語|「一◯」いっきょく",
         "熟語|「歌◯」かきょく",
@@ -1499,6 +1572,7 @@
       "genreId": "kanji",
       "prompt": "しろがね",
       "answer": "銀",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯河」ぎんが",
         "熟語|「◯貨」ぎんか",
@@ -1524,6 +1598,7 @@
       "genreId": "kanji",
       "prompt": "くるしい",
       "answer": "苦",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯境」くきょう",
         "熟語|「◯言」くげん",
@@ -1550,6 +1625,7 @@
       "genreId": "kanji",
       "prompt": "きみ",
       "answer": "君",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯子」くんし",
         "熟語|「◯主」くんしゅ",
@@ -1561,6 +1637,7 @@
       "genreId": "kanji",
       "prompt": "おしえる",
       "answer": "訓",
+      "level": "easy",
       "hintSource": [
         "熟語|「音◯」おんくん",
         "熟語|「教◯」きょうくん",
@@ -1586,6 +1663,7 @@
       "genreId": "kanji",
       "prompt": "かかる",
       "answer": "係",
+      "level": "easy",
       "hintSource": [
         "熟語|「関◯」かんけい",
         "熟語|「◯官」かかりかん",
@@ -1597,6 +1675,7 @@
       "genreId": "kanji",
       "prompt": "うやまう",
       "answer": "敬",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯意」けいい",
         "熟語|「◯遠」けいえん",
@@ -1624,6 +1703,7 @@
       "genreId": "kanji",
       "prompt": "いましめる",
       "answer": "警",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯戒」けいかい",
         "熟語|「◯官」けいかん",
@@ -1635,6 +1715,7 @@
       "genreId": "kanji",
       "prompt": "かるい",
       "answer": "軽",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯快」けいかい",
         "熟語|「◯減」けいげん",
@@ -1661,6 +1742,7 @@
       "genreId": "kanji",
       "prompt": "はげしい",
       "answer": "激",
+      "level": "hard",
       "hintSource": [
         "熟語|「過◯」かげき",
         "熟語|「感◯」かんげき",
@@ -1688,6 +1770,7 @@
       "genreId": "kanji",
       "prompt": "いさぎよい",
       "answer": "潔",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯白」けっぱく",
         "熟語|「◯癖」けっぺき",
@@ -1699,6 +1782,7 @@
       "genreId": "kanji",
       "prompt": "あな",
       "answer": "穴",
+      "level": "hard",
       "hintSource": [
         "熟語|「洞◯」ほらあな",
         "熟語|「墓◯」ぼけつ",
@@ -1710,6 +1794,7 @@
       "genreId": "kanji",
       "prompt": "むすぶ",
       "answer": "結",
+      "level": "easy",
       "hintSource": [
         "熟語|「完◯」かんけつ",
         "熟語|「◯果」けっか",
@@ -1736,6 +1821,7 @@
       "genreId": "kanji",
       "prompt": "くだん",
       "answer": "件",
+      "level": "normal",
       "hintSource": [
         "熟語|「案◯」あんけん",
         "熟語|「一◯」いっけん",
@@ -1761,6 +1847,7 @@
       "genreId": "kanji",
       "prompt": "すこやか",
       "answer": "健",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯気」けなげ",
         "熟語|「◯康」けんこう",
@@ -1787,6 +1874,7 @@
       "genreId": "kanji",
       "prompt": "とぐ",
       "answer": "研",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯究」けんきゅう",
         "熟語|「◯修」けんしゅう",
@@ -1798,6 +1886,7 @@
       "genreId": "kanji",
       "prompt": "けわしい",
       "answer": "険",
+      "level": "normal",
       "hintSource": [
         "熟語|「危◯」きけん",
         "熟語|「◯悪」けんあく",
@@ -1825,6 +1914,7 @@
       "genreId": "kanji",
       "prompt": "おごそか",
       "answer": "厳",
+      "level": "hard",
       "hintSource": [
         "熟語|「威◯」いげん",
         "熟語|「◯戒」げんかい",
@@ -1852,6 +1942,7 @@
       "genreId": "kanji",
       "prompt": "みなもと",
       "answer": "源",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯泉」げんせん",
         "熟語|「◯流」げんりゅう",
@@ -1879,6 +1970,7 @@
       "genreId": "kanji",
       "prompt": "かぎる",
       "answer": "限",
+      "level": "normal",
       "hintSource": [
         "熟語|「下◯」かげん",
         "熟語|「期◯」きげん",
@@ -1904,6 +1996,7 @@
       "genreId": "kanji",
       "prompt": "よぶ",
       "answer": "呼",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯応」こおう",
         "熟語|「◯吸」こきゅう",
@@ -1915,6 +2008,7 @@
       "genreId": "kanji",
       "prompt": "かためる",
       "answer": "固",
+      "level": "easy",
       "hintSource": [
         "熟語|「頑◯」がんこ",
         "熟語|「凝◯」ぎょうこ",
@@ -1926,6 +2020,7 @@
       "genreId": "kanji",
       "prompt": "おのれ",
       "answer": "己",
+      "level": "hard",
       "hintSource": [
         "熟語|「自◯」じこ",
         "熟語|「知◯」ちき",
@@ -1937,6 +2032,7 @@
       "genreId": "kanji",
       "prompt": "ゆえ",
       "answer": "故",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯意」こい",
         "熟語|「◯国」ここく",
@@ -1963,6 +2059,7 @@
       "genreId": "kanji",
       "prompt": "みずうみ",
       "answer": "湖",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯沼」こしょう",
         "熟語|「◯水」こすい",
@@ -1990,6 +2087,7 @@
       "genreId": "kanji",
       "prompt": "そうろう",
       "answer": "候",
+      "level": "easy",
       "hintSource": [
         "熟語|「気◯」きこう",
         "熟語|「居◯」いそうろう",
@@ -2001,6 +2099,7 @@
       "genreId": "kanji",
       "prompt": "いさお",
       "answer": "功",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯績」こうせき",
         "熟語|「◯名」こうみょう",
@@ -2026,6 +2125,7 @@
       "genreId": "kanji",
       "prompt": "むく",
       "answer": "向",
+      "level": "easy",
       "hintSource": [
         "熟語|「傾◯」けいこう",
         "熟語|「◯上」こうじょう",
@@ -2051,6 +2151,7 @@
       "genreId": "kanji",
       "prompt": "きさき",
       "answer": "后",
+      "level": "hard",
       "hintSource": [
         "熟語|「皇◯」こうごう",
         "熟語|「皇太◯」こうたいごう",
@@ -2063,6 +2164,7 @@
       "genreId": "kanji",
       "prompt": "このむ",
       "answer": "好",
+      "level": "easy",
       "hintSource": [
         "熟語|「愛◯」あいこう",
         "熟語|「◯意」こうい",
@@ -2088,6 +2190,7 @@
       "genreId": "kanji",
       "prompt": "さいわい",
       "answer": "幸",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯福」こうふく",
         "熟語|「不◯」ふこう",
@@ -2113,6 +2216,7 @@
       "genreId": "kanji",
       "prompt": "かまえる",
       "answer": "構",
+      "level": "normal",
       "hintSource": [
         "熟語|「遺◯」いこう",
         "熟語|「機◯」きこう",
@@ -2124,6 +2228,7 @@
       "genreId": "kanji",
       "prompt": "みなと",
       "answer": "港",
+      "level": "easy",
       "hintSource": [
         "熟語|「開◯」かいこう",
         "熟語|「寄◯」きこう",
@@ -2151,6 +2256,7 @@
       "genreId": "kanji",
       "prompt": "べに",
       "answer": "紅",
+      "level": "hard",
       "hintSource": [
         "熟語|「口◯」くちべに",
         "熟語|「◯茶」こうちゃ",
@@ -2176,6 +2282,7 @@
       "genreId": "kanji",
       "prompt": "たがやす",
       "answer": "耕",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯作」こうさく",
         "熟語|「◯地」こうち",
@@ -2187,6 +2294,7 @@
       "genreId": "kanji",
       "prompt": "あらがね",
       "answer": "鉱",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯業」こうぎょう",
         "熟語|「◯山」こうざん",
@@ -2213,6 +2321,7 @@
       "genreId": "kanji",
       "prompt": "はがね",
       "answer": "鋼",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯材」こうざい",
         "熟語|「◯鉄」こうてつ",
@@ -2238,6 +2347,7 @@
       "genreId": "kanji",
       "prompt": "おりる",
       "answer": "降",
+      "level": "hard",
       "hintSource": [
         "熟語|「以◯」いこう",
         "熟語|「下◯」かこう",
@@ -2264,6 +2374,7 @@
       "genreId": "kanji",
       "prompt": "さけぶ",
       "answer": "号",
+      "level": "easy",
       "hintSource": [
         "熟語|「暗◯」あんごう",
         "熟語|「記◯」きごう",
@@ -2275,6 +2386,7 @@
       "genreId": "kanji",
       "prompt": "きざむ",
       "answer": "刻",
+      "level": "hard",
       "hintSource": [
         "熟語|「一◯」いっこく",
         "熟語|「時◯」じこく",
@@ -2286,6 +2398,7 @@
       "genreId": "kanji",
       "prompt": "つげる",
       "answer": "告",
+      "level": "normal",
       "hintSource": [
         "熟語|「戒◯」かいこく",
         "熟語|「勧◯」かんこく",
@@ -2297,6 +2410,7 @@
       "genreId": "kanji",
       "prompt": "ほね",
       "answer": "骨",
+      "level": "hard",
       "hintSource": [
         "熟語|「遺◯」いこつ",
         "熟語|「骸◯」がいこつ",
@@ -2308,6 +2422,7 @@
       "genreId": "kanji",
       "prompt": "こまる",
       "answer": "困",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯窮」こんきゅう",
         "熟語|「◯難」こんなん",
@@ -2333,6 +2448,7 @@
       "genreId": "kanji",
       "prompt": "すな",
       "answer": "砂",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯丘」さきゅう",
         "熟語|「◯糖」さとう",
@@ -2344,6 +2460,7 @@
       "genreId": "kanji",
       "prompt": "すわる",
       "answer": "座",
+      "level": "hard",
       "hintSource": [
         "熟語|「一◯」いちざ",
         "熟語|「王◯」おうざ",
@@ -2355,6 +2472,7 @@
       "genreId": "kanji",
       "prompt": "ふたたび",
       "answer": "再",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯演」さいえん",
         "熟語|「◯会」さいかい",
@@ -2366,6 +2484,7 @@
       "genreId": "kanji",
       "prompt": "もっとも",
       "answer": "最",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯愛」さいあい",
         "熟語|「◯悪」さいあく",
@@ -2377,6 +2496,7 @@
       "genreId": "kanji",
       "prompt": "わざわい",
       "answer": "災",
+      "level": "normal",
       "hintSource": [
         "熟語|「火◯」かさい",
         "熟語|「◯害」さいがい",
@@ -2402,6 +2522,7 @@
       "genreId": "kanji",
       "prompt": "まつる",
       "answer": "祭",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯壇」さいだん",
         "熟語|「◯典」さいてん",
@@ -2428,6 +2549,7 @@
       "genreId": "kanji",
       "prompt": "きわ",
       "answer": "際",
+      "level": "normal",
       "hintSource": [
         "熟語|「間◯」まぎわ",
         "熟語|「交◯」こうさい",
@@ -2439,6 +2561,7 @@
       "genreId": "kanji",
       "prompt": "つみ",
       "answer": "罪",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯人」ざいにん",
         "熟語|「謝◯」しゃざい",
@@ -2464,6 +2587,7 @@
       "genreId": "kanji",
       "prompt": "さくら",
       "answer": "桜",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯花」おうか",
         "熟語|「八重◯」やえざくら",
@@ -2491,6 +2615,7 @@
       "genreId": "kanji",
       "prompt": "する",
       "answer": "刷",
+      "level": "easy",
       "hintSource": [
         "熟語|「印◯」いんさつ",
         "熟語|「◯新」さっしん",
@@ -2517,6 +2642,7 @@
       "genreId": "kanji",
       "prompt": "ころす",
       "answer": "殺",
+      "level": "normal",
       "hintSource": [
         "熟語|「暗◯」あんさつ",
         "熟語|「虐◯」ぎゃくさつ",
@@ -2528,6 +2654,7 @@
       "genreId": "kanji",
       "prompt": "まじえる",
       "answer": "雑",
+      "level": "normal",
       "hintSource": [
         "熟語|「混◯」こんざつ",
         "熟語|「◯音」ざつおん",
@@ -2554,6 +2681,7 @@
       "genreId": "kanji",
       "prompt": "さら",
       "answer": "皿",
+      "level": "easy",
       "hintSource": [
         "熟語|「灰◯」はいざら",
         "熟語|「小◯」こざら",
@@ -2566,6 +2694,7 @@
       "genreId": "kanji",
       "prompt": "まいる",
       "answer": "参",
+      "level": "easy",
       "hintSource": [
         "熟語|「古◯」こさん",
         "熟語|「降◯」こうさん",
@@ -2577,6 +2706,7 @@
       "genreId": "kanji",
       "prompt": "ちる",
       "answer": "散",
+      "level": "easy",
       "hintSource": [
         "熟語|「解◯」かいさん",
         "熟語|「拡◯」かくさん",
@@ -2604,6 +2734,7 @@
       "genreId": "kanji",
       "prompt": "うむ",
       "answer": "産",
+      "level": "easy",
       "hintSource": [
         "熟語|「遺◯」いさん",
         "熟語|「共◯」きょうさん",
@@ -2615,6 +2746,7 @@
       "genreId": "kanji",
       "prompt": "かいこ",
       "answer": "蚕",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯糸」さんし",
         "熟語|「養◯」ようさん",
@@ -2627,6 +2759,7 @@
       "genreId": "kanji",
       "prompt": "すい",
       "answer": "酸",
+      "level": "normal",
       "hintSource": [
         "熟語|「塩◯」えんさん",
         "熟語|「核◯」かくさん",
@@ -2654,6 +2787,7 @@
       "genreId": "kanji",
       "prompt": "のこる",
       "answer": "残",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯虐」ざんぎゃく",
         "熟語|「◯業」ざんぎょう",
@@ -2680,6 +2814,7 @@
       "genreId": "kanji",
       "prompt": "つかさどる",
       "answer": "司",
+      "level": "easy",
       "hintSource": [
         "熟語|「公◯」コンス",
         "熟語|「行◯」ぎょうじ",
@@ -2691,6 +2826,7 @@
       "genreId": "kanji",
       "prompt": "さむらい",
       "answer": "士",
+      "level": "normal",
       "hintSource": [
         "熟語|「学◯」がくし",
         "熟語|「棋◯」きし",
@@ -2702,6 +2838,7 @@
       "genreId": "kanji",
       "prompt": "すがた",
       "answer": "姿",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯勢」しせい",
         "熟語|「容◯」ようし",
@@ -2729,6 +2866,7 @@
       "genreId": "kanji",
       "prompt": "シリング",
       "answer": "志",
+      "level": "normal",
       "hintSource": [
         "熟語|「意◯」いし",
         "熟語|「遺◯」いし",
@@ -2754,6 +2892,7 @@
       "genreId": "kanji",
       "prompt": "ゆび",
       "answer": "指",
+      "level": "easy",
       "hintSource": [
         "熟語|「屈◯」くっし",
         "熟語|「◯揮」しき",
@@ -2780,6 +2919,7 @@
       "genreId": "kanji",
       "prompt": "ささえる",
       "answer": "支",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯援」しえん",
         "熟語|「◯給」しきゅう",
@@ -2791,6 +2931,7 @@
       "genreId": "kanji",
       "prompt": "しぬ",
       "answer": "死",
+      "level": "easy",
       "hintSource": [
         "熟語|「枯◯」こし",
         "熟語|「◯球」しきゅう",
@@ -2802,6 +2943,7 @@
       "genreId": "kanji",
       "prompt": "うじ",
       "answer": "氏",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯神」うじがみ",
         "熟語|「◯名」しめい",
@@ -2813,6 +2955,7 @@
       "genreId": "kanji",
       "prompt": "わたくし",
       "answer": "私",
+      "level": "hard",
       "hintSource": [
         "熟語|「公◯」こうし",
         "熟語|「◯見」しけん",
@@ -2838,6 +2981,7 @@
       "genreId": "kanji",
       "prompt": "いたる",
       "answer": "至",
+      "level": "hard",
       "hintSource": [
         "熟語|「夏◯」げし",
         "熟語|「◯急」しきゅう",
@@ -2849,6 +2993,7 @@
       "genreId": "kanji",
       "prompt": "ことば",
       "answer": "詞",
+      "level": "hard",
       "hintSource": [
         "熟語|「歌◯」かし",
         "熟語|「作◯」さくし",
@@ -2860,6 +3005,7 @@
       "genreId": "kanji",
       "prompt": "うた",
       "answer": "詩",
+      "level": "easy",
       "hintSource": [
         "熟語|「漢◯」かんし",
         "熟語|「◯集」ししゅう",
@@ -2886,6 +3032,7 @@
       "genreId": "kanji",
       "prompt": "こころみる",
       "answer": "試",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯案」しあん",
         "熟語|「◯験」しけん",
@@ -2912,6 +3059,7 @@
       "genreId": "kanji",
       "prompt": "にる",
       "answer": "似",
+      "level": "normal",
       "hintSource": [
         "熟語|「酷◯」こくじ",
         "熟語|「◯顔」にがお",
@@ -2923,6 +3071,7 @@
       "genreId": "kanji",
       "prompt": "もつ",
       "answer": "持",
+      "level": "easy",
       "hintSource": [
         "熟語|「維◯」いじ",
         "熟語|「堅◯」けんじ",
@@ -2949,6 +3098,7 @@
       "genreId": "kanji",
       "prompt": "やめる",
       "answer": "辞",
+      "level": "easy",
       "hintSource": [
         "熟語|「賛◯」さんじ",
         "熟語|「◯意」じい",
@@ -2974,6 +3124,7 @@
       "genreId": "kanji",
       "prompt": "しる",
       "answer": "識",
+      "level": "normal",
       "hintSource": [
         "熟語|「意◯」いしき",
         "熟語|「学◯」がくしき",
@@ -3000,6 +3151,7 @@
       "genreId": "kanji",
       "prompt": "うしなう",
       "answer": "失",
+      "level": "easy",
       "hintSource": [
         "熟語|「過◯」かしつ",
         "熟語|「◯意」しつい",
@@ -3011,6 +3163,7 @@
       "genreId": "kanji",
       "prompt": "たち",
       "answer": "質",
+      "level": "normal",
       "hintSource": [
         "熟語|「悪◯」あくしつ",
         "熟語|「音◯」おんしつ",
@@ -3036,6 +3189,7 @@
       "genreId": "kanji",
       "prompt": "すてる",
       "answer": "捨",
+      "level": "hard",
       "hintSource": [
         "熟語|「取◯」しゅしゃ",
         "音読み|シャ",
@@ -3063,6 +3217,7 @@
       "genreId": "kanji",
       "prompt": "かりる",
       "answer": "借",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯款」しゃっかん",
         "熟語|「◯金」しゃっきん",
@@ -3090,6 +3245,7 @@
       "genreId": "kanji",
       "prompt": "わかい",
       "answer": "若",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯者」わかもの",
         "熟語|「◯手」わかて",
@@ -3101,6 +3257,7 @@
       "genreId": "kanji",
       "prompt": "ぬし",
       "answer": "主",
+      "level": "easy",
       "hintSource": [
         "熟語|「家◯」やぬし",
         "熟語|「株◯」かぶぬし",
@@ -3112,6 +3269,7 @@
       "genreId": "kanji",
       "prompt": "たね",
       "answer": "種",
+      "level": "easy",
       "hintSource": [
         "熟語|「一◯」いっしゅ",
         "熟語|「火◯」ひだね",
@@ -3123,6 +3281,7 @@
       "genreId": "kanji",
       "prompt": "さけ",
       "answer": "酒",
+      "level": "easy",
       "hintSource": [
         "熟語|「飲◯」いんしゅ",
         "熟語|「禁◯」きんしゅ",
@@ -3148,6 +3307,7 @@
       "genreId": "kanji",
       "prompt": "さずける",
       "answer": "授",
+      "level": "normal",
       "hintSource": [
         "熟語|「教◯」きょうじゅ",
         "熟語|「◯業」じゅぎょう",
@@ -3175,6 +3335,7 @@
       "genreId": "kanji",
       "prompt": "まわり",
       "answer": "周",
+      "level": "easy",
       "hintSource": [
         "熟語|「円◯」えんしゅう",
         "熟語|「◯囲」しゅうい",
@@ -3201,6 +3362,7 @@
       "genreId": "kanji",
       "prompt": "ひろう",
       "answer": "拾",
+      "level": "easy",
       "hintSource": [
         "熟語|「収◯」しゅうしゅう",
         "熟語|「◯得」しゅうとく",
@@ -3213,6 +3375,7 @@
       "genreId": "kanji",
       "prompt": "おおい",
       "answer": "衆",
+      "level": "hard",
       "hintSource": [
         "熟語|「観◯」かんしゅう",
         "熟語|「公◯」こうしゅう",
@@ -3238,6 +3401,7 @@
       "genreId": "kanji",
       "prompt": "あつまる",
       "answer": "集",
+      "level": "easy",
       "hintSource": [
         "熟語|「歌◯」かしゅう",
         "熟語|「句◯」くしゅう",
@@ -3263,6 +3427,7 @@
       "genreId": "kanji",
       "prompt": "したがう",
       "answer": "従",
+      "level": "hard",
       "hintSource": [
         "熟語|「侍◯」じじゅう",
         "熟語|「◯軍」じゅうぐん",
@@ -3289,6 +3454,7 @@
       "genreId": "kanji",
       "prompt": "やど",
       "answer": "宿",
+      "level": "easy",
       "hintSource": [
         "熟語|「下◯」げしゅく",
         "熟語|「合◯」がっしゅく",
@@ -3315,6 +3481,7 @@
       "genreId": "kanji",
       "prompt": "いわう",
       "answer": "祝",
+      "level": "easy",
       "hintSource": [
         "熟語|「慶◯」けいしゅく",
         "熟語|「◯賀」しゅくが",
@@ -3341,6 +3508,7 @@
       "genreId": "kanji",
       "prompt": "ちぢむ",
       "answer": "縮",
+      "level": "hard",
       "hintSource": [
         "熟語|「圧◯」あっしゅく",
         "熟語|「恐◯」きょうしゅく",
@@ -3368,6 +3536,7 @@
       "genreId": "kanji",
       "prompt": "うれる",
       "answer": "熟",
+      "level": "hard",
       "hintSource": [
         "熟語|「円◯」えんじゅく",
         "熟語|「◯語」じゅくご",
@@ -3379,6 +3548,7 @@
       "genreId": "kanji",
       "prompt": "すべ",
       "answer": "術",
+      "level": "normal",
       "hintSource": [
         "熟語|「学◯」がくじゅつ",
         "熟語|「奇◯」きじゅつ",
@@ -3390,6 +3560,7 @@
       "genreId": "kanji",
       "prompt": "じゅんじる",
       "answer": "準",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯拠」じゅんきょ",
         "熟語|「◯備」じゅんび",
@@ -3416,6 +3587,7 @@
       "genreId": "kanji",
       "prompt": "はじめ",
       "answer": "初",
+      "level": "easy",
       "hintSource": [
         "熟語|「最◯」さいしょ",
         "熟語|「◯演」しょえん",
@@ -3441,6 +3613,7 @@
       "genreId": "kanji",
       "prompt": "もろ",
       "answer": "諸",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯君」しょくん",
         "熟語|「◯国」しょこく",
@@ -3467,6 +3640,7 @@
       "genreId": "kanji",
       "prompt": "のぞく",
       "answer": "除",
+      "level": "hard",
       "hintSource": [
         "熟語|「解◯」かいじょ",
         "熟語|「駆◯」くじょ",
@@ -3478,6 +3652,7 @@
       "genreId": "kanji",
       "prompt": "あきなう",
       "answer": "商",
+      "level": "easy",
       "hintSource": [
         "熟語|「画◯」がしょう",
         "熟語|「◯会」しょうかい",
@@ -3489,6 +3664,7 @@
       "genreId": "kanji",
       "prompt": "となえる",
       "answer": "唱",
+      "level": "easy",
       "hintSource": [
         "熟語|「歌◯」かしょう",
         "熟語|「合◯」がっしょう",
@@ -3514,6 +3690,7 @@
       "genreId": "kanji",
       "prompt": "うけたまわる",
       "answer": "承",
+      "level": "hard",
       "hintSource": [
         "熟語|「継◯」けいしょう",
         "熟語|「◯諾」しょうだく",
@@ -3525,6 +3702,7 @@
       "genreId": "kanji",
       "prompt": "まねく",
       "answer": "招",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯集」しょうしゅう",
         "熟語|「◯待」しょうたい",
@@ -3551,6 +3729,7 @@
       "genreId": "kanji",
       "prompt": "きえる",
       "answer": "消",
+      "level": "easy",
       "hintSource": [
         "熟語|「解◯」かいしょう",
         "熟語|「◯化」しょうか",
@@ -3577,6 +3756,7 @@
       "genreId": "kanji",
       "prompt": "やく",
       "answer": "焼",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯却」しょうきゃく",
         "熟語|「◯酎」しょうちゅう",
@@ -3603,6 +3783,7 @@
       "genreId": "kanji",
       "prompt": "かえりみる",
       "answer": "省",
+      "level": "easy",
       "hintSource": [
         "熟語|「帰◯」きせい",
         "熟語|「三◯」さんせい",
@@ -3614,6 +3795,7 @@
       "genreId": "kanji",
       "prompt": "わらう",
       "answer": "笑",
+      "level": "easy",
       "hintSource": [
         "熟語|「苦◯」くしょう",
         "熟語|「◯顔」えがお",
@@ -3640,6 +3822,7 @@
       "genreId": "kanji",
       "prompt": "かたどる",
       "answer": "象",
+      "level": "normal",
       "hintSource": [
         "熟語|「印◯」いんしょう",
         "熟語|「気◯」きしょう",
@@ -3651,6 +3834,7 @@
       "genreId": "kanji",
       "prompt": "ほめる",
       "answer": "賞",
+      "level": "normal",
       "hintSource": [
         "熟語|「観◯」かんしょう",
         "熟語|「鑑◯」かんしょう",
@@ -3677,6 +3861,7 @@
       "genreId": "kanji",
       "prompt": "さわる",
       "answer": "障",
+      "level": "hard",
       "hintSource": [
         "熟語|「気◯」きざ",
         "熟語|「故◯」こしょう",
@@ -3703,6 +3888,7 @@
       "genreId": "kanji",
       "prompt": "のる",
       "answer": "乗",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯員」じょういん",
         "熟語|「◯降」じょうこう",
@@ -3714,6 +3900,7 @@
       "genreId": "kanji",
       "prompt": "つね",
       "answer": "常",
+      "level": "normal",
       "hintSource": [
         "熟語|「異◯」いじょう",
         "熟語|「恒◯」こうじょう",
@@ -3740,6 +3927,7 @@
       "genreId": "kanji",
       "prompt": "なさけ",
       "answer": "情",
+      "level": "normal",
       "hintSource": [
         "熟語|「愛◯」あいじょう",
         "熟語|「感◯」かんじょう",
@@ -3765,6 +3953,7 @@
       "genreId": "kanji",
       "prompt": "ふかい",
       "answer": "深",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯海」しんかい",
         "熟語|「◯刻」しんこく",
@@ -3792,6 +3981,7 @@
       "genreId": "kanji",
       "prompt": "もうす",
       "answer": "申",
+      "level": "easy",
       "hintSource": [
         "熟語|「上◯」じょうしん",
         "熟語|「◯告」しんこく",
@@ -3803,6 +3993,7 @@
       "genreId": "kanji",
       "prompt": "すすむ",
       "answer": "進",
+      "level": "easy",
       "hintSource": [
         "熟語|「勧◯」かんじん",
         "熟語|「急◯」きゅうしん",
@@ -3828,6 +4019,7 @@
       "genreId": "kanji",
       "prompt": "はり",
       "answer": "針",
+      "level": "hard",
       "hintSource": [
         "熟語|「指◯」ししん",
         "熟語|「◯金」はりがね",
@@ -3853,6 +4045,7 @@
       "genreId": "kanji",
       "prompt": "たれる",
       "answer": "垂",
+      "level": "hard",
       "hintSource": [
         "熟語|「懸◯」けんすい",
         "熟語|「◯直」すいちょく",
@@ -3865,6 +4058,7 @@
       "genreId": "kanji",
       "prompt": "いきおい",
       "answer": "勢",
+      "level": "normal",
       "hintSource": [
         "熟語|「威◯」いせい",
         "熟語|「気◯」きせい",
@@ -3876,6 +4070,7 @@
       "genreId": "kanji",
       "prompt": "さが",
       "answer": "性",
+      "level": "normal",
       "hintSource": [
         "熟語|「悪◯」あくせい",
         "熟語|「陰◯」いんせい",
@@ -3901,6 +4096,7 @@
       "genreId": "kanji",
       "prompt": "なる",
       "answer": "成",
+      "level": "easy",
       "hintSource": [
         "熟語|「化◯」かせい",
         "熟語|「完◯」かんせい",
@@ -3912,6 +4108,7 @@
       "genreId": "kanji",
       "prompt": "まつりごと",
       "answer": "政",
+      "level": "normal",
       "hintSource": [
         "熟語|「家◯」かせい",
         "熟語|「軍◯」ぐんせい",
@@ -3937,6 +4134,7 @@
       "genreId": "kanji",
       "prompt": "きよい",
       "answer": "清",
+      "level": "easy",
       "hintSource": [
         "熟語|「粛◯」しゅくせい",
         "熟語|「◯潔」せいけつ",
@@ -3962,6 +4160,7 @@
       "genreId": "kanji",
       "prompt": "もる",
       "answer": "盛",
+      "level": "hard",
       "hintSource": [
         "熟語|「旺◯」おうせい",
         "熟語|「◯況」せいきょう",
@@ -3973,6 +4172,7 @@
       "genreId": "kanji",
       "prompt": "しらげる",
       "answer": "精",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯鋭」せいえい",
         "熟語|「◯巧」せいこう",
@@ -3998,6 +4198,7 @@
       "genreId": "kanji",
       "prompt": "ひじり",
       "answer": "聖",
+      "level": "hard",
       "hintSource": [
         "熟語|「神◯」しんせい",
         "熟語|「◯域」せいいき",
@@ -4024,6 +4225,7 @@
       "genreId": "kanji",
       "prompt": "しずか",
       "answer": "静",
+      "level": "easy",
       "hintSource": [
         "熟語|「安◯」あんせい",
         "熟語|「閑◯」かんせい",
@@ -4035,6 +4237,7 @@
       "genreId": "kanji",
       "prompt": "むしろ",
       "answer": "席",
+      "level": "easy",
       "hintSource": [
         "熟語|「宴◯」えんせき",
         "熟語|「寄◯」よせ",
@@ -4046,6 +4249,7 @@
       "genreId": "kanji",
       "prompt": "むかし",
       "answer": "昔",
+      "level": "easy",
       "hintSource": [
         "熟語|「一◯」ひとむかし",
         "熟語|「◯話」むかしばなし",
@@ -4057,6 +4261,7 @@
       "genreId": "kanji",
       "prompt": "つむ",
       "answer": "積",
+      "level": "easy",
       "hintSource": [
         "熟語|「集◯」しゅうせき",
         "熟語|「◯立」つみたて",
@@ -4068,6 +4273,7 @@
       "genreId": "kanji",
       "prompt": "せめる",
       "answer": "責",
+      "level": "normal",
       "hintSource": [
         "熟語|「引◯」いんせき",
         "熟語|「自◯」じせき",
@@ -4095,6 +4301,7 @@
       "genreId": "kanji",
       "prompt": "もうける",
       "answer": "設",
+      "level": "normal",
       "hintSource": [
         "熟語|「架◯」かせつ",
         "熟語|「開◯」かいせつ",
@@ -4120,6 +4327,7 @@
       "genreId": "kanji",
       "prompt": "ふし",
       "answer": "節",
+      "level": "easy",
       "hintSource": [
         "熟語|「関◯」かんせつ",
         "熟語|「季◯」きせつ",
@@ -4146,6 +4354,7 @@
       "genreId": "kanji",
       "prompt": "たえる",
       "answer": "絶",
+      "level": "normal",
       "hintSource": [
         "熟語|「気◯」きぜつ",
         "熟語|「拒◯」きょぜつ",
@@ -4171,6 +4380,7 @@
       "genreId": "kanji",
       "prompt": "した",
       "answer": "舌",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯戦」ぜっせん",
         "熟語|「毒◯」どくぜつ",
@@ -4182,6 +4392,7 @@
       "genreId": "kanji",
       "prompt": "のたまう",
       "answer": "宣",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯言」せんげん",
         "熟語|「◯告」せんこく",
@@ -4193,6 +4404,7 @@
       "genreId": "kanji",
       "prompt": "もっぱら",
       "answer": "専",
+      "level": "hard",
       "hintSource": [
         "熟語|「住◯」じゅうせん",
         "熟語|「◯横」せんおう",
@@ -4219,6 +4431,7 @@
       "genreId": "kanji",
       "prompt": "いずみ",
       "answer": "泉",
+      "level": "hard",
       "hintSource": [
         "熟語|「温◯」おんせん",
         "熟語|「源◯」げんせん",
@@ -4244,6 +4457,7 @@
       "genreId": "kanji",
       "prompt": "あさい",
       "answer": "浅",
+      "level": "easy",
       "hintSource": [
         "熟語|「遠◯」とおあさ",
         "熟語|「◯瀬」あさせ",
@@ -4270,6 +4484,7 @@
       "genreId": "kanji",
       "prompt": "あらう",
       "answer": "洗",
+      "level": "hard",
       "hintSource": [
         "熟語|「水◯」すいせん",
         "熟語|「◯剤」せんざい",
@@ -4281,6 +4496,7 @@
       "genreId": "kanji",
       "prompt": "そめる",
       "answer": "染",
+      "level": "hard",
       "hintSource": [
         "熟語|「汚◯」おせん",
         "熟語|「感◯」かんせん",
@@ -4307,6 +4523,7 @@
       "genreId": "kanji",
       "prompt": "ぜに",
       "answer": "銭",
+      "level": "hard",
       "hintSource": [
         "熟語|「金◯」きんせん",
         "熟語|「小◯」こぜに",
@@ -4333,6 +4550,7 @@
       "genreId": "kanji",
       "prompt": "まったく",
       "answer": "全",
+      "level": "easy",
       "hintSource": [
         "熟語|「安◯」あんぜん",
         "熟語|「完◯」かんぜん",
@@ -4359,6 +4577,7 @@
       "genreId": "kanji",
       "prompt": "かなでる",
       "answer": "奏",
+      "level": "hard",
       "hintSource": [
         "熟語|「合◯」がっそう",
         "熟語|「◯者」そうしゃ",
@@ -4370,6 +4589,7 @@
       "genreId": "kanji",
       "prompt": "おもう",
       "answer": "想",
+      "level": "easy",
       "hintSource": [
         "熟語|「仮◯」かそう",
         "熟語|「回◯」かいそう",
@@ -4396,6 +4616,7 @@
       "genreId": "kanji",
       "prompt": "みさお",
       "answer": "操",
+      "level": "hard",
       "hintSource": [
         "熟語|「節◯」せっそう",
         "熟語|「◯業」そうぎょう",
@@ -4422,6 +4643,7 @@
       "genreId": "kanji",
       "prompt": "まど",
       "answer": "窓",
+      "level": "hard",
       "hintSource": [
         "熟語|「車◯」しゃそう",
         "熟語|「◯口」まどぐち",
@@ -4448,6 +4670,7 @@
       "genreId": "kanji",
       "prompt": "よそおう",
       "answer": "装",
+      "level": "hard",
       "hintSource": [
         "熟語|「衣◯」いしょう",
         "熟語|「仮◯」かそう",
@@ -4474,6 +4697,7 @@
       "genreId": "kanji",
       "prompt": "おくる",
       "answer": "送",
+      "level": "easy",
       "hintSource": [
         "熟語|「移◯」いそう",
         "熟語|「回◯」かいそう",
@@ -4500,6 +4724,7 @@
       "genreId": "kanji",
       "prompt": "のっとる",
       "answer": "則",
+      "level": "normal",
       "hintSource": [
         "熟語|「会◯」かいそく",
         "熟語|「規◯」きそく",
@@ -4525,6 +4750,7 @@
       "genreId": "kanji",
       "prompt": "いき",
       "answer": "息",
+      "level": "easy",
       "hintSource": [
         "熟語|「一◯」ひといき",
         "熟語|「休◯」きゅうそく",
@@ -4550,6 +4776,7 @@
       "genreId": "kanji",
       "prompt": "たば",
       "answer": "束",
+      "level": "easy",
       "hintSource": [
         "熟語|「花◯」はなたば",
         "熟語|「結◯」けっそく",
@@ -4561,6 +4788,7 @@
       "genreId": "kanji",
       "prompt": "はやい",
       "answer": "速",
+      "level": "easy",
       "hintSource": [
         "熟語|「加◯」かそく",
         "熟語|「快◯」かいそく",
@@ -4572,6 +4800,7 @@
       "genreId": "kanji",
       "prompt": "つづく",
       "answer": "続",
+      "level": "easy",
       "hintSource": [
         "熟語|「永◯」えいぞく",
         "熟語|「勤◯」きんぞく",
@@ -4599,6 +4828,7 @@
       "genreId": "kanji",
       "prompt": "そっする",
       "answer": "卒",
+      "level": "easy",
       "hintSource": [
         "熟語|「学◯」がくそつ",
         "熟語|「◯業」そつぎょう",
@@ -4625,6 +4855,7 @@
       "genreId": "kanji",
       "prompt": "ながらえる",
       "answer": "存",
+      "level": "hard",
       "hintSource": [
         "熟語|「温◯」おんぞん",
         "熟語|「既◯」きそん",
@@ -4636,6 +4867,7 @@
       "genreId": "kanji",
       "prompt": "まご",
       "answer": "孫",
+      "level": "easy",
       "hintSource": [
         "熟語|「子◯」しそん",
         "熟語|「◯娘」まごむすめ",
@@ -4648,6 +4880,7 @@
       "genreId": "kanji",
       "prompt": "ほか",
       "answer": "他",
+      "level": "easy",
       "hintSource": [
         "熟語|「自◯」じた",
         "熟語|「◯国」たこく",
@@ -4673,6 +4906,7 @@
       "genreId": "kanji",
       "prompt": "あいて",
       "answer": "対",
+      "level": "easy",
       "hintSource": [
         "熟語|「応◯」おうたい",
         "熟語|「相◯」あいたい",
@@ -4698,6 +4932,7 @@
       "genreId": "kanji",
       "prompt": "おびる",
       "answer": "帯",
+      "level": "easy",
       "hintSource": [
         "熟語|「一◯」いったい",
         "熟語|「温◯」おんたい",
@@ -4709,6 +4944,7 @@
       "genreId": "kanji",
       "prompt": "わざと",
       "answer": "態",
+      "level": "normal",
       "hintSource": [
         "熟語|「旧◯」きゅうたい",
         "熟語|「形◯」けいたい",
@@ -4736,6 +4972,7 @@
       "genreId": "kanji",
       "prompt": "かす",
       "answer": "貸",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯付」かしつけ",
         "熟語|「◯家」かしや",
@@ -4762,6 +4999,7 @@
       "genreId": "kanji",
       "prompt": "しりぞく",
       "answer": "退",
+      "level": "hard",
       "hintSource": [
         "熟語|「引◯」いんたい",
         "熟語|「減◯」げんたい",
@@ -4787,6 +5025,7 @@
       "genreId": "kanji",
       "prompt": "ひとえ",
       "answer": "単",
+      "level": "easy",
       "hintSource": [
         "熟語|「簡◯」かんたん",
         "熟語|「◯位」たんい",
@@ -4813,6 +5052,7 @@
       "genreId": "kanji",
       "prompt": "かつぐ",
       "answer": "担",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯架」たんか",
         "熟語|「◯当」たんとう",
@@ -4824,6 +5064,7 @@
       "genreId": "kanji",
       "prompt": "さぐる",
       "answer": "探",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯求」たんきゅう",
         "熟語|「◯究」たんきゅう",
@@ -4851,6 +5092,7 @@
       "genreId": "kanji",
       "prompt": "すみ",
       "answer": "炭",
+      "level": "easy",
       "hintSource": [
         "熟語|「採◯」さいたん",
         "熟語|「薪◯」しんたん",
@@ -4877,6 +5119,7 @@
       "genreId": "kanji",
       "prompt": "みじかい",
       "answer": "短",
+      "level": "easy",
       "hintSource": [
         "熟語|「最◯」さいたん",
         "熟語|「◯歌」たんか",
@@ -4902,6 +5145,7 @@
       "genreId": "kanji",
       "prompt": "おく",
       "answer": "置",
+      "level": "easy",
       "hintSource": [
         "熟語|「拘◯」こうち",
         "熟語|「処◯」しょち",
@@ -4913,6 +5157,7 @@
       "genreId": "kanji",
       "prompt": "きずく",
       "answer": "築",
+      "level": "normal",
       "hintSource": [
         "熟語|「改◯」かいちく",
         "熟語|「建◯」けんちく",
@@ -4924,6 +5169,7 @@
       "genreId": "kanji",
       "prompt": "きる",
       "answer": "着",
+      "level": "easy",
       "hintSource": [
         "熟語|「一◯」いっちゃく",
         "熟語|「横◯」おうちゃく",
@@ -4949,6 +5195,7 @@
       "genreId": "kanji",
       "prompt": "なか",
       "answer": "仲",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯介」ちゅうかい",
         "熟語|「◯間」なかま",
@@ -4960,6 +5207,7 @@
       "genreId": "kanji",
       "prompt": "はしら",
       "answer": "柱",
+      "level": "easy",
       "hintSource": [
         "熟語|「円◯」えんちゅう",
         "熟語|「支◯」しちゅう",
@@ -4971,6 +5219,7 @@
       "genreId": "kanji",
       "prompt": "そそぐ",
       "answer": "注",
+      "level": "easy",
       "hintSource": [
         "熟語|「傾◯」けいちゅう",
         "熟語|「受◯」じゅちゅう",
@@ -4982,6 +5231,7 @@
       "genreId": "kanji",
       "prompt": "ためる",
       "answer": "貯",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯金」ちょきん",
         "熟語|「◯水」ちょすい",
@@ -4993,6 +5243,7 @@
       "genreId": "kanji",
       "prompt": "ひのと",
       "answer": "丁",
+      "level": "easy",
       "hintSource": [
         "熟語|「一◯」いっちょう",
         "熟語|「◯重」ていちょう",
@@ -5004,6 +5255,7 @@
       "genreId": "kanji",
       "prompt": "きざす",
       "answer": "兆",
+      "level": "easy",
       "hintSource": [
         "熟語|「吉◯」きっちょう",
         "熟語|「前◯」ぜんちょう",
@@ -5029,6 +5281,7 @@
       "genreId": "kanji",
       "prompt": "やくしょ",
       "answer": "庁",
+      "level": "hard",
       "hintSource": [
         "熟語|「官◯」かんちょう",
         "熟語|「県◯」けんちょう",
@@ -5040,6 +5293,7 @@
       "genreId": "kanji",
       "prompt": "はる",
       "answer": "張",
+      "level": "normal",
       "hintSource": [
         "熟語|「拡◯」かくちょう",
         "熟語|「緊◯」きんちょう",
@@ -5065,6 +5319,7 @@
       "genreId": "kanji",
       "prompt": "いただく",
       "answer": "頂",
+      "level": "hard",
       "hintSource": [
         "熟語|「山◯」さんちょう",
         "熟語|「絶◯」ぜっちょう",
@@ -5076,6 +5331,7 @@
       "genreId": "kanji",
       "prompt": "いたい",
       "answer": "痛",
+      "level": "hard",
       "hintSource": [
         "熟語|「苦◯」くつう",
         "熟語|「腰◯」ようつう",
@@ -5102,6 +5358,7 @@
       "genreId": "kanji",
       "prompt": "ひくい",
       "answer": "低",
+      "level": "easy",
       "hintSource": [
         "熟語|「高◯」こうてい",
         "熟語|「最◯」さいてい",
@@ -5113,6 +5370,7 @@
       "genreId": "kanji",
       "prompt": "そこ",
       "answer": "底",
+      "level": "easy",
       "hintSource": [
         "熟語|「海◯」かいてい",
         "熟語|「根◯」こんてい",
@@ -5138,6 +5396,7 @@
       "genreId": "kanji",
       "prompt": "にわ",
       "answer": "庭",
+      "level": "easy",
       "hintSource": [
         "熟語|「家◯」かてい",
         "熟語|「校◯」こうてい",
@@ -5164,6 +5423,7 @@
       "genreId": "kanji",
       "prompt": "さげる",
       "answer": "提",
+      "level": "normal",
       "hintSource": [
         "熟語|「前◯」ぜんてい",
         "熟語|「◯案」ていあん",
@@ -5190,6 +5450,7 @@
       "genreId": "kanji",
       "prompt": "ほど",
       "answer": "程",
+      "level": "normal",
       "hintSource": [
         "熟語|「音◯」おんてい",
         "熟語|「課◯」かてい",
@@ -5216,6 +5477,7 @@
       "genreId": "kanji",
       "prompt": "かたき",
       "answer": "敵",
+      "level": "hard",
       "hintSource": [
         "熟語|「強◯」きょうてき",
         "熟語|「宿◯」しゅくてき",
@@ -5241,6 +5503,7 @@
       "genreId": "kanji",
       "prompt": "まと",
       "answer": "的",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯確」てきかく",
         "熟語|「◯中」てきちゅう",
@@ -5252,6 +5515,7 @@
       "genreId": "kanji",
       "prompt": "ふえ",
       "answer": "笛",
+      "level": "easy",
       "hintSource": [
         "熟語|「汽◯」きてき",
         "熟語|「警◯」けいてき",
@@ -5263,6 +5527,7 @@
       "genreId": "kanji",
       "prompt": "くろがね",
       "answer": "鉄",
+      "level": "easy",
       "hintSource": [
         "熟語|「鋼◯」こうてつ",
         "熟語|「私◯」してつ",
@@ -5289,6 +5554,7 @@
       "genreId": "kanji",
       "prompt": "ころがる",
       "answer": "転",
+      "level": "easy",
       "hintSource": [
         "熟語|「移◯」いてん",
         "熟語|「運◯」うんてん",
@@ -5315,6 +5581,7 @@
       "genreId": "kanji",
       "prompt": "つたわる",
       "answer": "伝",
+      "level": "easy",
       "hintSource": [
         "熟語|「遺◯」いでん",
         "熟語|「自◯」じでん",
@@ -5341,6 +5608,7 @@
       "genreId": "kanji",
       "prompt": "いたずら",
       "answer": "徒",
+      "level": "easy",
       "hintSource": [
         "熟語|「学◯」がくと",
         "熟語|「教◯」きょうと",
@@ -5366,6 +5634,7 @@
       "genreId": "kanji",
       "prompt": "のぼる",
       "answer": "登",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯記」とうき",
         "熟語|「◯校」とうこう",
@@ -5391,6 +5660,7 @@
       "genreId": "kanji",
       "prompt": "みやこ",
       "answer": "都",
+      "level": "easy",
       "hintSource": [
         "熟語|「古◯」こと",
         "熟語|「首◯」しゅと",
@@ -5417,6 +5687,7 @@
       "genreId": "kanji",
       "prompt": "なかま",
       "answer": "党",
+      "level": "hard",
       "hintSource": [
         "熟語|「一◯」いっとう",
         "熟語|「挙◯」きょとう",
@@ -5443,6 +5714,7 @@
       "genreId": "kanji",
       "prompt": "しま",
       "answer": "島",
+      "level": "easy",
       "hintSource": [
         "熟語|「群◯」ぐんとう",
         "熟語|「孤◯」ことう",
@@ -5469,6 +5741,7 @@
       "genreId": "kanji",
       "prompt": "なげる",
       "answer": "投",
+      "level": "easy",
       "hintSource": [
         "熟語|「継◯」けいとう",
         "熟語|「好◯」こうとう",
@@ -5494,6 +5767,7 @@
       "genreId": "kanji",
       "prompt": "すべる",
       "answer": "統",
+      "level": "normal",
       "hintSource": [
         "熟語|「系◯」けいとう",
         "熟語|「正◯」せいとう",
@@ -5521,6 +5795,7 @@
       "genreId": "kanji",
       "prompt": "まめ",
       "answer": "豆",
+      "level": "easy",
       "hintSource": [
         "熟語|「枝◯」えだまめ",
         "熟語|「小◯」あずき",
@@ -5532,6 +5807,7 @@
       "genreId": "kanji",
       "prompt": "はたらく",
       "answer": "働",
+      "level": "easy",
       "hintSource": [
         "熟語|「稼◯」かどう",
         "熟語|「労◯」ろうどう",
@@ -5544,6 +5820,7 @@
       "genreId": "kanji",
       "prompt": "うごく",
       "answer": "動",
+      "level": "easy",
       "hintSource": [
         "熟語|「異◯」いどう",
         "熟語|「移◯」いどう",
@@ -5555,6 +5832,7 @@
       "genreId": "kanji",
       "prompt": "みちびく",
       "answer": "導",
+      "level": "normal",
       "hintSource": [
         "熟語|「指◯」しどう",
         "熟語|「主◯」しゅどう",
@@ -5581,6 +5859,7 @@
       "genreId": "kanji",
       "prompt": "わらべ",
       "answer": "童",
+      "level": "easy",
       "hintSource": [
         "熟語|「学◯」がくどう",
         "熟語|「児◯」じどう",
@@ -5606,6 +5885,7 @@
       "genreId": "kanji",
       "prompt": "あかがね",
       "answer": "銅",
+      "level": "normal",
       "hintSource": [
         "熟語|「青◯」せいどう",
         "熟語|「◯貨」どうか",
@@ -5617,6 +5897,7 @@
       "genreId": "kanji",
       "prompt": "ひとり",
       "answer": "独",
+      "level": "normal",
       "hintSource": [
         "熟語|「孤◯」こどく",
         "熟語|「◯演」どくえん",
@@ -5642,6 +5923,7 @@
       "genreId": "kanji",
       "prompt": "いかん",
       "answer": "奈",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯良」なら",
         "音読み|ナ",
@@ -5667,6 +5949,7 @@
       "genreId": "kanji",
       "prompt": "なわ",
       "answer": "縄",
+      "level": "easy",
       "hintSource": [
         "熟語|「沖◯」おきなわ",
         "熟語|「◯文」じょうもん",
@@ -5693,6 +5976,7 @@
       "genreId": "kanji",
       "prompt": "ちち",
       "answer": "乳",
+      "level": "hard",
       "hintSource": [
         "熟語|「牛◯」ぎゅうにゅう",
         "熟語|「搾◯」さくにゅう",
@@ -5704,6 +5988,7 @@
       "genreId": "kanji",
       "prompt": "まかせる",
       "answer": "任",
+      "level": "normal",
       "hintSource": [
         "熟語|「委◯」いにん",
         "熟語|「一◯」いちにん",
@@ -5715,6 +6000,7 @@
       "genreId": "kanji",
       "prompt": "みとめる",
       "answer": "認",
+      "level": "hard",
       "hintSource": [
         "熟語|「確◯」かくにん",
         "熟語|「誤◯」ごにん",
@@ -5726,6 +6012,7 @@
       "genreId": "kanji",
       "prompt": "もえる",
       "answer": "燃",
+      "level": "normal",
       "hintSource": [
         "熟語|「再◯」さいねん",
         "熟語|「◯焼」ねんしょう",
@@ -5753,6 +6040,7 @@
       "genreId": "kanji",
       "prompt": "のうずる",
       "answer": "脳",
+      "level": "hard",
       "hintSource": [
         "熟語|「首◯」しゅのう",
         "熟語|「洗◯」せんのう",
@@ -5779,6 +6067,7 @@
       "genreId": "kanji",
       "prompt": "やぶる",
       "answer": "破",
+      "level": "normal",
       "hintSource": [
         "熟語|「喝◯」かっぱ",
         "熟語|「打◯」だは",
@@ -5804,6 +6093,7 @@
       "genreId": "kanji",
       "prompt": "おがむ",
       "answer": "拝",
+      "level": "hard",
       "hintSource": [
         "熟語|「参◯」さんぱい",
         "熟語|「崇◯」すうはい",
@@ -5815,6 +6105,7 @@
       "genreId": "kanji",
       "prompt": "くばる",
       "answer": "配",
+      "level": "easy",
       "hintSource": [
         "熟語|「気◯」けはい",
         "熟語|「勾◯」こうばい",
@@ -5840,6 +6131,7 @@
       "genreId": "kanji",
       "prompt": "うめ",
       "answer": "梅",
+      "level": "easy",
       "hintSource": [
         "熟語|「紅◯」こうばい",
         "熟語|「◯酒」うめしゅ",
@@ -5865,6 +6157,7 @@
       "genreId": "kanji",
       "prompt": "はこ",
       "answer": "箱",
+      "level": "easy",
       "hintSource": [
         "熟語|「重◯」じゅうばこ",
         "熟語|「本◯」ほんばこ",
@@ -5891,6 +6184,7 @@
       "genreId": "kanji",
       "prompt": "そる",
       "answer": "反",
+      "level": "easy",
       "hintSource": [
         "熟語|「違◯」いはん",
         "熟語|「減◯」げんたん",
@@ -5916,6 +6210,7 @@
       "genreId": "kanji",
       "prompt": "いた",
       "answer": "板",
+      "level": "easy",
       "hintSource": [
         "熟語|「看◯」かんばん",
         "熟語|「黒◯」こくばん",
@@ -5942,6 +6237,7 @@
       "genreId": "kanji",
       "prompt": "めし",
       "answer": "飯",
+      "level": "easy",
       "hintSource": [
         "熟語|「赤◯」せきはん",
         "熟語|「昼◯」ひるめし",
@@ -5968,6 +6264,7 @@
       "genreId": "kanji",
       "prompt": "いな",
       "answer": "否",
+      "level": "hard",
       "hintSource": [
         "熟語|「安◯」あんぴ",
         "熟語|「可◯」かひ",
@@ -5979,6 +6276,7 @@
       "genreId": "kanji",
       "prompt": "ひめる",
       "answer": "秘",
+      "level": "hard",
       "hintSource": [
         "熟語|「極◯」ごくひ",
         "熟語|「神◯」しんぴ",
@@ -5990,6 +6288,7 @@
       "genreId": "kanji",
       "prompt": "こえる",
       "answer": "肥",
+      "level": "normal",
       "hintSource": [
         "熟語|「堆◯」たいひ",
         "熟語|「◯大」ひだい",
@@ -6015,6 +6314,7 @@
       "genreId": "kanji",
       "prompt": "ついやす",
       "answer": "費",
+      "level": "normal",
       "hintSource": [
         "熟語|「会◯」かいひ",
         "熟語|「学◯」がくひ",
@@ -6026,6 +6326,7 @@
       "genreId": "kanji",
       "prompt": "あらず",
       "answer": "非",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯難」ひなん",
         "熟語|「◯行」ひこう",
@@ -6037,6 +6338,7 @@
       "genreId": "kanji",
       "prompt": "とぶ",
       "answer": "飛",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯行」ひこう",
         "熟語|「◯躍」ひやく",
@@ -6048,6 +6350,7 @@
       "genreId": "kanji",
       "prompt": "うつくしい",
       "answer": "美",
+      "level": "easy",
       "hintSource": [
         "熟語|「華◯」かび",
         "熟語|「甘◯」かんび",
@@ -6073,6 +6376,7 @@
       "genreId": "kanji",
       "prompt": "はな",
       "answer": "鼻",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯水」はなみず",
         "熟語|「◯先」はなさき",
@@ -6084,6 +6388,7 @@
       "genreId": "kanji",
       "prompt": "かならず",
       "answer": "必",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯見」ひっけん",
         "熟語|「◯需」ひつじゅ",
@@ -6095,6 +6400,7 @@
       "genreId": "kanji",
       "prompt": "ふで",
       "answer": "筆",
+      "level": "easy",
       "hintSource": [
         "熟語|「鉛◯」えんぴつ",
         "熟語|「自◯」じひつ",
@@ -6120,6 +6426,7 @@
       "genreId": "kanji",
       "prompt": "たわら",
       "answer": "俵",
+      "level": "hard",
       "hintSource": [
         "熟語|「土◯」どひょう",
         "音読み|ヒョウ",
@@ -6131,6 +6438,7 @@
       "genreId": "kanji",
       "prompt": "しるべ",
       "answer": "標",
+      "level": "easy",
       "hintSource": [
         "熟語|「指◯」しひょう",
         "熟語|「商◯」しょうひょう",
@@ -6157,6 +6465,7 @@
       "genreId": "kanji",
       "prompt": "やむ",
       "answer": "病",
+      "level": "easy",
       "hintSource": [
         "熟語|「臆◯」おくびょう",
         "熟語|「看◯」かんびょう",
@@ -6168,6 +6477,7 @@
       "genreId": "kanji",
       "prompt": "しな",
       "answer": "品",
+      "level": "easy",
       "hintSource": [
         "熟語|「遺◯」いひん",
         "熟語|「一◯」いっぴん",
@@ -6179,6 +6489,7 @@
       "genreId": "kanji",
       "prompt": "まずしい",
       "answer": "貧",
+      "level": "normal",
       "hintSource": [
         "熟語|「清◯」せいひん",
         "熟語|「◯血」ひんけつ",
@@ -6204,6 +6515,7 @@
       "genreId": "kanji",
       "prompt": "おっと",
       "answer": "夫",
+      "level": "easy",
       "hintSource": [
         "熟語|「工◯」くふう",
         "熟語|「◯妻」ふさい",
@@ -6231,6 +6543,7 @@
       "genreId": "kanji",
       "prompt": "よめ",
       "answer": "婦",
+      "level": "normal",
       "hintSource": [
         "熟語|「主◯」しゅふ",
         "熟語|「新◯」しんぷ",
@@ -6258,6 +6571,7 @@
       "genreId": "kanji",
       "prompt": "とむ",
       "answer": "富",
+      "level": "easy",
       "hintSource": [
         "熟語|「国◯」こくふ",
         "熟語|「貧◯」ひんぷ",
@@ -6269,6 +6583,7 @@
       "genreId": "kanji",
       "prompt": "ぬの",
       "answer": "布",
+      "level": "normal",
       "hintSource": [
         "熟語|「絹◯」けんぷ",
         "熟語|「公◯」こうふ",
@@ -6280,6 +6595,7 @@
       "genreId": "kanji",
       "prompt": "まける",
       "answer": "負",
+      "level": "easy",
       "hintSource": [
         "熟語|「自◯」じふ",
         "熟語|「勝◯」しょうぶ",
@@ -6305,6 +6621,7 @@
       "genreId": "kanji",
       "prompt": "たけ",
       "answer": "武",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯器」ぶき",
         "熟語|「◯者」むしゃ",
@@ -6330,6 +6647,7 @@
       "genreId": "kanji",
       "prompt": "また",
       "answer": "復",
+      "level": "normal",
       "hintSource": [
         "熟語|「往◯」おうふく",
         "熟語|「回◯」かいふく",
@@ -6357,6 +6675,7 @@
       "genreId": "kanji",
       "prompt": "はら",
       "answer": "腹",
+      "level": "hard",
       "hintSource": [
         "熟語|「空◯」くうふく",
         "熟語|「中◯」ちゅうふく",
@@ -6384,6 +6703,7 @@
       "genreId": "kanji",
       "prompt": "ほとけ",
       "answer": "仏",
+      "level": "normal",
       "hintSource": [
         "熟語|「石◯」せきぶつ",
         "熟語|「大◯」だいぶつ",
@@ -6409,6 +6729,7 @@
       "genreId": "kanji",
       "prompt": "デシメートル",
       "answer": "粉",
+      "level": "normal",
       "hintSource": [
         "熟語|「花◯」かふん",
         "熟語|「◯砕」ふんさい",
@@ -6436,6 +6757,7 @@
       "genreId": "kanji",
       "prompt": "つわもの",
       "answer": "兵",
+      "level": "easy",
       "hintSource": [
         "熟語|「騎◯」きへい",
         "熟語|「工◯」こうへい",
@@ -6447,6 +6769,7 @@
       "genreId": "kanji",
       "prompt": "たいら",
       "answer": "平",
+      "level": "easy",
       "hintSource": [
         "熟語|「公◯」こうへい",
         "熟語|「水◯」すいへい",
@@ -6458,6 +6781,7 @@
       "genreId": "kanji",
       "prompt": "とじる",
       "answer": "閉",
+      "level": "hard",
       "hintSource": [
         "熟語|「開◯」かいへい",
         "熟語|「◯会」へいかい",
@@ -6469,6 +6793,7 @@
       "genreId": "kanji",
       "prompt": "わかれる",
       "answer": "別",
+      "level": "easy",
       "hintSource": [
         "熟語|「格◯」かくべつ",
         "熟語|「鑑◯」かんべつ",
@@ -6496,6 +6821,7 @@
       "genreId": "kanji",
       "prompt": "あむ",
       "answer": "編",
+      "level": "normal",
       "hintSource": [
         "熟語|「改◯」かいへん",
         "熟語|「再◯」さいへん",
@@ -6522,6 +6848,7 @@
       "genreId": "kanji",
       "prompt": "あたり",
       "answer": "辺",
+      "level": "easy",
       "hintSource": [
         "熟語|「海◯」うみべ",
         "熟語|「岸◯」きしべ",
@@ -6547,6 +6874,7 @@
       "genreId": "kanji",
       "prompt": "たより",
       "answer": "便",
+      "level": "easy",
       "hintSource": [
         "熟語|「穏◯」おんびん",
         "熟語|「船◯」ふなびん",
@@ -6558,6 +6886,7 @@
       "genreId": "kanji",
       "prompt": "かんむり",
       "answer": "弁",
+      "level": "normal",
       "hintSource": [
         "熟語|「駅◯」えきべん",
         "熟語|「勘◯」かんべん",
@@ -6583,6 +6912,7 @@
       "genreId": "kanji",
       "prompt": "おぎなう",
       "answer": "補",
+      "level": "hard",
       "hintSource": [
         "熟語|「候◯」こうほ",
         "熟語|「◯完」ほかん",
@@ -6594,6 +6924,7 @@
       "genreId": "kanji",
       "prompt": "はか",
       "answer": "墓",
+      "level": "normal",
       "hintSource": [
         "熟語|「墳◯」ふんぼ",
         "熟語|「◯穴」ぼけつ",
@@ -6621,6 +6952,7 @@
       "genreId": "kanji",
       "prompt": "つつむ",
       "answer": "包",
+      "level": "easy",
       "hintSource": [
         "熟語|「梱◯」こんぽう",
         "熟語|「内◯」ないほう",
@@ -6646,6 +6978,7 @@
       "genreId": "kanji",
       "prompt": "むくいる",
       "answer": "報",
+      "level": "normal",
       "hintSource": [
         "熟語|「会◯」かいほう",
         "熟語|「官◯」かんぽう",
@@ -6657,6 +6990,7 @@
       "genreId": "kanji",
       "prompt": "はなす",
       "answer": "放",
+      "level": "easy",
       "hintSource": [
         "熟語|「解◯」かいほう",
         "熟語|「開◯」かいほう",
@@ -6682,6 +7016,7 @@
       "genreId": "kanji",
       "prompt": "おとずれる",
       "answer": "訪",
+      "level": "hard",
       "hintSource": [
         "熟語|「探◯」たんぼう",
         "熟語|「◯日」ほうにち",
@@ -6707,6 +7042,7 @@
       "genreId": "kanji",
       "prompt": "ゆたか",
       "answer": "豊",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯漁」ほうりょう",
         "熟語|「◯作」ほうさく",
@@ -6718,6 +7054,7 @@
       "genreId": "kanji",
       "prompt": "わすれる",
       "answer": "忘",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯却」ぼうきゃく",
         "熟語|「◯年会」ぼうねんかい",
@@ -6744,6 +7081,7 @@
       "genreId": "kanji",
       "prompt": "ふせぐ",
       "answer": "防",
+      "level": "normal",
       "hintSource": [
         "熟語|「攻◯」こうぼう",
         "熟語|「国◯」こくぼう",
@@ -6769,6 +7107,7 @@
       "genreId": "kanji",
       "prompt": "すえ",
       "answer": "末",
+      "level": "easy",
       "hintSource": [
         "熟語|「巻◯」かんまつ",
         "熟語|「期◯」きまつ",
@@ -6780,6 +7119,7 @@
       "genreId": "kanji",
       "prompt": "あじ",
       "answer": "味",
+      "level": "easy",
       "hintSource": [
         "熟語|「意◯」いみ",
         "熟語|「塩◯」しおあじ",
@@ -6791,6 +7131,7 @@
       "genreId": "kanji",
       "prompt": "いまだ",
       "answer": "未",
+      "level": "easy",
       "hintSource": [
         "熟語|「◯開」みかい",
         "熟語|「◯決」みけつ",
@@ -6802,6 +7143,7 @@
       "genreId": "kanji",
       "prompt": "たみ",
       "answer": "民",
+      "level": "easy",
       "hintSource": [
         "熟語|「移◯」いみん",
         "熟語|「区◯」くみん",
@@ -6828,6 +7170,7 @@
       "genreId": "kanji",
       "prompt": "ゆめ",
       "answer": "夢",
+      "level": "normal",
       "hintSource": [
         "熟語|「悪◯」あくむ",
         "熟語|「初◯」はつゆめ",
@@ -6855,6 +7198,7 @@
       "genreId": "kanji",
       "prompt": "いのち",
       "answer": "命",
+      "level": "easy",
       "hintSource": [
         "熟語|「運◯」うんめい",
         "熟語|「延◯」えんめい",
@@ -6866,6 +7210,7 @@
       "genreId": "kanji",
       "prompt": "まよう",
       "answer": "迷",
+      "level": "normal",
       "hintSource": [
         "熟語|「混◯」こんめい",
         "熟語|「低◯」ていめい",
@@ -6891,6 +7236,7 @@
       "genreId": "kanji",
       "prompt": "つづまる",
       "answer": "約",
+      "level": "easy",
       "hintSource": [
         "熟語|「解◯」かいやく",
         "熟語|「確◯」かくやく",
@@ -6902,6 +7248,7 @@
       "genreId": "kanji",
       "prompt": "くすり",
       "answer": "薬",
+      "level": "easy",
       "hintSource": [
         "熟語|「医◯」いやく",
         "熟語|「火◯」かやく",
@@ -6929,6 +7276,7 @@
       "genreId": "kanji",
       "prompt": "わけ",
       "answer": "訳",
+      "level": "hard",
       "hintSource": [
         "熟語|「英◯」えいやく",
         "熟語|「全◯」ぜんやく",
@@ -6940,6 +7288,7 @@
       "genreId": "kanji",
       "prompt": "あぶら",
       "answer": "油",
+      "level": "easy",
       "hintSource": [
         "熟語|「給◯」きゅうゆ",
         "熟語|「軽◯」けいゆ",
@@ -6951,6 +7300,7 @@
       "genreId": "kanji",
       "prompt": "いさむ",
       "answer": "勇",
+      "level": "easy",
       "hintSource": [
         "熟語|「蛮◯」ばんゆう",
         "熟語|「武◯」ぶゆう",
@@ -6977,6 +7327,7 @@
       "genreId": "kanji",
       "prompt": "よし",
       "answer": "由",
+      "level": "easy",
       "hintSource": [
         "熟語|「経◯」けいゆ",
         "熟語|「事◯」じゆう",
@@ -6988,6 +7339,7 @@
       "genreId": "kanji",
       "prompt": "あそぶ",
       "answer": "遊",
+      "level": "easy",
       "hintSource": [
         "熟語|「外◯」がいゆう",
         "熟語|「周◯」しゅうゆう",
@@ -7015,6 +7367,7 @@
       "genreId": "kanji",
       "prompt": "あらかじめ",
       "answer": "予",
+      "level": "easy",
       "hintSource": [
         "熟語|「猶◯」ゆうよ",
         "熟語|「◯感」よかん",
@@ -7026,6 +7379,7 @@
       "genreId": "kanji",
       "prompt": "あまる",
       "answer": "余",
+      "level": "normal",
       "hintSource": [
         "熟語|「◯韻」よいん",
         "熟語|「◯暇」よか",
@@ -7037,6 +7391,7 @@
       "genreId": "kanji",
       "prompt": "あずける",
       "answer": "預",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯金」よきん",
         "熟語|「◯託」よたく",
@@ -7048,6 +7403,7 @@
       "genreId": "kanji",
       "prompt": "おさない",
       "answer": "幼",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯子」おさなご",
         "熟語|「◯児」ようじ",
@@ -7073,6 +7429,7 @@
       "genreId": "kanji",
       "prompt": "いれる",
       "answer": "容",
+      "level": "normal",
       "hintSource": [
         "熟語|「寛◯」かんよう",
         "熟語|「許◯」きょよう",
@@ -7098,6 +7455,7 @@
       "genreId": "kanji",
       "prompt": "さま",
       "answer": "様",
+      "level": "easy",
       "hintSource": [
         "熟語|「異◯」いよう",
         "熟語|「一◯」いちよう",
@@ -7124,6 +7482,7 @@
       "genreId": "kanji",
       "prompt": "やしなう",
       "answer": "養",
+      "level": "easy",
       "hintSource": [
         "熟語|「栄◯」えいよう",
         "熟語|「休◯」きゅうよう",
@@ -7149,6 +7508,7 @@
       "genreId": "kanji",
       "prompt": "ほっする",
       "answer": "欲",
+      "level": "hard",
       "hintSource": [
         "熟語|「食◯」しょくよく",
         "熟語|「無◯」むよく",
@@ -7174,6 +7534,7 @@
       "genreId": "kanji",
       "prompt": "あびる",
       "answer": "浴",
+      "level": "easy",
       "hintSource": [
         "熟語|「入◯」にゅうよく",
         "熟語|「◯室」よくしつ",
@@ -7199,6 +7560,7 @@
       "genreId": "kanji",
       "prompt": "おちる",
       "answer": "落",
+      "level": "easy",
       "hintSource": [
         "熟語|「下◯」げらく",
         "熟語|「陥◯」かんらく",
@@ -7226,6 +7588,7 @@
       "genreId": "kanji",
       "prompt": "みだれる",
       "answer": "乱",
+      "level": "hard",
       "hintSource": [
         "熟語|「狂◯」きょうらん",
         "熟語|「混◯」こんらん",
@@ -7237,6 +7600,7 @@
       "genreId": "kanji",
       "prompt": "たまご",
       "answer": "卵",
+      "level": "hard",
       "hintSource": [
         "熟語|「鶏◯」けいらん",
         "熟語|「産◯」さんらん",
@@ -7248,6 +7612,7 @@
       "genreId": "kanji",
       "prompt": "ほぼ",
       "answer": "略",
+      "level": "normal",
       "hintSource": [
         "熟語|「概◯」がいりゃく",
         "熟語|「簡◯」かんりゃく",
@@ -7274,6 +7639,7 @@
       "genreId": "kanji",
       "prompt": "ながれる",
       "answer": "流",
+      "level": "easy",
       "hintSource": [
         "熟語|「一◯」いちりゅう",
         "熟語|「下◯」かりゅう",
@@ -7301,6 +7667,7 @@
       "genreId": "kanji",
       "prompt": "えり",
       "answer": "領",
+      "level": "normal",
       "hintSource": [
         "熟語|「横◯」おうりょう",
         "熟語|「綱◯」こうりょう",
@@ -7312,6 +7679,7 @@
       "genreId": "kanji",
       "prompt": "みどり",
       "answer": "緑",
+      "level": "easy",
       "hintSource": [
         "熟語|「新◯」しんりょく",
         "熟語|「◯色」みどりいろ",
@@ -7337,6 +7705,7 @@
       "genreId": "kanji",
       "prompt": "たぐい",
       "answer": "類",
+      "level": "easy",
       "hintSource": [
         "熟語|「魚◯」ぎょるい",
         "熟語|「穀◯」こくるい",
@@ -7363,6 +7732,7 @@
       "genreId": "kanji",
       "prompt": "たとえる",
       "answer": "例",
+      "level": "easy",
       "hintSource": [
         "熟語|「異◯」いれい",
         "熟語|「一◯」いちれい",
@@ -7389,6 +7759,7 @@
       "genreId": "kanji",
       "prompt": "つめたい",
       "answer": "冷",
+      "level": "easy",
       "hintSource": [
         "熟語|「寒◯」かんれい",
         "熟語|「◯害」れいがい",
@@ -7400,6 +7771,7 @@
       "genreId": "kanji",
       "prompt": "ねる",
       "answer": "練",
+      "level": "easy",
       "hintSource": [
         "熟語|「訓◯」くんれん",
         "熟語|「試◯」しれん",
@@ -7411,6 +7783,7 @@
       "genreId": "kanji",
       "prompt": "つらなる",
       "answer": "連",
+      "level": "easy",
       "hintSource": [
         "熟語|「一◯」いちれん",
         "熟語|「関◯」かんれん",
@@ -7436,6 +7809,7 @@
       "genreId": "kanji",
       "prompt": "ろうする",
       "answer": "労",
+      "level": "easy",
       "hintSource": [
         "熟語|「過◯」かろう",
         "熟語|「勤◯」きんろう",
@@ -7462,6 +7836,7 @@
       "genreId": "kanji",
       "prompt": "ほがらか",
       "answer": "朗",
+      "level": "hard",
       "hintSource": [
         "熟語|「◯詠」ろうえい",
         "熟語|「◯読」ろうどく",
@@ -7487,6 +7862,7 @@
       "genreId": "kanji",
       "prompt": "おいる",
       "answer": "老",
+      "level": "easy",
       "hintSource": [
         "熟語|「敬◯」けいろう",
         "熟語|「元◯」げんろう",
@@ -7498,6 +7874,7 @@
       "genreId": "kanji",
       "prompt": "あげつらう",
       "answer": "論",
+      "level": "hard",
       "hintSource": [
         "熟語|「異◯」いろん",
         "熟語|「概◯」がいろん",
@@ -7524,6 +7901,7 @@
       "genreId": "kanji",
       "prompt": "やわらぐ",
       "answer": "和",
+      "level": "easy",
       "hintSource": [
         "熟語|「英◯」えいわ",
         "熟語|「漢◯」かんわ",

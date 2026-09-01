@@ -7,17 +7,18 @@ import generatedKanji from './questions.kanji.generated.json'
  * 生成に向かない字や、語釈を添えないと答えが一意に決まらない字はここに置く。
  */
 const MANUAL_QUESTIONS: Question[] = [
-  { id: 'en-001', genreId: 'english', prompt: 'いちご', answer: 'strawberry' },
-  { id: 'en-002', genreId: 'english', prompt: 'ひまわり', answer: 'sunflower' },
-  { id: 'en-003', genreId: 'english', prompt: 'としょかん', answer: 'library' },
-  { id: 'en-004', genreId: 'english', prompt: 'きせつ', answer: 'season' },
-  { id: 'en-005', genreId: 'english', prompt: 'おもいで', answer: 'memory' },
+  { id: 'en-001', genreId: 'english', prompt: 'いちご', answer: 'strawberry', level: 'easy' },
+  { id: 'en-002', genreId: 'english', prompt: 'ひまわり', answer: 'sunflower', level: 'easy' },
+  { id: 'en-003', genreId: 'english', prompt: 'としょかん', answer: 'library', level: 'normal' },
+  { id: 'en-004', genreId: 'english', prompt: 'きせつ', answer: 'season', level: 'easy' },
+  { id: 'en-005', genreId: 'english', prompt: 'おもいで', answer: 'memory', level: 'easy' },
 
   {
     id: 'kj-001',
     genreId: 'kanji',
     prompt: 'はな(草木のはな)',
     answer: '花',
+    level: 'easy',
     hintSource: ['部首|艹(くさかんむり)', 'のこりのパーツ|化', '画数|7画', '音読み|カ'],
   },
   {
@@ -25,6 +26,7 @@ const MANUAL_QUESTIONS: Question[] = [
     genreId: 'kanji',
     prompt: 'やすむ',
     answer: '休',
+    level: 'easy',
     hintSource: ['部首|亻(にんべん)', 'のこりのパーツ|木', '画数|6画', '音読み|キュウ'],
   },
 ]

@@ -1,5 +1,5 @@
 import { questionsOf } from '@/data/questions'
-import type { GenreId, InputMode, Question } from '@/types'
+import type { Difficulty, GenreId, InputMode, Question } from '@/types'
 
 /**
  * 1回分の出題セット。
@@ -20,7 +20,11 @@ export interface QuizSession {
  * 制限を足すときも画面を触らずに済む。
  */
 export interface QuizSource {
-  startSession(genreId: GenreId, inputMode: InputMode): Promise<QuizSession>
+  startSession(
+    genreId: GenreId,
+    inputMode: InputMode,
+    difficulty: Difficulty,
+  ): Promise<QuizSession>
 }
 
 /**
@@ -32,6 +36,14 @@ export interface QuizSource {
 function isAnswerable(question: Question, inputMode: InputMode): boolean {
   if (inputMode === 'assemble') return Boolean(question.parts?.length && question.partTiles?.length)
   return true
+}
+
+/**
+ * 選んだ難易度の問題か。難易度未設定の古い問題は「ふつう」とみなす
+ * (level を持たない問題が難易度選択で完全に出せなくならないように)。
+ */
+function matchesDifficulty(question: Question, difficulty: Difficulty): boolean {
+  return (question.level ?? 'normal') === difficulty
 }
 
 /** Fisher-Yates。出題順を決めるのも取得側の責務なのでここで混ぜる。 */
@@ -52,10 +64,14 @@ function shuffle<T>(items: T[]): T[] {
  * 画面は返ってきた数がすべてだとして扱うので、どちらでも QuizPage は変わらない。
  */
 export const localQuizSource: QuizSource = {
-  async startSession(genreId, inputMode) {
+  async startSession(genreId, inputMode, difficulty) {
     return {
       genreId,
-      questions: shuffle(questionsOf(genreId).filter((q) => isAnswerable(q, inputMode))),
+      questions: shuffle(
+        questionsOf(genreId).filter(
+          (q) => isAnswerable(q, inputMode) && matchesDifficulty(q, difficulty),
+        ),
+      ),
     }
   },
 }

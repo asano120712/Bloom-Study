@@ -12,9 +12,9 @@ import { judgeHandwriting, judgeParts, judgeTyping } from '@/features/judge'
 import { useHintTimer } from '@/hooks/useHintTimer'
 import { useQuizSession } from '@/hooks/useQuizSession'
 import { useStats } from '@/hooks/useStats'
-import type { AnswerRecord, InputMode, JudgeResult } from '@/types'
+import { isDifficulty, type AnswerRecord, type InputMode, type JudgeResult } from '@/types'
 import { shuffleWithSeed } from '@/utils/shuffle'
-import type { ResultState } from './ResultPage'
+import type { ResultState, ResultSubmission } from './ResultPage'
 
 export function QuizPage() {
   const { genreId } = useParams<{ genreId: string }>()
@@ -33,14 +33,22 @@ export function QuizPage() {
       ? modeParam
       : (genre?.defaultInputMode ?? 'typing')
 
-  // 出せる問題は入力方法で変わる(assemble は部品のタイルを持つ問題だけ)
+  // 難易度も URL から受け取る。直接叩かれた場合は「ふつう」に寄せる
+  const levelParam = searchParams.get('level')
+  const difficulty = isDifficulty(levelParam) ? levelParam : 'normal'
+
+  // 出せる問題は入力方法と難易度で変わる(assemble は部品のタイルを持つ問題だけ)
   const { questions, cursor, isLoading: isSessionLoading, commitAdvance } = useQuizSession(
     genre?.id,
     inputMode,
+    difficulty,
   )
   const question = questions[cursor]
-  /** 手書きモードで「かけた」を押した後、自己申告を待っている状態 */
-  const [selfReport, setSelfReport] = useState<{ hintsUsed: number } | null>(null)
+  /**
+   * 手書きモードで「かけた」を押した後、自己申告を待っている状態。
+   * 書いた字は結果画面で見せるため、キャンバスの画像も一緒に抱えておく。
+   */
+  const [selfReport, setSelfReport] = useState<{ hintsUsed: number; image: string } | null>(null)
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
 
@@ -83,7 +91,11 @@ export function QuizPage() {
     return <Navigate to="/genres" replace />
   }
 
-  const finish = async (result: JudgeResult, hintsUsed: number) => {
+  const finish = async (
+    result: JudgeResult,
+    hintsUsed: number,
+    submission: ResultSubmission,
+  ) => {
     const answer: AnswerRecord = {
       questionId: question.id,
       genreId: genre.id,
@@ -101,6 +113,9 @@ export function QuizPage() {
       prompt: question.prompt,
       genreId: genre.id,
       inputMode,
+      difficulty,
+      // 自分が書いた・打ったこたえを結果画面で見せる
+      submission,
       // この出題セットに次の問題が残っているときだけ「つぎへ」を出す
       hasNext: cursor + 1 < questions.length,
       currentStreak: next.currentStreak,
@@ -143,14 +158,24 @@ export function QuizPage() {
             <div className="flex gap-3">
               <button
                 type="button"
-                onClick={() => finish(judgeHandwriting(question, false), selfReport.hintsUsed)}
+                onClick={() =>
+                  finish(judgeHandwriting(question, false), selfReport.hintsUsed, {
+                    kind: 'handwriting',
+                    imageDataUrl: selfReport.image,
+                  })
+                }
                 className="min-h-14 flex-1 rounded-full border-2 border-warm-500 text-lg font-bold text-warm-600"
               >
                 ✖️ ちがった
               </button>
               <button
                 type="button"
-                onClick={() => finish(judgeHandwriting(question, true), selfReport.hintsUsed)}
+                onClick={() =>
+                  finish(judgeHandwriting(question, true), selfReport.hintsUsed, {
+                    kind: 'handwriting',
+                    imageDataUrl: selfReport.image,
+                  })
+                }
                 className="min-h-14 flex-1 rounded-full bg-bloom-700 text-lg font-bold text-white"
               >
                 ⭕️ できた
@@ -162,13 +187,18 @@ export function QuizPage() {
             {inputMode === 'typing' && (
               <TypingInput
                 key={`typing-${question.id}`}
-                onSubmit={(value) => finish(judgeTyping(question, value), revealedCount)}
+                onSubmit={(value) =>
+                  finish(judgeTyping(question, value), revealedCount, {
+                    kind: 'text',
+                    text: value,
+                  })
+                }
               />
             )}
             {inputMode === 'handwriting' && (
               <HandwritingCanvas
                 key={`handwriting-${question.id}`}
-                onSubmit={() => setSelfReport({ hintsUsed: revealedCount })}
+                onSubmit={(image) => setSelfReport({ hintsUsed: revealedCount, image })}
               />
             )}
             {inputMode === 'assemble' && (
@@ -176,7 +206,12 @@ export function QuizPage() {
                 key={`assemble-${question.id}`}
                 tiles={partTiles}
                 requiredCount={question.parts?.length ?? 0}
-                onSubmit={(selected) => finish(judgeParts(question, selected), revealedCount)}
+                onSubmit={(selected) =>
+                  finish(judgeParts(question, selected), revealedCount, {
+                    kind: 'parts',
+                    parts: selected,
+                  })
+                }
               />
             )}
           </>

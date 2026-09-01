@@ -5,7 +5,13 @@ import { BloomMark } from '@/components/BloomMark'
 import { findGenre } from '@/data/genres'
 import { useHasFinePointer } from '@/hooks/useHasFinePointer'
 import { canSpeak, speak } from '@/services/speech'
-import type { GenreId, InputMode, JudgeResult } from '@/types'
+import type { Difficulty, GenreId, InputMode, JudgeResult } from '@/types'
+
+/** 結果画面で見せる「自分のこたえ」。入力方法によって形が違う */
+export type ResultSubmission =
+  | { kind: 'text'; text: string }
+  | { kind: 'parts'; parts: string[] }
+  | { kind: 'handwriting'; imageDataUrl: string }
 
 export interface ResultState {
   result: JudgeResult
@@ -13,6 +19,10 @@ export interface ResultState {
   genreId: GenreId
   /** 「つぎの問題へ」で同じこたえかたを引き継ぐ */
   inputMode: InputMode
+  /** 「つぎの問題へ」で同じ難易度を引き継ぐ */
+  difficulty: Difficulty
+  /** 自分が書いた・打ったこたえ */
+  submission: ResultSubmission
   hasNext: boolean
   currentStreak: number
 }
@@ -36,7 +46,7 @@ export function ResultPage() {
   const answer = state?.result.answer
   const nextPath = state
     ? state.hasNext
-      ? `/quiz/${state.genreId}?mode=${state.inputMode}`
+      ? `/quiz/${state.genreId}?mode=${state.inputMode}&level=${state.difficulty}`
       : '/genres'
     : '/genres'
 
@@ -70,7 +80,7 @@ export function ResultPage() {
 
   if (!state) return <Navigate to="/genres" replace />
 
-  const { result, prompt, hasNext, currentStreak } = state
+  const { result, prompt, submission, hasNext, currentStreak } = state
   const canReadAloud = Boolean(speechLang) && canSpeak()
 
   return (
@@ -102,6 +112,8 @@ export function ResultPage() {
           )}
         </div>
 
+        <SubmissionView submission={submission} />
+
         <p className="text-sm text-ink-600">🌱 {currentStreak} 問れんぞく正解中</p>
 
         <div className="flex w-full flex-col gap-3">
@@ -127,5 +139,41 @@ export function ResultPage() {
         </div>
       </div>
     </AppShell>
+  )
+}
+
+/** 自分が書いた・打った・組んだこたえを見せる。入力方法ごとに見せ方を変える */
+function SubmissionView({ submission }: { submission: ResultSubmission }) {
+  if (submission.kind === 'handwriting') {
+    return (
+      <div className="w-full">
+        <p className="text-sm text-ink-400">じぶんが かいた こたえ</p>
+        <img
+          src={submission.imageDataUrl}
+          alt="自分が書いたこたえ"
+          className="mx-auto mt-2 w-full max-w-xs rounded-2xl border-2 border-bloom-200 bg-white"
+        />
+      </div>
+    )
+  }
+
+  if (submission.kind === 'parts') {
+    return (
+      <div className="w-full">
+        <p className="text-sm text-ink-400">じぶんが えらんだ ぶひん</p>
+        <p className="mt-2 text-2xl font-bold text-ink-900">
+          {submission.parts.length ? submission.parts.join(' ・ ') : '—'}
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full">
+      <p className="text-sm text-ink-400">じぶんが うった こたえ</p>
+      <p className="mt-2 text-2xl font-bold tracking-wide text-ink-900">
+        {submission.text || '—'}
+      </p>
+    </div>
   )
 }

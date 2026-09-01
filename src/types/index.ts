@@ -2,6 +2,35 @@
 export type GenreId = 'english' | 'kanji'
 
 /**
+ * 出題の難易度。学年・学習段階のめやすで3段階に分ける。
+ * 漢字は配当学年(小3〜小6)、英単語は NGSL の頻度帯(1000/2000/3000語)から割り当てる。
+ * 元データの詳しさ以上には刻めないため、まずは学習段階のめやすとして3段階にとどめる。
+ */
+export type Difficulty = 'easy' | 'normal' | 'hard'
+
+export interface DifficultyOption {
+  id: Difficulty
+  /** 選択ボタンに出す短い見出し */
+  label: string
+  /** 対象の学習段階のめやす */
+  note: string
+}
+
+/**
+ * 難易度の並び(やさしい→むずかしい)。選択シートはこの順で並べる。
+ * ラベルは対象者(各学校・社会人)が分かるようにする。
+ */
+export const DIFFICULTIES: DifficultyOption[] = [
+  { id: 'easy', label: 'やさしい', note: '小学生むけ' },
+  { id: 'normal', label: 'ふつう', note: '中学生むけ' },
+  { id: 'hard', label: 'むずかしい', note: '高校・社会人むけ' },
+]
+
+export function isDifficulty(value: string | null | undefined): value is Difficulty {
+  return value === 'easy' || value === 'normal' || value === 'hard'
+}
+
+/**
  * 答えの入力方法。
  * assemble は部品を選んで組み立てる方式。部品は思い出したと申告するまで
  * 見せない(先に見せると再認になり、思い出す練習にならないため)。
@@ -35,6 +64,11 @@ export interface Question {
   prompt: string
   /** 正解文字列 */
   answer: string
+  /**
+   * 難易度。無い問題は難易度で絞り込むと出せなくなるため、
+   * 出題側(quizSource)は未設定を「ふつう」として扱う。
+   */
+  level?: Difficulty
   /** 正解と同等に扱う表記ゆれ(送りがな違い、別綴りなど) */
   acceptableAnswers?: string[]
   /** assemble モードの正解パーツ。順不同の集合として照合する */

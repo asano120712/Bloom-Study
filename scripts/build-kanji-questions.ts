@@ -14,6 +14,7 @@ import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 import { readDict } from './dict-cache.ts'
+import { kanjiLevelOf, type Level } from './difficulty.ts'
 import { JUKUGO_DENYLIST } from './jukugo-denylist.ts'
 import { isUnsuitable } from './unsuitable.ts'
 import { CONFUSABLE_OF, KRAD_VARIANTS, VARIANT_STROKES } from './kanji-radicals.ts'
@@ -291,6 +292,7 @@ function main(): void {
     genreId: 'kanji'
     prompt: string
     answer: string
+    level: Level
     hintSource: string[]
     parts?: string[]
     partTiles?: string[]
@@ -326,6 +328,7 @@ function main(): void {
       genreId: 'kanji',
       prompt: usable[0],
       answer: char.literal,
+      level: kanjiLevelOf(char.misc.grade),
       hintSource: hints,
       ...(parts && partTiles && partTiles.length === PART_TILE_COUNT ? { parts, partTiles } : {}),
     })

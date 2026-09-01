@@ -3,17 +3,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { InputModeSheet } from '@/components/InputModeSheet'
 import { GENRES } from '@/data/genres'
-import type { Genre, InputMode } from '@/types'
+import type { Difficulty, Genre, InputMode } from '@/types'
 
 export function GenreSelectPage() {
   const navigate = useNavigate()
   /** 入力方法を選んでいる最中のジャンル。null なら一覧だけ */
   const [pendingGenre, setPendingGenre] = useState<Genre | null>(null)
 
-  const start = (mode: InputMode) => {
+  const start = (mode: InputMode, difficulty: Difficulty) => {
     if (!pendingGenre) return
-    // 再読み込みや結果画面からの戻りでも保てるよう、入力方法は URL に持たせる
-    navigate(`/quiz/${pendingGenre.id}?mode=${mode}`)
+    // 再読み込みや結果画面からの戻りでも保てるよう、入力方法と難易度は URL に持たせる
+    navigate(`/quiz/${pendingGenre.id}?mode=${mode}&level=${difficulty}`)
   }
 
   return (

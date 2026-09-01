@@ -14,6 +14,7 @@ import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 import { readDict } from './dict-cache.ts'
+import { englishLevelOf, type Level } from './difficulty.ts'
 import { ENGLISH_DENYLIST } from './english-denylist.ts'
 import { isUnsuitable } from './unsuitable.ts'
 
@@ -118,6 +119,7 @@ export interface GeneratedQuestion {
   genreId: 'english'
   prompt: string
   answer: string
+  level: Level
   acceptableAnswers?: string[]
 }
 
@@ -209,6 +211,7 @@ function main(): void {
       genreId: 'english',
       prompt,
       answer,
+      level: englishLevelOf(band),
       ...(alternatives.length ? { acceptableAnswers: alternatives } : {}),
     })
   }
