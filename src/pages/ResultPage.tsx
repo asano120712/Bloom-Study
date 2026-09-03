@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { BloomMark } from '@/components/BloomMark'
+import { ModelAnswer } from '@/components/ModelAnswer'
 import { findGenre } from '@/data/genres'
 import { useHasFinePointer } from '@/hooks/useHasFinePointer'
 import { canSpeak, speak } from '@/services/speech'
@@ -16,6 +17,8 @@ export type ResultSubmission =
 export interface ResultState {
   result: JudgeResult
   prompt: string
+  /** 出題語の読み(漢字ジャンルの熟語など、読みが無いと語が決まらないもの) */
+  promptReading?: string
   genreId: GenreId
   /** 「つぎの問題へ」で同じこたえかたを引き継ぐ */
   inputMode: InputMode
@@ -80,7 +83,7 @@ export function ResultPage() {
 
   if (!state) return <Navigate to="/genres" replace />
 
-  const { result, prompt, submission, hasNext, currentStreak } = state
+  const { result, prompt, promptReading, submission, hasNext, currentStreak } = state
   const canReadAloud = Boolean(speechLang) && canSpeak()
 
   return (
@@ -97,15 +100,21 @@ export function ResultPage() {
         </p>
 
         <div className="w-full rounded-3xl bg-bloom-50 px-5 py-6">
-          <p className="text-sm text-ink-400">{prompt}</p>
-          <p className="mt-2 text-3xl font-bold text-bloom-700">{result.answer}</p>
+          <p className="text-sm text-ink-400">
+            {prompt}
+            {promptReading && <span className="ml-1">{promptReading}</span>}
+          </p>
+
+          <div className="mt-4">
+            <ModelAnswer answer={result.answer} guide={genre?.answerGuide ?? 'baseline'} />
+          </div>
 
           {canReadAloud && (
             <button
               type="button"
               onClick={readAloud}
               aria-label={`${result.answer} の読み方を聞く`}
-              className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-bloom-200 px-5 text-base font-bold text-bloom-700"
+              className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-bloom-200 px-5 text-base font-bold text-bloom-700"
             >
               🔊 読み方を聞く
             </button>

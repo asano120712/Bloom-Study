@@ -111,6 +111,7 @@ export function QuizPage() {
     const state: ResultState = {
       result,
       prompt: question.prompt,
+      promptReading: question.promptReading,
       genreId: genre.id,
       inputMode,
       difficulty,
@@ -124,17 +125,22 @@ export function QuizPage() {
   }
 
   return (
-    <AppShell fitViewport>
-      <header className="flex items-center justify-between text-sm text-ink-600">
+    <AppShell fitViewport exitTo="/genres">
+      {/* 出題中に読む場所は選択できなくてよい。手書きのドラッグで範囲選択されるのを防ぐ */}
+      <header className="flex items-center justify-between text-sm text-ink-600 select-none">
         <span>{genre.label}</span>
         <span aria-live="polite">
           🌱 {stats.currentStreak} れんぞく / {cursor + 1} 問め
         </span>
       </header>
 
-      <section className="mt-4 shrink-0 text-center">
-        <p className="text-xs text-ink-400">この言葉を思い出そう</p>
+      <section className="mt-4 shrink-0 text-center select-none">
+        <p className="text-xs text-ink-400">{genre.promptCaption}</p>
         <p className="mt-1 text-3xl font-bold tracking-wide">{question.prompt}</p>
+        {/* 読みは出題語より小さく。主役はあくまで伏せた語のほう */}
+        {question.promptReading && (
+          <p className="mt-1 text-base text-ink-600">{question.promptReading}</p>
+        )}
       </section>
 
       {/* ヒント枠は余りを分け合うが、上限を決めて残りは入力側(特にキャンバス)へ回す */}
@@ -150,7 +156,7 @@ export function QuizPage() {
       <section className="mt-auto flex min-h-0 flex-2 flex-col justify-end pt-4">
         {selfReport ? (
           // 手書きは自動判定しない。正解を提示したうえで自己申告してもらう
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 select-none">
             <div className="rounded-3xl bg-bloom-50 px-5 py-6 text-center">
               <p className="text-sm text-ink-400">こたえ</p>
               <p className="mt-2 text-3xl font-bold text-bloom-700">{question.answer}</p>

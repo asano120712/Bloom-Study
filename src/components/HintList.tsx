@@ -28,7 +28,9 @@ export function HintList({ hints, layout, secondsToNext }: HintListProps) {
   }, [hints.length])
 
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col">
+    // select-none: 手書き中になぞった指がここへ入っても、ヒントや残り秒数が
+    // 範囲選択されない(選択の青枠が出ると書きかけの字が見えなくなる)
+    <div className="flex min-h-0 w-full flex-1 flex-col select-none">
       <div
         ref={boxRef}
         aria-live="polite"

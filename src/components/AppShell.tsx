@@ -8,6 +8,11 @@ interface AppShellProps {
    * 出題画面で使う。中身がはみ出す場合は、はみ出す側(ヒント枠)で内部スクロールさせること。
    */
   fitViewport?: boolean
+  /**
+   * 渡すとヘッダーのロゴから飛べなくなり、代わりに確認つきの「やめる」が左上に出る。
+   * 出題中に画面を離れるのを1段階止めるため。
+   */
+  exitTo?: string
 }
 
 /**
@@ -17,7 +22,7 @@ interface AppShellProps {
  * 親が height:auto のまま min-h-full を重ねても % が解決されず、
  * 各画面の justify-center が効かなくなるため。
  */
-export function AppShell({ children, fitViewport = false }: AppShellProps) {
+export function AppShell({ children, fitViewport = false, exitTo }: AppShellProps) {
   return (
     <div
       className={`flex flex-col bg-base-50 ${fitViewport ? 'h-dvh overflow-hidden' : 'min-h-dvh'}`}
@@ -30,7 +35,7 @@ export function AppShell({ children, fitViewport = false }: AppShellProps) {
       <div
         className={`mx-auto flex w-full max-w-md flex-1 flex-col ${fitViewport ? 'min-h-0' : ''}`}
       >
-        <AppHeader />
+        <AppHeader exitTo={exitTo} />
         <div
           className={`flex flex-1 flex-col px-5 pt-5 pb-6 ${
             // 端末が小さくて収まりきらない場合に操作不能にならないよう、逃げ道だけ用意する。

@@ -1,5 +1,11 @@
 import type { Difficulty, GenreId, InputMode, Question } from '@/types'
 
+/** 出題セットと、その中でつぎに出す位置 */
+export interface SessionCursor {
+  questions: Question[]
+  cursor: number
+}
+
 /**
  * 進行中の出題セットと、その中での位置。
  *
@@ -8,12 +14,21 @@ import type { Difficulty, GenreId, InputMode, Question } from '@/types'
  * 出題順をシャッフルするようになったため、位置だけでなく問題そのものを持つ。
  * (位置だけだと、戻ってきたときに別のシャッフル結果を指してしまう)
  */
-export interface StoredSession {
-  questions: Question[]
-  cursor: number
+export interface StoredSession extends SessionCursor {
+  /**
+   * cursor の問題をすでに画面に出したか。
+   *
+   * 答えずに出題画面を離れた問題は「もう見た問題」として捨てる。
+   * これが無いと、ジャンル選択へ戻ってから入り直すたびに同じ問題が出てしまう。
+   */
+  presented: boolean
 }
 
-const KEY_PREFIX = 'bloomstudy:session:'
+/**
+ * 問題の形が変わったら版を上げる。開いたままのタブに残っている
+ * 古い形の出題セット(読みだけの漢字問題など)を復元させないため。
+ */
+const KEY_PREFIX = 'bloomstudy:session:v2:'
 
 /**
  * 入力方法と難易度で出せる問題が変わるため、セッションはその組み合わせごとに分ける。
@@ -22,21 +37,27 @@ const KEY_PREFIX = 'bloomstudy:session:'
 const keyOf = (genreId: GenreId, inputMode: InputMode, difficulty: Difficulty) =>
   `${KEY_PREFIX}${genreId}:${inputMode}:${difficulty}`
 
+/**
+ * 中断していたセットの「つぎに出す問題」を返す。
+ * 画面に出したまま離れた問題は読み飛ばすので、入り直すと必ず別の問題になる。
+ */
 export function readSession(
   genreId: GenreId,
   inputMode: InputMode,
   difficulty: Difficulty,
-): StoredSession | null {
+): SessionCursor | null {
   try {
     const raw = sessionStorage.getItem(keyOf(genreId, inputMode, difficulty))
     if (!raw) return null
 
     const parsed = JSON.parse(raw) as Partial<StoredSession>
     if (!Array.isArray(parsed.questions) || typeof parsed.cursor !== 'number') return null
-    // 出し切ったセットは無効。呼び出し側に取り直させる
-    if (parsed.cursor >= parsed.questions.length) return null
 
-    return { questions: parsed.questions, cursor: parsed.cursor }
+    const cursor = parsed.presented ? parsed.cursor + 1 : parsed.cursor
+    // 出し切ったセットは無効。呼び出し側に取り直させる
+    if (cursor >= parsed.questions.length) return null
+
+    return { questions: parsed.questions, cursor }
   } catch {
     // プライベートモードなど sessionStorage が使えない環境では毎回取り直す
     return null

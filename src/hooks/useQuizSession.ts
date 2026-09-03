@@ -7,6 +7,10 @@ import type { Difficulty, GenreId, InputMode, Question } from '@/types'
  * ジャンルの出題セットを用意する。
  * タブ内に進行中のセットがあれば復元し、無ければ quizSource から取り直す。
  *
+ * 出した問題にはその場で印を付ける(presented)。
+ * 答えずに離れた問題は次に入ったとき読み飛ばされるので、
+ * 「戻ってまた入ると同じ問題」にはならない。
+ *
  * 前提: 出題画面はジャンルごとにマウントし直される
  * (別ジャンルへは必ずジャンル選択画面を経由するため)。
  * 同じ画面のまま genreId だけ差し替える導線を足すときは、
@@ -29,12 +33,22 @@ export function useQuizSession(
   const cursor = restored?.cursor ?? 0
 
   useEffect(() => {
-    if (!genreId || restored) return
+    if (!genreId) return
+
+    if (restored) {
+      // 復元した問題も「出した」ことにする。答えずに離れたらつぎの問題へ送るため
+      writeSession(genreId, inputMode, difficulty, { ...restored, presented: true })
+      return
+    }
 
     let active = true
     quizSource.startSession(genreId, inputMode, difficulty).then((session) => {
       if (!active) return
-      writeSession(genreId, inputMode, difficulty, { questions: session.questions, cursor: 0 })
+      writeSession(genreId, inputMode, difficulty, {
+        questions: session.questions,
+        cursor: 0,
+        presented: true,
+      })
       setQuestions(session.questions)
       setIsLoading(false)
     })
@@ -48,10 +62,17 @@ export function useQuizSession(
    * 1問進んだことを記録する。
    * 直後に結果画面へ遷移するので、あえて React の state は動かさない。
    * (動かすと再描画が挟まり、問題が無い状態が一瞬描画される)
+   *
+   * つぎの問題はまだ出していないので presented は下ろす。
+   * (下ろさないと、結果画面から「つぎへ」で1問飛ばしてしまう)
    */
   const commitAdvance = useCallback(() => {
     if (!genreId) return
-    writeSession(genreId, inputMode, difficulty, { questions, cursor: cursor + 1 })
+    writeSession(genreId, inputMode, difficulty, {
+      questions,
+      cursor: cursor + 1,
+      presented: false,
+    })
   }, [genreId, inputMode, difficulty, questions, cursor])
 
   return { questions, cursor, isLoading, commitAdvance }

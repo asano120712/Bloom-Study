@@ -59,20 +59,7 @@ interface Jmdict {
 /** ヒントは最低この数を確保できないと問題として出さない。 */
 const MIN_HINTS = 3
 
-/**
- * 出題文に使ってよい訓読みの、辞書内での順位(0 = 主要な読み)。
- * ここを緩めると「圧→へす」「位→ぐらい」のような稀な読みが出題文になる。
- * 主要な読みが他の漢字と重複する字は、拾わずに落とす。
- */
-const MAX_READING_RANK = 0
-
-/**
- * 出題文の最短の長さ。1文字の読み(「や」→屋、「に」→荷)は
- * データ内で一意でも、解く側には答えを絞る手がかりにならない。
- */
-const MIN_PROMPT_LENGTH = 2
-
-/** ヒントに出す熟語の数 */
+/** ヒントに出す熟語の数。出題文に使う1語はこれとは別に採る */
 const JUKUGO_HINTS = 3
 
 /** assemble モードで並べる部品タイルの総数(正解 + ダミー) */
@@ -122,9 +109,13 @@ const ALL_KANJI = /^[一-龯々]+$/
  * ヒントに部首やパーツを出すと、パーツを答えさせるモードでは答えそのものになる。
  * 熟語なら字形を一切漏らさずに、意味と読みの手がかりだけ渡せる。
  * 送りがな付き(悪さ など)は手がかりが弱いので、漢字だけの語に絞る。
+ *
+ * 伏せていない側の字は常用漢字だけにする(jouyou)。出題文にもヒントにも
+ * そのまま出る字なので、読めない字が混じると手がかりにならない
+ * (愛 → 「◯嬌」あいきょう)。
  */
-function indexJukugo(jmdict: Jmdict): Map<string, { text: string; reading: string }[]> {
-  const index = new Map<string, { text: string; reading: string }[]>()
+function indexJukugo(jmdict: Jmdict, jouyou: Set<string>): Map<string, Jukugo[]> {
+  const index = new Map<string, Jukugo[]>()
 
   for (const word of jmdict.words) {
     const kanji = word.kanji.find((k) => k.common)
@@ -132,6 +123,7 @@ function indexJukugo(jmdict: Jmdict): Map<string, { text: string; reading: strin
     if (!kanji || !kana) continue
     if (!ALL_KANJI.test(kanji.text)) continue
     if (kanji.text.length < 2 || kanji.text.length > 3) continue
+    if (![...kanji.text].every((c) => jouyou.has(c))) continue
 
     const sense = word.sense[0]
     if (!sense?.partOfSpeech.some((pos) => pos === 'n' || pos === 'vs')) continue
@@ -151,52 +143,136 @@ function indexJukugo(jmdict: Jmdict): Map<string, { text: string; reading: strin
   return index
 }
 
-/** 出題する漢字を ◯ で伏せた熟語ヒントを最大 JUKUGO_HINTS 個作る */
-function jukugoHints(literal: string, index: Map<string, { text: string; reading: string }[]>): string[] {
-  const chosen: { text: string; reading: string }[] = []
+interface Jukugo {
+  text: string
+  reading: string
+}
+
+/**
+ * その漢字を含む熟語を、手がかりが重ならないように最大 limit 語えらぶ。
+ * 先頭が出題文、残りがヒントになる。
+ */
+function chooseJukugo(literal: string, index: Map<string, Jukugo[]>, limit: number): Jukugo[] {
+  const chosen: Jukugo[] = []
 
   for (const word of index.get(literal) ?? []) {
-    if (chosen.length >= JUKUGO_HINTS) break
+    if (chosen.length >= limit) break
     // 委員 を採ったあとに 委員会・委員長 を並べても手がかりが増えない
     if (chosen.some((c) => word.text.includes(c.text) || c.text.includes(word.text))) continue
     chosen.push(word)
   }
 
-  return chosen.map((w) => `熟語|「${w.text.replaceAll(literal, '◯')}」${w.reading}`)
+  return chosen
+}
+
+/** 出題する漢字を ◯ で伏せる。「運営」→「◯営」 */
+function maskedOf(word: Jukugo, literal: string): string {
+  return `「${word.text.replaceAll(literal, '◯')}」`
+}
+
+/**
+ * `見出し|本文` のヒント1行を作る。
+ *
+ * 見出しに答えの字が入る場合(訓 → 「訓読み」、熟 → 「熟語」)は見出しを落とす。
+ * ヒントのラベルが答えそのものを見せてしまうため。
+ */
+function hintLine(caption: string, body: string, literal: string): string {
+  return caption.includes(literal) ? body : `${caption}|${body}`
+}
+
+/**
+ * 伏せた形と読みの組 → そこに入りうる漢字。
+ *
+ * 「◯行」かんこう は 刊行 でも 慣行 でもありうる。出題文にこれを使うと
+ * どちらを書いても正解になってしまうので、1字に決まる語だけを出題文に回す。
+ * (ヒントには使ってよい。他のヒントと合わせれば絞れるため)
+ */
+function indexMaskedForms(jukugo: Map<string, Jukugo[]>): Map<string, Set<string>> {
+  const forms = new Map<string, Set<string>>()
+
+  for (const [literal, words] of jukugo) {
+    for (const word of words) {
+      const key = `${maskedOf(word, literal)}${word.reading}`
+      if (!forms.has(key)) forms.set(key, new Set())
+      forms.get(key)!.add(literal)
+    }
+  }
+
+  return forms
 }
 
 /** 学習用の語義タグの除外は熟語側でも使う */
 const REJECTED_MISC = new Set(['arch', 'obs', 'obsc', 'rare', 'dated', 'hist', 'sl', 'm-sl', 'col', 'vulg', 'derog', 'abbr', 'yoji', 'sens', 'X'])
 
 interface BuildResult {
+  /** 出題文。答えの字を ◯ で伏せた熟語 */
+  prompt: string
+  /** 出題文の熟語の読み。どの語かを一意に決めるため添える */
+  promptReading: string
   hints: string[]
-  /** 生成できなかった場合の理由。レポート用 */
-  skipReason?: string
 }
 
-function buildHintSource(
-  char: Kanjidic2['characters'][number],
-  jukugo: Map<string, { text: string; reading: string }[]>,
-): BuildResult {
-  const literal = char.literal
-  const hints = jukugoHints(literal, jukugo)
+/** 生成できなかった問題。理由はレポートに集計する */
+interface BuildSkip {
+  skipReason: string
+}
 
-  // 熟語が足りない字だけ、字形を漏らさない範囲で補う。
+/**
+ * 出題文とヒントを組み立てる。
+ *
+ * 出題文は熟語の穴うめにする(「◯営」うんえい → 運)。
+ * 訓読みだけを出す形だと「あつい」→ 熱/暑/厚 のように答えが一意に決まらず、
+ * 読みが重複する字・訓読みを持たない字を丸ごと落とすしかなかった。
+ * 熟語に読みを添えれば字は一意に決まるので、その分だけ出せる字が増える。
+ *
+ * 熟語は出題文とヒントで同じ井戸から汲む。先頭(いちばん短い語)を出題文に回し、
+ * 残りをヒントにする。
+ */
+function buildQuestionSource(
+  char: Kanjidic2['characters'][number],
+  jukugo: Map<string, Jukugo[]>,
+  maskedForms: Map<string, Set<string>>,
+): BuildResult | BuildSkip {
+  const literal = char.literal
+  const words = chooseJukugo(literal, jukugo, JUKUGO_HINTS + 1)
+
+  const promptIndex = words.findIndex((word) => {
+    // 同じ字が2回出る語(人々 など)は「◯◯」になって出題文にならない
+    if ([...word.text].filter((c) => c === literal).length !== 1) return false
+    // 伏せると別の字でも成り立つ語(「◯行」かんこう = 刊行 / 慣行)は答えが定まらない
+    return maskedForms.get(`${maskedOf(word, literal)}${word.reading}`)?.size === 1
+  })
+  if (promptIndex === -1) return { skipReason: '出題文にできる熟語が無い' }
+
+  const hints = words
+    .filter((_, index) => index !== promptIndex)
+    .map((word) => hintLine('熟語', `${maskedOf(word, literal)}${word.reading}`, literal))
+
+  // 訓読みは意味の手がかり。出題文が熟語になったので、他の字と重複する読みでも添えられる
+  const kun = usableKunReadings(char)[0]
+  if (kun) hints.push(hintLine('訓読み', kun, literal))
+
+  // それでも足りない字だけ、字形を漏らさない範囲で補う。
   // 部首やパーツは出さない(パーツを答えさせるモードで答えになってしまう)。
   if (hints.length < MIN_HINTS) {
     const onReading = char.readingMeaning?.groups
       .flatMap((g) => g.readings)
       .find((r) => r.type === 'ja_on')?.value
-    if (onReading) hints.push(`音読み|${onReading}`)
+    if (onReading) hints.push(hintLine('音読み', onReading, literal))
 
     const strokes = char.misc.strokeCounts[0]
-    if (strokes) hints.push(`画数|${strokes}画`)
+    if (strokes) hints.push(hintLine('画数', `${strokes}画`, literal))
   }
 
   if (hints.length < MIN_HINTS) {
-    return { hints, skipReason: `ヒントが${hints.length}個しか作れない` }
+    return { skipReason: `ヒントが${hints.length}個しか作れない` }
   }
-  return { hints }
+
+  return {
+    prompt: maskedOf(words[promptIndex], literal),
+    promptReading: words[promptIndex].reading,
+    hints,
+  }
 }
 
 /**
@@ -238,9 +314,9 @@ function plainReading(reading: string): string {
 }
 
 /**
- * 出題文に使える訓読みだけを、辞書の並び順のまま返す。
+ * ヒントに出せる訓読みだけを、辞書の並び順のまま返す。
  * KANJIDIC2 は主要な読みを先頭に置くので、並べ替えずに先頭を採るのが最も無難。
- * ハイフンつき(-じるし、わる-)は熟語の中でしか現れない読みなので単独の出題文にできない。
+ * ハイフンつき(-じるし、わる-)は熟語の中でしか現れない読みなので単独では出せない。
  */
 function usableKunReadings(char: Kanjidic2['characters'][number]): string[] {
   return (char.readingMeaning?.groups ?? [])
@@ -252,7 +328,12 @@ function usableKunReadings(char: Kanjidic2['characters'][number]): string[] {
 function main(): void {
   const kanjidic = readDict<Kanjidic2>('kanjidic2-en')
   const kradfile = readDict<Kradfile>('kradfile')
-  const jukugo = indexJukugo(readDict<Jmdict>('jmdict-eng-common'))
+  /** 常用漢字(配当学年を持つ字)。熟語に混ぜてよい字の集合 */
+  const jouyou = new Set(
+    kanjidic.characters.filter((c) => c.misc.grade !== null).map((c) => c.literal),
+  )
+  const jukugo = indexJukugo(readDict<Jmdict>('jmdict-eng-common'), jouyou)
+  const maskedForms = indexMaskedForms(jukugo)
 
   /** 部品の画数。KANJIDIC に無い変体は手持ちの表で補う */
   const kanjiStrokes = new Map(kanjidic.characters.map((c) => [c.literal, c.misc.strokeCounts[0]]))
@@ -277,20 +358,11 @@ function main(): void {
 
   const selected = kanjidic.characters.filter((c) => c.misc.grade !== null && GRADES.includes(c.misc.grade))
 
-  // 訓読みが複数の漢字にまたがる場合、出題文から答えが一意に決まらない。
-  // (「あつい」→ 熱/暑/厚)。手で語釈を足すまでは出さない。
-  const readingOwners = new Map<string, string[]>()
-  for (const char of selected) {
-    for (const reading of usableKunReadings(char)) {
-      if (!readingOwners.has(reading)) readingOwners.set(reading, [])
-      readingOwners.get(reading)!.push(char.literal)
-    }
-  }
-
   const questions: {
     id: string
     genreId: 'kanji'
     prompt: string
+    promptReading: string
     answer: string
     level: Level
     hintSource: string[]
@@ -304,17 +376,8 @@ function main(): void {
     const components = kradfile.kanji[char.literal]
     if (!components) { skip('KRADFILEに分解が無い'); continue }
 
-    const kun = usableKunReadings(char)
-    if (!kun.length) { skip('単独で出せる訓読みが無い'); continue }
-
-    const usable = kun
-      .slice(0, MAX_READING_RANK + 1)
-      .filter((r) => readingOwners.get(r)!.length === 1)
-    if (!usable.length) { skip('主要な訓読みが他の漢字と重複'); continue }
-    if (usable[0].length < MIN_PROMPT_LENGTH) { skip('訓読みが1文字で絞り込めない'); continue }
-
-    const { hints, skipReason } = buildHintSource(char, jukugo)
-    if (skipReason) { skip(skipReason); continue }
+    const source = buildQuestionSource(char, jukugo, maskedForms)
+    if ('skipReason' in source) { skip(source.skipReason); continue }
 
     // assemble モード用。筆画レベルまで割れる字は組み立てても字形を成さない
     const maximal = dropNestedParts(components, kradfile).map(displayGlyph)
@@ -326,10 +389,11 @@ function main(): void {
     questions.push({
       id: `kj-g${char.misc.grade}-${char.literal}`,
       genreId: 'kanji',
-      prompt: usable[0],
+      prompt: source.prompt,
+      promptReading: source.promptReading,
       answer: char.literal,
       level: kanjiLevelOf(char.misc.grade),
-      hintSource: hints,
+      hintSource: source.hints,
       ...(parts && partTiles && partTiles.length === PART_TILE_COUNT ? { parts, partTiles } : {}),
     })
   }
@@ -345,7 +409,7 @@ function main(): void {
   if (reportOnly) {
     console.log('\n--- 先頭20問 ---')
     for (const q of questions.slice(0, 20)) {
-      console.log(`${q.answer}  ${q.prompt}\t${q.hintSource.join(' / ')}`)
+      console.log(`${q.answer}  ${q.prompt}${q.promptReading}\t${q.hintSource.join(' / ')}`)
     }
     return
   }

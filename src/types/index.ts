@@ -37,10 +37,22 @@ export function isDifficulty(value: string | null | undefined): value is Difficu
  */
 export type InputMode = 'typing' | 'handwriting' | 'assemble'
 
+/**
+ * 結果画面のおてほんに敷くガイド。
+ * grid     = 1文字ずつマスに入れる(漢字ドリルのマス目)
+ * baseline = 英語ノートの罫線に単語を置く
+ */
+export type AnswerGuide = 'grid' | 'baseline'
+
 export interface Genre {
   id: GenreId
   label: string
   description: string
+  /**
+   * 出題語の上に出す一言。何を思い出すのかはジャンルで変わる
+   * (英単語は語そのもの、漢字は伏せた1字)ため、画面で分岐せずここで持つ。
+   */
+  promptCaption: string
   /**
    * そのジャンルで選べる入力方法。
    * 漢字のタイピングのように、答えを打つのに IME が要るジャンルはここから外す。
@@ -49,6 +61,11 @@ export interface Genre {
   inputModes: InputMode[]
   /** 開始シートで最初に強調する入力方法 */
   defaultInputMode: InputMode
+  /**
+   * 結果画面で正解を「おてほん」として見せるときのガイド。
+   * 字の形をどう追わせたいかはジャンルで変わるため、画面側で分岐せずここで持つ。
+   */
+  answerGuide: AnswerGuide
   /**
    * 結果画面で答えを読み上げるときの言語(BCP 47)。
    * 読み方も一緒に覚えられるようにするためのもので、
@@ -62,6 +79,12 @@ export interface Question {
   genreId: GenreId
   /** 画面に出す出題語。答えは含めない */
   prompt: string
+  /**
+   * 出題語の読み。出題語だけでは語が一つに決まらないときに添える。
+   * 漢字ジャンルは熟語の穴うめ(「◯営」うんえい → 運)なので、
+   * 読みが無いと ◯ に入る字を絞れない(◯営 は 運営 / 経営 / 陣営…)。
+   */
+  promptReading?: string
   /** 正解文字列 */
   answer: string
   /**

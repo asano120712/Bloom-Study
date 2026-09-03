@@ -80,8 +80,11 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
     if (disabled) return
     const context = canvasRef.current?.getContext('2d')
     if (!context) return
-    // ドラッグで周りの文字やキャンバスが範囲選択されるのを止める(青い選択枠が出る)
+    // タッチの互換マウスイベントを止める
     event.preventDefault()
+    // 書き始める前に残っている選択を消す。画面のどこかで反転したままだと、
+    // 書いている字と重なって見えなくなる
+    window.getSelection()?.removeAllRanges()
     event.currentTarget.setPointerCapture(event.pointerId)
     drawingRef.current = true
     const { x, y } = positionOf(event)
@@ -102,6 +105,17 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
 
   const endStroke = () => {
     drawingRef.current = false
+  }
+
+  /**
+   * マウスでなぞったときの範囲選択を止める。
+   *
+   * pointerdown の preventDefault では止まらない。マウス入力では互換マウスイベントが
+   * 抑止されず、mousedown の既定動作(選択の開始)がそのまま走るため。
+   * キャンバス上から始まった選択は、上のヒントや残り秒数まで伸びて青く反転する。
+   */
+  const preventSelection = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    event.preventDefault()
   }
 
   /**
@@ -143,6 +157,7 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
         onPointerMove={extendStroke}
         onPointerUp={endStroke}
         onPointerCancel={endStroke}
+        onMouseDown={preventSelection}
         draggable={false}
         aria-label="手書き入力エリア"
         // select-none: なぞったときに周りが範囲選択される(青い枠)のを防ぐ

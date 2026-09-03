@@ -6,6 +6,16 @@ import { findGenre } from '@/data/genres'
 import { findQuestion } from '@/data/questions'
 import { useStats } from '@/hooks/useStats'
 
+/**
+ * 履歴に出す出題語。漢字は熟語を伏せた形(「◯犬」)なので、
+ * 読みまで添えないとどの問題だったか分からない。
+ */
+function promptTextOf(questionId: string): string {
+  const question = findQuestion(questionId)
+  if (!question) return questionId
+  return `${question.prompt}${question.promptReading ?? ''}`
+}
+
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex-1 rounded-2xl bg-bloom-50 px-3 py-4 text-center">
@@ -52,7 +62,7 @@ export function MyPage() {
             >
               <span>
                 {findGenre(record.genreId)?.label} /{' '}
-                {findQuestion(record.questionId)?.prompt ?? record.questionId}
+                {promptTextOf(record.questionId)}
               </span>
               <span className={record.isCorrect ? 'text-bloom-700' : 'text-warm-600'}>
                 {record.isCorrect ? '⭕️' : '✖️'} ヒント{record.hintsUsed}
