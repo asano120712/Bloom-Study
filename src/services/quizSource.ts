@@ -1,4 +1,5 @@
 import { questionsOf } from '@/data/questions'
+import { assemblyOf } from '@/features/assemble'
 import type { Difficulty, GenreId, InputMode, Question } from '@/types'
 
 /**
@@ -30,11 +31,12 @@ export interface QuizSource {
 /**
  * その入力方法で出題できる問題か。
  *
- * assemble はパーツのタイルが要る。持たない問題を混ぜると、選んだはずの
- * こたえかたと違う画面が出てしまうので、最初から配らない。
+ * assemble は「へん+つくり」を左右2枠に組ませるので、左右に割れる字
+ * (assemblyOf が成立する字)だけを配る。それ以外を混ぜると、選んだはずの
+ * こたえかたと違う画面が出てしまう。
  */
 function isAnswerable(question: Question, inputMode: InputMode): boolean {
-  if (inputMode === 'assemble') return Boolean(question.parts?.length && question.partTiles?.length)
+  if (inputMode === 'assemble') return assemblyOf(question) !== null
   return true
 }
 

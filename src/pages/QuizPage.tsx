@@ -211,11 +211,10 @@ export function QuizPage() {
               <PartsInput
                 key={`assemble-${question.id}`}
                 tiles={partTiles}
-                requiredCount={question.parts?.length ?? 0}
-                onSubmit={(selected) =>
-                  finish(judgeParts(question, selected), revealedCount, {
+                onSubmit={(left, right) =>
+                  finish(judgeParts(question, left, right), revealedCount, {
                     kind: 'parts',
-                    parts: selected,
+                    parts: [left, right],
                   })
                 }
               />

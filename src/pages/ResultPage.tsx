@@ -169,9 +169,9 @@ function SubmissionView({ submission }: { submission: ResultSubmission }) {
   if (submission.kind === 'parts') {
     return (
       <div className="w-full">
-        <p className="text-sm text-ink-400">じぶんが えらんだ ぶひん</p>
+        <p className="text-sm text-ink-400">じぶんが 組んだ 漢字(へん・つくり)</p>
         <p className="mt-2 text-2xl font-bold text-ink-900">
-          {submission.parts.length ? submission.parts.join(' ・ ') : '—'}
+          {submission.parts.length ? submission.parts.join(' ＋ ') : '—'}
         </p>
       </div>
     )

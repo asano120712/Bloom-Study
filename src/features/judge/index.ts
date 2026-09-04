@@ -1,5 +1,6 @@
 import levenshtein from 'fast-levenshtein'
 import { levenshteinTolerance } from '@/config'
+import { assemblyOf } from '@/features/assemble'
 import type { JudgeResult, Question } from '@/types'
 
 /**
@@ -64,13 +65,13 @@ export function judgeHandwriting(question: Question, didRecall: boolean): JudgeR
 /**
  * assemble モードの判定。
  *
- * パーツは順不同なので集合として比べる。並べ方(左右・上下)は問わない。
- * KRADFILE に配置の情報が無く、画数から推測すると同画数の字で誤るため。
+ * へん(左)とつくり(右)を、置いた枠のとおりに照合する。
+ * 左右字だけを出題し、左側の部品は assemble の表で持っているので、
+ * 「どちらに置いたか」まで正解に含められる(位 を 立亻 と組んだら不正解)。
  */
-export function judgeParts(question: Question, selected: string[]): JudgeResult {
-  const correct = question.parts ?? []
-  const isCorrect =
-    selected.length === correct.length && correct.every((part) => selected.includes(part))
+export function judgeParts(question: Question, left: string, right: string): JudgeResult {
+  const assembly = assemblyOf(question)
+  const isCorrect = assembly !== null && left === assembly.left && right === assembly.right
 
   return {
     verdict: isCorrect ? 'correct' : 'incorrect',
