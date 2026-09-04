@@ -65,13 +65,13 @@ export function judgeHandwriting(question: Question, didRecall: boolean): JudgeR
 /**
  * assemble モードの判定。
  *
- * へん(左)とつくり(右)を、置いた枠のとおりに照合する。
- * 左右字だけを出題し、左側の部品は assemble の表で持っているので、
+ * 2つの部品を、置いた枠のとおりに照合する(first = 左または上)。
+ * 割れる向きと先にくる部品は assemble の表で持っているので、
  * 「どちらに置いたか」まで正解に含められる(位 を 立亻 と組んだら不正解)。
  */
-export function judgeParts(question: Question, left: string, right: string): JudgeResult {
+export function judgeParts(question: Question, first: string, second: string): JudgeResult {
   const assembly = assemblyOf(question)
-  const isCorrect = assembly !== null && left === assembly.left && right === assembly.right
+  const isCorrect = assembly !== null && first === assembly.first && second === assembly.second
 
   return {
     verdict: isCorrect ? 'correct' : 'incorrect',

@@ -7,6 +7,7 @@ import { PartsInput } from '@/components/PartsInput'
 import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { findGenre } from '@/data/genres'
+import { assemblyOf } from '@/features/assemble'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeParts, judgeTyping } from '@/features/judge'
 import { useHintTimer } from '@/hooks/useHintTimer'
@@ -58,6 +59,12 @@ export function QuizPage() {
    */
   const partTiles = useMemo(
     () => (question?.partTiles?.length ? shuffleWithSeed(question.partTiles, question.id) : []),
+    [question],
+  )
+
+  /** マスを左右に割るか上下に割るか。正解の部品そのものは画面へ渡さない */
+  const assembleLayout = useMemo(
+    () => (question ? (assemblyOf(question)?.layout ?? null) : null),
     [question],
   )
 
@@ -207,14 +214,15 @@ export function QuizPage() {
                 onSubmit={(image) => setSelfReport({ hintsUsed: revealedCount, image })}
               />
             )}
-            {inputMode === 'assemble' && (
+            {inputMode === 'assemble' && assembleLayout && (
               <PartsInput
                 key={`assemble-${question.id}`}
                 tiles={partTiles}
-                onSubmit={(left, right) =>
-                  finish(judgeParts(question, left, right), revealedCount, {
+                layout={assembleLayout}
+                onSubmit={(first, second) =>
+                  finish(judgeParts(question, first, second), revealedCount, {
                     kind: 'parts',
-                    parts: [left, right],
+                    parts: [first, second],
                   })
                 }
               />

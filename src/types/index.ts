@@ -32,7 +32,7 @@ export function isDifficulty(value: string | null | undefined): value is Difficu
 
 /**
  * 答えの入力方法。
- * assemble はへん(左)とつくり(右)を2枠に組んで漢字を作る方式。
+ * assemble は2つの部品を1つのマス(左右または上下に割れる)へ組んで漢字を作る方式。
  * 部品は思い出したと申告するまで見せない
  * (先に見せると再認になり、思い出す練習にならないため)。
  */
@@ -96,8 +96,8 @@ export interface Question {
   /** 正解と同等に扱う表記ゆれ(送りがな違い、別綴りなど) */
   acceptableAnswers?: string[]
   /**
-   * KRADFILE 由来の部品。assemble モードはこのうち左右2部品の字だけを出す。
-   * KRADFILE には配置(左右・上下)が無いので、左右のどちらがへんかは
+   * KRADFILE 由来の部品。assemble モードはこのうち2部品に割れる字だけを出す。
+   * KRADFILE には配置(左右・上下)が無いので、割れる向きと先にくる部品は
    * features/assemble の表で補う。
    */
   parts?: string[]
