@@ -41,6 +41,22 @@ function isAnswerable(question: Question, inputMode: InputMode): boolean {
 }
 
 /**
+ * いまその問題を配ってよいか。出題セットを作るときの条件そのもの。
+ *
+ * 保存した出題セットを復元する側にも同じ判断が要るので公開している。
+ * こたえかたの作り替えや問題データの更新で条件が変わると、
+ * 保存済みのセットには「いまは出せない問題」が残る。
+ * それをそのまま出すと、画面はその問題を描けず入力欄ごと消える。
+ */
+export function canServe(
+  question: Question,
+  inputMode: InputMode,
+  difficulty: Difficulty,
+): boolean {
+  return isAnswerable(question, inputMode) && matchesDifficulty(question, difficulty)
+}
+
+/**
  * 選んだ難易度の問題か。難易度未設定の古い問題は「ふつう」とみなす
  * (level を持たない問題が難易度選択で完全に出せなくならないように)。
  */
@@ -70,9 +86,7 @@ export const localQuizSource: QuizSource = {
     return {
       genreId,
       questions: shuffle(
-        questionsOf(genreId).filter(
-          (q) => isAnswerable(q, inputMode) && matchesDifficulty(q, difficulty),
-        ),
+        questionsOf(genreId).filter((q) => canServe(q, inputMode, difficulty)),
       ),
     }
   },

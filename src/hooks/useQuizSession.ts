@@ -1,7 +1,32 @@
 import { useCallback, useEffect, useState } from 'react'
-import { quizSource } from '@/services/quizSource'
+import { canServe, quizSource } from '@/services/quizSource'
 import { readSession, writeSession } from '@/services/quizSession'
 import type { Difficulty, GenreId, InputMode, Question } from '@/types'
+
+/**
+ * 保存してあった出題セットのうち、いまも出せる問題だけを復元する。
+ *
+ * 保存したあとに出題の条件が変わることがある(こたえかたの作り替え、問題データの更新)。
+ * 残っていた問題をそのまま出すと、画面がその問題を描けずに入力欄ごと消える
+ * (パーツを組むモードを2枠に変えたとき、古いセットの8割で「こたえあわせ」が出なくなった)。
+ *
+ * 位置は、出し終わった分のうち残った問題の数に読み替える。
+ * 落とした問題のぶんだけ前に詰めないと、飛ばした問題がもう一度出てしまう。
+ */
+function restoreSession(genreId: GenreId, inputMode: InputMode, difficulty: Difficulty) {
+  const stored = readSession(genreId, inputMode, difficulty)
+  if (!stored) return null
+
+  const questions = stored.questions.filter((q) => canServe(q, inputMode, difficulty))
+  const cursor = stored.questions
+    .slice(0, stored.cursor)
+    .filter((q) => canServe(q, inputMode, difficulty)).length
+
+  // 残りが無くなったら取り直させる
+  if (cursor >= questions.length) return null
+
+  return { questions, cursor }
+}
 
 /**
  * ジャンルの出題セットを用意する。
@@ -24,7 +49,7 @@ export function useQuizSession(
   // sessionStorage は同期に読めるので、初回描画の時点で確定させる。
   // effect の中で復元すると、問題が無い状態が1フレーム描画される。
   const [restored] = useState(() =>
-    genreId ? readSession(genreId, inputMode, difficulty) : null,
+    genreId ? restoreSession(genreId, inputMode, difficulty) : null,
   )
   const [questions, setQuestions] = useState<Question[]>(restored?.questions ?? [])
   const [isLoading, setIsLoading] = useState(restored === null)
