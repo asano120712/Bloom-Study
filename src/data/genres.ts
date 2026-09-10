@@ -1,11 +1,9 @@
 import type { Genre } from '@/types'
 
+/** ジャンルの構造。表に出る言葉はモードごとに src/data/copy.ts が持つ */
 export const GENRES: Genre[] = [
   {
     id: 'english',
-    label: '英単語',
-    description: '日本語の出題語を見て、英単語を思い出す',
-    promptCaption: 'この言葉を思い出そう',
     // 手書きを先頭に置く。書いて思い出すのが基本のこたえかたなので、
     // シートでも最初に目に入る位置にする(並び順がそのままシートの並びになる)
     inputModes: ['handwriting', 'typing'],
@@ -16,9 +14,6 @@ export const GENRES: Genre[] = [
   },
   {
     id: 'kanji',
-    label: '漢字',
-    description: '熟語の ◯ に入る漢字を書いて思い出す',
-    promptCaption: '◯ に入る漢字を思い出そう',
     // 漢字を打つには IME が要り、変換候補に答えが出てしまうためタイピングは置かない
     inputModes: ['handwriting', 'assemble'],
     defaultInputMode: 'handwriting',

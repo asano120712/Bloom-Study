@@ -10,6 +10,7 @@ import { findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeParts, judgeTyping } from '@/features/judge'
+import { useCopy } from '@/hooks/useAudienceMode'
 import { useHintTimer } from '@/hooks/useHintTimer'
 import { useQuizSession } from '@/hooks/useQuizSession'
 import { useStats } from '@/hooks/useStats'
@@ -23,6 +24,7 @@ export function QuizPage() {
   const navigate = useNavigate()
   const genre = findGenre(genreId ?? '')
   const { stats, isLoading: isStatsLoading, record } = useStats()
+  const copy = useCopy()
 
   /**
    * 入力方法はジャンル選択のシートで決めて URL で受け取る。
@@ -135,14 +137,12 @@ export function QuizPage() {
     <AppShell fitViewport exitTo="/genres">
       {/* 出題中に読む場所は選択できなくてよい。手書きのドラッグで範囲選択されるのを防ぐ */}
       <header className="flex items-center justify-between text-sm text-ink-600 select-none">
-        <span>{genre.label}</span>
-        <span aria-live="polite">
-          🌱 {stats.currentStreak} れんぞく / {cursor + 1} 問め
-        </span>
+        <span>{copy.activities[genre.id].label}</span>
+        <span aria-live="polite">{copy.quiz.progress(stats.currentStreak, cursor + 1)}</span>
       </header>
 
       <section className="mt-4 shrink-0 text-center select-none">
-        <p className="text-xs text-ink-400">{genre.promptCaption}</p>
+        <p className="text-xs text-ink-400">{copy.genrePrompt[genre.id]}</p>
         <p className="mt-1 text-3xl font-bold tracking-wide">{question.prompt}</p>
         {/* 読みは出題語より小さく。主役はあくまで伏せた語のほう */}
         {question.promptReading && (
@@ -165,7 +165,7 @@ export function QuizPage() {
           // 手書きは自動判定しない。正解を提示したうえで自己申告してもらう
           <div className="flex flex-col gap-4 select-none">
             <div className="rounded-3xl bg-bloom-50 px-5 py-6 text-center">
-              <p className="text-sm text-ink-400">こたえ</p>
+              <p className="text-sm text-ink-400">{copy.quiz.answerLabel}</p>
               <p className="mt-2 text-3xl font-bold text-bloom-700">{question.answer}</p>
             </div>
             <div className="flex gap-3">
@@ -179,7 +179,7 @@ export function QuizPage() {
                 }
                 className="min-h-14 flex-1 rounded-full border-2 border-warm-500 text-lg font-bold text-warm-600"
               >
-                ✖️ ちがった
+                {copy.quiz.wrong}
               </button>
               <button
                 type="button"
@@ -191,7 +191,7 @@ export function QuizPage() {
                 }
                 className="min-h-14 flex-1 rounded-full bg-bloom-700 text-lg font-bold text-white"
               >
-                ⭕️ できた
+                {copy.quiz.right}
               </button>
             </div>
           </div>
@@ -219,6 +219,10 @@ export function QuizPage() {
                 key={`assemble-${question.id}`}
                 tiles={partTiles}
                 layout={assembleLayout}
+                // 組み上がるかどうかだけを渡す。正解の部品は画面に持たせない
+                assembledOf={(first, second) =>
+                  judgeParts(question, first, second).isCorrect ? question.answer : null
+                }
                 onSubmit={(first, second) =>
                   finish(judgeParts(question, first, second), revealedCount, {
                     kind: 'parts',

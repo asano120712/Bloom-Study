@@ -1,3 +1,15 @@
+/**
+ * だれ向けの画面か。トップはモードごとに別ページにする(`/` と `/kids`)。
+ * 出題・結果までは共通で、あとからジャンルをモードで出し分ける。
+ */
+export type AudienceMode = 'adult' | 'kids'
+
+/** モードごとのトップページ。ヘッダーの切り替えもここを行き先にする */
+export const TOP_PATH: Record<AudienceMode, string> = {
+  adult: '/',
+  kids: '/kids',
+}
+
 /** 出題ジャンル。ジャンル追加時はここと hints のレジストリの両方に登録する。 */
 export type GenreId = 'english' | 'kanji'
 
@@ -8,23 +20,11 @@ export type GenreId = 'english' | 'kanji'
  */
 export type Difficulty = 'easy' | 'normal' | 'hard'
 
-export interface DifficultyOption {
-  id: Difficulty
-  /** 選択ボタンに出す短い見出し */
-  label: string
-  /** 対象の学習段階のめやす */
-  note: string
-}
-
 /**
  * 難易度の並び(やさしい→むずかしい)。選択シートはこの順で並べる。
- * ラベルは対象者(各学校・社会人)が分かるようにする。
+ * 見出しと対象のめやすはモードで言い方が変わるので src/data/copy.ts が持つ。
  */
-export const DIFFICULTIES: DifficultyOption[] = [
-  { id: 'easy', label: 'やさしい', note: '小学生むけ' },
-  { id: 'normal', label: 'ふつう', note: '中学生むけ' },
-  { id: 'hard', label: 'むずかしい', note: '高校・社会人むけ' },
-]
+export const DIFFICULTY_ORDER: readonly Difficulty[] = ['easy', 'normal', 'hard']
 
 export function isDifficulty(value: string | null | undefined): value is Difficulty {
   return value === 'easy' || value === 'normal' || value === 'hard'
@@ -45,15 +45,12 @@ export type InputMode = 'typing' | 'handwriting' | 'assemble'
  */
 export type AnswerGuide = 'grid' | 'baseline'
 
+/**
+ * ジャンルの「構造」。ラベル・説明・出題語の見出しといった言葉は
+ * モードで変わるため src/data/copy.ts の genres が持つ。
+ */
 export interface Genre {
   id: GenreId
-  label: string
-  description: string
-  /**
-   * 出題語の上に出す一言。何を思い出すのかはジャンルで変わる
-   * (英単語は語そのもの、漢字は伏せた1字)ため、画面で分岐せずここで持つ。
-   */
-  promptCaption: string
   /**
    * そのジャンルで選べる入力方法。
    * 漢字のタイピングのように、答えを打つのに IME が要るジャンルはここから外す。

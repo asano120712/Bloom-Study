@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useCopy } from '@/hooks/useAudienceMode'
 import type { HintLayout, HintStep } from '@/types'
 
 interface HintListProps {
@@ -18,6 +19,7 @@ interface HintListProps {
  * 手書き中にスクロールが起きるため。
  */
 export function HintList({ hints, layout, secondsToNext }: HintListProps) {
+  const copy = useCopy()
   const isInline = layout === 'inline'
   const boxRef = useRef<HTMLDivElement>(null)
 
@@ -44,7 +46,7 @@ export function HintList({ hints, layout, secondsToNext }: HintListProps) {
         }`}
       >
         {hints.length === 0 ? (
-          <span className="text-sm text-ink-400">まもなくヒントが出ます</span>
+          <span className="text-sm text-ink-400">{copy.hints.waiting}</span>
         ) : isInline ? (
           // 綴りを1文字ずつ連ねる。文字単位で浮かび上がらせたいので span を分ける
           <p className="text-3xl font-bold tracking-[0.2em] text-bloom-700">
@@ -65,7 +67,7 @@ export function HintList({ hints, layout, secondsToNext }: HintListProps) {
       </div>
 
       <p className="mt-2 text-center text-sm text-ink-400">
-        {secondsToNext === null ? 'ヒントはここまで' : `つぎのヒントまで ${secondsToNext} 秒`}
+        {secondsToNext === null ? copy.hints.done : copy.hints.next(secondsToNext)}
       </p>
     </div>
   )

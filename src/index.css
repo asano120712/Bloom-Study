@@ -70,6 +70,42 @@
   color-scheme: light;
 }
 
+/*
+ * こども向けのやさしい配色。
+ *
+ * 変えるのはトークンの値だけで、画面側のクラス(bg-bloom-700 など)は触らない。
+ * Tailwind v4 のユーティリティは var(--color-*) を参照するので、
+ * <html data-audience="kids"> が付くだけで全画面の色が入れ替わる。
+ * 属性を貼るのは main.tsx(初回描画前)と AudienceTheme(モード切り替え時)。
+ *
+ * 白い紙のような地を、あたたかいクリームに置き換えるのが芯。
+ * 緑は少しだけ明るくして黒みを抜き、文字も真っ黒でなく茶みのある濃灰にする。
+ * ただし**コントラストは落とさない**。読めない色はやさしくないので、
+ * 本文 4.5:1 / 小さい字 3:1 を満たす値だけを採っている(実測値はREADME)。
+ */
+:root[data-audience='kids'] {
+  --color-bloom-50: #f3f8f1;
+  --color-bloom-100: #dff0e3;
+  --color-bloom-200: #c3e2ce;
+  --color-bloom-300: #9dd6b8;
+  --color-bloom-400: #6fcfab;
+  --color-bloom-500: #4fbf98;
+  --color-bloom-600: #2f8f70;
+  --color-bloom-700: #28775e;
+  --color-bloom-800: #1d5c49;
+
+  --color-ink-900: #3f3a34;
+  --color-ink-600: #6d665d;
+  --color-ink-400: #968d82;
+
+  --color-base-50: #fffaf3;
+  --color-base-100: #f7efe2;
+
+  --color-warm-100: #fdeee6;
+  --color-warm-500: #e08a6a;
+  --color-warm-600: #c4704f;
+}
+
 html,
 body,
 #root {

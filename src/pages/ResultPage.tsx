@@ -4,6 +4,7 @@ import { AppShell } from '@/components/AppShell'
 import { BloomMark } from '@/components/BloomMark'
 import { ModelAnswer } from '@/components/ModelAnswer'
 import { findGenre } from '@/data/genres'
+import { useCopy } from '@/hooks/useAudienceMode'
 import { useHasFinePointer } from '@/hooks/useHasFinePointer'
 import { canSpeak, speak } from '@/services/speech'
 import type { Difficulty, GenreId, InputMode, JudgeResult } from '@/types'
@@ -30,18 +31,10 @@ export interface ResultState {
   currentStreak: number
 }
 
-/** 色だけに頼らず、アイコン+テキストでも正誤が分かるようにする */
-const VERDICT_LABEL: Record<JudgeResult['verdict'], string> = {
-  correct: '⭕️ せいかい',
-  near: '⭕️ おしい! せいかいあつかい',
-  incorrect: '✖️ ざんねん',
-  'self-correct': '⭕️ できた',
-  'self-incorrect': '✖️ ちがった',
-}
-
 export function ResultPage() {
   const { state } = useLocation() as { state: ResultState | null }
   const navigate = useNavigate()
+  const copy = useCopy()
   const hasFinePointer = useHasFinePointer()
 
   const genre = state ? findGenre(state.genreId) : undefined
@@ -96,7 +89,7 @@ export function ResultPage() {
             result.isCorrect ? 'text-bloom-700' : 'text-warm-600'
           }`}
         >
-          {VERDICT_LABEL[result.verdict]}
+          {copy.verdicts[result.verdict]}
         </p>
 
         <div className="w-full rounded-3xl bg-bloom-50 px-5 py-6">
@@ -116,14 +109,14 @@ export function ResultPage() {
               aria-label={`${result.answer} の読み方を聞く`}
               className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-bloom-200 px-5 text-base font-bold text-bloom-700"
             >
-              🔊 読み方を聞く
+              {copy.result.listen}
             </button>
           )}
         </div>
 
-        <SubmissionView submission={submission} />
+        <SubmissionView submission={submission} labels={copy.result.mine} />
 
-        <p className="text-sm text-ink-600">🌱 {currentStreak} 問れんぞく正解中</p>
+        <p className="text-sm text-ink-600">{copy.result.streak(currentStreak)}</p>
 
         <div className="flex w-full flex-col gap-3">
           {hasNext ? (
@@ -131,19 +124,21 @@ export function ResultPage() {
               to={nextPath}
               className="flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
             >
-              つぎの問題へ
+              {copy.result.next}
             </Link>
           ) : (
             <Link
               to={nextPath}
               className="flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
             >
-              ジャンルをえらぶ
+              {copy.result.chooseGenre}
             </Link>
           )}
-          {hasFinePointer && <p className="text-center text-xs text-ink-400">Enter でも進めます</p>}
+          {hasFinePointer && (
+            <p className="text-center text-xs text-ink-400">{copy.result.enterHint}</p>
+          )}
           <Link to="/mypage" className="text-sm text-ink-400 underline">
-            記録を見る
+            {copy.result.record}
           </Link>
         </div>
       </div>
@@ -152,11 +147,17 @@ export function ResultPage() {
 }
 
 /** 自分が書いた・打った・組んだこたえを見せる。入力方法ごとに見せ方を変える */
-function SubmissionView({ submission }: { submission: ResultSubmission }) {
+function SubmissionView({
+  submission,
+  labels,
+}: {
+  submission: ResultSubmission
+  labels: { text: string; parts: string; handwriting: string }
+}) {
   if (submission.kind === 'handwriting') {
     return (
       <div className="w-full">
-        <p className="text-sm text-ink-400">じぶんが かいた こたえ</p>
+        <p className="text-sm text-ink-400">{labels.handwriting}</p>
         <img
           src={submission.imageDataUrl}
           alt="自分が書いたこたえ"
@@ -169,7 +170,7 @@ function SubmissionView({ submission }: { submission: ResultSubmission }) {
   if (submission.kind === 'parts') {
     return (
       <div className="w-full">
-        <p className="text-sm text-ink-400">じぶんが 組んだ パーツ</p>
+        <p className="text-sm text-ink-400">{labels.parts}</p>
         <p className="mt-2 text-2xl font-bold text-ink-900">
           {submission.parts.length ? submission.parts.join(' ＋ ') : '—'}
         </p>
@@ -179,7 +180,7 @@ function SubmissionView({ submission }: { submission: ResultSubmission }) {
 
   return (
     <div className="w-full">
-      <p className="text-sm text-ink-400">じぶんが うった こたえ</p>
+      <p className="text-sm text-ink-400">{labels.text}</p>
       <p className="mt-2 text-2xl font-bold tracking-wide text-ink-900">
         {submission.text || '—'}
       </p>

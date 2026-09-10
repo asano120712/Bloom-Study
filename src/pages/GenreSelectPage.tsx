@@ -2,42 +2,64 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { InputModeSheet } from '@/components/InputModeSheet'
-import { GENRES } from '@/data/genres'
-import type { Difficulty, Genre, InputMode } from '@/types'
+import { activitiesFor, type Activity } from '@/data/activities'
+import { findGenre } from '@/data/genres'
+import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
+import { TOP_PATH, type Difficulty, type Genre, type InputMode } from '@/types'
 
 export function GenreSelectPage() {
   const navigate = useNavigate()
+  const copy = useCopy()
+  const mode = useAudienceMode()
   /** 入力方法を選んでいる最中のジャンル。null なら一覧だけ */
   const [pendingGenre, setPendingGenre] = useState<Genre | null>(null)
 
-  const start = (mode: InputMode, difficulty: Difficulty) => {
+  const start = (inputMode: InputMode, difficulty: Difficulty) => {
     if (!pendingGenre) return
     // 再読み込みや結果画面からの戻りでも保てるよう、入力方法と難易度は URL に持たせる
-    navigate(`/quiz/${pendingGenre.id}?mode=${mode}&level=${difficulty}`)
+    navigate(`/quiz/${pendingGenre.id}?mode=${inputMode}&level=${difficulty}`)
+  }
+
+  /**
+   * クイズはこたえかた・なんいどを選んでから始める。
+   * あそびは選ぶものが無いので、押したらすぐ始める(小さい子ほど手数は少ないほうがいい)。
+   */
+  const open = (activity: Activity) => {
+    if (activity.path) {
+      navigate(activity.path)
+      return
+    }
+    const genre = activity.genreId ? findGenre(activity.genreId) : undefined
+    if (genre) setPendingGenre(genre)
   }
 
   return (
     <AppShell>
-      <h1 className="text-2xl font-bold">ジャンルをえらぶ</h1>
-      <p className="mt-2 text-sm text-ink-600">ジャンルごとにヒントの出かたが変わります。</p>
+      <h1 className="text-2xl font-bold">{copy.genreSelect.title}</h1>
+      <p className="mt-2 text-sm text-ink-600">{copy.genreSelect.note}</p>
 
       <ul className="mt-6 flex flex-col gap-4">
-        {GENRES.map((genre) => (
-          <li key={genre.id}>
+        {activitiesFor(mode).map((activity) => (
+          <li key={activity.id}>
             <button
               type="button"
-              onClick={() => setPendingGenre(genre)}
+              onClick={() => open(activity)}
               className="flex min-h-20 w-full flex-col justify-center rounded-3xl bg-bloom-100 px-5 py-4 text-left"
             >
-              <span className="text-xl font-bold text-bloom-700">{genre.label}</span>
-              <span className="mt-1 text-sm text-ink-600">{genre.description}</span>
+              <span className="text-xl font-bold text-bloom-700">
+                {copy.activities[activity.id].label}
+              </span>
+              <span className="mt-1 text-sm break-keep text-ink-600">
+                {copy.activities[activity.id].description}
+              </span>
             </button>
           </li>
         ))}
       </ul>
 
-      <Link to="/" className="mt-8 text-center text-sm text-ink-400 underline">
-        トップにもどる
+      {/* 戻り先はモードごとのトップ。こどもは /kids から来ている */}
+      <Link to={TOP_PATH[mode]} className="mt-8 text-center text-sm text-ink-400 underline">
+        {copy.genreSelect.back}
       </Link>
 
       {pendingGenre && (

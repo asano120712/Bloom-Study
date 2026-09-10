@@ -10,7 +10,8 @@
     "dict:fetch": "node scripts/fetch-dict.ts",
     "questions:kanji": "node scripts/build-kanji-questions.ts",
     "questions:english": "node scripts/build-english-questions.ts",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "strokes:kana": "node scripts/build-kana-strokes.ts"
   },
   "dependencies": {
     "fast-levenshtein": "^3.0.0",

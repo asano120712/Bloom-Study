@@ -1,3 +1,4 @@
+import { useCopy } from '@/hooks/useAudienceMode'
 import type { AnswerGuide } from '@/types'
 
 interface ModelAnswerProps {
@@ -17,9 +18,11 @@ interface ModelAnswerProps {
  * 手本として写すなら、線の太さに強弱がある書体のほうが字形を追いやすい。
  */
 export function ModelAnswer({ answer, guide }: ModelAnswerProps) {
+  const copy = useCopy()
+
   return (
     <figure className="m-0 w-full">
-      <figcaption className="text-sm text-ink-400">おてほん</figcaption>
+      <figcaption className="text-sm text-ink-400">{copy.result.model}</figcaption>
       <div className="mx-auto mt-2 w-full max-w-xs">
         {guide === 'grid' ? <GridSheet answer={answer} /> : <RuledSheet answer={answer} />}
       </div>

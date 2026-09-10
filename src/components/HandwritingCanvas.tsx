@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCopy } from '@/hooks/useAudienceMode'
 
 interface HandwritingCanvasProps {
   /**
@@ -17,6 +18,7 @@ const STROKE_COLOR = '#23292B'
  * OCR による自動判定は行わない(機能要件書 2.4 の通り自己申告方式)。
  */
 export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCanvasProps) {
+  const copy = useCopy()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const drawingRef = useRef(false)
   const [hasStroke, setHasStroke] = useState(false)
@@ -170,7 +172,7 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
           disabled={disabled || !hasStroke}
           className="min-h-14 flex-1 rounded-full border-2 border-bloom-200 px-6 text-lg font-bold text-ink-600 disabled:text-ink-400"
         >
-          けす
+          {copy.handwriting.clear}
         </button>
         <button
           type="button"
@@ -178,7 +180,7 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
           disabled={disabled || !hasStroke}
           className="min-h-14 flex-2 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
         >
-          かけた
+          {copy.handwriting.done}
         </button>
       </div>
     </div>

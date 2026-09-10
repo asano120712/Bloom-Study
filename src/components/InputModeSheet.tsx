@@ -1,16 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { DIFFICULTIES, type Difficulty, type Genre, type InputMode } from '@/types'
+import { useCopy } from '@/hooks/useAudienceMode'
+import { DIFFICULTY_ORDER, type Difficulty, type Genre, type InputMode } from '@/types'
 
 interface InputModeSheetProps {
   genre: Genre
   onStart: (mode: InputMode, difficulty: Difficulty) => void
   onClose: () => void
-}
-
-const MODE_LABEL: Record<InputMode, { label: string; note: string }> = {
-  typing: { label: 'タイピング', note: 'キーボードで入力する' },
-  handwriting: { label: '手書き', note: '指でなぞって書く' },
-  assemble: { label: 'パーツを組む', note: 'パーツをスライドしてマスに組む' },
 }
 
 /**
@@ -20,6 +15,8 @@ const MODE_LABEL: Record<InputMode, { label: string; note: string }> = {
  * こたえかたを先に決めてから難易度を選ぶことで、選択の流れを1本にする。
  */
 export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps) {
+  const copy = useCopy()
+  const genreWords = copy.activities[genre.id]
   const dialogRef = useRef<HTMLDivElement>(null)
   /** 'mode' = こたえかた選択、'difficulty' = なんいど選択 */
   const [step, setStep] = useState<'mode' | 'difficulty'>('mode')
@@ -62,16 +59,16 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
-        aria-label={`${genre.label}のはじめかた`}
+        aria-label={`${genreWords.label}のはじめかた`}
         tabIndex={-1}
         className="animate-bloom-in relative w-full max-w-md rounded-3xl bg-base-50 px-5 pt-6 pb-6 outline-none"
       >
-        <p className="text-center text-sm text-ink-400">{genre.label}</p>
+        <p className="text-center text-sm text-ink-400">{genreWords.label}</p>
 
         {step === 'mode' ? (
           <>
             <h2 className="mt-1 text-center text-xl font-bold">
-              {genre.inputModes.length > 1 ? 'こたえかたをえらぶ' : 'はじめる'}
+              {genre.inputModes.length > 1 ? copy.sheet.chooseMode : copy.sheet.start}
             </h2>
 
             <div className="mt-6 flex flex-col gap-3">
@@ -86,13 +83,13 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
                       : 'border-2 border-bloom-200 text-ink-900'
                   }`}
                 >
-                  <span className="text-lg font-bold">{MODE_LABEL[mode].label}</span>
+                  <span className="text-lg font-bold">{copy.inputModes[mode].label}</span>
                   <span
                     className={`text-sm ${
                       genre.defaultInputMode === mode ? 'text-bloom-100' : 'text-ink-600'
                     }`}
                   >
-                    {MODE_LABEL[mode].note}
+                    {copy.inputModes[mode].note}
                   </span>
                 </button>
               ))}
@@ -103,37 +100,35 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
               onClick={onClose}
               className="mt-6 w-full text-sm text-ink-400 underline"
             >
-              もどる
+              {copy.sheet.close}
             </button>
           </>
         ) : (
           <>
-            <h2 className="mt-1 text-center text-xl font-bold">なんいどをえらぶ</h2>
+            <h2 className="mt-1 text-center text-xl font-bold">{copy.sheet.chooseDifficulty}</h2>
             {selectedMode && (
               <p className="mt-1 text-center text-sm text-ink-400">
-                こたえかた：{MODE_LABEL[selectedMode].label}
+                {copy.sheet.modeIs(copy.inputModes[selectedMode].label)}
               </p>
             )}
 
             <div className="mt-6 flex flex-col gap-3">
-              {DIFFICULTIES.map((option) => (
+              {DIFFICULTY_ORDER.map((level) => (
                 <button
-                  key={option.id}
+                  key={level}
                   type="button"
-                  onClick={() => selectedMode && onStart(selectedMode, option.id)}
+                  onClick={() => selectedMode && onStart(selectedMode, level)}
                   className={`flex min-h-16 flex-col justify-center rounded-2xl px-5 text-left ${
-                    option.id === 'normal'
+                    level === 'normal'
                       ? 'bg-bloom-700 text-white'
                       : 'border-2 border-bloom-200 text-ink-900'
                   }`}
                 >
-                  <span className="text-lg font-bold">{option.label}</span>
+                  <span className="text-lg font-bold">{copy.difficulties[level].label}</span>
                   <span
-                    className={`text-sm ${
-                      option.id === 'normal' ? 'text-bloom-100' : 'text-ink-600'
-                    }`}
+                    className={`text-sm ${level === 'normal' ? 'text-bloom-100' : 'text-ink-600'}`}
                   >
-                    {option.note}
+                    {copy.difficulties[level].note}
                   </span>
                 </button>
               ))}
@@ -144,7 +139,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
               onClick={backToMode}
               className="mt-6 w-full text-sm text-ink-400 underline"
             >
-              こたえかたにもどる
+              {copy.sheet.backToMode}
             </button>
           </>
         )}

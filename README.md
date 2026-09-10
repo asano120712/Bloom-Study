@@ -40,15 +40,18 @@ src/
 │                 こたえかたの入力(TypingInput, OnScreenKeyboard,
 │                        HandwritingCanvas, PartsInput, InputModeSheet)
 ├── config/       ヒント間隔・トライアル上限・編集距離の許容量など調整パラメータ
-├── data/         ジャンル定義と問題データ(手書き分 + 生成JSON)
+├── data/         ジャンル・あそびの定義(genres, activities)、画面の言葉(copy)、
+│                 問題データ(手書き分 + 生成JSON)、なぞりのお手本(生成JSON)
 ├── features/
 │   ├── hints/    ジャンル別ヒント分解ルール(english / kanji)とレジストリ
+│   ├── trace/    なぞりがきのお手本(図形は手書き、ひらがなは生成JSON)
 │   └── judge/    正誤判定(正規化一致 / 編集距離 / パーツの置いた向き)
 ├── hooks/        useHintTimer, useStats, useQuizSession, useHasFinePointer
-├── pages/        画面(トップ / ジャンル選択 / 出題 / 結果 / マイページ / トライアル終了)
+├── pages/        画面(トップ[おとな/こども] / ジャンル選択 / 出題 / 結果 / マイページ /
+│                     トライアル終了)
 ├── utils/        小さな共通処理(prefersReducedMotion, shuffleWithSeed)
 ├── services/     出題の取得(quizSource) / 永続化(statsRepository, quizSession,
-│                 openingSession) / 読み上げ(speech)
+│                 openingSession, audienceMode) / 読み上げ(speech)
 └── types/        ドメイン型
 ```
 
@@ -268,9 +271,158 @@ JMdict のタグでは弾けない問題(`おなら` → wind など)は
 (各要素の `keyTimes` は 11 秒を 1 とした比率で並んでいるので、
 尺を変えるときはファイル内の `dur` をまとめて書き換えること)。
 
+### おとな向け / こども向け
+
+**トップだけをモードごとに分ける。** `/` がおとな向け([TopPage](src/pages/TopPage.tsx))、
+`/kids` がこども向け([KidsTopPage](src/pages/KidsTopPage.tsx))。
+言葉づかいや文字の大きさを別々に決められて、その先(ジャンル選択・出題・結果)は
+同じ画面を使えるため。画面を丸ごと2組に分けると、直しが常に2か所になる。
+
+```
+/         おとな向けトップ ┐
+                          ├→ /genres → /quiz/:genreId → /result  (共通)
+/kids     こども向けトップ ┘
+```
+
+切り替えはヘッダー右の2つのボタン(`AudienceSwitch`)。押すと**そのモードのトップへ移る**。
+途中の画面から中身だけ入れ替えると、モードで出すジャンルが変わったときに
+どこに居るのか分からなくなるため、行き先はトップに固定している。
+
+**出題中(`exitTo` あり)は切り替えを出さない。** 切り替えるとトップへ移るので、
+離脱を止めている画面に抜け道を作ってしまう。
+
+選んだモードは `localStorage`(`src/services/audienceMode.ts`)に残す。
+次にアプリを開いたときは前に使っていた側から始まる(`/` を開くと、
+こども向けを使っていれば `/kids` へ送る)。切り替えは**押した時点で保存**してから
+移動するので、こども向けから「おとな」を押しても送り返されない。
+
+ロゴは横長(300:62)で、切り替えと並べると 320px 幅の端末で収まらない。
+`min-w-0` で縮めるのを許し、`object-contain` で縦横比を保ったまま小さくする
+(360px では 174px のまま、320px で 150px に縮む)。
+
+**こども向けのジャンルはまだ無い。** 足すときは、画面ではなくジャンル側を
+`useAudienceMode()` で出し分ける。
+
+#### 言葉はモードごとに1か所へ集める
+
+画面に出す文字列は [src/data/copy.ts](src/data/copy.ts) が持ち、画面は `useCopy()` で受け取る。
+
+```
+copy.genreSelect.title   おとな「ジャンルをえらぶ」 / こども「なにを べんきょう する？」
+copy.hints.next(9)       おとな「つぎのヒントまで 9 秒」 / こども「つぎの ヒントまで 9 びょう」
+copy.parts.recalled      おとな「思い出した」 / こども「おもいだした」
+```
+
+こども向けは**漢字を減らし、文を短く、話しかける調子**にする。
+画面側に文字列を置かないのは、言い回しを直すときに全画面を触らせないため。
+
+これに合わせて、**ジャンルの「構造」と「言葉」を分けた**。
+`Genre`(data/genres.ts)はこたえかた・ガイド・読み上げだけを持ち、
+ラベル・説明・出題語の見出しは `copy.genres[genreId]` にある。難易度も同じで、
+並び順は `DIFFICULTY_ORDER`(types)、見出しと対象のめやすは copy が持つ。
+
+読み上げ用のラベル(`aria-label`)は共通のままにしている。目に見える言葉ではないので、
+モードで言い換えても得がない。
+
+#### 色はトークンだけ差し替える
+
+こども向けは、白い紙のような地を**あたたかいクリーム**に置き換え、緑の黒みを抜き、
+文字を真っ黒でなく茶みのある濃灰にする。
+
+やり方は [src/index.css](src/index.css) の `:root[data-audience='kids']` で
+**色トークンの値だけ**を上書きする形。Tailwind v4 のユーティリティは
+`var(--color-*)` を参照するので、`<html data-audience="kids">` が付くだけで
+全画面の色が入れ替わる。画面側のクラス(`bg-bloom-700` など)は1つも触っていない。
+
+属性は2か所で貼る。`main.tsx` が**最初の描画より前**に(色のちらつき防止)、
+`App` の `AudienceTheme` が切り替えのたびに追従する。
+
+**やさしい色にしても、コントラストは落とさない。** 読めない色はやさしくないので、
+本文 4.5:1 / 小さい字 3:1 を満たす値だけを採った(実測)。
+
+| 組み合わせ | おとな | こども | 必要 |
+|---|---|---|---|
+| 本文 `ink-600` / 地 | 6.36 | 5.45 | 4.5 |
+| 小さい字 `ink-400` / 地 | 3.09 | 3.15 | 3.0 |
+| 見出し `ink-900` / 地 | 14.44 | 10.84 | 4.5 |
+| 白 / 主ボタン `bloom-700` | 6.20 | 5.20 | 4.5 |
+| `bloom-100` / `bloom-700` | 5.33 | 4.55 | 4.5 |
+
+狭いタイルの見出しには `break-keep` を掛ける。日本語は既定でどこでも折り返すため、
+掛けないと「いま れんぞ / く」のように語の途中で切れる。
+
+### こども向けのあそび
+
+**こども向けは、字を書けない・読めない年齢を想定している。** 熟語の穴うめは出せないので、
+こどもモードの一覧にはクイズのジャンルを並べず、あそびだけを出す
+([src/data/activities.ts](src/data/activities.ts))。
+
+```
+おとな          こども
+・英単語        ・かたちを なぞろう
+・漢字          ・ひらがなを なぞろう
+```
+
+一覧に並ぶものは `Activity` にまとめてある。クイズは `genreId` を持ち、
+選ぶとこたえかた・なんいどのシートを開く。あそびは `path` を持ち、押したらすぐ始まる
+(小さい子ほど、始めるまでの手数は少ないほうがいい)。
+
+#### なぞりがき
+
+グレーのお手本を指で追うと、追えたところまでが緑になる。1画ずつ、書き順どおりに進む。
+
+```
+      ┌─────────┐
+      │    ●\    │   ● = ここに指を置く(光っている)
+      │      \   │
+      │      /   │   なぞれたところが緑になる
+      │     /    │
+      └─────────┘
+```
+
+**正誤を出さない。** 間違いで止めたり、やり直させたりもしない。
+なぞれたら次、それだけ。1回5問で必ず「ぜんぶ できた!」に届かせる。
+終わりの見えない出題は、この年齢では達成感にならない。
+
+判定は、お手本のパスを 2 ずつの点に刻んで指との距離で見る
+([src/components/TraceCanvas.tsx](src/components/TraceCanvas.tsx))。
+
+| ルール | 値 | 理由 |
+|---|---|---|
+| 線から離れてよい距離 | 14 | 線幅(10)より広い。狙って線に乗せられる年齢ではない |
+| 一度に進める点数 | 12 | 終点だけ触ってごまかせないようにする上限 |
+| 進む先 | 指にいちばん近い点 | 「届いている中でいちばん先」だと指より先に緑が伸びる |
+| 書き始め | すでになぞった側だけ | 途中で指を離しても、最初から引き直せる。先へは飛べない |
+
+最後のルールは実機で見つけた。始点だけを受け付ける作りだと、
+途中で指を離した子が線の最初から引き直しても**何も起きない**。
+
+#### ひらがなのお手本は KanjiVG から生成する
+
+フォントの字形からは書き順を復元できない。KanjiVG は字形を
+**書き順どおりに並んだストロークの SVG パス**で持っているので、これを使う。
+
+```bash
+npm run dict:fetch     # 初回のみ(KanjiVG も一緒に落ちる)
+npm run strokes:kana   # 清音46字 → src/data/strokes.hiragana.generated.json(20KB)
+```
+
+座標系は KanjiVG の 109×109 の正方形。図形のお手本([src/features/trace](src/features/trace/index.ts))も
+同じ座標系で手で書いてあるので、字と図形を同じ仕組みで扱える。
+
+なぞる順は画数の少ない字から。生成データは五十音順なので、読み込み側で並べ替える。
+
+**KanjiVG は CC BY-SA 3.0**(他のデータは 4.0)。表示物に出典の掲示が要る。
+
+#### これから足すあそび
+
+- **おなじもの さがし** — 図形が4つ出て、同じものを選ぶ
+- **パイプでボール** — 配管をつないでボールを通す
+
 ### ヘッダーとオープニング演出
 
 - `AppHeader` を `AppShell` に組み込んであるので、全画面のヘッダー左に横組みロゴ(静止版)が出る。ロゴはトップへのリンク。右側は今後のナビゲーション用に空けてある
+- **ヘッダー右におとな/こどもの切り替えを置く。** 押すとそのモードのトップへ移る(後述)
 - **出題中だけはロゴから飛ばさない。** `AppShell` に `exitTo` を渡すとロゴのリンクが外れ、代わりに左上へ「← やめる」が出る。押すと「とちゅうで やめる?」の確認をはさんでから離れる。ヒントを見ているあいだにロゴを押してしまい、問題ごと消えるのを止めるため
 - `OpeningSplash` がトップ画面を開いたときに縦組みロゴを全画面で1回再生し、フェードアウトして本編に渡す
 - 再生は**1セッションにつき1回**。判定は `src/services/openingSession.ts`(`sessionStorage`)。他画面から戻ってきても再生しない
@@ -368,6 +520,28 @@ library が並んでしまう。フォーカス可能な `input` を置かず、
 
 マスは結果画面の**おてほんと同じ正方形+十字ガイド**にする。書いて覚える先の形と
 同じ枠に組ませたいため。十字ガイドがそのまま2枠の境目になり、部品はマスの半分に入る。
+
+**「こたえあわせ」の後に、2部品が寄って1字に組み上がる。**
+
+```
+置いたところ        押した直後          組み上がり
+┌─────┐   →   ┌─────┐   →   ┌─────┐
+│亻┆立│      │ 亻立 │      │  位  │
+└─────┘      └─────┘      └─────┘
+             寄る(300ms)    咲いて 750ms
+```
+
+組み上がりを見せるのは**押した後だけ**。置いた時点で字になると、入れ替えて試すだけで
+正解が分かってしまい、思い出す練習にならない。組み上がらなかったときは離れた形へ戻し、
+200ms 置いてから結果画面へ渡す(手が止まる時間を、正解のときより短くする)。
+
+画面には正解の部品を渡さない。`PartsInput` は `assembledOf(first, second)` で
+**組み上がるなら完成した字、違うなら null** だけを受け取り、演出の出し分けに使う。
+答えを持たない画面のまま、組み上がりだけを描けるようにするため。
+
+字への差し替えはヒントと同じ `animate-bloom-in`(ブラー+フェード)で、部品の層を
+`opacity` で消しながら重ねる。`prefers-reduced-motion` のときは共通の指定で
+動きだけが消え、組み上がった字は静止したまま同じ時間だけ出る。
 
 寸法は**画面の高さ**で2段階に切り替える(`[@media(min-height:780px)]`)。マスもタイルも
 高さが決まっていて、手書きのキャンバスと違って縮まないので、縦に短い端末では
@@ -476,13 +650,14 @@ QuizPage → useQuizSession → quizSource.startSession(genreId, inputMode) → 
 
 ## クレジット
 
-問題の生成に以下を使用している。**いずれも CC BY-SA 4.0**。
+問題とお手本の生成に以下を使用している。
 
-| データ | 用途 |
-|---|---|
-| [JMdict](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project) (EDRDG) | 英単語ジャンルの語義、漢字ヒントの熟語 |
-| [KANJIDIC2 / KRADFILE](https://www.edrdg.org/wiki/index.php/KANJIDIC_Project) (EDRDG) | 漢字の読み・画数・構成パーツ |
-| [NGSL](https://www.newgeneralservicelist.com/) (Browne, Culligan & Phillips) | 英単語の難易度制御 |
+| データ | 用途 | ライセンス |
+|---|---|---|
+| [JMdict](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project) (EDRDG) | 英単語ジャンルの語義、漢字ヒントの熟語 | CC BY-SA 4.0 |
+| [KANJIDIC2 / KRADFILE](https://www.edrdg.org/wiki/index.php/KANJIDIC_Project) (EDRDG) | 漢字の読み・画数・構成パーツ | CC BY-SA 4.0 |
+| [NGSL](https://www.newgeneralservicelist.com/) (Browne, Culligan & Phillips) | 英単語の難易度制御 | CC BY-SA 4.0 |
+| [KanjiVG](http://kanjivg.tagaini.net) (Ulrich Apel) | なぞりがきのひらがなのお手本(書き順つき) | **CC BY-SA 3.0** |
 
 - [EDRDG License](https://www.edrdg.org/edrdg/licence.html)
 - JSON 化: [jmdict-simplified](https://github.com/scriptin/jmdict-simplified) / [machine_readable_wordlists](https://github.com/lpmi-13/machine_readable_wordlists)
@@ -501,11 +676,12 @@ QuizPage → useQuizSession → quizSource.startSession(genreId, inputMode) → 
 
 | パターン | 理由 |
 |---|---|
-| `.dict-cache/` | KANJIDIC2 / KRADFILE のダウンロードキャッシュ。十数MBあり、スクリプトで再取得できる |
+| `.dict-cache/` | KANJIDIC2 / KRADFILE / KanjiVG のダウンロードキャッシュ。数十MBあり、スクリプトで再取得できる |
 | `.env` / `.env.*` | BaaS のキーなどを入れる想定。共有用の `.env.example` だけ例外的に追跡する |
 
-逆に `src/data/questions.kanji.generated.json` は自動生成だが**追跡する**。
-100KB弱でビルドに必要なアプリデータであり、辞書データを持っていない環境でもビルドできるようにするため。
+逆に `src/data/questions.kanji.generated.json` と `src/data/strokes.hiragana.generated.json` は
+自動生成だが**追跡する**。ビルドに必要なアプリデータであり(それぞれ100KB弱・20KB)、
+辞書データを持っていない環境でもビルドできるようにするため。
 
 ## デプロイ
 
