@@ -61,7 +61,7 @@ export function TracePage() {
       <AppShell>
         <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
           <BloomMark size={120} />
-          <p className="text-2xl font-bold text-bloom-700">{copy.trace.allDone}</p>
+          <p className="text-2xl font-bold text-bloom-700">{copy.play.allDone}</p>
 
           <div className="flex w-full flex-col gap-3">
             <button
@@ -69,10 +69,10 @@ export function TracePage() {
               onClick={restart}
               className="flex min-h-16 w-full items-center justify-center rounded-full bg-bloom-700 text-xl font-bold text-white"
             >
-              {copy.trace.again}
+              {copy.play.again}
             </button>
             <Link to="/genres" className="text-base text-ink-400 underline">
-              {copy.trace.other}
+              {copy.play.other}
             </Link>
           </div>
         </div>

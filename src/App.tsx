@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { GenreSelectPage } from '@/pages/GenreSelectPage'
 import { KidsTopPage } from '@/pages/KidsTopPage'
+import { MatchPage } from '@/pages/MatchPage'
 import { MyPage } from '@/pages/MyPage'
 import { QuizPage } from '@/pages/QuizPage'
 import { ResultPage } from '@/pages/ResultPage'
@@ -46,6 +47,7 @@ export default function App() {
         <Route path="/result" element={<ResultPage />} />
         {/* こども向けのあそび。こたえかたも難易度も選ばせず、押したらすぐ始まる */}
         <Route path="/trace/:setId" element={<TracePage />} />
+        <Route path="/match" element={<MatchPage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/trial-end" element={<TrialEndPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />

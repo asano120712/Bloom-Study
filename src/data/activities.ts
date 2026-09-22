@@ -10,7 +10,7 @@ import type { AudienceMode, GenreId } from '@/types'
  * 字を読めない年齢の子に熟語の穴うめは出せないため、
  * こども向けにはクイズのジャンルを並べない。
  */
-export type ActivityId = GenreId | 'trace-shape' | 'trace-hiragana'
+export type ActivityId = GenreId | 'trace-shape' | 'trace-hiragana' | 'match'
 
 export interface Activity {
   id: ActivityId
@@ -27,6 +27,7 @@ export const ACTIVITIES: Activity[] = [
   // なぞりがきは図形から。線をなぞる手の動きができてから字へ進む
   { id: 'trace-shape', audience: 'kids', path: '/trace/shape' },
   { id: 'trace-hiragana', audience: 'kids', path: '/trace/hiragana' },
+  { id: 'match', audience: 'kids', path: '/match' },
 ]
 
 export function activitiesFor(audience: AudienceMode): Activity[] {

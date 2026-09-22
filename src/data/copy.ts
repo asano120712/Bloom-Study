@@ -52,14 +52,10 @@ export interface Copy {
   }
   handwriting: { clear: string; done: string }
   typing: { placeholderTap: string; placeholderKey: string }
-  trace: {
-    guide: string
-    done: string
-    allDone: string
-    again: string
-    other: string
-    skip: string
-  }
+  /** あそび(なぞりがき・おなじものさがし)で共通の言葉 */
+  play: { allDone: string; again: string; other: string }
+  trace: { guide: string; done: string }
+  match: { question: string; correct: string; hint: string }
   result: {
     model: string
     listen: string
@@ -92,6 +88,7 @@ const ADULT: Copy = {
     kanji: { label: '漢字', description: '熟語の ◯ に入る漢字を書いて思い出す' },
     'trace-shape': { label: 'なぞりがき(かたち)', description: 'まるやさんかくを指でなぞる' },
     'trace-hiragana': { label: 'なぞりがき(ひらがな)', description: 'ひらがなを書き順どおりになぞる' },
+    match: { label: '同じものさがし', description: 'お手本と同じ図形を4つから選ぶ' },
   },
   genrePrompt: {
     english: 'この言葉を思い出そう',
@@ -162,13 +159,12 @@ const ADULT: Copy = {
   },
   handwriting: { clear: 'けす', done: 'かけた' },
   typing: { placeholderTap: 'こたえをタップして入力', placeholderKey: 'キーボードで入力' },
-  trace: {
-    guide: '光っている ● から指でなぞってね',
-    done: 'できた!',
-    allDone: 'ぜんぶ できた!',
-    again: 'もういちど',
-    other: 'ほかのあそび',
-    skip: 'つぎへ',
+  play: { allDone: 'ぜんぶ できた!', again: 'もういちど', other: 'ほかのあそび' },
+  trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
+  match: {
+    question: 'どれと おなじ?',
+    correct: 'あたり!',
+    hint: 'ひかっているのが こたえだよ',
   },
   result: {
     model: 'おてほん',
@@ -212,6 +208,7 @@ const KIDS: Copy = {
     kanji: { label: 'かんじ', description: '◯ に はいる かんじを かこう' },
     'trace-shape': { label: 'かたちを なぞろう', description: 'まる・さんかく・しかくを ゆびで なぞる' },
     'trace-hiragana': { label: 'ひらがなを なぞろう', description: 'ゆびで なぞって じを おぼえる' },
+    match: { label: 'おなじもの さがし', description: 'うえと おなじ かたちを えらぼう' },
   },
   genrePrompt: {
     english: 'この ことばを おもいだそう',
@@ -278,13 +275,12 @@ const KIDS: Copy = {
   },
   handwriting: { clear: 'けす', done: 'かけた' },
   typing: { placeholderTap: 'こたえを タップして うとう', placeholderKey: 'キーボードで うとう' },
-  trace: {
-    guide: 'ひかってる ● から ゆびで なぞってね',
-    done: 'できた！',
-    allDone: 'ぜんぶ できた！',
-    again: 'もういちど',
-    other: 'ほかの あそび',
-    skip: 'つぎへ',
+  play: { allDone: 'ぜんぶ できた！', again: 'もういちど', other: 'ほかの あそび' },
+  trace: { guide: 'ひかってる ● から ゆびで なぞってね', done: 'できた！' },
+  match: {
+    question: 'どれと おなじ？',
+    correct: 'あたり！',
+    hint: 'ひかってるのが こたえだよ',
   },
   result: {
     model: 'おてほん',

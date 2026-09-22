@@ -49,6 +49,28 @@
     }
   }
 
+  /* まちがえたタイルを小さく左右に振る。×も減点も出さず、これだけで「ちがうよ」を伝える */
+  --animate-shake: shake 420ms ease-in-out;
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20% {
+      transform: translateX(-6px);
+    }
+    40% {
+      transform: translateX(6px);
+    }
+    60% {
+      transform: translateX(-4px);
+    }
+    80% {
+      transform: translateX(4px);
+    }
+  }
+
   /* ヒントが「じわっと浮かび上がる」演出。プロトタイプのブラー+フェードインを踏襲 */
   --animate-bloom-in: bloom-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
 
