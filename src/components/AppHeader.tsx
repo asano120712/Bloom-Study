@@ -18,7 +18,7 @@ interface AppHeaderProps {
 
 /** 切り替えに出す名前 */
 const AUDIENCE_LABEL: Record<AudienceMode, string> = {
-  adult: 'おとな',
+  adult: '一般',
   kids: 'こども',
 }
 
