@@ -1,12 +1,7 @@
 import type { ActivityId } from '@/data/activities'
+import type { AnswerChoiceId } from '@/data/genres'
 import type { AssembleLayout } from '@/features/assemble'
-import type {
-  AudienceMode,
-  Difficulty,
-  GenreId,
-  InputMode,
-  JudgeVerdict,
-} from '@/types'
+import type { AudienceMode, Difficulty, GenreId, JudgeVerdict } from '@/types'
 
 /**
  * 画面に出す言葉を、モード(おとな / こども)ごとにここへ集める。
@@ -21,7 +16,8 @@ export interface Copy {
   activities: Record<ActivityId, { label: string; description: string }>
   /** 出題語の上に出す一言。何を思い出すのかはジャンルで変わる */
   genrePrompt: Record<GenreId, string>
-  inputModes: Record<InputMode, { label: string; note: string }>
+  /** こたえかた。クイズの入力方法と、小1・小2のあそび(なぞり・くみたて) */
+  answerModes: Record<AnswerChoiceId, { label: string; note: string }>
   difficulties: Record<Difficulty, { label: string; note: string }>
   /** 結果画面の判定の見出し。色だけに頼らずアイコン+文でも分かるようにする */
   verdicts: Record<JudgeVerdict, string>
@@ -29,10 +25,11 @@ export interface Copy {
   genreSelect: { title: string; note: string; back: string }
   sheet: {
     start: string
-    chooseMode: string
     chooseDifficulty: string
-    modeIs: (mode: string) => string
-    backToMode: string
+    chooseMode: string
+    /** こたえかたを選ぶ画面に出す「いま選んでいるなんいど」 */
+    levelIs: (level: string) => string
+    backToDifficulty: string
     close: string
   }
   quiz: {
@@ -97,15 +94,20 @@ const ADULT: Copy = {
     english: 'この言葉を思い出そう',
     kanji: '◯ に入る漢字を思い出そう',
   },
-  inputModes: {
-    typing: { label: 'タイピング', note: 'キーボードで入力する' },
+  answerModes: {
     handwriting: { label: '手書き', note: '指でなぞって書く' },
+    typing: { label: 'タイピング', note: 'キーボードで入力する' },
     assemble: { label: 'パーツを組む', note: 'パーツをスライドしてマスに組む' },
+    trace: { label: 'なぞりがき', note: 'お手本を書き順どおりになぞる' },
+    build: { label: 'くみたて', note: 'お手本を覚えてから、部品で組む' },
   },
   difficulties: {
-    easy: { label: 'やさしい', note: '小学生むけ' },
-    normal: { label: 'ふつう', note: '中学生むけ' },
-    hard: { label: 'むずかしい', note: '高校・社会人むけ' },
+    g12: { label: '小学1・2年', note: '配当漢字240字。なぞる・組み立てる' },
+    g34: { label: '小学3・4年', note: '配当漢字402字' },
+    g56: { label: '小学5・6年', note: '配当漢字384字' },
+    junior: { label: '中学生', note: '常用漢字のうち、よく見るもの' },
+    senior: { label: '高校生', note: '常用漢字のうち、中くらいの頻度' },
+    working: { label: '社会人', note: '常用漢字のうち、あまり見ないもの' },
   },
   verdicts: {
     correct: '⭕️ せいかい',
@@ -130,10 +132,10 @@ const ADULT: Copy = {
   },
   sheet: {
     start: 'はじめる',
-    chooseMode: 'こたえかたをえらぶ',
     chooseDifficulty: 'なんいどをえらぶ',
-    modeIs: (mode) => `こたえかた：${mode}`,
-    backToMode: 'こたえかたにもどる',
+    chooseMode: 'こたえかたをえらぶ',
+    levelIs: (level) => `なんいど：${level}`,
+    backToDifficulty: 'なんいどにもどる',
     close: 'もどる',
   },
   quiz: {
@@ -220,15 +222,20 @@ const KIDS: Copy = {
     english: 'この ことばを おもいだそう',
     kanji: '◯ に はいる かんじは なにかな？',
   },
-  inputModes: {
-    typing: { label: 'キーボード', note: 'もじを うって こたえる' },
+  answerModes: {
     handwriting: { label: 'てがき', note: 'ゆびで かいて こたえる' },
+    typing: { label: 'キーボード', note: 'もじを うって こたえる' },
     assemble: { label: 'ぶひんを くむ', note: 'ぶひんを うごかして マスに いれる' },
+    trace: { label: 'なぞる', note: 'おてほんを ゆびで なぞる' },
+    build: { label: 'くみたてる', note: 'おぼえてから ぶひんで くみたてる' },
   },
   difficulties: {
-    easy: { label: 'やさしい', note: 'しょうがくせい むけ' },
-    normal: { label: 'ふつう', note: 'ちゅうがくせい むけ' },
-    hard: { label: 'むずかしい', note: 'こうこうせい いじょう' },
+    g12: { label: '1・2ねんせい', note: 'なぞったり、くみたてたり' },
+    g34: { label: '3・4ねんせい', note: 'しょうがく3・4年の かんじ' },
+    g56: { label: '5・6ねんせい', note: 'しょうがく5・6年の かんじ' },
+    junior: { label: 'ちゅうがくせい', note: 'よく みる かんじ' },
+    senior: { label: 'こうこうせい', note: 'ちょっと むずかしい かんじ' },
+    working: { label: 'おとな', note: 'あまり みない かんじ' },
   },
   verdicts: {
     correct: '⭕️ せいかい！',
@@ -249,10 +256,10 @@ const KIDS: Copy = {
   },
   sheet: {
     start: 'はじめる',
-    chooseMode: 'どうやって こたえる？',
     chooseDifficulty: 'むずかしさを えらぼう',
-    modeIs: (mode) => `こたえかた：${mode}`,
-    backToMode: 'こたえかたに もどる',
+    chooseMode: 'どうやって こたえる？',
+    levelIs: (level) => `むずかしさ：${level}`,
+    backToDifficulty: 'むずかしさに もどる',
     close: 'もどる',
   },
   quiz: {

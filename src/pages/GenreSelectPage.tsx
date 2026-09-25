@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { ActivityArt } from '@/components/ActivityArt'
 import { AppShell } from '@/components/AppShell'
 import { InputModeSheet } from '@/components/InputModeSheet'
 import { activitiesFor, type Activity } from '@/data/activities'
-import { findGenre } from '@/data/genres'
+import { findGenre, type AnswerChoice } from '@/data/genres'
 import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
-import { TOP_PATH, type Difficulty, type Genre, type InputMode } from '@/types'
+import { TOP_PATH, type Difficulty, type Genre } from '@/types'
 
 export function GenreSelectPage() {
   const navigate = useNavigate()
@@ -14,10 +15,15 @@ export function GenreSelectPage() {
   /** 入力方法を選んでいる最中のジャンル。null なら一覧だけ */
   const [pendingGenre, setPendingGenre] = useState<Genre | null>(null)
 
-  const start = (inputMode: InputMode, difficulty: Difficulty) => {
+  const start = (difficulty: Difficulty, choice: AnswerChoice) => {
     if (!pendingGenre) return
-    // 再読み込みや結果画面からの戻りでも保てるよう、入力方法と難易度は URL に持たせる
-    navigate(`/quiz/${pendingGenre.id}?mode=${inputMode}&level=${difficulty}`)
+    // 別画面のあそび(小1・小2の漢字)は、そのまま行き先へ
+    if (choice.path) {
+      navigate(choice.path)
+      return
+    }
+    // 再読み込みや結果画面からの戻りでも保てるよう、こたえかたと難易度は URL に持たせる
+    navigate(`/quiz/${pendingGenre.id}?mode=${choice.inputMode}&level=${difficulty}`)
   }
 
   /**
@@ -44,13 +50,23 @@ export function GenreSelectPage() {
             <button
               type="button"
               onClick={() => open(activity)}
-              className="flex min-h-20 w-full flex-col justify-center rounded-3xl bg-bloom-100 px-5 py-4 text-left"
+              className="flex min-h-20 w-full items-center gap-4 rounded-3xl bg-bloom-100 p-4 text-left"
             >
-              <span className="text-xl font-bold text-bloom-700">
-                {copy.activities[activity.id].label}
-              </span>
-              <span className="mt-1 text-sm break-keep text-ink-600">
-                {copy.activities[activity.id].description}
+              {/*
+                中身を小さくして流す絵。字を読まなくても選べるよう、
+                こども向けは一回り大きくする。
+              */}
+              <ActivityArt
+                id={activity.id}
+                className={`shrink-0 ${mode === 'kids' ? 'size-24' : 'size-18'}`}
+              />
+              <span className="flex min-w-0 flex-col">
+                <span className="text-xl font-bold text-bloom-700">
+                  {copy.activities[activity.id].label}
+                </span>
+                <span className="mt-1 text-sm break-keep text-ink-600">
+                  {copy.activities[activity.id].description}
+                </span>
               </span>
             </button>
           </li>

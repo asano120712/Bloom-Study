@@ -6,7 +6,7 @@ import { HintList } from '@/components/HintList'
 import { PartsInput } from '@/components/PartsInput'
 import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
-import { findGenre } from '@/data/genres'
+import { answerChoicesOf, findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeParts, judgeTyping } from '@/features/judge'
@@ -14,7 +14,13 @@ import { useCopy } from '@/hooks/useAudienceMode'
 import { useHintTimer } from '@/hooks/useHintTimer'
 import { useQuizSession } from '@/hooks/useQuizSession'
 import { useStats } from '@/hooks/useStats'
-import { isDifficulty, type AnswerRecord, type InputMode, type JudgeResult } from '@/types'
+import {
+  isDifficulty,
+  type AnswerRecord,
+  type Difficulty,
+  type InputMode,
+  type JudgeResult,
+} from '@/types'
 import { shuffleWithSeed } from '@/utils/shuffle'
 import type { ResultState, ResultSubmission } from './ResultPage'
 
@@ -27,18 +33,17 @@ export function QuizPage() {
   const copy = useCopy()
 
   /**
-   * 入力方法はジャンル選択のシートで決めて URL で受け取る。
-   * 直接 URL を叩かれた場合だけジャンルの既定にフォールバックする。
+   * こたえかたと なんいど はジャンル選択のシートで決めて URL で受け取る。
+   * 直接 URL を叩かれた場合は、そのジャンルで最初に勧めるものに寄せる。
    */
+  const levelParam = searchParams.get('level')
+  const difficulty: Difficulty = isDifficulty(levelParam) ? levelParam : 'junior'
+
   const modeParam = searchParams.get('mode')
   const inputMode: InputMode =
     modeParam === 'typing' || modeParam === 'handwriting' || modeParam === 'assemble'
       ? modeParam
-      : (genre?.defaultInputMode ?? 'typing')
-
-  // 難易度も URL から受け取る。直接叩かれた場合は「ふつう」に寄せる
-  const levelParam = searchParams.get('level')
-  const difficulty = isDifficulty(levelParam) ? levelParam : 'normal'
+      : (genre && answerChoicesOf(genre.id, difficulty)[0]?.inputMode) || 'handwriting'
 
   // 出せる問題は入力方法と難易度で変わる(assemble は部品のタイルを持つ問題だけ)
   const { questions, cursor, isLoading: isSessionLoading, commitAdvance } = useQuizSession(

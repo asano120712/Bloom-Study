@@ -14,7 +14,7 @@ import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 import { readDict } from './dict-cache.ts'
-import { kanjiLevelOf, type Level } from './difficulty.ts'
+import { kanjiLevelOf, partnerGradeCap, type Level } from './difficulty.ts'
 import { JUKUGO_DENYLIST } from './jukugo-denylist.ts'
 import { isUnsuitable } from './unsuitable.ts'
 import { CONFUSABLE_OF, KRAD_VARIANTS, VARIANT_STROKES } from './kanji-radicals.ts'
@@ -85,8 +85,12 @@ const reportOnly = args.includes('--report')
  */
 const partsOnly = args.includes('--parts-only')
 const gradeArg = args.find((a) => a.startsWith('--grades='))?.slice('--grades='.length)
-/** 既定は小学3〜6年配当。1〜2年は象形文字が多くパーツ分解のヒントが作れない。 */
-const GRADES = (gradeArg ?? '3,4,5,6').split(',').map(Number)
+/**
+ * 既定は小学3〜6年 + 中学以上の常用漢字。
+ * 小1・小2は出さない。熟語の穴うめが成立しない(相手の字が読めない)学年なので、
+ * なぞりがきと くみたて に渡す。
+ */
+const GRADES = (gradeArg ?? '3,4,5,6,8').split(',').map(Number)
 
 // -------------------------------------------------------------- ヒントの組み立て
 
@@ -123,7 +127,7 @@ const ALL_KANJI = /^[一-龯々]+$/
  * そのまま出る字なので、読めない字が混じると手がかりにならない
  * (愛 → 「◯嬌」あいきょう)。
  */
-function indexJukugo(jmdict: Jmdict, jouyou: Set<string>): Map<string, Jukugo[]> {
+function indexJukugo(jmdict: Jmdict, gradeOf: Map<string, number>): Map<string, Jukugo[]> {
   const index = new Map<string, Jukugo[]>()
 
   for (const word of jmdict.words) {
@@ -132,7 +136,10 @@ function indexJukugo(jmdict: Jmdict, jouyou: Set<string>): Map<string, Jukugo[]>
     if (!kanji || !kana) continue
     if (!ALL_KANJI.test(kanji.text)) continue
     if (kanji.text.length < 2 || kanji.text.length > 3) continue
-    if (![...kanji.text].every((c) => jouyou.has(c))) continue
+    const grades = [...kanji.text].map((c) => gradeOf.get(c))
+    if (grades.some((g) => g === undefined)) continue
+    // 伏せていない側にどこまでの学年の字が出るか。難易度ごとの上限で絞るのに使う
+    const maxGrade = Math.max(...(grades as number[]))
 
     const sense = word.sense[0]
     if (!sense?.partOfSpeech.some((pos) => pos === 'n' || pos === 'vs')) continue
@@ -143,7 +150,7 @@ function indexJukugo(jmdict: Jmdict, jouyou: Set<string>): Map<string, Jukugo[]>
 
     for (const char of new Set(kanji.text)) {
       if (!index.has(char)) index.set(char, [])
-      index.get(char)!.push({ text: kanji.text, reading: kana.text })
+      index.get(char)!.push({ text: kanji.text, reading: kana.text, maxGrade })
     }
   }
 
@@ -155,17 +162,26 @@ function indexJukugo(jmdict: Jmdict, jouyou: Set<string>): Map<string, Jukugo[]>
 interface Jukugo {
   text: string
   reading: string
+  /** その語に出てくる字の配当学年の最大。8 は中学以上 */
+  maxGrade: number
 }
 
 /**
  * その漢字を含む熟語を、手がかりが重ならないように最大 limit 語えらぶ。
  * 先頭が出題文、残りがヒントになる。
  */
-function chooseJukugo(literal: string, index: Map<string, Jukugo[]>, limit: number): Jukugo[] {
+function chooseJukugo(
+  literal: string,
+  index: Map<string, Jukugo[]>,
+  limit: number,
+  gradeCap: number,
+): Jukugo[] {
   const chosen: Jukugo[] = []
 
   for (const word of index.get(literal) ?? []) {
     if (chosen.length >= limit) break
+    // 伏せていない側に、その学年ではまだ習わない字が出ないようにする
+    if (word.maxGrade > gradeCap) continue
     // 委員 を採ったあとに 委員会・委員長 を並べても手がかりが増えない
     if (chosen.some((c) => word.text.includes(c.text) || c.text.includes(word.text))) continue
     chosen.push(word)
@@ -241,9 +257,10 @@ function buildQuestionSource(
   char: Kanjidic2['characters'][number],
   jukugo: Map<string, Jukugo[]>,
   maskedForms: Map<string, Set<string>>,
+  level: Level,
 ): BuildResult | BuildSkip {
   const literal = char.literal
-  const words = chooseJukugo(literal, jukugo, JUKUGO_HINTS + 1)
+  const words = chooseJukugo(literal, jukugo, JUKUGO_HINTS + 1, partnerGradeCap(level))
 
   const promptIndex = words.findIndex((word) => {
     // 同じ字が2回出る語(人々 など)は「◯◯」になって出題文にならない
@@ -337,11 +354,13 @@ function usableKunReadings(char: Kanjidic2['characters'][number]): string[] {
 function main(): void {
   const kanjidic = readDict<Kanjidic2>('kanjidic2-en')
   const kradfile = readDict<Kradfile>('kradfile')
-  /** 常用漢字(配当学年を持つ字)。熟語に混ぜてよい字の集合 */
-  const jouyou = new Set(
-    kanjidic.characters.filter((c) => c.misc.grade !== null).map((c) => c.literal),
+  /** 常用漢字(配当学年を持つ字)と、その学年。熟語に混ぜてよいのはこの字だけ */
+  const gradeOf = new Map(
+    kanjidic.characters
+      .filter((c) => c.misc.grade !== null)
+      .map((c) => [c.literal, c.misc.grade!] as const),
   )
-  const jukugo = indexJukugo(readDict<Jmdict>('jmdict-eng-common'), jouyou)
+  const jukugo = indexJukugo(readDict<Jmdict>('jmdict-eng-common'), gradeOf)
   const maskedForms = indexMaskedForms(jukugo)
 
   /** 部品の画数。KANJIDIC に無い変体は手持ちの表で補う */
@@ -366,6 +385,19 @@ function main(): void {
   }
 
   const selected = kanjidic.characters.filter((c) => c.misc.grade !== null && GRADES.includes(c.misc.grade))
+
+  /**
+   * 中学以上(配当学年8)を3つに割る境目。実データの頻度順位を3等分して出す。
+   * 決め打ちの順位にすると、辞書が更新されたときに偏る。
+   */
+  const frequencies = kanjidic.characters
+    .filter((c) => c.misc.grade === 8 && c.misc.frequency != null)
+    .map((c) => c.misc.frequency!)
+    .sort((a, b) => a - b)
+  const thresholds: [number, number] = [
+    frequencies[Math.floor(frequencies.length / 3)] ?? 0,
+    frequencies[Math.floor((frequencies.length * 2) / 3)] ?? 0,
+  ]
 
   /** 部品に割れる字の、正解の部品とタイル。位置(へん/つくり)は画面側の表が持つ */
   const partsOf = (char: Kanjidic2['characters'][number]) => {
@@ -432,7 +464,8 @@ function main(): void {
     const components = kradfile.kanji[char.literal]
     if (!components) { skip('KRADFILEに分解が無い'); continue }
 
-    const source = buildQuestionSource(char, jukugo, maskedForms)
+    const level = kanjiLevelOf(char.misc.grade!, char.misc.frequency, thresholds)
+    const source = buildQuestionSource(char, jukugo, maskedForms, level)
     if ('skipReason' in source) { skip(source.skipReason); continue }
 
     // assemble モード用。筆画レベルまで割れる字は組み立てても字形を成さない
@@ -448,7 +481,7 @@ function main(): void {
       prompt: source.prompt,
       promptReading: source.promptReading,
       answer: char.literal,
-      level: kanjiLevelOf(char.misc.grade),
+      level,
       hintSource: source.hints,
       ...(parts && partTiles && partTiles.length === PART_TILE_COUNT ? { parts, partTiles } : {}),
     })
@@ -456,6 +489,9 @@ function main(): void {
 
   console.log(`対象(配当学年 ${GRADES.join('/')}): ${selected.length}字`)
   console.log(`生成できた問題: ${questions.length}問`)
+  const byLevel = new Map<string, number>()
+  for (const q of questions) byLevel.set(q.level, (byLevel.get(q.level) ?? 0) + 1)
+  console.log(`  難易度べつ: ${[...byLevel].map(([l, n]) => `${l} ${n}`).join(' / ')}`)
   console.log(`  うちパーツ選択にできる: ${questions.filter((q) => q.parts).length}問`)
   console.log('除外:')
   for (const [reason, count] of Object.entries(skipped).sort((a, b) => b[1] - a[1])) {

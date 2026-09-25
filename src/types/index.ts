@@ -14,20 +14,27 @@ export const TOP_PATH: Record<AudienceMode, string> = {
 export type GenreId = 'english' | 'kanji'
 
 /**
- * 出題の難易度。学年・学習段階のめやすで3段階に分ける。
- * 漢字は配当学年(小3〜小6)、英単語は NGSL の頻度帯(1000/2000/3000語)から割り当てる。
- * 元データの詳しさ以上には刻めないため、まずは学習段階のめやすとして3段階にとどめる。
+ * 出題の難易度。**だれ向けか**で切る。
+ *
+ * 何を根拠に割り当てるかはジャンルで違う。漢字は小学校のあいだは配当学年
+ * (国が決めている学年別漢字配当表)、中学以上は出現頻度。中学校の学習指導要領は
+ * 字を学年に割り当てていないので、学年では割れない。
+ * 英単語は NGSL の頻度帯しか持たないので、中学生・高校生・社会人の3つだけ。
  */
-export type Difficulty = 'easy' | 'normal' | 'hard'
+export type Difficulty = 'g12' | 'g34' | 'g56' | 'junior' | 'senior' | 'working'
 
-/**
- * 難易度の並び(やさしい→むずかしい)。選択シートはこの順で並べる。
- * 見出しと対象のめやすはモードで言い方が変わるので src/data/copy.ts が持つ。
- */
-export const DIFFICULTY_ORDER: readonly Difficulty[] = ['easy', 'normal', 'hard']
+/** やさしい順。選択シートはこの順で並べる */
+export const DIFFICULTY_ORDER: readonly Difficulty[] = [
+  'g12',
+  'g34',
+  'g56',
+  'junior',
+  'senior',
+  'working',
+]
 
 export function isDifficulty(value: string | null | undefined): value is Difficulty {
-  return value === 'easy' || value === 'normal' || value === 'hard'
+  return DIFFICULTY_ORDER.includes(value as Difficulty)
 }
 
 /**
@@ -51,14 +58,6 @@ export type AnswerGuide = 'grid' | 'baseline'
  */
 export interface Genre {
   id: GenreId
-  /**
-   * そのジャンルで選べる入力方法。
-   * 漢字のタイピングのように、答えを打つのに IME が要るジャンルはここから外す。
-   * (IME の変換候補に答えが出てしまい、自前キーボードでも変換は肩代わりできない)
-   */
-  inputModes: InputMode[]
-  /** 開始シートで最初に強調する入力方法 */
-  defaultInputMode: InputMode
   /**
    * 結果画面で正解を「おてほん」として見せるときのガイド。
    * 字の形をどう追わせたいかはジャンルで変わるため、画面側で分岐せずここで持つ。

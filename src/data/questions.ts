@@ -5,13 +5,16 @@ import generatedKanji from './questions.kanji.generated.json'
 /**
  * 手で書いた問題。生成物より優先する(同じ answer があれば生成側を捨てる)。
  * 生成に向かない字や、生成の対象学年から外れる字(小1・小2)はここに置く。
+ *
+ * 小1・小2の漢字は、いまは出題に回らない(この学年は なぞりがき と くみたて に
+ * 差し替えてある)。学年を選んでクイズも出したくなったときのために残してある。
  */
 const MANUAL_QUESTIONS: Question[] = [
-  { id: 'en-001', genreId: 'english', prompt: 'いちご', answer: 'strawberry', level: 'easy' },
-  { id: 'en-002', genreId: 'english', prompt: 'ひまわり', answer: 'sunflower', level: 'easy' },
-  { id: 'en-003', genreId: 'english', prompt: 'としょかん', answer: 'library', level: 'normal' },
-  { id: 'en-004', genreId: 'english', prompt: 'きせつ', answer: 'season', level: 'easy' },
-  { id: 'en-005', genreId: 'english', prompt: 'おもいで', answer: 'memory', level: 'easy' },
+  { id: 'en-001', genreId: 'english', prompt: 'いちご', answer: 'strawberry', level: 'junior' },
+  { id: 'en-002', genreId: 'english', prompt: 'ひまわり', answer: 'sunflower', level: 'junior' },
+  { id: 'en-003', genreId: 'english', prompt: 'としょかん', answer: 'library', level: 'junior' },
+  { id: 'en-004', genreId: 'english', prompt: 'きせつ', answer: 'season', level: 'junior' },
+  { id: 'en-005', genreId: 'english', prompt: 'おもいで', answer: 'memory', level: 'junior' },
 
   // 漢字は熟語の穴うめで出す。部首・パーツ・画数はヒントにも出さない
   // (パーツを答えさせるモードで答えそのものになるため)
@@ -21,7 +24,7 @@ const MANUAL_QUESTIONS: Question[] = [
     prompt: '「◯火」',
     promptReading: 'はなび',
     answer: '花',
-    level: 'easy',
+    level: 'g12',
     hintSource: ['熟語|「◯束」はなたば', '熟語|「生◯」いけばな', '訓読み|はな'],
   },
   {
@@ -30,7 +33,7 @@ const MANUAL_QUESTIONS: Question[] = [
     prompt: '「◯日」',
     promptReading: 'きゅうじつ',
     answer: '休',
-    level: 'easy',
+    level: 'g12',
     hintSource: ['熟語|「◯憩」きゅうけい', '熟語|「連◯」れんきゅう', '訓読み|やすむ'],
   },
 ]
