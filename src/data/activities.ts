@@ -33,11 +33,15 @@ export const ACTIVITIES: Activity[] = [
   // なぞりがきは図形から。線をなぞる手の動きができてから字へ進む
   { id: 'trace-shape', audience: 'kids', path: '/trace/shape' },
   { id: 'trace-hiragana', audience: 'kids', path: '/trace/hiragana' },
-  // 漢字は小1・小2だけ。この学年は熟語の穴うめが成立しないので、なぞって覚える
-  { id: 'trace-kanji', audience: 'kids', path: '/trace/kanji' },
-  { id: 'build-kanji', audience: 'kids', path: '/build' },
   { id: 'match', audience: 'kids', path: '/match' },
 ]
+
+/*
+ * 漢字のなぞり・くみたて(trace-kanji / build-kanji)は、ここには並べない。
+ * 一般向けの漢字で「小学1・2年」を選ぶと、こたえかたとして同じ画面へ入る。
+ * 一覧に出さないだけで id と文言・絵は残してあるので、こども側にも並べたくなったら
+ * 上の配列に1行足せば戻る。
+ */
 
 export function activitiesFor(audience: AudienceMode): Activity[] {
   return ACTIVITIES.filter((activity) => activity.audience === audience)
