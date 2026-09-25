@@ -1,4 +1,5 @@
 import hiragana from '@/data/strokes.hiragana.generated.json'
+import kanji from '@/data/strokes.kanji.generated.json'
 
 /**
  * なぞりがきのお手本。
@@ -18,7 +19,7 @@ export interface TraceItem {
 /** ストロークの座標系。KanjiVG に合わせた正方形 */
 export const VIEW_BOX = 109
 
-export type TraceSetId = 'shape' | 'hiragana'
+export type TraceSetId = 'shape' | 'hiragana' | 'kanji'
 
 /**
  * 図形のお手本。運筆の練習で使う順(たて→よこ→ななめ→まる→…)に並べる。
@@ -54,10 +55,18 @@ const KANA: TraceItem[] = [...hiragana.characters]
   .sort((a, b) => a.strokes.length - b.strokes.length)
   .map((entry) => ({ id: `kana-${entry.char}`, label: entry.char, strokes: entry.strokes }))
 
-const SETS: Record<TraceSetId, TraceItem[]> = { shape: SHAPES, hiragana: KANA }
+/**
+ * 漢字のお手本。小1・小2の配当だけ(熟語の穴うめがまだ成立しない学年)。
+ * 画数の少ない字から出すので、1年の字が先に並ぶ。
+ */
+const KANJI: TraceItem[] = [...kanji.characters]
+  .sort((a, b) => a.strokes.length - b.strokes.length || a.grade - b.grade)
+  .map((entry) => ({ id: `kanji-${entry.char}`, label: entry.char, strokes: entry.strokes }))
+
+const SETS: Record<TraceSetId, TraceItem[]> = { shape: SHAPES, hiragana: KANA, kanji: KANJI }
 
 export function isTraceSet(value: string | undefined): value is TraceSetId {
-  return value === 'shape' || value === 'hiragana'
+  return value === 'shape' || value === 'hiragana' || value === 'kanji'
 }
 
 /** 1回ぶんの出題数。小さい子が飽きる前に「ぜんぶできた」に届く数にする */

@@ -11,7 +11,7 @@
     "questions:kanji": "node scripts/build-kanji-questions.ts",
     "questions:english": "node scripts/build-english-questions.ts",
     "preview": "vite preview",
-    "strokes:kana": "node scripts/build-kana-strokes.ts"
+    "strokes": "node scripts/build-strokes.ts"
   },
   "dependencies": {
     "fast-levenshtein": "^3.0.0",

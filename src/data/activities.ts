@@ -10,7 +10,12 @@ import type { AudienceMode, GenreId } from '@/types'
  * 字を読めない年齢の子に熟語の穴うめは出せないため、
  * こども向けにはクイズのジャンルを並べない。
  */
-export type ActivityId = GenreId | 'trace-shape' | 'trace-hiragana' | 'match'
+export type ActivityId =
+  | GenreId
+  | 'trace-shape'
+  | 'trace-hiragana'
+  | 'trace-kanji'
+  | 'match'
 
 export interface Activity {
   id: ActivityId
@@ -27,6 +32,8 @@ export const ACTIVITIES: Activity[] = [
   // なぞりがきは図形から。線をなぞる手の動きができてから字へ進む
   { id: 'trace-shape', audience: 'kids', path: '/trace/shape' },
   { id: 'trace-hiragana', audience: 'kids', path: '/trace/hiragana' },
+  // 漢字は小1・小2だけ。この学年は熟語の穴うめが成立しないので、なぞって覚える
+  { id: 'trace-kanji', audience: 'kids', path: '/trace/kanji' },
   { id: 'match', audience: 'kids', path: '/match' },
 ]
 

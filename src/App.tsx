@@ -1,16 +1,29 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { AppShell } from '@/components/AppShell'
+import { Loading } from '@/components/Loading'
 import { GenreSelectPage } from '@/pages/GenreSelectPage'
 import { KidsTopPage } from '@/pages/KidsTopPage'
-import { MatchPage } from '@/pages/MatchPage'
-import { MyPage } from '@/pages/MyPage'
-import { QuizPage } from '@/pages/QuizPage'
-import { ResultPage } from '@/pages/ResultPage'
 import { TopPage } from '@/pages/TopPage'
-import { TracePage } from '@/pages/TracePage'
-import { TrialEndPage } from '@/pages/TrialEndPage'
 import { useAudienceMode } from '@/hooks/useAudienceMode'
 import { primeSpeech } from '@/services/speech'
+
+/*
+ * 出題データとお手本データは重い(漢字の問題で約100KB、なぞりのストロークで約170KB)。
+ * その画面に入るまで読まないよう、データを抱える画面は遅延読み込みにする。
+ * トップとジャンル選択は最初に必ず通るので、そのまま同梱する。
+ *
+ * 待っている間は Loading を出すが、Loading 自体が 200ms は何も描かないので、
+ * 手元で開くぶんにはチラつかない。
+ */
+const QuizPage = lazy(() => import('@/pages/QuizPage').then((m) => ({ default: m.QuizPage })))
+const ResultPage = lazy(() => import('@/pages/ResultPage').then((m) => ({ default: m.ResultPage })))
+const TracePage = lazy(() => import('@/pages/TracePage').then((m) => ({ default: m.TracePage })))
+const MatchPage = lazy(() => import('@/pages/MatchPage').then((m) => ({ default: m.MatchPage })))
+const MyPage = lazy(() => import('@/pages/MyPage').then((m) => ({ default: m.MyPage })))
+const TrialEndPage = lazy(() =>
+  import('@/pages/TrialEndPage').then((m) => ({ default: m.TrialEndPage })),
+)
 
 /**
  * いまのモードを <html data-audience> に貼る。
@@ -38,20 +51,28 @@ export default function App() {
   return (
     <BrowserRouter>
       <AudienceTheme />
-      <Routes>
-        {/* トップだけモードごとに分ける。この先の画面は共通 */}
-        <Route path="/" element={<TopPage />} />
-        <Route path="/kids" element={<KidsTopPage />} />
-        <Route path="/genres" element={<GenreSelectPage />} />
-        <Route path="/quiz/:genreId" element={<QuizPage />} />
-        <Route path="/result" element={<ResultPage />} />
-        {/* こども向けのあそび。こたえかたも難易度も選ばせず、押したらすぐ始まる */}
-        <Route path="/trace/:setId" element={<TracePage />} />
-        <Route path="/match" element={<MatchPage />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/trial-end" element={<TrialEndPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <Suspense
+        fallback={
+          <AppShell>
+            <Loading />
+          </AppShell>
+        }
+      >
+        <Routes>
+          {/* トップだけモードごとに分ける。この先の画面は共通 */}
+          <Route path="/" element={<TopPage />} />
+          <Route path="/kids" element={<KidsTopPage />} />
+          <Route path="/genres" element={<GenreSelectPage />} />
+          <Route path="/quiz/:genreId" element={<QuizPage />} />
+          <Route path="/result" element={<ResultPage />} />
+          {/* こども向けのあそび。こたえかたも難易度も選ばせず、押したらすぐ始まる */}
+          <Route path="/trace/:setId" element={<TracePage />} />
+          <Route path="/match" element={<MatchPage />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/trial-end" element={<TrialEndPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   )
 }

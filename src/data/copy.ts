@@ -88,6 +88,7 @@ const ADULT: Copy = {
     kanji: { label: '漢字', description: '熟語の ◯ に入る漢字を書いて思い出す' },
     'trace-shape': { label: 'なぞりがき(かたち)', description: 'まるやさんかくを指でなぞる' },
     'trace-hiragana': { label: 'なぞりがき(ひらがな)', description: 'ひらがなを書き順どおりになぞる' },
+    'trace-kanji': { label: 'なぞりがき(漢字)', description: '小1・小2の漢字を書き順どおりになぞる' },
     match: { label: 'ちがい さがし', description: 'すこしだけ形が違う4つから、お手本と同じものを選ぶ' },
   },
   genrePrompt: {
@@ -208,6 +209,7 @@ const KIDS: Copy = {
     kanji: { label: 'かんじ', description: '◯ に はいる かんじを かこう' },
     'trace-shape': { label: 'かたちを なぞろう', description: 'まる・さんかく・しかくを ゆびで なぞる' },
     'trace-hiragana': { label: 'ひらがなを なぞろう', description: 'ゆびで なぞって じを おぼえる' },
+    'trace-kanji': { label: 'かんじを なぞろう', description: 'ゆびで なぞって かんじを おぼえる' },
     match: { label: 'ちがい さがし', description: 'よく みて、おなじ かたちを さがそう' },
   },
   genrePrompt: {
