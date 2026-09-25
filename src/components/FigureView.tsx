@@ -1,4 +1,4 @@
-import { COLORS, FIGURE_BOX, SHAPES, type Figure } from '@/features/match'
+import { COLORS, FIGURE_BOX, figurePath, type Figure } from '@/features/match'
 
 /**
  * 図形ひとつ。おなじものさがしのお手本にも選択肢にも使う。
@@ -13,11 +13,7 @@ export function FigureView({ figure }: { figure: Figure }) {
       aria-hidden="true"
       className="h-full w-full"
     >
-      <path
-        d={SHAPES[figure.shape].path}
-        fill={COLORS[figure.color].hex}
-        transform={`rotate(${figure.rotation} ${FIGURE_BOX / 2} ${FIGURE_BOX / 2})`}
-      />
+      <path d={figurePath(figure)} fill={COLORS[figure.color].hex} />
     </svg>
   )
 }

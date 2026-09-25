@@ -1,108 +1,225 @@
 /**
  * おなじもの さがし(こども向け)の出題を組み立てる。
  *
- * ダミーは正解を**1か所だけ**変えて作る。どこを変えるかで難しさが決まるので、
- * 1回の中で 形 → 色 → 向き と段階を上げる。
- * 形は SVG のパスで持つ(なぞりがきと同じ考え方。絵の素材が要らない)。
+ * 4つとも**同じ色・同じ向き・同じ種類の形**で、違うのは形のこまかいところだけ。
+ * (ほしの角が5つか6つか、しかくの角がどれだけ丸いか)
+ * どこが違うかを探して、お手本と同じものを選ぶ。
+ *
+ * 形はパスを手で書かずに、数から組み立てる。角の数や丸みを数で持てば、
+ * 「隣どうしがいちばん似ている」並びが作れて、違いの大きさを問題ごとに変えられる。
  */
 
 /** 図形を描く正方形の座標系 */
 export const FIGURE_BOX = 100
 
-export type ShapeId =
-  | 'circle'
-  | 'triangle'
-  | 'square'
-  | 'star'
-  | 'heart'
-  | 'moon'
-  | 'arrow'
-  | 'bolt'
+const CENTER = FIGURE_BOX / 2
 
 export type ColorId = 'red' | 'blue' | 'yellow' | 'green' | 'purple' | 'pink'
-
-/** 回す角度。左右反転は使わない(下の ORIENTABLE の注記を参照) */
-export type Rotation = 0 | 90 | 180 | 270
-
-export interface Figure {
-  shape: ShapeId
-  color: ColorId
-  rotation: Rotation
-}
-
-interface ShapeDef {
-  /** 読み上げ・ラベル用の名前 */
-  name: string
-  path: string
-}
-
-export const SHAPES: Record<ShapeId, ShapeDef> = {
-  circle: { name: 'まる', path: 'M8,50 A42,42 0 1 0 92,50 A42,42 0 1 0 8,50 Z' },
-  triangle: { name: 'さんかく', path: 'M50,9 L91,83 L9,83 Z' },
-  square: { name: 'しかく', path: 'M13,13 H87 V87 H13 Z' },
-  star: {
-    name: 'ほし',
-    path: 'M50,8 L60.6,37.4 L91.8,38.4 L67.1,57.6 L75.9,87.6 L50,70 L24.1,87.6 L32.9,57.6 L8.2,38.4 L39.4,37.4 Z',
-  },
-  heart: {
-    name: 'ハート',
-    path: 'M50,88 C22,66 11,50 11,37 A20,20 0 0 1 50,29 A20,20 0 0 1 89,37 C89,50 78,66 50,88 Z',
-  },
-  moon: { name: 'つき', path: 'M64,9 A42,42 0 1 0 64,91 A34,34 0 1 1 64,9 Z' },
-  arrow: { name: 'やじるし', path: 'M9,38 H57 V19 L93,50 L57,81 V62 H9 Z' },
-  bolt: { name: 'いなずま', path: 'M60,6 L24,56 H45 L38,94 L78,42 H54 Z' },
-}
-
-/**
- * 回すと違って見える形。向きの問題はこれだけで作る。
- *
- * 左右反転は使わない。やじるしも つきも横軸で対称なので、
- * 反転した形は「180度まわした形」と同じになり、選択肢が重複してしまう。
- */
-const ORIENTABLE: ShapeId[] = ['arrow', 'bolt', 'moon']
 
 interface ColorDef {
   /** 「あかい まる」のように形の前に付ける形 */
   attribute: string
   hex: string
-  /** 明るさ(相対輝度)。色だけで見分けさせないための判断に使う */
-  lightness: number
 }
 
 /**
  * 図形の色。ブランドの緑とは別に持つ。こども向けの図形は色数が要るため。
- *
- * 明るさを併記しているのは、**色だけが違う問題**を作るときに使うため。
- * 色の見え方には個人差があるので、明るさの差が小さい組み合わせ(あか と あお)を
- * 答えとダミーに並べると、その子には原理的に解けない問題になる。
+ * 4つとも同じ色にするので、色で迷わせることはない(違いは形だけ)。
  */
 export const COLORS: Record<ColorId, ColorDef> = {
-  red: { attribute: 'あかい', hex: '#e0564b', lightness: 0.23 },
-  blue: { attribute: 'あおい', hex: '#3f7fd4', lightness: 0.21 },
-  yellow: { attribute: 'きいろい', hex: '#f3b73a', lightness: 0.53 },
-  green: { attribute: 'みどりの', hex: '#46b98a', lightness: 0.38 },
-  purple: { attribute: 'むらさきの', hex: '#9a6ad3', lightness: 0.22 },
-  pink: { attribute: 'ピンクの', hex: '#ef8ab4', lightness: 0.4 },
+  red: { attribute: 'あかい', hex: '#e0564b' },
+  blue: { attribute: 'あおい', hex: '#3f7fd4' },
+  yellow: { attribute: 'きいろい', hex: '#f3b73a' },
+  green: { attribute: 'みどりの', hex: '#46b98a' },
+  purple: { attribute: 'むらさきの', hex: '#9a6ad3' },
+  pink: { attribute: 'ピンクの', hex: '#ef8ab4' },
 }
 
-/** 色だけが違う問題で、答えとダミーに要る明るさの差 */
-const LIGHTNESS_GAP = 0.12
+// ------------------------------------------------------------- 形の組み立て
 
-/** 向きの言い方。ラベルと、あとで足す読み上げで使う */
-const ROTATION_WORD: Record<Rotation, string> = {
-  0: '',
-  90: 'みぎに まわした ',
-  180: 'さかさの ',
-  270: 'ひだりに まわした ',
+const point = (angle: number, radius: number) => ({
+  x: CENTER + radius * Math.cos(angle),
+  y: CENTER + radius * Math.sin(angle),
+})
+
+const polyline = (points: { x: number; y: number }[]) =>
+  `${points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')} Z`
+
+/** 角が count 個の星。sharpness が小さいほど、へこみが浅くてまるい */
+function star(count: number, sharpness: number): string {
+  const outer = 45
+  const points = []
+  for (let i = 0; i < count * 2; i++) {
+    const radius = i % 2 === 0 ? outer : outer * sharpness
+    points.push(point(-Math.PI / 2 + (i * Math.PI) / count, radius))
+  }
+  return polyline(points)
 }
 
-/** 「あかい さんかく」。読み上げにも、支援技術のラベルにも使う */
+/** 角が count 個の多角形 */
+function polygon(count: number): string {
+  const points = []
+  for (let i = 0; i < count; i++) {
+    points.push(point(-Math.PI / 2 + (i * 2 * Math.PI) / count, 44))
+  }
+  return polyline(points)
+}
+
+/** 角を radius だけ丸めた正方形 */
+function roundedSquare(radius: number): string {
+  const [left, right] = [14, 86]
+  const r = radius
+  return [
+    `M${left + r},${left}`,
+    `H${right - r}`,
+    r ? `A${r},${r} 0 0 1 ${right},${left + r}` : '',
+    `V${right - r}`,
+    r ? `A${r},${r} 0 0 1 ${right - r},${right}` : '',
+    `H${left + r}`,
+    r ? `A${r},${r} 0 0 1 ${left},${right - r}` : '',
+    `V${left + r}`,
+    r ? `A${r},${r} 0 0 1 ${left + r},${left}` : '',
+    'Z',
+  ]
+    .filter(Boolean)
+    .join(' ')
+}
+
+/**
+ * 縦横比 ratio の楕円(1 なら まん丸)。
+ * 横幅は、いちばん縦長の変種でも枠に収まる大きさから逆算する。
+ * 頭打ちにすると、いちばん縦長の2つが同じ形になってしまう。
+ */
+function ellipse(ratio: number): string {
+  const rx = 34
+  const ry = rx * ratio
+  return `M${CENTER - rx},${CENTER} A${rx},${ry} 0 0 0 ${CENTER + rx},${CENTER} A${rx},${ry} 0 0 0 ${CENTER - rx},${CENTER} Z`
+}
+
+/**
+ * 花びらが count 枚の花。中心からの距離を角度で波打たせて作る。
+ * 谷を深くすると花びらが細いトゲになるので、浅めにして丸い花びらにする。
+ */
+function flower(count: number): string {
+  const points = []
+  const steps = count * 24
+  for (let i = 0; i < steps; i++) {
+    const angle = -Math.PI / 2 + (i * 2 * Math.PI) / steps
+    const radius = 45 * (0.72 + 0.28 * Math.cos(count * (angle + Math.PI / 2)))
+    points.push(point(angle, radius))
+  }
+  return polyline(points)
+}
+
+// ------------------------------------------------------------------ 形の家族
+
+export type FamilyId =
+  | 'star-corners'
+  | 'star-sharpness'
+  | 'polygon'
+  | 'square-roundness'
+  | 'circle-height'
+  | 'flower-petals'
+
+interface Variant {
+  /** 読み上げ・支援技術のラベル。隣どうしでも必ず言い分けられるようにする */
+  label: string
+  path: string
+}
+
+interface Family {
+  /** どこを見比べるかの手がかり。画面には出さないがラベルの組み立てに使う */
+  variants: Variant[]
+}
+
+/**
+ * 形の家族。**並び順が似ている順**で、隣どうしがいちばん見分けにくい。
+ * 出題はこの並びの上で「どれだけ離れた変種をダミーにするか」を変えて難しさを作る。
+ */
+const FAMILIES: Record<FamilyId, Family> = {
+  'star-corners': {
+    variants: [4, 5, 6, 7, 8, 9, 10].map((count) => ({
+      label: `かどが ${count}この ほし`,
+      path: star(count, 0.42),
+    })),
+  },
+  'star-sharpness': {
+    variants: [
+      ['まるっこい ほし', 0.62],
+      ['すこし まるい ほし', 0.55],
+      ['ふつうの ほし', 0.48],
+      ['すこし とがった ほし', 0.41],
+      ['とがった ほし', 0.34],
+      ['するどい ほし', 0.27],
+    ].map(([label, sharpness]) => ({
+      label: label as string,
+      path: star(5, sharpness as number),
+    })),
+  },
+  polygon: {
+    variants: [
+      ['ごかくけい', 5],
+      ['ろっかくけい', 6],
+      ['ななかくけい', 7],
+      ['はちかくけい', 8],
+      ['きゅうかくけい', 9],
+      ['じゅっかくけい', 10],
+    ].map(([label, count]) => ({ label: label as string, path: polygon(count as number) })),
+  },
+  'square-roundness': {
+    variants: [
+      ['かくばった しかく', 0],
+      ['ほんのり まるい しかく', 5],
+      ['すこし まるい しかく', 10],
+      ['まるい しかく', 16],
+      ['よく まるい しかく', 22],
+      ['まんまるに ちかい しかく', 30],
+    ].map(([label, radius]) => ({
+      label: label as string,
+      path: roundedSquare(radius as number),
+    })),
+  },
+  'circle-height': {
+    variants: [
+      ['まんまるの まる', 1],
+      ['ほんのり たてながの まる', 1.07],
+      ['すこし たてながの まる', 1.14],
+      ['たてながの まる', 1.21],
+      ['よく たてながの まる', 1.28],
+      ['ほそながい まる', 1.35],
+    ].map(([label, ratio]) => ({ label: label as string, path: ellipse(ratio as number) })),
+  },
+  'flower-petals': {
+    variants: [4, 5, 6, 7, 8, 9].map((count) => ({
+      label: `はなびらが ${count}まいの はな`,
+      path: flower(count),
+    })),
+  },
+}
+
+const ALL_FAMILIES = Object.keys(FAMILIES) as FamilyId[]
+const ALL_COLORS = Object.keys(COLORS) as ColorId[]
+
+// -------------------------------------------------------------------- 出題
+
+export interface Figure {
+  family: FamilyId
+  /** その家族の中の何番目か */
+  variant: number
+  color: ColorId
+}
+
+export function figurePath(figure: Figure): string {
+  return FAMILIES[figure.family].variants[figure.variant].path
+}
+
+/** 「あかい かどが 5つの ほし」。図形は読み上げられないので支援技術にはこれが要る */
 export function figureLabel(figure: Figure): string {
-  return `${ROTATION_WORD[figure.rotation]}${COLORS[figure.color].attribute}${SHAPES[figure.shape].name}`
+  return `${COLORS[figure.color].attribute} ${FAMILIES[figure.family].variants[figure.variant].label}`
 }
 
 export function isSameFigure(a: Figure, b: Figure): boolean {
-  return a.shape === b.shape && a.color === b.color && a.rotation === b.rotation
+  return a.family === b.family && a.variant === b.variant && a.color === b.color
 }
 
 export interface MatchProblem {
@@ -112,17 +229,16 @@ export interface MatchProblem {
   choices: Figure[]
 }
 
-/** 何が違うダミーを作るか */
-type Stage = 'shape' | 'color' | 'rotation'
+/** ダミーを答えからどれだけ離すか。near がいちばん似ていて難しい */
+type Closeness = 'far' | 'middle' | 'near'
 
 /**
- * 1回ぶんの段階。やさしい順に上げる。
- * 形 → 形 → 色 → 向き → 向き。毎問ルールが変わると小さい子は混乱するので、
- * 同じ見分け方を2問ずつ続けてから次へ進む。
+ * 1回ぶんの難しさの並び。違いの大きいものから始めて、だんだん詰める。
+ * 「よく見れば分かる」から「じっと見ないと分からない」へ運ぶ。
  */
-const STAGES: Stage[] = ['shape', 'shape', 'color', 'rotation', 'rotation']
+const CLOSENESS: Closeness[] = ['far', 'far', 'middle', 'near', 'near']
 
-export const MATCH_SESSION_SIZE = STAGES.length
+export const MATCH_SESSION_SIZE = CLOSENESS.length
 
 const pick = <T,>(items: T[]): T => items[Math.floor(Math.random() * items.length)]
 
@@ -135,45 +251,41 @@ function shuffle<T>(items: T[]): T[] {
   return shuffled
 }
 
-const ALL_SHAPES = Object.keys(SHAPES) as ShapeId[]
-const ALL_COLORS = Object.keys(COLORS) as ColorId[]
-const ALL_ROTATIONS: Rotation[] = [0, 90, 180, 270]
+/**
+ * ダミーに使う変種を3つ選ぶ。
+ * 答えから近い順に並べ、near なら手前から、far なら後ろから取る。
+ */
+function decoyVariants(family: FamilyId, answer: number, closeness: Closeness): number[] {
+  const others = FAMILIES[family].variants
+    .map((_, index) => index)
+    .filter((index) => index !== answer)
+    .sort((a, b) => Math.abs(a - answer) - Math.abs(b - answer))
 
-/** その段階のダミーを3つ作る。変えるのは1か所だけ */
-function decoysOf(answer: Figure, stage: Stage): Figure[] {
-  if (stage === 'shape') {
-    const others = shuffle(ALL_SHAPES.filter((shape) => shape !== answer.shape))
-    return others.slice(0, 3).map((shape) => ({ ...answer, shape }))
-  }
+  if (closeness === 'near') return others.slice(0, 3)
+  if (closeness === 'far') return others.slice(-3)
 
-  if (stage === 'color') {
-    // 明るさの離れた色だけを使う。色の見え方に関わらず見分けられるようにする
-    const others = shuffle(
-      ALL_COLORS.filter(
-        (color) =>
-          color !== answer.color &&
-          Math.abs(COLORS[color].lightness - COLORS[answer.color].lightness) >= LIGHTNESS_GAP,
-      ),
-    )
-    return others.slice(0, 3).map((color) => ({ ...answer, color }))
-  }
-
-  const others = shuffle(ALL_ROTATIONS.filter((rotation) => rotation !== answer.rotation))
-  return others.slice(0, 3).map((rotation) => ({ ...answer, rotation }))
+  const start = Math.floor((others.length - 3) / 2)
+  return others.slice(start, start + 3)
 }
 
-function problemOf(stage: Stage): MatchProblem {
-  const answer: Figure = {
-    // 向きの問題は、回すと違って見える形でしか作れない
-    shape: stage === 'rotation' ? pick(ORIENTABLE) : pick(ALL_SHAPES),
-    color: pick(ALL_COLORS),
-    // 形・色の問題では向きを揃える(違いが1か所だけになるように)
-    rotation: stage === 'rotation' ? pick(ALL_ROTATIONS) : 0,
-  }
+function problemOf(closeness: Closeness): MatchProblem {
+  const family = pick(ALL_FAMILIES)
+  const color = pick(ALL_COLORS)
+  const variant = Math.floor(Math.random() * FAMILIES[family].variants.length)
+  const answer: Figure = { family, variant, color }
 
-  return { answer, choices: shuffle([answer, ...decoysOf(answer, stage)]) }
+  const choices = [
+    answer,
+    ...decoyVariants(family, variant, closeness).map((index) => ({
+      family,
+      variant: index,
+      color,
+    })),
+  ]
+
+  return { answer, choices: shuffle(choices) }
 }
 
 export function matchSession(): MatchProblem[] {
-  return STAGES.map(problemOf)
+  return CLOSENESS.map(problemOf)
 }

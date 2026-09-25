@@ -88,7 +88,7 @@ const ADULT: Copy = {
     kanji: { label: '漢字', description: '熟語の ◯ に入る漢字を書いて思い出す' },
     'trace-shape': { label: 'なぞりがき(かたち)', description: 'まるやさんかくを指でなぞる' },
     'trace-hiragana': { label: 'なぞりがき(ひらがな)', description: 'ひらがなを書き順どおりになぞる' },
-    match: { label: '同じものさがし', description: 'お手本と同じ図形を4つから選ぶ' },
+    match: { label: 'ちがい さがし', description: 'すこしだけ形が違う4つから、お手本と同じものを選ぶ' },
   },
   genrePrompt: {
     english: 'この言葉を思い出そう',
@@ -162,7 +162,7 @@ const ADULT: Copy = {
   play: { allDone: 'ぜんぶ できた!', again: 'もういちど', other: 'ほかのあそび' },
   trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
   match: {
-    question: 'どれと おなじ?',
+    question: 'よく見て。どれと おなじ?',
     correct: 'あたり!',
     hint: 'ひかっているのが こたえだよ',
   },
@@ -208,7 +208,7 @@ const KIDS: Copy = {
     kanji: { label: 'かんじ', description: '◯ に はいる かんじを かこう' },
     'trace-shape': { label: 'かたちを なぞろう', description: 'まる・さんかく・しかくを ゆびで なぞる' },
     'trace-hiragana': { label: 'ひらがなを なぞろう', description: 'ゆびで なぞって じを おぼえる' },
-    match: { label: 'おなじもの さがし', description: 'うえと おなじ かたちを えらぼう' },
+    match: { label: 'ちがい さがし', description: 'よく みて、おなじ かたちを さがそう' },
   },
   genrePrompt: {
     english: 'この ことばを おもいだそう',
@@ -278,7 +278,7 @@ const KIDS: Copy = {
   play: { allDone: 'ぜんぶ できた！', again: 'もういちど', other: 'ほかの あそび' },
   trace: { guide: 'ひかってる ● から ゆびで なぞってね', done: 'できた！' },
   match: {
-    question: 'どれと おなじ？',
+    question: 'よく みてね。どれと おなじ？',
     correct: 'あたり！',
     hint: 'ひかってるのが こたえだよ',
   },
