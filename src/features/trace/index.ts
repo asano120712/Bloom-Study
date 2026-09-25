@@ -16,8 +16,7 @@ export interface TraceItem {
   strokes: string[]
 }
 
-/** ストロークの座標系。KanjiVG に合わせた正方形 */
-export const VIEW_BOX = 109
+export { VIEW_BOX } from './box'
 
 export type TraceSetId = 'shape' | 'hiragana' | 'kanji'
 
