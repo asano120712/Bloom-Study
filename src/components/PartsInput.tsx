@@ -16,6 +16,8 @@ interface PartsInputProps {
   assembledOf: (first: string, second: string) => string | null
   /** 組み上がりを見せ終わったとき。first は左(または上) */
   onSubmit: (first: string, second: string) => void
+  /** 「思い出した」を押してタイルが出たとき。お手本を引っこめる側で使う */
+  onReveal?: () => void
   disabled?: boolean
 }
 
@@ -92,6 +94,7 @@ export function PartsInput({
   layout,
   assembledOf,
   onSubmit,
+  onReveal,
   disabled = false,
 }: PartsInputProps) {
   const copy = useCopy()
@@ -234,7 +237,10 @@ export function PartsInput({
         <button
           type="button"
           disabled={disabled}
-          onClick={() => setRevealed(true)}
+          onClick={() => {
+            setRevealed(true)
+            onReveal?.()
+          }}
           className="min-h-14 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
         >
           {copy.parts.recalled}

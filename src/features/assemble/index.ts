@@ -45,6 +45,25 @@ const LEFT_PART_OF: Record<string, string> = {
 }
 
 /**
+ * 小1・小2の左右字。こども向けの「くみたて」で使う。
+ *
+ * KRADFILE の分解が字形と合わない字(花=艹+化 を 亻+艹 と出す、海=氵+乞)や、
+ * にょう・かまえ(近・間・図)は入れていない。組み上がりが字にならないため。
+ */
+const LOW_LEFT_PART_OF: Record<string, string> = {
+  休: '亻', 村: '木', 明: '日', 晴: '日', 知: '矢', 地: '土', 池: '氵', 汽: '氵',
+  細: '糸', 紙: '糸', 秋: '禾', 科: '禾', 社: '礻', 計: '言', 話: '言', 鳴: '口',
+  理: '王', 頭: '豆', 外: '夕',
+}
+
+/** 小1・小2の上下字。収録の考え方は LOW_LEFT_PART_OF と同じ */
+const LOW_TOP_PART_OF: Record<string, string> = {
+  岩: '山', 星: '日', 雪: '雨', 字: '宀', 室: '宀', 家: '宀', 空: '穴', 台: '厶',
+  名: '夕', 番: '釆', 思: '田', 兄: '口', 古: '十', 書: '聿', 男: '田', 早: '日',
+  分: 'ハ',
+}
+
+/**
  * 上下(⿱)に割れる字と、その**上側**の部品。収録の考え方は LEFT_PART_OF と同じ。
  * たれ(广・厂・尸)やにょう(辶・廴)、囲む字(囗)は上下2枠に収まらないので入れない。
  */
@@ -77,18 +96,34 @@ export interface Assembly {
  * 収録字で、部品がちょうど2つ、先にくる部品が分かっていて、
  * 並べるタイルに両方が含まれているときだけ成立する。
  */
-export function assemblyOf(question: Question): Assembly | null {
-  const horizontal = LEFT_PART_OF[question.answer]
-  const vertical = TOP_PART_OF[question.answer]
+/**
+ * 字と部品から、組み立ての並びを返す。
+ *
+ * 表に載っていて、部品がちょうど2つで、先にくる部品がその2つに含まれるときだけ成立する。
+ * 小1・小2の字も同じ表の考え方で持つ(こども向けの「くみたて」で使う)。
+ */
+export function assemblyOfParts(char: string, parts: string[] | undefined): Assembly | null {
+  const horizontal = LEFT_PART_OF[char] ?? LOW_LEFT_PART_OF[char]
+  const vertical = TOP_PART_OF[char] ?? LOW_TOP_PART_OF[char]
   const first = horizontal ?? vertical
   if (!first) return null
 
-  const parts = question.parts
   if (!parts || parts.length !== 2 || !parts.includes(first)) return null
   const second = parts[0] === first ? parts[1] : parts[0]
 
-  const tiles = question.partTiles
-  if (!tiles || !tiles.includes(first) || !tiles.includes(second)) return null
-
   return { layout: horizontal ? 'horizontal' : 'vertical', first, second }
+}
+
+/**
+ * その問題を2枠に組ませられるなら、正解の並びを返す。
+ * 並べるタイルに両方の部品が含まれていることまで見る。
+ */
+export function assemblyOf(question: Question): Assembly | null {
+  const assembly = assemblyOfParts(question.answer, question.parts)
+  if (!assembly) return null
+
+  const tiles = question.partTiles
+  if (!tiles || !tiles.includes(assembly.first) || !tiles.includes(assembly.second)) return null
+
+  return assembly
 }

@@ -19,6 +19,7 @@ import { primeSpeech } from '@/services/speech'
 const QuizPage = lazy(() => import('@/pages/QuizPage').then((m) => ({ default: m.QuizPage })))
 const ResultPage = lazy(() => import('@/pages/ResultPage').then((m) => ({ default: m.ResultPage })))
 const TracePage = lazy(() => import('@/pages/TracePage').then((m) => ({ default: m.TracePage })))
+const BuildPage = lazy(() => import('@/pages/BuildPage').then((m) => ({ default: m.BuildPage })))
 const MatchPage = lazy(() => import('@/pages/MatchPage').then((m) => ({ default: m.MatchPage })))
 const MyPage = lazy(() => import('@/pages/MyPage').then((m) => ({ default: m.MyPage })))
 const TrialEndPage = lazy(() =>
@@ -67,6 +68,7 @@ export default function App() {
           <Route path="/result" element={<ResultPage />} />
           {/* こども向けのあそび。こたえかたも難易度も選ばせず、押したらすぐ始まる */}
           <Route path="/trace/:setId" element={<TracePage />} />
+          <Route path="/build" element={<BuildPage />} />
           <Route path="/match" element={<MatchPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/trial-end" element={<TrialEndPage />} />

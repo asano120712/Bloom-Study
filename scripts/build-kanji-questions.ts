@@ -72,9 +72,18 @@ const PART_TILE_COUNT = 8
 const STROKE_PRIMITIVES = new Set(['｜', '一', 'ノ', '丿', '丶', '乙', '亅'])
 
 const OUT_PATH = fileURLToPath(new URL('../src/data/questions.kanji.generated.json', import.meta.url))
+const PARTS_OUT_PATH = fileURLToPath(new URL('../src/data/parts.kanji.generated.json', import.meta.url))
 
 const args = process.argv.slice(2)
 const reportOnly = args.includes('--report')
+/**
+ * 熟語を使わず、部品データだけを書き出すモード。
+ *
+ * 小1・小2は熟語の穴うめが成立しない(出題文に出る相手の字が読めない)ので、
+ * この学年には「お手本の字を見て、部品から組み立てる」だけを出す。
+ * 問題文もヒントも要らないぶん、熟語を持たない字も拾える。
+ */
+const partsOnly = args.includes('--parts-only')
 const gradeArg = args.find((a) => a.startsWith('--grades='))?.slice('--grades='.length)
 /** 既定は小学3〜6年配当。1〜2年は象形文字が多くパーツ分解のヒントが作れない。 */
 const GRADES = (gradeArg ?? '3,4,5,6').split(',').map(Number)
@@ -357,6 +366,53 @@ function main(): void {
   }
 
   const selected = kanjidic.characters.filter((c) => c.misc.grade !== null && GRADES.includes(c.misc.grade))
+
+  /** 部品に割れる字の、正解の部品とタイル。位置(へん/つくり)は画面側の表が持つ */
+  const partsOf = (char: Kanjidic2['characters'][number]) => {
+    const components = kradfile.kanji[char.literal]
+    if (!components) return null
+
+    const maximal = dropNestedParts(components, kradfile).map(displayGlyph)
+    // 2つに割れる字だけ。筆画まで降りる字は組んでも字形にならない
+    if (maximal.length !== 2 || maximal.some((c) => STROKE_PRIMITIVES.has(c))) return null
+
+    const partTiles = buildPartTiles(maximal, poolByStrokes, strokesOf)
+    if (partTiles.length !== PART_TILE_COUNT) return null
+
+    return { parts: maximal, partTiles }
+  }
+
+  if (partsOnly) {
+    const entries = selected.flatMap((char) => {
+      const parts = partsOf(char)
+      return parts ? [{ char: char.literal, grade: char.misc.grade!, ...parts }] : []
+    })
+
+    console.log(`対象(配当学年 ${GRADES.join('/')}): ${selected.length}字`)
+    console.log(`2つの部品に割れる: ${entries.length}字`)
+    console.log(`  ${entries.map((e) => `${e.char}=${e.parts.join('+')}`).join('  ')}`)
+
+    if (reportOnly) return
+
+    writeFileSync(
+      PARTS_OUT_PATH,
+      `${JSON.stringify(
+        {
+          _source: {
+            note: '自動生成。編集しても npm run parts:kanji で上書きされる',
+            generatedAt: new Date().toISOString(),
+            grades: GRADES,
+            credit: 'KANJIDIC2 / KRADFILE — EDRDG, CC BY-SA 4.0',
+          },
+          characters: entries,
+        },
+        null,
+        2,
+      )}\n`,
+    )
+    console.log(`\n書き出し: ${PARTS_OUT_PATH}`)
+    return
+  }
 
   const questions: {
     id: string

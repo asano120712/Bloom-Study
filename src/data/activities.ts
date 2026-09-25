@@ -15,6 +15,7 @@ export type ActivityId =
   | 'trace-shape'
   | 'trace-hiragana'
   | 'trace-kanji'
+  | 'build-kanji'
   | 'match'
 
 export interface Activity {
@@ -34,6 +35,7 @@ export const ACTIVITIES: Activity[] = [
   { id: 'trace-hiragana', audience: 'kids', path: '/trace/hiragana' },
   // 漢字は小1・小2だけ。この学年は熟語の穴うめが成立しないので、なぞって覚える
   { id: 'trace-kanji', audience: 'kids', path: '/trace/kanji' },
+  { id: 'build-kanji', audience: 'kids', path: '/build' },
   { id: 'match', audience: 'kids', path: '/match' },
 ]
 

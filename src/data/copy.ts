@@ -55,6 +55,7 @@ export interface Copy {
   /** あそび(なぞりがき・おなじものさがし)で共通の言葉 */
   play: { allDone: string; again: string; other: string }
   trace: { guide: string; done: string }
+  build: { look: string; answerIs: string }
   match: { question: string; correct: string; hint: string }
   result: {
     model: string
@@ -89,6 +90,7 @@ const ADULT: Copy = {
     'trace-shape': { label: 'なぞりがき(かたち)', description: 'まるやさんかくを指でなぞる' },
     'trace-hiragana': { label: 'なぞりがき(ひらがな)', description: 'ひらがなを書き順どおりになぞる' },
     'trace-kanji': { label: 'なぞりがき(漢字)', description: '小1・小2の漢字を書き順どおりになぞる' },
+    'build-kanji': { label: 'かんじの くみたて', description: 'お手本を覚えてから、部品で漢字を組む' },
     match: { label: 'ちがい さがし', description: 'すこしだけ形が違う4つから、お手本と同じものを選ぶ' },
   },
   genrePrompt: {
@@ -162,6 +164,7 @@ const ADULT: Copy = {
   typing: { placeholderTap: 'こたえをタップして入力', placeholderKey: 'キーボードで入力' },
   play: { allDone: 'ぜんぶ できた!', again: 'もういちど', other: 'ほかのあそび' },
   trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
+  build: { look: 'この漢字をよく見て、覚えよう', answerIs: 'こたえは これ' },
   match: {
     question: 'よく見て。どれと おなじ?',
     correct: 'あたり!',
@@ -210,6 +213,7 @@ const KIDS: Copy = {
     'trace-shape': { label: 'かたちを なぞろう', description: 'まる・さんかく・しかくを ゆびで なぞる' },
     'trace-hiragana': { label: 'ひらがなを なぞろう', description: 'ゆびで なぞって じを おぼえる' },
     'trace-kanji': { label: 'かんじを なぞろう', description: 'ゆびで なぞって かんじを おぼえる' },
+    'build-kanji': { label: 'かんじを くみたてよう', description: 'おぼえてから ぶひんで くみたてる' },
     match: { label: 'ちがい さがし', description: 'よく みて、おなじ かたちを さがそう' },
   },
   genrePrompt: {
@@ -279,6 +283,7 @@ const KIDS: Copy = {
   typing: { placeholderTap: 'こたえを タップして うとう', placeholderKey: 'キーボードで うとう' },
   play: { allDone: 'ぜんぶ できた！', again: 'もういちど', other: 'ほかの あそび' },
   trace: { guide: 'ひかってる ● から ゆびで なぞってね', done: 'できた！' },
+  build: { look: 'この かんじを よく みてね', answerIs: 'こたえは これ' },
   match: {
     question: 'よく みてね。どれと おなじ？',
     correct: 'あたり！',
