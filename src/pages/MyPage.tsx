@@ -72,8 +72,12 @@ export function MyPage() {
                 {copy.activities[record.genreId].label} /{' '}
                 {promptTextOf(record.questionId)}
               </span>
+              {/*
+                正誤は色でも分かるが、色だけに頼らない。絵文字をやめたので、
+                記号(○ / ×)で残す。言葉にすると行が長くなって出題語が押し出される。
+              */}
               <span className={record.isCorrect ? 'text-bloom-700' : 'text-warm-600'}>
-                {record.isCorrect ? '⭕️' : '✖️'} {copy.myPage.hintsUsed(record.hintsUsed)}
+                {record.isCorrect ? '○' : '×'} {copy.myPage.hintsUsed(record.hintsUsed)}
               </span>
             </li>
           ))}

@@ -19,7 +19,10 @@ export interface Copy {
   /** こたえかた。クイズの入力方法と、小1・小2のあそび(なぞり・くみたて) */
   answerModes: Record<AnswerChoiceId, { label: string; note: string }>
   difficulties: Record<Difficulty, { label: string; note: string }>
-  /** 結果画面の判定の見出し。色だけに頼らずアイコン+文でも分かるようにする */
+  /**
+   * 結果画面の判定の見出し。
+   * 絵文字は使わず、言葉そのもので正誤が分かるようにする(色だけに頼らない)。
+   */
   verdicts: Record<JudgeVerdict, string>
   top: { lead: string[]; start: string; record: string }
   genreSelect: { title: string; note: string; back: string }
@@ -33,7 +36,7 @@ export interface Copy {
     close: string
   }
   quiz: {
-    /** 右上の進み具合。「🌱 3 れんぞく / 5 問め」 */
+    /** 右上の進み具合。「3 れんぞく / 5 問め」 */
     progress: (streak: number, index: number) => string
     answerLabel: string
     wrong: string
@@ -110,11 +113,11 @@ const ADULT: Copy = {
     working: { label: '社会人', note: '常用漢字のうち、あまり見ないもの' },
   },
   verdicts: {
-    correct: '⭕️ せいかい',
-    near: '⭕️ おしい! せいかいあつかい',
-    incorrect: '✖️ ざんねん',
-    'self-correct': '⭕️ できた',
-    'self-incorrect': '✖️ ちがった',
+    correct: 'せいかい',
+    near: 'おしい! せいかいあつかい',
+    incorrect: 'ざんねん',
+    'self-correct': 'できた',
+    'self-incorrect': 'ちがった',
   },
   top: {
     lead: [
@@ -139,10 +142,10 @@ const ADULT: Copy = {
     close: 'もどる',
   },
   quiz: {
-    progress: (streak, index) => `🌱 ${streak} れんぞく / ${index} 問め`,
+    progress: (streak, index) => `${streak} れんぞく / ${index} 問め`,
     answerLabel: 'こたえ',
-    wrong: '✖️ ちがった',
-    right: '⭕️ できた',
+    wrong: 'ちがった',
+    right: 'できた',
   },
   hints: {
     waiting: 'まもなくヒントが出ます',
@@ -174,13 +177,13 @@ const ADULT: Copy = {
   },
   result: {
     model: 'おてほん',
-    listen: '🔊 読み方を聞く',
+    listen: '読み方を聞く',
     mine: {
       text: 'じぶんが うった こたえ',
       parts: 'じぶんが 組んだ パーツ',
       handwriting: 'じぶんが かいた こたえ',
     },
-    streak: (streak) => `🌱 ${streak} 問れんぞく正解中`,
+    streak: (streak) => `${streak} 問れんぞく正解中`,
     next: 'つぎの問題へ',
     chooseGenre: 'ジャンルをえらぶ',
     record: '記録を見る',
@@ -238,11 +241,11 @@ const KIDS: Copy = {
     working: { label: 'おとな', note: 'あまり みない かんじ' },
   },
   verdicts: {
-    correct: '⭕️ せいかい！',
-    near: '⭕️ おしい！ せいかいに するね',
-    incorrect: '✖️ ざんねん',
-    'self-correct': '⭕️ できた！',
-    'self-incorrect': '✖️ ちがった',
+    correct: 'せいかい！',
+    near: 'おしい！ せいかいに するね',
+    incorrect: 'ざんねん',
+    'self-correct': 'できた！',
+    'self-incorrect': 'ちがった',
   },
   top: {
     lead: ['こたえは すぐに でません。', 'ヒントが ひとつずつ ひらくあいだに', 'おもいだして みよう。'],
@@ -263,10 +266,10 @@ const KIDS: Copy = {
     close: 'もどる',
   },
   quiz: {
-    progress: (streak, index) => `🌱 ${streak} れんぞく / ${index} もんめ`,
+    progress: (streak, index) => `${streak} れんぞく / ${index} もんめ`,
     answerLabel: 'こたえ',
-    wrong: '✖️ ちがった',
-    right: '⭕️ できた',
+    wrong: 'ちがった',
+    right: 'できた',
   },
   hints: {
     waiting: 'もうすぐ ヒントが でるよ',
@@ -298,13 +301,13 @@ const KIDS: Copy = {
   },
   result: {
     model: 'おてほん',
-    listen: '🔊 よみかたを きく',
+    listen: 'よみかたを きく',
     mine: {
       text: 'じぶんが うった こたえ',
       parts: 'じぶんが くんだ ぶひん',
       handwriting: 'じぶんが かいた こたえ',
     },
-    streak: (streak) => `🌱 ${streak} もん つづけて せいかい`,
+    streak: (streak) => `${streak} もん つづけて せいかい`,
     next: 'つぎの もんだい',
     chooseGenre: 'べんきょうを えらぶ',
     record: 'きろくを みる',
