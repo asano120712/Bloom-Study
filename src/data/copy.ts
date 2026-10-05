@@ -89,7 +89,7 @@ const ADULT: Copy = {
   activities: {
     english: { label: '英単語', description: '日本語の出題語を見て、英単語を思い出す' },
     kanji: { label: '漢字', description: '熟語の ◯ に入る漢字を書いて思い出す' },
-    math: { label: '計算', description: 'かけ算・わり算を、やり方のヒントを見ながら解く' },
+    math: { label: '計算', description: 'かけ算・わり算を、ヒントを見ながら解く' },
     'trace-shape': { label: 'なぞりがき(かたち)', description: 'まるやさんかくを指でなぞる' },
     'trace-hiragana': { label: 'なぞりがき(ひらがな)', description: 'ひらがなを書き順どおりになぞる' },
     'trace-kanji': { label: 'なぞりがき(漢字)', description: '小1・小2の漢字を書き順どおりになぞる' },
@@ -221,7 +221,7 @@ const KIDS: Copy = {
   activities: {
     english: { label: 'えいご', description: 'にほんごを みて、えいごを おもいだそう' },
     kanji: { label: 'かんじ', description: '◯ に はいる かんじを かこう' },
-    math: { label: 'けいさん', description: 'ヒントを みながら かけ算・わり算' },
+    math: { label: 'けいさん', description: 'ヒントを みながら かけざん・わりざん' },
     'trace-shape': { label: 'かたちを なぞろう', description: 'まる・さんかく・しかくを ゆびで なぞる' },
     'trace-hiragana': { label: 'ひらがなを なぞろう', description: 'ゆびで なぞって じを おぼえる' },
     'trace-kanji': { label: 'かんじを なぞろう', description: 'ゆびで なぞって かんじを おぼえる' },

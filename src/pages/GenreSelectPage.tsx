@@ -64,7 +64,13 @@ export function GenreSelectPage() {
                 <span className="text-xl font-bold text-bloom-700">
                   {copy.activities[activity.id].label}
                 </span>
-                <span className="mt-1 text-sm break-keep text-ink-600">
+                {/*
+                break-keep は掛けない。掛けると「やり方のヒントを見ながら解く」が
+                14文字の切れない塊になり、絵の右の列(375px の端末で約210px)に
+                収まるかどうかが紙一重になる。日本語は既定どおりどこでも折り返させる。
+                大きさも幅で頭打ちにして、狭い端末では小さくする。
+              */}
+              <span className="mt-1 text-[min(0.875rem,3.7vw)] leading-5 text-ink-600">
                   {copy.activities[activity.id].description}
                 </span>
               </span>
