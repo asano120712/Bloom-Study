@@ -11,7 +11,7 @@ export const TOP_PATH: Record<AudienceMode, string> = {
 }
 
 /** 出題ジャンル。ジャンル追加時はここと hints のレジストリの両方に登録する。 */
-export type GenreId = 'english' | 'kanji'
+export type GenreId = 'english' | 'kanji' | 'math'
 
 /**
  * 出題の難易度。**だれ向けか**で切る。
@@ -43,14 +43,15 @@ export function isDifficulty(value: string | null | undefined): value is Difficu
  * 部品は思い出したと申告するまで見せない
  * (先に見せると再認になり、思い出す練習にならないため)。
  */
-export type InputMode = 'typing' | 'handwriting' | 'assemble'
+export type InputMode = 'typing' | 'handwriting' | 'assemble' | 'number'
 
 /**
  * 結果画面のおてほんに敷くガイド。
  * grid     = 1文字ずつマスに入れる(漢字ドリルのマス目)
  * baseline = 英語ノートの罫線に単語を置く
+ * plain    = ガイドを敷かずに大きく出す(数の答えは字形をなぞる対象ではない)
  */
-export type AnswerGuide = 'grid' | 'baseline'
+export type AnswerGuide = 'grid' | 'baseline' | 'plain'
 
 /**
  * ジャンルの「構造」。ラベル・説明・出題語の見出しといった言葉は

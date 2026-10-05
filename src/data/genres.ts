@@ -13,6 +13,11 @@ export const GENRES: Genre[] = [
     // マスに1文字ずつ入れる。中心と字の大きさを合わせるのが漢字の手本なので
     answerGuide: 'grid',
   },
+  {
+    id: 'math',
+    // 答えは数。字形をなぞる対象ではないので、ガイドは敷かずに大きく出す
+    answerGuide: 'plain',
+  },
 ]
 
 export function findGenre(id: string): Genre | undefined {
@@ -28,6 +33,8 @@ export function findGenre(id: string): Genre | undefined {
 const DIFFICULTIES: Record<GenreId, Difficulty[]> = {
   kanji: ['g12', 'g34', 'g56', 'junior', 'senior', 'working'],
   english: ['junior', 'senior', 'working'],
+  // まずは小3・4のかけ算・わり算だけ。学年を足すときは生成スクリプトと一緒に広げる
+  math: ['g34'],
 }
 
 export function difficultiesOf(genreId: GenreId): Difficulty[] {
@@ -72,6 +79,11 @@ const QUIZ_CHOICES: Record<GenreId, AnswerChoice[]> = {
   kanji: [
     { id: 'handwriting', inputMode: 'handwriting' },
     { id: 'assemble', inputMode: 'assemble' },
+  ],
+  // 数は打って答えるほうが自動で正誤を見られる。手書きは自己申告なので後ろに置く
+  math: [
+    { id: 'number', inputMode: 'number' },
+    { id: 'handwriting', inputMode: 'handwriting' },
   ],
 }
 

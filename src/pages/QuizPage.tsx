@@ -3,13 +3,14 @@ import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-
 import { AppShell } from '@/components/AppShell'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
 import { HintList } from '@/components/HintList'
+import { NumberInput } from '@/components/NumberInput'
 import { PartsInput } from '@/components/PartsInput'
 import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { answerChoicesOf, findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
-import { judgeHandwriting, judgeParts, judgeTyping } from '@/features/judge'
+import { judgeHandwriting, judgeNumber, judgeParts, judgeTyping } from '@/features/judge'
 import { useCopy } from '@/hooks/useAudienceMode'
 import { useHintTimer } from '@/hooks/useHintTimer'
 import { useQuizSession } from '@/hooks/useQuizSession'
@@ -207,6 +208,17 @@ export function QuizPage() {
                 key={`typing-${question.id}`}
                 onSubmit={(value) =>
                   finish(judgeTyping(question, value), revealedCount, {
+                    kind: 'text',
+                    text: value,
+                  })
+                }
+              />
+            )}
+            {inputMode === 'number' && (
+              <NumberInput
+                key={`number-${question.id}`}
+                onSubmit={(value) =>
+                  finish(judgeNumber(question, value), revealedCount, {
                     kind: 'text',
                     text: value,
                   })

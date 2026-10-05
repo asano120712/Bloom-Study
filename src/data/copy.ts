@@ -54,6 +54,8 @@ export interface Copy {
   typing: { placeholderTap: string; placeholderKey: string }
   /** あそび(なぞりがき・おなじものさがし)で共通の言葉 */
   play: { allDone: string; again: string; other: string }
+  /** 数で答えるとき */
+  number: { inputLabel: string; placeholder: string; submit: string }
   trace: { guide: string; done: string }
   build: { look: string; answerIs: string }
   match: { question: string; correct: string; hint: string }
@@ -87,6 +89,7 @@ const ADULT: Copy = {
   activities: {
     english: { label: '英単語', description: '日本語の出題語を見て、英単語を思い出す' },
     kanji: { label: '漢字', description: '熟語の ◯ に入る漢字を書いて思い出す' },
+    math: { label: '計算', description: 'かけ算・わり算を、やり方のヒントを見ながら解く' },
     'trace-shape': { label: 'なぞりがき(かたち)', description: 'まるやさんかくを指でなぞる' },
     'trace-hiragana': { label: 'なぞりがき(ひらがな)', description: 'ひらがなを書き順どおりになぞる' },
     'trace-kanji': { label: 'なぞりがき(漢字)', description: '小1・小2の漢字を書き順どおりになぞる' },
@@ -96,6 +99,7 @@ const ADULT: Copy = {
   genrePrompt: {
     english: 'この言葉を思い出そう',
     kanji: '◯ に入る漢字を思い出そう',
+    math: 'この式を計算しよう',
   },
   answerModes: {
     handwriting: { label: '手書き', note: '指でなぞって書く' },
@@ -103,6 +107,7 @@ const ADULT: Copy = {
     assemble: { label: 'パーツを組む', note: 'パーツをスライドしてマスに組む' },
     trace: { label: 'なぞりがき', note: 'お手本を書き順どおりになぞる' },
     build: { label: 'くみたて', note: 'お手本を覚えてから、部品で組む' },
+    number: { label: '数字で答える', note: '数字キーボードで打つ' },
   },
   difficulties: {
     g12: { label: '小学1・2年', note: '配当漢字240字。なぞる・組み立てる' },
@@ -168,6 +173,7 @@ const ADULT: Copy = {
   handwriting: { clear: 'けす', done: 'かけた' },
   typing: { placeholderTap: 'こたえをタップして入力', placeholderKey: 'キーボードで入力' },
   play: { allDone: 'ぜんぶ できた!', again: 'もういちど', other: 'ほかのあそび' },
+  number: { inputLabel: '入力中のこたえ', placeholder: '数字で答えよう', submit: 'こたえあわせ' },
   trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
   build: { look: 'この漢字をよく見て、覚えよう', answerIs: 'こたえは これ' },
   match: {
@@ -215,6 +221,7 @@ const KIDS: Copy = {
   activities: {
     english: { label: 'えいご', description: 'にほんごを みて、えいごを おもいだそう' },
     kanji: { label: 'かんじ', description: '◯ に はいる かんじを かこう' },
+    math: { label: 'けいさん', description: 'ヒントを みながら かけ算・わり算' },
     'trace-shape': { label: 'かたちを なぞろう', description: 'まる・さんかく・しかくを ゆびで なぞる' },
     'trace-hiragana': { label: 'ひらがなを なぞろう', description: 'ゆびで なぞって じを おぼえる' },
     'trace-kanji': { label: 'かんじを なぞろう', description: 'ゆびで なぞって かんじを おぼえる' },
@@ -224,6 +231,7 @@ const KIDS: Copy = {
   genrePrompt: {
     english: 'この ことばを おもいだそう',
     kanji: '◯ に はいる かんじは なにかな？',
+    math: 'この しきを けいさんしよう',
   },
   answerModes: {
     handwriting: { label: 'てがき', note: 'ゆびで かいて こたえる' },
@@ -231,6 +239,7 @@ const KIDS: Copy = {
     assemble: { label: 'ぶひんを くむ', note: 'ぶひんを うごかして マスに いれる' },
     trace: { label: 'なぞる', note: 'おてほんを ゆびで なぞる' },
     build: { label: 'くみたてる', note: 'おぼえてから ぶひんで くみたてる' },
+    number: { label: 'すうじで こたえる', note: 'すうじの キーボードで うつ' },
   },
   difficulties: {
     g12: { label: '1・2ねんせい', note: 'なぞったり、くみたてたり' },
@@ -248,7 +257,7 @@ const KIDS: Copy = {
     'self-incorrect': 'ちがった',
   },
   top: {
-    lead: ['こたえは すぐに でません。', 'ヒントが ひとつずつ ひらくあいだに', 'おもいだして みよう。'],
+    lead: ['したのボタンで すすめるよ', 'きになったのを やってみよう！'],
     start: 'はじめる',
     record: 'これまでの きろく',
   },
@@ -292,6 +301,7 @@ const KIDS: Copy = {
   handwriting: { clear: 'けす', done: 'かけた' },
   typing: { placeholderTap: 'こたえを タップして うとう', placeholderKey: 'キーボードで うとう' },
   play: { allDone: 'ぜんぶ できた！', again: 'もういちど', other: 'ほかの あそび' },
+  number: { inputLabel: 'いま うっている こたえ', placeholder: 'すうじで こたえよう', submit: 'こたえあわせ' },
   trace: { guide: 'ひかってる ● から ゆびで なぞってね', done: 'できた！' },
   build: { look: 'この かんじを よく みてね', answerIs: 'こたえは これ' },
   match: {

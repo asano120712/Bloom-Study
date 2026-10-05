@@ -12,7 +12,8 @@
     "questions:english": "node scripts/build-english-questions.ts",
     "preview": "vite preview",
     "strokes": "node scripts/build-strokes.ts",
-    "parts:kanji": "node scripts/build-kanji-questions.ts --grades=1,2 --parts-only"
+    "parts:kanji": "node scripts/build-kanji-questions.ts --grades=1,2 --parts-only",
+    "questions:math": "node scripts/build-math-questions.ts"
   },
   "dependencies": {
     "fast-levenshtein": "^3.0.0",

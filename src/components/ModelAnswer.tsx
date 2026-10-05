@@ -24,7 +24,13 @@ export function ModelAnswer({ answer, guide }: ModelAnswerProps) {
     <figure className="m-0 w-full">
       <figcaption className="text-sm text-ink-400">{copy.result.model}</figcaption>
       <div className="mx-auto mt-2 w-full max-w-xs">
-        {guide === 'grid' ? <GridSheet answer={answer} /> : <RuledSheet answer={answer} />}
+        {guide === 'grid' ? (
+          <GridSheet answer={answer} />
+        ) : guide === 'baseline' ? (
+          <RuledSheet answer={answer} />
+        ) : (
+          <PlainSheet answer={answer} />
+        )}
       </div>
     </figure>
   )
@@ -54,6 +60,20 @@ function GridSheet({ answer }: { answer: string }) {
           <span className="font-display text-6xl leading-none text-ink-900">{char}</span>
         </div>
       ))}
+    </div>
+  )
+}
+
+/**
+ * ガイドを敷かない見せ方。数の答えで使う。
+ * 字形をなぞる対象ではないので、マス目も罫線も要らない。大きく出せば足りる。
+ */
+function PlainSheet({ answer }: { answer: string }) {
+  return (
+    <div className="flex items-center justify-center rounded-2xl border-2 border-bloom-200 bg-white px-4 py-6">
+      <span className="font-display text-6xl leading-none tracking-wide text-ink-900">
+        {answer}
+      </span>
     </div>
   )
 }

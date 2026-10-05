@@ -30,6 +30,7 @@ export interface Activity {
 export const ACTIVITIES: Activity[] = [
   { id: 'english', audience: 'adult', genreId: 'english' },
   { id: 'kanji', audience: 'adult', genreId: 'kanji' },
+  { id: 'math', audience: 'adult', genreId: 'math' },
   // なぞりがきは図形から。線をなぞる手の動きができてから字へ進む
   { id: 'trace-shape', audience: 'kids', path: '/trace/shape' },
   { id: 'trace-hiragana', audience: 'kids', path: '/trace/hiragana' },

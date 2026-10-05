@@ -1,6 +1,7 @@
 import type { GenreId, Question } from '@/types'
 import generatedEnglish from './questions.english.generated.json'
 import generatedKanji from './questions.kanji.generated.json'
+import generatedMath from './questions.math.generated.json'
 
 /**
  * 手で書いた問題。生成物より優先する(同じ answer があれば生成側を捨てる)。
@@ -45,6 +46,7 @@ const MANUAL_QUESTIONS: Question[] = [
 const GENERATED_QUESTIONS = [
   ...generatedKanji.questions,
   ...generatedEnglish.questions,
+  ...generatedMath.questions,
 ] as Question[]
 
 const manualAnswers = new Set(MANUAL_QUESTIONS.map((question) => question.answer))
