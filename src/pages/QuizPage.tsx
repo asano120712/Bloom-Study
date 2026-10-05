@@ -149,15 +149,21 @@ export function QuizPage() {
 
       <section className="mt-4 shrink-0 text-center select-none">
         <p className="text-xs text-ink-400">{copy.genrePrompt[genre.id]}</p>
-        <p className="mt-1 text-3xl font-bold tracking-wide">{question.prompt}</p>
+        <p className="mt-1 text-[min(1.875rem,8vw)] leading-9 font-bold tracking-wide">
+          {question.prompt}
+        </p>
         {/* 読みは出題語より小さく。主役はあくまで伏せた語のほう */}
         {question.promptReading && (
           <p className="mt-1 text-base text-ink-600">{question.promptReading}</p>
         )}
       </section>
 
-      {/* ヒント枠は余りを分け合うが、上限を決めて残りは入力側(特にキャンバス)へ回す */}
-      <section className="mt-4 flex max-h-44 min-h-0 flex-1 flex-col">
+      {/*
+        ヒント枠は余りを分け合うが、上限を決めて残りは入力側(特にキャンバス)へ回す。
+        上限が 44(176px)だと、計算の3段のどれかが2行になったとき最後の段が切れる。
+        52(208px)なら2行ぶん増えても収まる。
+      */}
+      <section className="mt-4 flex max-h-52 min-h-0 flex-1 flex-col">
         <HintList
           hints={revealedHints(hints, revealedCount)}
           layout={hintLayoutOf(genre.id)}

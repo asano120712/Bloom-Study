@@ -55,7 +55,8 @@ export function NumberPad({
           type="button"
           disabled={disabled || !canSubmit}
           onClick={onSubmit}
-          className="h-full flex-1 rounded-xl bg-bloom-700 text-base font-bold text-white disabled:bg-bloom-200"
+          // キーの幅は画面幅で決まるので、文字も幅に合わせて頭打ちにする
+          className="h-full flex-1 rounded-xl bg-bloom-700 text-[min(1rem,4vw)] font-bold text-white disabled:bg-bloom-200"
         >
           {submitLabel}
         </button>
