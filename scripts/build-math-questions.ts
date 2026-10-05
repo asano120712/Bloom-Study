@@ -55,6 +55,14 @@ interface MathQuestion {
  *
  * **最後のヒントまで出ても答えそのものは言わない**(他のジャンルと同じ)。
  * 24×5 なら 100 と 20 までを出して、足すのは解く側に残す。
+ *
+ * **見出し(`わけかた|` のような前置き)は付けない。** 計算は3つの段取りを
+ * 同時に見て足すものなので、3段ぜんぶがヒント枠に収まらないと使えない。
+ * 見出しを付けると1段あたり16px増えて、iPhone の幅では最後の段がはみ出す。
+ *
+ * 分け方も文ではなく式で書く(「320 を 300 と 20 に わける」ではなく「320 = 300 + 20」)。
+ * 320px 幅の端末では前者が2行になって、やはり最後の段がはみ出す。
+ * 式のほうが短いうえ、他の段と同じ書き方になって読む切り替えも要らない。
  */
 
 /** 2桁 × 1桁。十の位と一の位に割って掛ける */
@@ -73,9 +81,9 @@ function multiply2x1(): MathQuestion | null {
     answer: String(a * b),
     level: 'g34',
     hintSource: [
-      `わけかた|${a} を ${tens} と ${ones} に わける`,
-      `じゅんばん|${tens} × ${b} = ${tens * b}`,
-      `じゅんばん|${ones} × ${b} = ${ones * b}`,
+      `${a} = ${tens} + ${ones}`,
+      `${tens} × ${b} = ${tens * b}`,
+      `${ones} × ${b} = ${ones * b}`,
     ],
   }
 }
@@ -96,9 +104,9 @@ function multiply2x2(): MathQuestion | null {
     answer: String(a * b),
     level: 'g34',
     hintSource: [
-      `わけかた|${b} を ${tens} と ${ones} に わける`,
-      `じゅんばん|${a} × ${tens} = ${a * tens}`,
-      `じゅんばん|${a} × ${ones} = ${a * ones}`,
+      `${b} = ${tens} + ${ones}`,
+      `${a} × ${tens} = ${a * tens}`,
+      `${a} × ${ones} = ${a * ones}`,
     ],
   }
 }
@@ -120,9 +128,9 @@ function divideExact(): MathQuestion | null {
     answer: String(quotient),
     level: 'g34',
     hintSource: [
-      `わけかた|${dividend} を ${divisor * tens} と ${divisor * ones} に わける`,
-      `じゅんばん|${divisor * tens} ÷ ${divisor} = ${tens}`,
-      `じゅんばん|${divisor * ones} ÷ ${divisor} = ${ones}`,
+      `${dividend} = ${divisor * tens} + ${divisor * ones}`,
+      `${divisor * tens} ÷ ${divisor} = ${tens}`,
+      `${divisor * ones} ÷ ${divisor} = ${ones}`,
     ],
   }
 }

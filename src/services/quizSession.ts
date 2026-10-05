@@ -28,7 +28,7 @@ export interface StoredSession extends SessionCursor {
  * 問題の形が変わったら版を上げる。開いたままのタブに残っている
  * 古い形の出題セット(読みだけの漢字問題など)を復元させないため。
  */
-const KEY_PREFIX = 'bloomstudy:session:v2:'
+const KEY_PREFIX = 'bloomstudy:session:v3:'
 
 /**
  * 入力方法と難易度で出せる問題が変わるため、セッションはその組み合わせごとに分ける。
