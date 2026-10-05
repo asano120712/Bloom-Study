@@ -33,8 +33,9 @@ export function findGenre(id: string): Genre | undefined {
 const DIFFICULTIES: Record<GenreId, Difficulty[]> = {
   kanji: ['g12', 'g34', 'g56', 'junior', 'senior', 'working'],
   english: ['junior', 'senior', 'working'],
-  // まずは小3・4のかけ算・わり算だけ。学年を足すときは生成スクリプトと一緒に広げる
-  math: ['g34'],
+  // 小1・2は たし算・ひき算、小3・4は 3桁の加減とかけ算・わり算。
+  // 学年を足すときは、生成スクリプトに種類を足してからここを広げること
+  math: ['g12', 'g34'],
 }
 
 export function difficultiesOf(genreId: GenreId): Difficulty[] {

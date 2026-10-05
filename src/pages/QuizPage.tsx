@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
+import { ColumnForm } from '@/components/ColumnForm'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
 import { HintList } from '@/components/HintList'
 import { NumberInput } from '@/components/NumberInput'
@@ -150,7 +151,11 @@ export function QuizPage() {
       <section className="mt-4 shrink-0 text-center select-none">
         <p className="text-xs text-ink-400">{copy.genrePrompt[genre.id]}</p>
         <p className="mt-1 text-[min(1.875rem,8vw)] leading-9 font-bold tracking-wide">
-          {question.prompt}
+          {question.promptLayout === 'column' ? (
+            <ColumnForm expression={question.prompt} />
+          ) : (
+            question.prompt
+          )}
         </p>
         {/* 読みは出題語より小さく。主役はあくまで伏せた語のほう */}
         {question.promptReading && (

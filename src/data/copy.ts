@@ -109,13 +109,17 @@ const ADULT: Copy = {
     build: { label: 'くみたて', note: 'お手本を覚えてから、部品で組む' },
     number: { label: '数字で答える', note: '数字キーボードで打つ' },
   },
+  /*
+   * なんいどの説明は、ジャンルによらない言い方にしてある。
+   * 計算も入ったので、字数(「配当漢字402字」)のような漢字だけの話は書けない。
+   */
   difficulties: {
-    g12: { label: '小学1・2年', note: '配当漢字240字。なぞる・組み立てる' },
-    g34: { label: '小学3・4年', note: '配当漢字402字' },
-    g56: { label: '小学5・6年', note: '配当漢字384字' },
-    junior: { label: '中学生', note: '常用漢字のうち、よく見るもの' },
-    senior: { label: '高校生', note: '常用漢字のうち、中くらいの頻度' },
-    working: { label: '社会人', note: '常用漢字のうち、あまり見ないもの' },
+    g12: { label: '小学1・2年', note: 'ならいはじめのところ' },
+    g34: { label: '小学3・4年', note: '小学3・4年で習うところ' },
+    g56: { label: '小学5・6年', note: '小学5・6年で習うところ' },
+    junior: { label: '中学生', note: '中学生で習うところ' },
+    senior: { label: '高校生', note: '高校生で習うところ' },
+    working: { label: '社会人', note: 'そこから先のむずかしいところ' },
   },
   verdicts: {
     correct: 'せいかい',
@@ -242,12 +246,12 @@ const KIDS: Copy = {
     number: { label: 'すうじで こたえる', note: 'すうじの キーボードで うつ' },
   },
   difficulties: {
-    g12: { label: '1・2ねんせい', note: 'なぞったり、くみたてたり' },
-    g34: { label: '3・4ねんせい', note: 'しょうがく3・4年の かんじ' },
-    g56: { label: '5・6ねんせい', note: 'しょうがく5・6年の かんじ' },
-    junior: { label: 'ちゅうがくせい', note: 'よく みる かんじ' },
-    senior: { label: 'こうこうせい', note: 'ちょっと むずかしい かんじ' },
-    working: { label: 'おとな', note: 'あまり みない かんじ' },
+    g12: { label: '1・2ねんせい', note: 'ならいはじめの ところ' },
+    g34: { label: '3・4ねんせい', note: '3・4ねんせいで ならう ところ' },
+    g56: { label: '5・6ねんせい', note: '5・6ねんせいで ならう ところ' },
+    junior: { label: 'ちゅうがくせい', note: 'ちゅうがくで ならう ところ' },
+    senior: { label: 'こうこうせい', note: 'こうこうで ならう ところ' },
+    working: { label: 'おとな', note: 'そこから さきの むずかしい ところ' },
   },
   verdicts: {
     correct: 'せいかい！',
