@@ -9,7 +9,8 @@ export interface ColumnRow {
 }
 
 /**
- * 筆算。式を縦に積んで、桁をそろえて見せる。
+ * 筆算(たし算・ひき算・かけ算)。式を縦に積んで、桁をそろえて見せる。
+ * わり算は形が違う(商を上に書く)ので DivisionForm に分けてある。
  *
  * 2桁以上のかけ算を「24 × 5」と1行で出すと暗算に近くなり、小3・4には難しい。
  * 筆算はこの学年で習う形なので、縦に積むほうが解きやすく、位をそろえる練習にもなる。
@@ -90,15 +91,18 @@ function Boxes({
   digits,
   shift,
   tone,
+  span = true,
 }: {
   digits: string[]
   shift: number
   tone: 'typing' | 'done' | 'corrected'
+  /** 2列ぶんに広げるか。わり算の商は右の列だけに置く */
+  span?: boolean
 }) {
   return (
     <span
       aria-hidden="true"
-      className="col-span-2 mt-2 flex justify-end gap-1"
+      className={`mt-2 flex justify-end gap-1 ${span ? 'col-span-2' : ''}`}
       // ずらした段は、その幅ぶん右を空ける(マス1つ + すきま)
       style={shift ? { paddingRight: `calc(${shift} * (1.15em + 0.25rem))` } : undefined}
     >
@@ -116,6 +120,52 @@ function Boxes({
           {digit}
         </span>
       ))}
+    </span>
+  )
+}
+
+/**
+ * わり算の筆算。割る数 │ 割られる数 の形にして、商を上に書く。
+ *
+ * かけ算の筆算と形が違うので別にしてある(縦に積むのではなく、囲って上に書く)。
+ * 商のマスは右づめ。右づめにすると、商のいちばん下の桁が割られる数の一の位の上に来て、
+ * 筆算で習う位置とそのまま一致する(320 ÷ 5 なら 6 が 2 の上、4 が 0 の上)。
+ *
+ * 引く段(5 × 6 = 30 を書いて引く…)はまだ出さない。形と位置だけでも、
+ * 1行の式より桁の見当がつけやすくなる。
+ */
+export function DivisionForm({ expression, typed }: { expression: string; typed?: string }) {
+  const parsed = expression.match(/^(\d+)\s*÷\s*(\d+)$/)
+  if (!parsed) return <span>{expression}</span>
+
+  const [, dividend, divisor] = parsed
+
+  return (
+    <span
+      // 読み上げには1行の式を渡す。囲いと数字の位置だけでは式として読まれない
+      aria-label={expression}
+      className="inline-grid grid-cols-[auto_auto] gap-x-2 text-right font-bold tabular-nums"
+    >
+      {/* 商。割られる数の上にそろえたいので、下の枠と同じだけ左を空ける */}
+      <span aria-hidden="true" />
+      <span aria-hidden="true" className="pl-2">
+        {typed !== undefined ? (
+          <Boxes digits={typed ? [...typed] : ['']} shift={0} tone="typing" span={false} />
+        ) : (
+          <span className="invisible">0</span>
+        )}
+      </span>
+
+      {/* 割る数 │ 割られる数 */}
+      <span aria-hidden="true" className="self-center">
+        {divisor}
+      </span>
+      <span
+        aria-hidden="true"
+        className="rounded-tl-md border-t-2 border-l-2 border-ink-900 pt-1 pl-2"
+      >
+        {dividend}
+      </span>
     </span>
   )
 }

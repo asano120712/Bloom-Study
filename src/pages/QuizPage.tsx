@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
-import { ColumnForm, type ColumnRow } from '@/components/ColumnForm'
+import { ColumnForm, DivisionForm, type ColumnRow } from '@/components/ColumnForm'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
 import { HintList } from '@/components/HintList'
 import { NumberInput } from '@/components/NumberInput'
@@ -172,7 +172,7 @@ export function QuizPage() {
   const showsPromptBelow = genre.id === 'math'
   /** 筆算で数を打つときは、式と答えのマスをひと続きに見せたいので入力側が出す */
   const showsPromptInInput =
-    showsPromptBelow && inputMode === 'number' && question.promptLayout === 'column'
+    showsPromptBelow && inputMode === 'number' && question.promptLayout !== undefined
 
   return (
     <AppShell fitViewport exitTo="/genres">
@@ -345,6 +345,8 @@ function PromptBlock({
             rows={rows}
             typedShift={typedShift}
           />
+        ) : question.promptLayout === 'division' ? (
+          <DivisionForm expression={question.prompt} typed={typed} />
         ) : (
           question.prompt
         )}

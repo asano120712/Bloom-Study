@@ -55,8 +55,10 @@ interface MathQuestion {
    * 2桁以上のかけ算を1行で出すと暗算に近くなり、小3・4には難しい。
    * 筆算はこの学年で習う形なので、縦に積んで出すほうが解きやすく、
    * 位をそろえる練習にもなる。たし算・ひき算の3桁も同じ。
+   *
+   * わり算は形が違う(割る数 │ 割られる数 で囲い、商を上に書く)ので 'division'。
    */
-  promptLayout?: 'column'
+  promptLayout?: 'column' | 'division'
   /**
    * 筆算の途中の段(部分積)を、上から順に。
    *
@@ -148,6 +150,7 @@ function divideExact(): MathQuestion | null {
     id: `ma-d-${dividend}d${divisor}`,
     genreId: 'math',
     prompt: `${dividend} ÷ ${divisor}`,
+    promptLayout: 'division',
     answer: String(quotient),
     level: 'g34',
     hintSource: [
