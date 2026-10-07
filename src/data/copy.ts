@@ -55,7 +55,17 @@ export interface Copy {
   /** あそび(なぞりがき・おなじものさがし)で共通の言葉 */
   play: { allDone: string; again: string; other: string }
   /** 数で答えるとき */
-  number: { inputLabel: string; placeholder: string; submit: string; nextRow: string }
+  number: {
+    inputLabel: string
+    placeholder: string
+    submit: string
+    /** かけ算の段を打ち終えたとき */
+    nextRow: string
+    /** たし算・ひき算で、1つの位を打ち終えたとき */
+    nextPlace: string
+    /** わり算で、筆算のつぎの手へ進むとき */
+    nextStep: string
+  }
   trace: { guide: string; done: string }
   build: { look: string; answerIs: string }
   match: { question: string; correct: string; hint: string }
@@ -182,6 +192,8 @@ const ADULT: Copy = {
     placeholder: '数字で答えよう',
     submit: 'こたえあわせ',
     nextRow: 'つぎの段へ',
+    nextPlace: 'つぎのくらいへ',
+    nextStep: 'つぎへ',
   },
   trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
   build: { look: 'この漢字をよく見て、覚えよう', answerIs: 'こたえは これ' },
@@ -315,6 +327,8 @@ const KIDS: Copy = {
     placeholder: 'すうじで こたえよう',
     submit: 'こたえあわせ',
     nextRow: 'つぎの だんへ',
+    nextPlace: 'つぎの くらいへ',
+    nextStep: 'つぎへ',
   },
   trace: { guide: 'ひかってる ● から ゆびで なぞってね', done: 'できた！' },
   build: { look: 'この かんじを よく みてね', answerIs: 'こたえは これ' },

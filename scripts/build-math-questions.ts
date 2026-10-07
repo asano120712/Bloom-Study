@@ -59,13 +59,6 @@ interface MathQuestion {
    * わり算は形が違う(割る数 │ 割られる数 で囲い、商を上に書く)ので 'division'。
    */
   promptLayout?: 'column' | 'division'
-  /**
-   * 筆算の途中の段(部分積)を、上から順に。
-   *
-   * 23 × 14 なら ['92', '23']。2段目は筆算と同じく1桁ずらして書くので、
-   * 230 ではなく 23 で持つ(ずらす幅は何段目かで決まるので、データには持たせない)。
-   */
-  steps?: string[]
   answer: string
   level: Level
   hintSource: string[]
@@ -110,8 +103,6 @@ function multiply2x1(): MathQuestion | null {
     promptLayout: 'column',
     answer: String(a * b),
     level: 'g34',
-    // 段は 2桁×2桁 と同じ考え方。1だんめが 一のくらい、2だんめが 十のくらいで1けたずれる
-    steps: [String(ones * b), String((tens / 10) * b)],
     hintSource: [
       `1だんめ 一のくらい ${ones} × ${b}`,
       `2だんめ 十のくらい ${tens / 10} × ${b}`,
@@ -135,7 +126,6 @@ function multiply2x2(): MathQuestion | null {
     prompt: `${a} × ${b}`,
     promptLayout: 'column',
     // 筆算の段。下の段は1桁ずらして書くので、a × (十の位の数字) をそのまま持つ
-    steps: [String(a * ones), String(a * (tens / 10))],
     answer: String(a * b),
     level: 'g34',
     hintSource: [
@@ -319,6 +309,11 @@ function subtractThreeDigits(): MathQuestion | null {
    * 「一のくらいは ひける / 十のくらいは…」と場合分けだらけになる。
    */
   if (a % 10 >= b % 10) return null
+  /*
+   * いちばん上の位が 0 になる組み合わせも外す(320 − 298 = 022)。
+   * 筆算では上の位に 0 を書かないので、位ごとに打たせると打つものが無くなる。
+   */
+  if (a - b < 100) return null
 
   return {
     id: `ma-s3-${a}m${b}`,

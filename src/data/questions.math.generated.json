@@ -1,7 +1,7 @@
 {
   "_source": {
     "note": "自動生成。編集しても npm run questions:math で上書きされる",
-    "generatedAt": "2026-10-07T05:59:38.092Z",
+    "generatedAt": "2026-10-07T06:24:24.134Z",
     "note2": "辞書は使わない。種を決めた乱数で作るので、同じ種からは同じ問題集ができる"
   },
   "questions": [
@@ -6527,19 +6527,6 @@
       ]
     },
     {
-      "id": "ma-s3-510m489",
-      "genreId": "math",
-      "prompt": "510 − 489",
-      "promptLayout": "column",
-      "answer": "21",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 0 − 9 は ひけない",
-        "10 かりて 10 − 9 = 1",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
       "id": "ma-s3-881m186",
       "genreId": "math",
       "prompt": "881 − 186",
@@ -6562,19 +6549,6 @@
       "hintSource": [
         "一のくらい 0 − 9 は ひけない",
         "10 かりて 10 − 9 = 1",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
-      "id": "ma-s3-670m625",
-      "genreId": "math",
-      "prompt": "670 − 625",
-      "promptLayout": "column",
-      "answer": "45",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 0 − 5 は ひけない",
-        "10 かりて 10 − 5 = 5",
         "十のくらいは 1 へらして ひく"
       ]
     },
@@ -6627,19 +6601,6 @@
       "hintSource": [
         "一のくらい 1 − 9 は ひけない",
         "10 かりて 11 − 9 = 2",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
-      "id": "ma-s3-400m322",
-      "genreId": "math",
-      "prompt": "400 − 322",
-      "promptLayout": "column",
-      "answer": "78",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 0 − 2 は ひけない",
-        "10 かりて 10 − 2 = 8",
         "十のくらいは 1 へらして ひく"
       ]
     },
@@ -6735,32 +6696,6 @@
       ]
     },
     {
-      "id": "ma-s3-394m297",
-      "genreId": "math",
-      "prompt": "394 − 297",
-      "promptLayout": "column",
-      "answer": "97",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 4 − 7 は ひけない",
-        "10 かりて 14 − 7 = 7",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
-      "id": "ma-s3-692m664",
-      "genreId": "math",
-      "prompt": "692 − 664",
-      "promptLayout": "column",
-      "answer": "28",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 2 − 4 は ひけない",
-        "10 かりて 12 − 4 = 8",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
       "id": "ma-s3-682m108",
       "genreId": "math",
       "prompt": "682 − 108",
@@ -6770,19 +6705,6 @@
       "hintSource": [
         "一のくらい 2 − 8 は ひけない",
         "10 かりて 12 − 8 = 4",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
-      "id": "ma-s3-670m575",
-      "genreId": "math",
-      "prompt": "670 − 575",
-      "promptLayout": "column",
-      "answer": "95",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 0 − 5 は ひけない",
-        "10 かりて 10 − 5 = 5",
         "十のくらいは 1 へらして ひく"
       ]
     },
@@ -6826,19 +6748,6 @@
       ]
     },
     {
-      "id": "ma-s3-675m586",
-      "genreId": "math",
-      "prompt": "675 − 586",
-      "promptLayout": "column",
-      "answer": "89",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 5 − 6 は ひけない",
-        "10 かりて 15 − 6 = 9",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
       "id": "ma-s3-955m448",
       "genreId": "math",
       "prompt": "955 − 448",
@@ -6874,19 +6783,6 @@
       "hintSource": [
         "一のくらい 0 − 6 は ひけない",
         "10 かりて 10 − 6 = 4",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
-      "id": "ma-s3-842m823",
-      "genreId": "math",
-      "prompt": "842 − 823",
-      "promptLayout": "column",
-      "answer": "19",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 2 − 3 は ひけない",
-        "10 かりて 12 − 3 = 9",
         "十のくらいは 1 へらして ひく"
       ]
     },
@@ -6930,19 +6826,6 @@
       ]
     },
     {
-      "id": "ma-s3-373m305",
-      "genreId": "math",
-      "prompt": "373 − 305",
-      "promptLayout": "column",
-      "answer": "68",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 3 − 5 は ひけない",
-        "10 かりて 13 − 5 = 8",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
       "id": "ma-s3-984m136",
       "genreId": "math",
       "prompt": "984 − 136",
@@ -6965,19 +6848,6 @@
       "hintSource": [
         "一のくらい 2 − 4 は ひけない",
         "10 かりて 12 − 4 = 8",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
-      "id": "ma-s3-805m746",
-      "genreId": "math",
-      "prompt": "805 − 746",
-      "promptLayout": "column",
-      "answer": "59",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 5 − 6 は ひけない",
-        "10 かりて 15 − 6 = 9",
         "十のくらいは 1 へらして ひく"
       ]
     },
@@ -7138,19 +7008,6 @@
       ]
     },
     {
-      "id": "ma-s3-900m823",
-      "genreId": "math",
-      "prompt": "900 − 823",
-      "promptLayout": "column",
-      "answer": "77",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 0 − 3 は ひけない",
-        "10 かりて 10 − 3 = 7",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
       "id": "ma-s3-950m267",
       "genreId": "math",
       "prompt": "950 − 267",
@@ -7160,19 +7017,6 @@
       "hintSource": [
         "一のくらい 0 − 7 は ひけない",
         "10 かりて 10 − 7 = 3",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
-      "id": "ma-s3-484m389",
-      "genreId": "math",
-      "prompt": "484 − 389",
-      "promptLayout": "column",
-      "answer": "95",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 4 − 9 は ひけない",
-        "10 かりて 14 − 9 = 5",
         "十のくらいは 1 へらして ひく"
       ]
     },
@@ -7199,32 +7043,6 @@
       "hintSource": [
         "一のくらい 0 − 9 は ひけない",
         "10 かりて 10 − 9 = 1",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
-      "id": "ma-s3-672m637",
-      "genreId": "math",
-      "prompt": "672 − 637",
-      "promptLayout": "column",
-      "answer": "35",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 2 − 7 は ひけない",
-        "10 かりて 12 − 7 = 5",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
-      "id": "ma-s3-582m516",
-      "genreId": "math",
-      "prompt": "582 − 516",
-      "promptLayout": "column",
-      "answer": "66",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 2 − 6 は ひけない",
-        "10 かりて 12 − 6 = 6",
         "十のくらいは 1 へらして ひく"
       ]
     },
@@ -7463,19 +7281,6 @@
       ]
     },
     {
-      "id": "ma-s3-883m855",
-      "genreId": "math",
-      "prompt": "883 − 855",
-      "promptLayout": "column",
-      "answer": "28",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 3 − 5 は ひけない",
-        "10 かりて 13 − 5 = 8",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
       "id": "ma-s3-581m127",
       "genreId": "math",
       "prompt": "581 − 127",
@@ -7697,19 +7502,6 @@
       ]
     },
     {
-      "id": "ma-s3-814m785",
-      "genreId": "math",
-      "prompt": "814 − 785",
-      "promptLayout": "column",
-      "answer": "29",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 4 − 5 は ひけない",
-        "10 かりて 14 − 5 = 9",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
       "id": "ma-s3-903m285",
       "genreId": "math",
       "prompt": "903 − 285",
@@ -7745,19 +7537,6 @@
       "hintSource": [
         "一のくらい 2 − 5 は ひけない",
         "10 かりて 12 − 5 = 7",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
-      "id": "ma-s3-891m868",
-      "genreId": "math",
-      "prompt": "891 − 868",
-      "promptLayout": "column",
-      "answer": "23",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 1 − 8 は ひけない",
-        "10 かりて 11 − 8 = 3",
         "十のくらいは 1 へらして ひく"
       ]
     },
@@ -7810,19 +7589,6 @@
       "hintSource": [
         "一のくらい 1 − 2 は ひけない",
         "10 かりて 11 − 2 = 9",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
-      "id": "ma-s3-691m615",
-      "genreId": "math",
-      "prompt": "691 − 615",
-      "promptLayout": "column",
-      "answer": "76",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 1 − 5 は ひけない",
-        "10 かりて 11 − 5 = 6",
         "十のくらいは 1 へらして ひく"
       ]
     },
@@ -8035,19 +7801,6 @@
       ]
     },
     {
-      "id": "ma-s3-462m404",
-      "genreId": "math",
-      "prompt": "462 − 404",
-      "promptLayout": "column",
-      "answer": "58",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 2 − 4 は ひけない",
-        "10 かりて 12 − 4 = 8",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
       "id": "ma-s3-771m337",
       "genreId": "math",
       "prompt": "771 − 337",
@@ -8152,19 +7905,6 @@
       ]
     },
     {
-      "id": "ma-s3-272m227",
-      "genreId": "math",
-      "prompt": "272 − 227",
-      "promptLayout": "column",
-      "answer": "45",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 2 − 7 は ひけない",
-        "10 かりて 12 − 7 = 5",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
       "id": "ma-s3-871m405",
       "genreId": "math",
       "prompt": "871 − 405",
@@ -8187,19 +7927,6 @@
       "hintSource": [
         "一のくらい 3 − 6 は ひけない",
         "10 かりて 13 − 6 = 7",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
-      "id": "ma-s3-534m505",
-      "genreId": "math",
-      "prompt": "534 − 505",
-      "promptLayout": "column",
-      "answer": "29",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 4 − 5 は ひけない",
-        "10 かりて 14 − 5 = 9",
         "十のくらいは 1 へらして ひく"
       ]
     },
@@ -8308,19 +8035,6 @@
       ]
     },
     {
-      "id": "ma-s3-460m389",
-      "genreId": "math",
-      "prompt": "460 − 389",
-      "promptLayout": "column",
-      "answer": "71",
-      "level": "g34",
-      "hintSource": [
-        "一のくらい 0 − 9 は ひけない",
-        "10 かりて 10 − 9 = 1",
-        "十のくらいは 1 へらして ひく"
-      ]
-    },
-    {
       "id": "ma-s3-761m517",
       "genreId": "math",
       "prompt": "761 − 517",
@@ -8334,1346 +8048,289 @@
       ]
     },
     {
-      "id": "ma-m21-63x6",
+      "id": "ma-s3-665m546",
       "genreId": "math",
-      "prompt": "63 × 6",
+      "prompt": "665 − 546",
       "promptLayout": "column",
-      "answer": "378",
+      "answer": "119",
       "level": "g34",
-      "steps": [
-        "18",
-        "36"
-      ],
       "hintSource": [
-        "1だんめ 一のくらい 3 × 6",
-        "2だんめ 十のくらい 6 × 6",
-        "2だんめは 1けた ずらす"
+        "一のくらい 5 − 6 は ひけない",
+        "10 かりて 15 − 6 = 9",
+        "十のくらいは 1 へらして ひく"
       ]
     },
     {
-      "id": "ma-m21-12x5",
+      "id": "ma-s3-621m407",
       "genreId": "math",
-      "prompt": "12 × 5",
+      "prompt": "621 − 407",
       "promptLayout": "column",
-      "answer": "60",
+      "answer": "214",
       "level": "g34",
-      "steps": [
-        "10",
-        "5"
-      ],
       "hintSource": [
-        "1だんめ 一のくらい 2 × 5",
-        "2だんめ 十のくらい 1 × 5",
-        "2だんめは 1けた ずらす"
+        "一のくらい 1 − 7 は ひけない",
+        "10 かりて 11 − 7 = 4",
+        "十のくらいは 1 へらして ひく"
       ]
     },
     {
-      "id": "ma-m21-21x5",
+      "id": "ma-s3-920m775",
       "genreId": "math",
-      "prompt": "21 × 5",
+      "prompt": "920 − 775",
       "promptLayout": "column",
-      "answer": "105",
+      "answer": "145",
       "level": "g34",
-      "steps": [
-        "5",
-        "10"
-      ],
       "hintSource": [
-        "1だんめ 一のくらい 1 × 5",
-        "2だんめ 十のくらい 2 × 5",
-        "2だんめは 1けた ずらす"
+        "一のくらい 0 − 5 は ひけない",
+        "10 かりて 10 − 5 = 5",
+        "十のくらいは 1 へらして ひく"
       ]
     },
     {
-      "id": "ma-m21-39x5",
+      "id": "ma-s3-551m293",
       "genreId": "math",
-      "prompt": "39 × 5",
-      "promptLayout": "column",
-      "answer": "195",
-      "level": "g34",
-      "steps": [
-        "45",
-        "15"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 9 × 5",
-        "2だんめ 十のくらい 3 × 5",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-58x5",
-      "genreId": "math",
-      "prompt": "58 × 5",
-      "promptLayout": "column",
-      "answer": "290",
-      "level": "g34",
-      "steps": [
-        "40",
-        "25"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 8 × 5",
-        "2だんめ 十のくらい 5 × 5",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-61x7",
-      "genreId": "math",
-      "prompt": "61 × 7",
-      "promptLayout": "column",
-      "answer": "427",
-      "level": "g34",
-      "steps": [
-        "7",
-        "42"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 1 × 7",
-        "2だんめ 十のくらい 6 × 7",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-29x9",
-      "genreId": "math",
-      "prompt": "29 × 9",
-      "promptLayout": "column",
-      "answer": "261",
-      "level": "g34",
-      "steps": [
-        "81",
-        "18"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 9 × 9",
-        "2だんめ 十のくらい 2 × 9",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-18x6",
-      "genreId": "math",
-      "prompt": "18 × 6",
-      "promptLayout": "column",
-      "answer": "108",
-      "level": "g34",
-      "steps": [
-        "48",
-        "6"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 8 × 6",
-        "2だんめ 十のくらい 1 × 6",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-37x9",
-      "genreId": "math",
-      "prompt": "37 × 9",
-      "promptLayout": "column",
-      "answer": "333",
-      "level": "g34",
-      "steps": [
-        "63",
-        "27"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 7 × 9",
-        "2だんめ 十のくらい 3 × 9",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-15x4",
-      "genreId": "math",
-      "prompt": "15 × 4",
-      "promptLayout": "column",
-      "answer": "60",
-      "level": "g34",
-      "steps": [
-        "20",
-        "4"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 5 × 4",
-        "2だんめ 十のくらい 1 × 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-89x3",
-      "genreId": "math",
-      "prompt": "89 × 3",
-      "promptLayout": "column",
-      "answer": "267",
-      "level": "g34",
-      "steps": [
-        "27",
-        "24"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 9 × 3",
-        "2だんめ 十のくらい 8 × 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-92x9",
-      "genreId": "math",
-      "prompt": "92 × 9",
-      "promptLayout": "column",
-      "answer": "828",
-      "level": "g34",
-      "steps": [
-        "18",
-        "81"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 2 × 9",
-        "2だんめ 十のくらい 9 × 9",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-52x5",
-      "genreId": "math",
-      "prompt": "52 × 5",
-      "promptLayout": "column",
-      "answer": "260",
-      "level": "g34",
-      "steps": [
-        "10",
-        "25"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 2 × 5",
-        "2だんめ 十のくらい 5 × 5",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-95x9",
-      "genreId": "math",
-      "prompt": "95 × 9",
-      "promptLayout": "column",
-      "answer": "855",
-      "level": "g34",
-      "steps": [
-        "45",
-        "81"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 5 × 9",
-        "2だんめ 十のくらい 9 × 9",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-16x5",
-      "genreId": "math",
-      "prompt": "16 × 5",
-      "promptLayout": "column",
-      "answer": "80",
-      "level": "g34",
-      "steps": [
-        "30",
-        "5"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 6 × 5",
-        "2だんめ 十のくらい 1 × 5",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-67x7",
-      "genreId": "math",
-      "prompt": "67 × 7",
-      "promptLayout": "column",
-      "answer": "469",
-      "level": "g34",
-      "steps": [
-        "49",
-        "42"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 7 × 7",
-        "2だんめ 十のくらい 6 × 7",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-33x9",
-      "genreId": "math",
-      "prompt": "33 × 9",
-      "promptLayout": "column",
-      "answer": "297",
-      "level": "g34",
-      "steps": [
-        "27",
-        "27"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 3 × 9",
-        "2だんめ 十のくらい 3 × 9",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-26x6",
-      "genreId": "math",
-      "prompt": "26 × 6",
-      "promptLayout": "column",
-      "answer": "156",
-      "level": "g34",
-      "steps": [
-        "36",
-        "12"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 6 × 6",
-        "2だんめ 十のくらい 2 × 6",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-96x6",
-      "genreId": "math",
-      "prompt": "96 × 6",
-      "promptLayout": "column",
-      "answer": "576",
-      "level": "g34",
-      "steps": [
-        "36",
-        "54"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 6 × 6",
-        "2だんめ 十のくらい 9 × 6",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-66x8",
-      "genreId": "math",
-      "prompt": "66 × 8",
-      "promptLayout": "column",
-      "answer": "528",
-      "level": "g34",
-      "steps": [
-        "48",
-        "48"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 6 × 8",
-        "2だんめ 十のくらい 6 × 8",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-77x8",
-      "genreId": "math",
-      "prompt": "77 × 8",
-      "promptLayout": "column",
-      "answer": "616",
-      "level": "g34",
-      "steps": [
-        "56",
-        "56"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 7 × 8",
-        "2だんめ 十のくらい 7 × 8",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-86x9",
-      "genreId": "math",
-      "prompt": "86 × 9",
-      "promptLayout": "column",
-      "answer": "774",
-      "level": "g34",
-      "steps": [
-        "54",
-        "72"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 6 × 9",
-        "2だんめ 十のくらい 8 × 9",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-41x5",
-      "genreId": "math",
-      "prompt": "41 × 5",
-      "promptLayout": "column",
-      "answer": "205",
-      "level": "g34",
-      "steps": [
-        "5",
-        "20"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 1 × 5",
-        "2だんめ 十のくらい 4 × 5",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-94x4",
-      "genreId": "math",
-      "prompt": "94 × 4",
-      "promptLayout": "column",
-      "answer": "376",
-      "level": "g34",
-      "steps": [
-        "16",
-        "36"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 4 × 4",
-        "2だんめ 十のくらい 9 × 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-99x4",
-      "genreId": "math",
-      "prompt": "99 × 4",
-      "promptLayout": "column",
-      "answer": "396",
-      "level": "g34",
-      "steps": [
-        "36",
-        "36"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 9 × 4",
-        "2だんめ 十のくらい 9 × 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-59x6",
-      "genreId": "math",
-      "prompt": "59 × 6",
-      "promptLayout": "column",
-      "answer": "354",
-      "level": "g34",
-      "steps": [
-        "54",
-        "30"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 9 × 6",
-        "2だんめ 十のくらい 5 × 6",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-44x8",
-      "genreId": "math",
-      "prompt": "44 × 8",
-      "promptLayout": "column",
-      "answer": "352",
-      "level": "g34",
-      "steps": [
-        "32",
-        "32"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 4 × 8",
-        "2だんめ 十のくらい 4 × 8",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-56x3",
-      "genreId": "math",
-      "prompt": "56 × 3",
-      "promptLayout": "column",
-      "answer": "168",
-      "level": "g34",
-      "steps": [
-        "18",
-        "15"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 6 × 3",
-        "2だんめ 十のくらい 5 × 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-76x9",
-      "genreId": "math",
-      "prompt": "76 × 9",
-      "promptLayout": "column",
-      "answer": "684",
-      "level": "g34",
-      "steps": [
-        "54",
-        "63"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 6 × 9",
-        "2だんめ 十のくらい 7 × 9",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-65x7",
-      "genreId": "math",
-      "prompt": "65 × 7",
-      "promptLayout": "column",
-      "answer": "455",
-      "level": "g34",
-      "steps": [
-        "35",
-        "42"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 5 × 7",
-        "2だんめ 十のくらい 6 × 7",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-45x6",
-      "genreId": "math",
-      "prompt": "45 × 6",
-      "promptLayout": "column",
-      "answer": "270",
-      "level": "g34",
-      "steps": [
-        "30",
-        "24"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 5 × 6",
-        "2だんめ 十のくらい 4 × 6",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-45x4",
-      "genreId": "math",
-      "prompt": "45 × 4",
-      "promptLayout": "column",
-      "answer": "180",
-      "level": "g34",
-      "steps": [
-        "20",
-        "16"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 5 × 4",
-        "2だんめ 十のくらい 4 × 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-58x9",
-      "genreId": "math",
-      "prompt": "58 × 9",
-      "promptLayout": "column",
-      "answer": "522",
-      "level": "g34",
-      "steps": [
-        "72",
-        "45"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 8 × 9",
-        "2だんめ 十のくらい 5 × 9",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-31x6",
-      "genreId": "math",
-      "prompt": "31 × 6",
-      "promptLayout": "column",
-      "answer": "186",
-      "level": "g34",
-      "steps": [
-        "6",
-        "18"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 1 × 6",
-        "2だんめ 十のくらい 3 × 6",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-68x3",
-      "genreId": "math",
-      "prompt": "68 × 3",
-      "promptLayout": "column",
-      "answer": "204",
-      "level": "g34",
-      "steps": [
-        "24",
-        "18"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 8 × 3",
-        "2だんめ 十のくらい 6 × 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-77x5",
-      "genreId": "math",
-      "prompt": "77 × 5",
-      "promptLayout": "column",
-      "answer": "385",
-      "level": "g34",
-      "steps": [
-        "35",
-        "35"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 7 × 5",
-        "2だんめ 十のくらい 7 × 5",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-63x8",
-      "genreId": "math",
-      "prompt": "63 × 8",
-      "promptLayout": "column",
-      "answer": "504",
-      "level": "g34",
-      "steps": [
-        "24",
-        "48"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 3 × 8",
-        "2だんめ 十のくらい 6 × 8",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-46x4",
-      "genreId": "math",
-      "prompt": "46 × 4",
-      "promptLayout": "column",
-      "answer": "184",
-      "level": "g34",
-      "steps": [
-        "24",
-        "16"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 6 × 4",
-        "2だんめ 十のくらい 4 × 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-51x8",
-      "genreId": "math",
-      "prompt": "51 × 8",
-      "promptLayout": "column",
-      "answer": "408",
-      "level": "g34",
-      "steps": [
-        "8",
-        "40"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 1 × 8",
-        "2だんめ 十のくらい 5 × 8",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-23x5",
-      "genreId": "math",
-      "prompt": "23 × 5",
-      "promptLayout": "column",
-      "answer": "115",
-      "level": "g34",
-      "steps": [
-        "15",
-        "10"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 3 × 5",
-        "2だんめ 十のくらい 2 × 5",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-71x3",
-      "genreId": "math",
-      "prompt": "71 × 3",
-      "promptLayout": "column",
-      "answer": "213",
-      "level": "g34",
-      "steps": [
-        "3",
-        "21"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 1 × 3",
-        "2だんめ 十のくらい 7 × 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-32x6",
-      "genreId": "math",
-      "prompt": "32 × 6",
-      "promptLayout": "column",
-      "answer": "192",
-      "level": "g34",
-      "steps": [
-        "12",
-        "18"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 2 × 6",
-        "2だんめ 十のくらい 3 × 6",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-12x6",
-      "genreId": "math",
-      "prompt": "12 × 6",
-      "promptLayout": "column",
-      "answer": "72",
-      "level": "g34",
-      "steps": [
-        "12",
-        "6"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 2 × 6",
-        "2だんめ 十のくらい 1 × 6",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-73x7",
-      "genreId": "math",
-      "prompt": "73 × 7",
-      "promptLayout": "column",
-      "answer": "511",
-      "level": "g34",
-      "steps": [
-        "21",
-        "49"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 3 × 7",
-        "2だんめ 十のくらい 7 × 7",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-59x4",
-      "genreId": "math",
-      "prompt": "59 × 4",
-      "promptLayout": "column",
-      "answer": "236",
-      "level": "g34",
-      "steps": [
-        "36",
-        "20"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 9 × 4",
-        "2だんめ 十のくらい 5 × 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-91x7",
-      "genreId": "math",
-      "prompt": "91 × 7",
-      "promptLayout": "column",
-      "answer": "637",
-      "level": "g34",
-      "steps": [
-        "7",
-        "63"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 1 × 7",
-        "2だんめ 十のくらい 9 × 7",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-97x5",
-      "genreId": "math",
-      "prompt": "97 × 5",
-      "promptLayout": "column",
-      "answer": "485",
-      "level": "g34",
-      "steps": [
-        "35",
-        "45"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 7 × 5",
-        "2だんめ 十のくらい 9 × 5",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-54x6",
-      "genreId": "math",
-      "prompt": "54 × 6",
-      "promptLayout": "column",
-      "answer": "324",
-      "level": "g34",
-      "steps": [
-        "24",
-        "30"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 4 × 6",
-        "2だんめ 十のくらい 5 × 6",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-27x5",
-      "genreId": "math",
-      "prompt": "27 × 5",
-      "promptLayout": "column",
-      "answer": "135",
-      "level": "g34",
-      "steps": [
-        "35",
-        "10"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 7 × 5",
-        "2だんめ 十のくらい 2 × 5",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-76x7",
-      "genreId": "math",
-      "prompt": "76 × 7",
-      "promptLayout": "column",
-      "answer": "532",
-      "level": "g34",
-      "steps": [
-        "42",
-        "49"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 6 × 7",
-        "2だんめ 十のくらい 7 × 7",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-16x3",
-      "genreId": "math",
-      "prompt": "16 × 3",
-      "promptLayout": "column",
-      "answer": "48",
-      "level": "g34",
-      "steps": [
-        "18",
-        "3"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 6 × 3",
-        "2だんめ 十のくらい 1 × 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-15x3",
-      "genreId": "math",
-      "prompt": "15 × 3",
-      "promptLayout": "column",
-      "answer": "45",
-      "level": "g34",
-      "steps": [
-        "15",
-        "3"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 5 × 3",
-        "2だんめ 十のくらい 1 × 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-51x5",
-      "genreId": "math",
-      "prompt": "51 × 5",
-      "promptLayout": "column",
-      "answer": "255",
-      "level": "g34",
-      "steps": [
-        "5",
-        "25"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 1 × 5",
-        "2だんめ 十のくらい 5 × 5",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-79x4",
-      "genreId": "math",
-      "prompt": "79 × 4",
-      "promptLayout": "column",
-      "answer": "316",
-      "level": "g34",
-      "steps": [
-        "36",
-        "28"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 9 × 4",
-        "2だんめ 十のくらい 7 × 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-74x3",
-      "genreId": "math",
-      "prompt": "74 × 3",
-      "promptLayout": "column",
-      "answer": "222",
-      "level": "g34",
-      "steps": [
-        "12",
-        "21"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 4 × 3",
-        "2だんめ 十のくらい 7 × 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-13x6",
-      "genreId": "math",
-      "prompt": "13 × 6",
-      "promptLayout": "column",
-      "answer": "78",
-      "level": "g34",
-      "steps": [
-        "18",
-        "6"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 3 × 6",
-        "2だんめ 十のくらい 1 × 6",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-22x7",
-      "genreId": "math",
-      "prompt": "22 × 7",
-      "promptLayout": "column",
-      "answer": "154",
-      "level": "g34",
-      "steps": [
-        "14",
-        "14"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 2 × 7",
-        "2だんめ 十のくらい 2 × 7",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-89x6",
-      "genreId": "math",
-      "prompt": "89 × 6",
-      "promptLayout": "column",
-      "answer": "534",
-      "level": "g34",
-      "steps": [
-        "54",
-        "48"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 9 × 6",
-        "2だんめ 十のくらい 8 × 6",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-68x7",
-      "genreId": "math",
-      "prompt": "68 × 7",
-      "promptLayout": "column",
-      "answer": "476",
-      "level": "g34",
-      "steps": [
-        "56",
-        "42"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 8 × 7",
-        "2だんめ 十のくらい 6 × 7",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-53x5",
-      "genreId": "math",
-      "prompt": "53 × 5",
-      "promptLayout": "column",
-      "answer": "265",
-      "level": "g34",
-      "steps": [
-        "15",
-        "25"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 3 × 5",
-        "2だんめ 十のくらい 5 × 5",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-36x6",
-      "genreId": "math",
-      "prompt": "36 × 6",
-      "promptLayout": "column",
-      "answer": "216",
-      "level": "g34",
-      "steps": [
-        "36",
-        "18"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 6 × 6",
-        "2だんめ 十のくらい 3 × 6",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-18x9",
-      "genreId": "math",
-      "prompt": "18 × 9",
-      "promptLayout": "column",
-      "answer": "162",
-      "level": "g34",
-      "steps": [
-        "72",
-        "9"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 8 × 9",
-        "2だんめ 十のくらい 1 × 9",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-69x7",
-      "genreId": "math",
-      "prompt": "69 × 7",
-      "promptLayout": "column",
-      "answer": "483",
-      "level": "g34",
-      "steps": [
-        "63",
-        "42"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 9 × 7",
-        "2だんめ 十のくらい 6 × 7",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-39x3",
-      "genreId": "math",
-      "prompt": "39 × 3",
-      "promptLayout": "column",
-      "answer": "117",
-      "level": "g34",
-      "steps": [
-        "27",
-        "9"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 9 × 3",
-        "2だんめ 十のくらい 3 × 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-95x8",
-      "genreId": "math",
-      "prompt": "95 × 8",
-      "promptLayout": "column",
-      "answer": "760",
-      "level": "g34",
-      "steps": [
-        "40",
-        "72"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 5 × 8",
-        "2だんめ 十のくらい 9 × 8",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-86x7",
-      "genreId": "math",
-      "prompt": "86 × 7",
-      "promptLayout": "column",
-      "answer": "602",
-      "level": "g34",
-      "steps": [
-        "42",
-        "56"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 6 × 7",
-        "2だんめ 十のくらい 8 × 7",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-64x5",
-      "genreId": "math",
-      "prompt": "64 × 5",
-      "promptLayout": "column",
-      "answer": "320",
-      "level": "g34",
-      "steps": [
-        "20",
-        "30"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 4 × 5",
-        "2だんめ 十のくらい 6 × 5",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-55x3",
-      "genreId": "math",
-      "prompt": "55 × 3",
-      "promptLayout": "column",
-      "answer": "165",
-      "level": "g34",
-      "steps": [
-        "15",
-        "15"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 5 × 3",
-        "2だんめ 十のくらい 5 × 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-46x6",
-      "genreId": "math",
-      "prompt": "46 × 6",
-      "promptLayout": "column",
-      "answer": "276",
-      "level": "g34",
-      "steps": [
-        "36",
-        "24"
-      ],
-      "hintSource": [
-        "1だんめ 一のくらい 6 × 6",
-        "2だんめ 十のくらい 4 × 6",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m21-43x6",
-      "genreId": "math",
-      "prompt": "43 × 6",
+      "prompt": "551 − 293",
       "promptLayout": "column",
       "answer": "258",
       "level": "g34",
-      "steps": [
-        "18",
-        "24"
-      ],
       "hintSource": [
-        "1だんめ 一のくらい 3 × 6",
-        "2だんめ 十のくらい 4 × 6",
-        "2だんめは 1けた ずらす"
+        "一のくらい 1 − 3 は ひけない",
+        "10 かりて 11 − 3 = 8",
+        "十のくらいは 1 へらして ひく"
       ]
     },
     {
-      "id": "ma-m21-95x3",
+      "id": "ma-s3-503m298",
       "genreId": "math",
-      "prompt": "95 × 3",
+      "prompt": "503 − 298",
       "promptLayout": "column",
-      "answer": "285",
+      "answer": "205",
       "level": "g34",
-      "steps": [
-        "15",
-        "27"
-      ],
       "hintSource": [
-        "1だんめ 一のくらい 5 × 3",
-        "2だんめ 十のくらい 9 × 3",
-        "2だんめは 1けた ずらす"
+        "一のくらい 3 − 8 は ひけない",
+        "10 かりて 13 − 8 = 5",
+        "十のくらいは 1 へらして ひく"
       ]
     },
     {
-      "id": "ma-m21-91x6",
+      "id": "ma-s3-510m317",
       "genreId": "math",
-      "prompt": "91 × 6",
+      "prompt": "510 − 317",
       "promptLayout": "column",
-      "answer": "546",
+      "answer": "193",
       "level": "g34",
-      "steps": [
-        "6",
-        "54"
-      ],
       "hintSource": [
-        "1だんめ 一のくらい 1 × 6",
-        "2だんめ 十のくらい 9 × 6",
-        "2だんめは 1けた ずらす"
+        "一のくらい 0 − 7 は ひけない",
+        "10 かりて 10 − 7 = 3",
+        "十のくらいは 1 へらして ひく"
       ]
     },
     {
-      "id": "ma-m21-78x4",
+      "id": "ma-s3-750m634",
       "genreId": "math",
-      "prompt": "78 × 4",
+      "prompt": "750 − 634",
       "promptLayout": "column",
-      "answer": "312",
+      "answer": "116",
       "level": "g34",
-      "steps": [
-        "32",
-        "28"
-      ],
       "hintSource": [
-        "1だんめ 一のくらい 8 × 4",
-        "2だんめ 十のくらい 7 × 4",
-        "2だんめは 1けた ずらす"
+        "一のくらい 0 − 4 は ひけない",
+        "10 かりて 10 − 4 = 6",
+        "十のくらいは 1 へらして ひく"
       ]
     },
     {
-      "id": "ma-m21-65x3",
+      "id": "ma-s3-630m264",
       "genreId": "math",
-      "prompt": "65 × 3",
+      "prompt": "630 − 264",
       "promptLayout": "column",
-      "answer": "195",
+      "answer": "366",
       "level": "g34",
-      "steps": [
-        "15",
-        "18"
-      ],
       "hintSource": [
-        "1だんめ 一のくらい 5 × 3",
-        "2だんめ 十のくらい 6 × 3",
-        "2だんめは 1けた ずらす"
+        "一のくらい 0 − 4 は ひけない",
+        "10 かりて 10 − 4 = 6",
+        "十のくらいは 1 へらして ひく"
       ]
     },
     {
-      "id": "ma-m21-24x5",
+      "id": "ma-s3-910m588",
       "genreId": "math",
-      "prompt": "24 × 5",
+      "prompt": "910 − 588",
       "promptLayout": "column",
-      "answer": "120",
+      "answer": "322",
       "level": "g34",
-      "steps": [
-        "20",
-        "10"
-      ],
       "hintSource": [
-        "1だんめ 一のくらい 4 × 5",
-        "2だんめ 十のくらい 2 × 5",
-        "2だんめは 1けた ずらす"
+        "一のくらい 0 − 8 は ひけない",
+        "10 かりて 10 − 8 = 2",
+        "十のくらいは 1 へらして ひく"
       ]
     },
     {
-      "id": "ma-m21-66x4",
+      "id": "ma-s3-970m367",
       "genreId": "math",
-      "prompt": "66 × 4",
+      "prompt": "970 − 367",
       "promptLayout": "column",
-      "answer": "264",
+      "answer": "603",
       "level": "g34",
-      "steps": [
-        "24",
-        "24"
-      ],
       "hintSource": [
-        "1だんめ 一のくらい 6 × 4",
-        "2だんめ 十のくらい 6 × 4",
-        "2だんめは 1けた ずらす"
+        "一のくらい 0 − 7 は ひけない",
+        "10 かりて 10 − 7 = 3",
+        "十のくらいは 1 へらして ひく"
       ]
     },
     {
-      "id": "ma-m21-73x6",
+      "id": "ma-s3-783m627",
       "genreId": "math",
-      "prompt": "73 × 6",
+      "prompt": "783 − 627",
       "promptLayout": "column",
-      "answer": "438",
+      "answer": "156",
       "level": "g34",
-      "steps": [
-        "18",
-        "42"
-      ],
       "hintSource": [
-        "1だんめ 一のくらい 3 × 6",
-        "2だんめ 十のくらい 7 × 6",
-        "2だんめは 1けた ずらす"
+        "一のくらい 3 − 7 は ひけない",
+        "10 かりて 13 − 7 = 6",
+        "十のくらいは 1 へらして ひく"
       ]
     },
     {
-      "id": "ma-m21-43x9",
+      "id": "ma-s3-553m429",
       "genreId": "math",
-      "prompt": "43 × 9",
+      "prompt": "553 − 429",
       "promptLayout": "column",
-      "answer": "387",
+      "answer": "124",
       "level": "g34",
-      "steps": [
-        "27",
-        "36"
-      ],
       "hintSource": [
-        "1だんめ 一のくらい 3 × 9",
-        "2だんめ 十のくらい 4 × 9",
-        "2だんめは 1けた ずらす"
+        "一のくらい 3 − 9 は ひけない",
+        "10 かりて 13 − 9 = 4",
+        "十のくらいは 1 へらして ひく"
       ]
     },
     {
-      "id": "ma-m21-85x6",
+      "id": "ma-s3-820m385",
       "genreId": "math",
-      "prompt": "85 × 6",
+      "prompt": "820 − 385",
       "promptLayout": "column",
-      "answer": "510",
+      "answer": "435",
       "level": "g34",
-      "steps": [
-        "30",
-        "48"
-      ],
       "hintSource": [
-        "1だんめ 一のくらい 5 × 6",
-        "2だんめ 十のくらい 8 × 6",
-        "2だんめは 1けた ずらす"
+        "一のくらい 0 − 5 は ひけない",
+        "10 かりて 10 − 5 = 5",
+        "十のくらいは 1 へらして ひく"
+      ]
+    },
+    {
+      "id": "ma-s3-576m349",
+      "genreId": "math",
+      "prompt": "576 − 349",
+      "promptLayout": "column",
+      "answer": "227",
+      "level": "g34",
+      "hintSource": [
+        "一のくらい 6 − 9 は ひけない",
+        "10 かりて 16 − 9 = 7",
+        "十のくらいは 1 へらして ひく"
+      ]
+    },
+    {
+      "id": "ma-s3-720m601",
+      "genreId": "math",
+      "prompt": "720 − 601",
+      "promptLayout": "column",
+      "answer": "119",
+      "level": "g34",
+      "hintSource": [
+        "一のくらい 0 − 1 は ひけない",
+        "10 かりて 10 − 1 = 9",
+        "十のくらいは 1 へらして ひく"
+      ]
+    },
+    {
+      "id": "ma-s3-913m465",
+      "genreId": "math",
+      "prompt": "913 − 465",
+      "promptLayout": "column",
+      "answer": "448",
+      "level": "g34",
+      "hintSource": [
+        "一のくらい 3 − 5 は ひけない",
+        "10 かりて 13 − 5 = 8",
+        "十のくらいは 1 へらして ひく"
+      ]
+    },
+    {
+      "id": "ma-s3-800m313",
+      "genreId": "math",
+      "prompt": "800 − 313",
+      "promptLayout": "column",
+      "answer": "487",
+      "level": "g34",
+      "hintSource": [
+        "一のくらい 0 − 3 は ひけない",
+        "10 かりて 10 − 3 = 7",
+        "十のくらいは 1 へらして ひく"
+      ]
+    },
+    {
+      "id": "ma-s3-682m113",
+      "genreId": "math",
+      "prompt": "682 − 113",
+      "promptLayout": "column",
+      "answer": "569",
+      "level": "g34",
+      "hintSource": [
+        "一のくらい 2 − 3 は ひけない",
+        "10 かりて 12 − 3 = 9",
+        "十のくらいは 1 へらして ひく"
+      ]
+    },
+    {
+      "id": "ma-s3-595m159",
+      "genreId": "math",
+      "prompt": "595 − 159",
+      "promptLayout": "column",
+      "answer": "436",
+      "level": "g34",
+      "hintSource": [
+        "一のくらい 5 − 9 は ひけない",
+        "10 かりて 15 − 9 = 6",
+        "十のくらいは 1 へらして ひく"
+      ]
+    },
+    {
+      "id": "ma-s3-692m278",
+      "genreId": "math",
+      "prompt": "692 − 278",
+      "promptLayout": "column",
+      "answer": "414",
+      "level": "g34",
+      "hintSource": [
+        "一のくらい 2 − 8 は ひけない",
+        "10 かりて 12 − 8 = 4",
+        "十のくらいは 1 へらして ひく"
+      ]
+    },
+    {
+      "id": "ma-s3-750m526",
+      "genreId": "math",
+      "prompt": "750 − 526",
+      "promptLayout": "column",
+      "answer": "224",
+      "level": "g34",
+      "hintSource": [
+        "一のくらい 0 − 6 は ひけない",
+        "10 かりて 10 − 6 = 4",
+        "十のくらいは 1 へらして ひく"
+      ]
+    },
+    {
+      "id": "ma-s3-862m539",
+      "genreId": "math",
+      "prompt": "862 − 539",
+      "promptLayout": "column",
+      "answer": "323",
+      "level": "g34",
+      "hintSource": [
+        "一のくらい 2 − 9 は ひけない",
+        "10 かりて 12 − 9 = 3",
+        "十のくらいは 1 へらして ひく"
       ]
     },
     {
@@ -9683,10 +8340,6 @@
       "promptLayout": "column",
       "answer": "248",
       "level": "g34",
-      "steps": [
-        "8",
-        "24"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 1 × 8",
         "2だんめ 十のくらい 3 × 8",
@@ -9700,10 +8353,6 @@
       "promptLayout": "column",
       "answer": "679",
       "level": "g34",
-      "steps": [
-        "49",
-        "63"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 7 × 7",
         "2だんめ 十のくらい 9 × 7",
@@ -9717,10 +8366,6 @@
       "promptLayout": "column",
       "answer": "70",
       "level": "g34",
-      "steps": [
-        "20",
-        "5"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 4 × 5",
         "2だんめ 十のくらい 1 × 5",
@@ -9734,10 +8379,6 @@
       "promptLayout": "column",
       "answer": "384",
       "level": "g34",
-      "steps": [
-        "24",
-        "36"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 6 × 4",
         "2だんめ 十のくらい 9 × 4",
@@ -9751,10 +8392,6 @@
       "promptLayout": "column",
       "answer": "220",
       "level": "g34",
-      "steps": [
-        "20",
-        "20"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 5 × 4",
         "2だんめ 十のくらい 5 × 4",
@@ -9768,13 +8405,22 @@
       "promptLayout": "column",
       "answer": "144",
       "level": "g34",
-      "steps": [
-        "24",
-        "12"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 8 × 3",
         "2だんめ 十のくらい 4 × 3",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-76x9",
+      "genreId": "math",
+      "prompt": "76 × 9",
+      "promptLayout": "column",
+      "answer": "684",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 6 × 9",
+        "2だんめ 十のくらい 7 × 9",
         "2だんめは 1けた ずらす"
       ]
     },
@@ -9785,10 +8431,6 @@
       "promptLayout": "column",
       "answer": "204",
       "level": "g34",
-      "steps": [
-        "4",
-        "20"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 1 × 4",
         "2だんめ 十のくらい 5 × 4",
@@ -9802,10 +8444,6 @@
       "promptLayout": "column",
       "answer": "486",
       "level": "g34",
-      "steps": [
-        "36",
-        "45"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 4 × 9",
         "2だんめ 十のくらい 5 × 9",
@@ -9819,13 +8457,22 @@
       "promptLayout": "column",
       "answer": "462",
       "level": "g34",
-      "steps": [
-        "42",
-        "42"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 6 × 7",
         "2だんめ 十のくらい 6 × 7",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-16x5",
+      "genreId": "math",
+      "prompt": "16 × 5",
+      "promptLayout": "column",
+      "answer": "80",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 6 × 5",
+        "2だんめ 十のくらい 1 × 5",
         "2だんめは 1けた ずらす"
       ]
     },
@@ -9836,10 +8483,6 @@
       "promptLayout": "column",
       "answer": "576",
       "level": "g34",
-      "steps": [
-        "36",
-        "54"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 4 × 9",
         "2だんめ 十のくらい 6 × 9",
@@ -9853,10 +8496,6 @@
       "promptLayout": "column",
       "answer": "56",
       "level": "g34",
-      "steps": [
-        "16",
-        "4"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 4 × 4",
         "2だんめ 十のくらい 1 × 4",
@@ -9870,10 +8509,6 @@
       "promptLayout": "column",
       "answer": "245",
       "level": "g34",
-      "steps": [
-        "35",
-        "21"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 5 × 7",
         "2だんめ 十のくらい 3 × 7",
@@ -9887,10 +8522,6 @@
       "promptLayout": "column",
       "answer": "144",
       "level": "g34",
-      "steps": [
-        "64",
-        "8"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 8 × 8",
         "2だんめ 十のくらい 1 × 8",
@@ -9904,10 +8535,6 @@
       "promptLayout": "column",
       "answer": "124",
       "level": "g34",
-      "steps": [
-        "4",
-        "12"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 1 × 4",
         "2だんめ 十のくらい 3 × 4",
@@ -9921,10 +8548,6 @@
       "promptLayout": "column",
       "answer": "168",
       "level": "g34",
-      "steps": [
-        "8",
-        "16"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 1 × 8",
         "2だんめ 十のくらい 2 × 8",
@@ -9938,10 +8561,6 @@
       "promptLayout": "column",
       "answer": "231",
       "level": "g34",
-      "steps": [
-        "21",
-        "21"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 7 × 3",
         "2だんめ 十のくらい 7 × 3",
@@ -9955,10 +8574,6 @@
       "promptLayout": "column",
       "answer": "360",
       "level": "g34",
-      "steps": [
-        "40",
-        "32"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 5 × 8",
         "2だんめ 十のくらい 4 × 8",
@@ -9972,10 +8587,6 @@
       "promptLayout": "column",
       "answer": "335",
       "level": "g34",
-      "steps": [
-        "35",
-        "30"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 7 × 5",
         "2だんめ 十のくらい 6 × 5",
@@ -9989,10 +8600,6 @@
       "promptLayout": "column",
       "answer": "176",
       "level": "g34",
-      "steps": [
-        "16",
-        "16"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 4 × 4",
         "2だんめ 十のくらい 4 × 4",
@@ -10006,10 +8613,6 @@
       "promptLayout": "column",
       "answer": "371",
       "level": "g34",
-      "steps": [
-        "21",
-        "35"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 3 × 7",
         "2だんめ 十のくらい 5 × 7",
@@ -10023,10 +8626,6 @@
       "promptLayout": "column",
       "answer": "102",
       "level": "g34",
-      "steps": [
-        "42",
-        "6"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 7 × 6",
         "2だんめ 十のくらい 1 × 6",
@@ -10040,10 +8639,6 @@
       "promptLayout": "column",
       "answer": "243",
       "level": "g34",
-      "steps": [
-        "3",
-        "24"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 1 × 3",
         "2だんめ 十のくらい 8 × 3",
@@ -10057,10 +8652,6 @@
       "promptLayout": "column",
       "answer": "276",
       "level": "g34",
-      "steps": [
-        "6",
-        "27"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 2 × 3",
         "2だんめ 十のくらい 9 × 3",
@@ -10074,10 +8665,6 @@
       "promptLayout": "column",
       "answer": "552",
       "level": "g34",
-      "steps": [
-        "12",
-        "54"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 2 × 6",
         "2だんめ 十のくらい 9 × 6",
@@ -10091,10 +8678,6 @@
       "promptLayout": "column",
       "answer": "305",
       "level": "g34",
-      "steps": [
-        "5",
-        "30"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 1 × 5",
         "2だんめ 十のくらい 6 × 5",
@@ -10108,10 +8691,6 @@
       "promptLayout": "column",
       "answer": "864",
       "level": "g34",
-      "steps": [
-        "54",
-        "81"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 6 × 9",
         "2だんめ 十のくらい 9 × 9",
@@ -10125,10 +8704,6 @@
       "promptLayout": "column",
       "answer": "252",
       "level": "g34",
-      "steps": [
-        "12",
-        "24"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 3 × 4",
         "2だんめ 十のくらい 6 × 4",
@@ -10142,10 +8717,6 @@
       "promptLayout": "column",
       "answer": "57",
       "level": "g34",
-      "steps": [
-        "27",
-        "3"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 9 × 3",
         "2だんめ 十のくらい 1 × 3",
@@ -10159,13 +8730,22 @@
       "promptLayout": "column",
       "answer": "525",
       "level": "g34",
-      "steps": [
-        "35",
-        "49"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 5 × 7",
         "2だんめ 十のくらい 7 × 7",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-68x3",
+      "genreId": "math",
+      "prompt": "68 × 3",
+      "promptLayout": "column",
+      "answer": "204",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 8 × 3",
+        "2だんめ 十のくらい 6 × 3",
         "2だんめは 1けた ずらす"
       ]
     },
@@ -10176,10 +8756,6 @@
       "promptLayout": "column",
       "answer": "264",
       "level": "g34",
-      "steps": [
-        "24",
-        "24"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 4 × 6",
         "2だんめ 十のくらい 4 × 6",
@@ -10193,13 +8769,22 @@
       "promptLayout": "column",
       "answer": "729",
       "level": "g34",
-      "steps": [
-        "9",
-        "72"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 1 × 9",
         "2だんめ 十のくらい 8 × 9",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-76x7",
+      "genreId": "math",
+      "prompt": "76 × 7",
+      "promptLayout": "column",
+      "answer": "532",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 6 × 7",
+        "2だんめ 十のくらい 7 × 7",
         "2だんめは 1けた ずらす"
       ]
     },
@@ -10210,10 +8795,6 @@
       "promptLayout": "column",
       "answer": "581",
       "level": "g34",
-      "steps": [
-        "21",
-        "56"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 3 × 7",
         "2だんめ 十のくらい 8 × 7",
@@ -10227,10 +8808,6 @@
       "promptLayout": "column",
       "answer": "100",
       "level": "g34",
-      "steps": [
-        "20",
-        "8"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 5 × 4",
         "2だんめ 十のくらい 2 × 4",
@@ -10244,10 +8821,6 @@
       "promptLayout": "column",
       "answer": "328",
       "level": "g34",
-      "steps": [
-        "8",
-        "32"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 2 × 4",
         "2だんめ 十のくらい 8 × 4",
@@ -10261,10 +8834,6 @@
       "promptLayout": "column",
       "answer": "546",
       "level": "g34",
-      "steps": [
-        "56",
-        "49"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 8 × 7",
         "2だんめ 十のくらい 7 × 7",
@@ -10278,10 +8847,6 @@
       "promptLayout": "column",
       "answer": "399",
       "level": "g34",
-      "steps": [
-        "49",
-        "35"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 7 × 7",
         "2だんめ 十のくらい 5 × 7",
@@ -10295,10 +8860,6 @@
       "promptLayout": "column",
       "answer": "624",
       "level": "g34",
-      "steps": [
-        "64",
-        "56"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 8 × 8",
         "2だんめ 十のくらい 7 × 8",
@@ -10312,10 +8873,6 @@
       "promptLayout": "column",
       "answer": "378",
       "level": "g34",
-      "steps": [
-        "18",
-        "36"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 2 × 9",
         "2だんめ 十のくらい 4 × 9",
@@ -10329,10 +8886,6 @@
       "promptLayout": "column",
       "answer": "256",
       "level": "g34",
-      "steps": [
-        "16",
-        "24"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 2 × 8",
         "2だんめ 十のくらい 3 × 8",
@@ -10346,10 +8899,6 @@
       "promptLayout": "column",
       "answer": "135",
       "level": "g34",
-      "steps": [
-        "45",
-        "9"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 5 × 9",
         "2だんめ 十のくらい 1 × 9",
@@ -10363,10 +8912,6 @@
       "promptLayout": "column",
       "answer": "672",
       "level": "g34",
-      "steps": [
-        "32",
-        "64"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 4 × 8",
         "2だんめ 十のくらい 8 × 8",
@@ -10380,10 +8925,6 @@
       "promptLayout": "column",
       "answer": "504",
       "level": "g34",
-      "steps": [
-        "24",
-        "48"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 4 × 6",
         "2だんめ 十のくらい 8 × 6",
@@ -10397,10 +8938,6 @@
       "promptLayout": "column",
       "answer": "104",
       "level": "g34",
-      "steps": [
-        "24",
-        "8"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 6 × 4",
         "2だんめ 十のくらい 2 × 4",
@@ -10414,10 +8951,6 @@
       "promptLayout": "column",
       "answer": "477",
       "level": "g34",
-      "steps": [
-        "27",
-        "45"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 3 × 9",
         "2だんめ 十のくらい 5 × 9",
@@ -10431,10 +8964,6 @@
       "promptLayout": "column",
       "answer": "324",
       "level": "g34",
-      "steps": [
-        "4",
-        "32"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 1 × 4",
         "2だんめ 十のくらい 8 × 4",
@@ -10448,10 +8977,6 @@
       "promptLayout": "column",
       "answer": "498",
       "level": "g34",
-      "steps": [
-        "18",
-        "48"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 3 × 6",
         "2だんめ 十のくらい 8 × 6",
@@ -10465,10 +8990,6 @@
       "promptLayout": "column",
       "answer": "405",
       "level": "g34",
-      "steps": [
-        "45",
-        "36"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 5 × 9",
         "2だんめ 十のくらい 4 × 9",
@@ -10482,10 +9003,6 @@
       "promptLayout": "column",
       "answer": "582",
       "level": "g34",
-      "steps": [
-        "42",
-        "54"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 7 × 6",
         "2だんめ 十のくらい 9 × 6",
@@ -10499,10 +9016,6 @@
       "promptLayout": "column",
       "answer": "207",
       "level": "g34",
-      "steps": [
-        "27",
-        "18"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 9 × 3",
         "2だんめ 十のくらい 6 × 3",
@@ -10516,10 +9029,6 @@
       "promptLayout": "column",
       "answer": "249",
       "level": "g34",
-      "steps": [
-        "9",
-        "24"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 3 × 3",
         "2だんめ 十のくらい 8 × 3",
@@ -10533,10 +9042,6 @@
       "promptLayout": "column",
       "answer": "136",
       "level": "g34",
-      "steps": [
-        "16",
-        "12"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 4 × 4",
         "2だんめ 十のくらい 3 × 4",
@@ -10550,10 +9055,6 @@
       "promptLayout": "column",
       "answer": "512",
       "level": "g34",
-      "steps": [
-        "32",
-        "48"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 4 × 8",
         "2だんめ 十のくらい 6 × 8",
@@ -10567,10 +9068,6 @@
       "promptLayout": "column",
       "answer": "518",
       "level": "g34",
-      "steps": [
-        "28",
-        "49"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 4 × 7",
         "2だんめ 十のくらい 7 × 7",
@@ -10584,10 +9081,6 @@
       "promptLayout": "column",
       "answer": "390",
       "level": "g34",
-      "steps": [
-        "30",
-        "36"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 5 × 6",
         "2だんめ 十のくらい 6 × 6",
@@ -10601,10 +9094,6 @@
       "promptLayout": "column",
       "answer": "315",
       "level": "g34",
-      "steps": [
-        "15",
-        "30"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 3 × 5",
         "2だんめ 十のくらい 6 × 5",
@@ -10618,10 +9107,6 @@
       "promptLayout": "column",
       "answer": "168",
       "level": "g34",
-      "steps": [
-        "8",
-        "16"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 2 × 4",
         "2だんめ 十のくらい 4 × 4",
@@ -10635,13 +9120,22 @@
       "promptLayout": "column",
       "answer": "490",
       "level": "g34",
-      "steps": [
-        "40",
-        "45"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 8 × 5",
         "2だんめ 十のくらい 9 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-59x6",
+      "genreId": "math",
+      "prompt": "59 × 6",
+      "promptLayout": "column",
+      "answer": "354",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 9 × 6",
+        "2だんめ 十のくらい 5 × 6",
         "2だんめは 1けた ずらす"
       ]
     },
@@ -10652,10 +9146,6 @@
       "promptLayout": "column",
       "answer": "84",
       "level": "g34",
-      "steps": [
-        "4",
-        "8"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 1 × 4",
         "2だんめ 十のくらい 2 × 4",
@@ -10669,10 +9159,6 @@
       "promptLayout": "column",
       "answer": "783",
       "level": "g34",
-      "steps": [
-        "63",
-        "72"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 7 × 9",
         "2だんめ 十のくらい 8 × 9",
@@ -10686,10 +9172,6 @@
       "promptLayout": "column",
       "answer": "238",
       "level": "g34",
-      "steps": [
-        "28",
-        "21"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 4 × 7",
         "2だんめ 十のくらい 3 × 7",
@@ -10703,10 +9185,6 @@
       "promptLayout": "column",
       "answer": "136",
       "level": "g34",
-      "steps": [
-        "56",
-        "8"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 7 × 8",
         "2だんめ 十のくらい 1 × 8",
@@ -10720,10 +9198,6 @@
       "promptLayout": "column",
       "answer": "552",
       "level": "g34",
-      "steps": [
-        "72",
-        "48"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 9 × 8",
         "2だんめ 十のくらい 6 × 8",
@@ -10737,10 +9211,6 @@
       "promptLayout": "column",
       "answer": "224",
       "level": "g34",
-      "steps": [
-        "14",
-        "21"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 2 × 7",
         "2だんめ 十のくらい 3 × 7",
@@ -10754,10 +9224,6 @@
       "promptLayout": "column",
       "answer": "413",
       "level": "g34",
-      "steps": [
-        "63",
-        "35"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 9 × 7",
         "2だんめ 十のくらい 5 × 7",
@@ -10771,10 +9237,6 @@
       "promptLayout": "column",
       "answer": "304",
       "level": "g34",
-      "steps": [
-        "24",
-        "28"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 6 × 4",
         "2だんめ 十のくらい 7 × 4",
@@ -10788,10 +9250,6 @@
       "promptLayout": "column",
       "answer": "237",
       "level": "g34",
-      "steps": [
-        "27",
-        "21"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 9 × 3",
         "2だんめ 十のくらい 7 × 3",
@@ -10805,10 +9263,6 @@
       "promptLayout": "column",
       "answer": "168",
       "level": "g34",
-      "steps": [
-        "48",
-        "12"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 8 × 6",
         "2だんめ 十のくらい 2 × 6",
@@ -10822,10 +9276,6 @@
       "promptLayout": "column",
       "answer": "384",
       "level": "g34",
-      "steps": [
-        "64",
-        "32"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 8 × 8",
         "2だんめ 十のくらい 4 × 8",
@@ -10839,10 +9289,6 @@
       "promptLayout": "column",
       "answer": "301",
       "level": "g34",
-      "steps": [
-        "21",
-        "28"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 3 × 7",
         "2だんめ 十のくらい 4 × 7",
@@ -10856,10 +9302,6 @@
       "promptLayout": "column",
       "answer": "246",
       "level": "g34",
-      "steps": [
-        "6",
-        "24"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 1 × 6",
         "2だんめ 十のくらい 4 × 6",
@@ -10873,10 +9315,6 @@
       "promptLayout": "column",
       "answer": "558",
       "level": "g34",
-      "steps": [
-        "18",
-        "54"
-      ],
       "hintSource": [
         "1だんめ 一のくらい 2 × 9",
         "2だんめ 十のくらい 6 × 9",
@@ -10884,1549 +9322,964 @@
       ]
     },
     {
-      "id": "ma-m22-81x19",
+      "id": "ma-m21-94x6",
       "genreId": "math",
-      "prompt": "81 × 19",
+      "prompt": "94 × 6",
       "promptLayout": "column",
-      "steps": [
-        "729",
-        "81"
-      ],
-      "answer": "1539",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 81 × 一のくらいの 9",
-        "2だんめ 81 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-17x14",
-      "genreId": "math",
-      "prompt": "17 × 14",
-      "promptLayout": "column",
-      "steps": [
-        "68",
-        "17"
-      ],
-      "answer": "238",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 17 × 一のくらいの 4",
-        "2だんめ 17 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-87x12",
-      "genreId": "math",
-      "prompt": "87 × 12",
-      "promptLayout": "column",
-      "steps": [
-        "174",
-        "87"
-      ],
-      "answer": "1044",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 87 × 一のくらいの 2",
-        "2だんめ 87 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-44x14",
-      "genreId": "math",
-      "prompt": "44 × 14",
-      "promptLayout": "column",
-      "steps": [
-        "176",
-        "44"
-      ],
-      "answer": "616",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 44 × 一のくらいの 4",
-        "2だんめ 44 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-62x14",
-      "genreId": "math",
-      "prompt": "62 × 14",
-      "promptLayout": "column",
-      "steps": [
-        "248",
-        "62"
-      ],
-      "answer": "868",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 62 × 一のくらいの 4",
-        "2だんめ 62 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-46x34",
-      "genreId": "math",
-      "prompt": "46 × 34",
-      "promptLayout": "column",
-      "steps": [
-        "184",
-        "138"
-      ],
-      "answer": "1564",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 46 × 一のくらいの 4",
-        "2だんめ 46 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-53x26",
-      "genreId": "math",
-      "prompt": "53 × 26",
-      "promptLayout": "column",
-      "steps": [
-        "318",
-        "106"
-      ],
-      "answer": "1378",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 53 × 一のくらいの 6",
-        "2だんめ 53 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-87x19",
-      "genreId": "math",
-      "prompt": "87 × 19",
-      "promptLayout": "column",
-      "steps": [
-        "783",
-        "87"
-      ],
-      "answer": "1653",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 87 × 一のくらいの 9",
-        "2だんめ 87 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-35x27",
-      "genreId": "math",
-      "prompt": "35 × 27",
-      "promptLayout": "column",
-      "steps": [
-        "245",
-        "70"
-      ],
-      "answer": "945",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 35 × 一のくらいの 7",
-        "2だんめ 35 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-14x46",
-      "genreId": "math",
-      "prompt": "14 × 46",
-      "promptLayout": "column",
-      "steps": [
-        "84",
-        "56"
-      ],
-      "answer": "644",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 14 × 一のくらいの 6",
-        "2だんめ 14 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-68x25",
-      "genreId": "math",
-      "prompt": "68 × 25",
-      "promptLayout": "column",
-      "steps": [
-        "340",
-        "136"
-      ],
-      "answer": "1700",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 68 × 一のくらいの 5",
-        "2だんめ 68 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-21x49",
-      "genreId": "math",
-      "prompt": "21 × 49",
-      "promptLayout": "column",
-      "steps": [
-        "189",
-        "84"
-      ],
-      "answer": "1029",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 21 × 一のくらいの 9",
-        "2だんめ 21 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-41x13",
-      "genreId": "math",
-      "prompt": "41 × 13",
-      "promptLayout": "column",
-      "steps": [
-        "123",
-        "41"
-      ],
-      "answer": "533",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 41 × 一のくらいの 3",
-        "2だんめ 41 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-72x45",
-      "genreId": "math",
-      "prompt": "72 × 45",
-      "promptLayout": "column",
-      "steps": [
-        "360",
-        "288"
-      ],
-      "answer": "3240",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 72 × 一のくらいの 5",
-        "2だんめ 72 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-81x23",
-      "genreId": "math",
-      "prompt": "81 × 23",
-      "promptLayout": "column",
-      "steps": [
-        "243",
-        "162"
-      ],
-      "answer": "1863",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 81 × 一のくらいの 3",
-        "2だんめ 81 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-26x37",
-      "genreId": "math",
-      "prompt": "26 × 37",
-      "promptLayout": "column",
-      "steps": [
-        "182",
-        "78"
-      ],
-      "answer": "962",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 26 × 一のくらいの 7",
-        "2だんめ 26 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-91x16",
-      "genreId": "math",
-      "prompt": "91 × 16",
-      "promptLayout": "column",
-      "steps": [
-        "546",
-        "91"
-      ],
-      "answer": "1456",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 91 × 一のくらいの 6",
-        "2だんめ 91 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-39x46",
-      "genreId": "math",
-      "prompt": "39 × 46",
-      "promptLayout": "column",
-      "steps": [
-        "234",
-        "156"
-      ],
-      "answer": "1794",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 39 × 一のくらいの 6",
-        "2だんめ 39 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-92x26",
-      "genreId": "math",
-      "prompt": "92 × 26",
-      "promptLayout": "column",
-      "steps": [
-        "552",
-        "184"
-      ],
-      "answer": "2392",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 92 × 一のくらいの 6",
-        "2だんめ 92 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-57x33",
-      "genreId": "math",
-      "prompt": "57 × 33",
-      "promptLayout": "column",
-      "steps": [
-        "171",
-        "171"
-      ],
-      "answer": "1881",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 57 × 一のくらいの 3",
-        "2だんめ 57 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-22x26",
-      "genreId": "math",
-      "prompt": "22 × 26",
-      "promptLayout": "column",
-      "steps": [
-        "132",
-        "44"
-      ],
-      "answer": "572",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 22 × 一のくらいの 6",
-        "2だんめ 22 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-53x45",
-      "genreId": "math",
-      "prompt": "53 × 45",
-      "promptLayout": "column",
-      "steps": [
-        "265",
-        "212"
-      ],
-      "answer": "2385",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 53 × 一のくらいの 5",
-        "2だんめ 53 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-61x12",
-      "genreId": "math",
-      "prompt": "61 × 12",
-      "promptLayout": "column",
-      "steps": [
-        "122",
-        "61"
-      ],
-      "answer": "732",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 61 × 一のくらいの 2",
-        "2だんめ 61 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-19x46",
-      "genreId": "math",
-      "prompt": "19 × 46",
-      "promptLayout": "column",
-      "steps": [
-        "114",
-        "76"
-      ],
-      "answer": "874",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 19 × 一のくらいの 6",
-        "2だんめ 19 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-19x38",
-      "genreId": "math",
-      "prompt": "19 × 38",
-      "promptLayout": "column",
-      "steps": [
-        "152",
-        "57"
-      ],
-      "answer": "722",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 19 × 一のくらいの 8",
-        "2だんめ 19 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-64x46",
-      "genreId": "math",
-      "prompt": "64 × 46",
-      "promptLayout": "column",
-      "steps": [
-        "384",
-        "256"
-      ],
-      "answer": "2944",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 64 × 一のくらいの 6",
-        "2だんめ 64 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-25x41",
-      "genreId": "math",
-      "prompt": "25 × 41",
-      "promptLayout": "column",
-      "steps": [
-        "25",
-        "100"
-      ],
-      "answer": "1025",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 25 × 一のくらいの 1",
-        "2だんめ 25 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-61x49",
-      "genreId": "math",
-      "prompt": "61 × 49",
-      "promptLayout": "column",
-      "steps": [
-        "549",
-        "244"
-      ],
-      "answer": "2989",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 61 × 一のくらいの 9",
-        "2だんめ 61 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-79x37",
-      "genreId": "math",
-      "prompt": "79 × 37",
-      "promptLayout": "column",
-      "steps": [
-        "553",
-        "237"
-      ],
-      "answer": "2923",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 79 × 一のくらいの 7",
-        "2だんめ 79 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-85x49",
-      "genreId": "math",
-      "prompt": "85 × 49",
-      "promptLayout": "column",
-      "steps": [
-        "765",
-        "340"
-      ],
-      "answer": "4165",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 85 × 一のくらいの 9",
-        "2だんめ 85 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-58x18",
-      "genreId": "math",
-      "prompt": "58 × 18",
-      "promptLayout": "column",
-      "steps": [
-        "464",
-        "58"
-      ],
-      "answer": "1044",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 58 × 一のくらいの 8",
-        "2だんめ 58 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-88x28",
-      "genreId": "math",
-      "prompt": "88 × 28",
-      "promptLayout": "column",
-      "steps": [
-        "704",
-        "176"
-      ],
-      "answer": "2464",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 88 × 一のくらいの 8",
-        "2だんめ 88 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-77x36",
-      "genreId": "math",
-      "prompt": "77 × 36",
-      "promptLayout": "column",
-      "steps": [
-        "462",
-        "231"
-      ],
-      "answer": "2772",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 77 × 一のくらいの 6",
-        "2だんめ 77 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-38x32",
-      "genreId": "math",
-      "prompt": "38 × 32",
-      "promptLayout": "column",
-      "steps": [
-        "76",
-        "114"
-      ],
-      "answer": "1216",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 38 × 一のくらいの 2",
-        "2だんめ 38 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-86x38",
-      "genreId": "math",
-      "prompt": "86 × 38",
-      "promptLayout": "column",
-      "steps": [
-        "688",
-        "258"
-      ],
-      "answer": "3268",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 86 × 一のくらいの 8",
-        "2だんめ 86 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-98x32",
-      "genreId": "math",
-      "prompt": "98 × 32",
-      "promptLayout": "column",
-      "steps": [
-        "196",
-        "294"
-      ],
-      "answer": "3136",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 98 × 一のくらいの 2",
-        "2だんめ 98 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-91x14",
-      "genreId": "math",
-      "prompt": "91 × 14",
-      "promptLayout": "column",
-      "steps": [
-        "364",
-        "91"
-      ],
-      "answer": "1274",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 91 × 一のくらいの 4",
-        "2だんめ 91 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-57x48",
-      "genreId": "math",
-      "prompt": "57 × 48",
-      "promptLayout": "column",
-      "steps": [
-        "456",
-        "228"
-      ],
-      "answer": "2736",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 57 × 一のくらいの 8",
-        "2だんめ 57 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-49x22",
-      "genreId": "math",
-      "prompt": "49 × 22",
-      "promptLayout": "column",
-      "steps": [
-        "98",
-        "98"
-      ],
-      "answer": "1078",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 49 × 一のくらいの 2",
-        "2だんめ 49 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-98x42",
-      "genreId": "math",
-      "prompt": "98 × 42",
-      "promptLayout": "column",
-      "steps": [
-        "196",
-        "392"
-      ],
-      "answer": "4116",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 98 × 一のくらいの 2",
-        "2だんめ 98 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-84x41",
-      "genreId": "math",
-      "prompt": "84 × 41",
-      "promptLayout": "column",
-      "steps": [
-        "84",
-        "336"
-      ],
-      "answer": "3444",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 84 × 一のくらいの 1",
-        "2だんめ 84 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-57x15",
-      "genreId": "math",
-      "prompt": "57 × 15",
-      "promptLayout": "column",
-      "steps": [
-        "285",
-        "57"
-      ],
-      "answer": "855",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 57 × 一のくらいの 5",
-        "2だんめ 57 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-51x39",
-      "genreId": "math",
-      "prompt": "51 × 39",
-      "promptLayout": "column",
-      "steps": [
-        "459",
-        "153"
-      ],
-      "answer": "1989",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 51 × 一のくらいの 9",
-        "2だんめ 51 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-78x41",
-      "genreId": "math",
-      "prompt": "78 × 41",
-      "promptLayout": "column",
-      "steps": [
-        "78",
-        "312"
-      ],
-      "answer": "3198",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 78 × 一のくらいの 1",
-        "2だんめ 78 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-25x17",
-      "genreId": "math",
-      "prompt": "25 × 17",
-      "promptLayout": "column",
-      "steps": [
-        "175",
-        "25"
-      ],
-      "answer": "425",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 25 × 一のくらいの 7",
-        "2だんめ 25 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-63x32",
-      "genreId": "math",
-      "prompt": "63 × 32",
-      "promptLayout": "column",
-      "steps": [
-        "126",
-        "189"
-      ],
-      "answer": "2016",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 63 × 一のくらいの 2",
-        "2だんめ 63 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-61x18",
-      "genreId": "math",
-      "prompt": "61 × 18",
-      "promptLayout": "column",
-      "steps": [
-        "488",
-        "61"
-      ],
-      "answer": "1098",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 61 × 一のくらいの 8",
-        "2だんめ 61 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-81x25",
-      "genreId": "math",
-      "prompt": "81 × 25",
-      "promptLayout": "column",
-      "steps": [
-        "405",
-        "162"
-      ],
-      "answer": "2025",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 81 × 一のくらいの 5",
-        "2だんめ 81 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-51x49",
-      "genreId": "math",
-      "prompt": "51 × 49",
-      "promptLayout": "column",
-      "steps": [
-        "459",
-        "204"
-      ],
-      "answer": "2499",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 51 × 一のくらいの 9",
-        "2だんめ 51 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-22x38",
-      "genreId": "math",
-      "prompt": "22 × 38",
-      "promptLayout": "column",
-      "steps": [
-        "176",
-        "66"
-      ],
-      "answer": "836",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 22 × 一のくらいの 8",
-        "2だんめ 22 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-92x45",
-      "genreId": "math",
-      "prompt": "92 × 45",
-      "promptLayout": "column",
-      "steps": [
-        "460",
-        "368"
-      ],
-      "answer": "4140",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 92 × 一のくらいの 5",
-        "2だんめ 92 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-69x42",
-      "genreId": "math",
-      "prompt": "69 × 42",
-      "promptLayout": "column",
-      "steps": [
-        "138",
-        "276"
-      ],
-      "answer": "2898",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 69 × 一のくらいの 2",
-        "2だんめ 69 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-59x12",
-      "genreId": "math",
-      "prompt": "59 × 12",
-      "promptLayout": "column",
-      "steps": [
-        "118",
-        "59"
-      ],
-      "answer": "708",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 59 × 一のくらいの 2",
-        "2だんめ 59 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-92x41",
-      "genreId": "math",
-      "prompt": "92 × 41",
-      "promptLayout": "column",
-      "steps": [
-        "92",
-        "368"
-      ],
-      "answer": "3772",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 92 × 一のくらいの 1",
-        "2だんめ 92 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-75x17",
-      "genreId": "math",
-      "prompt": "75 × 17",
-      "promptLayout": "column",
-      "steps": [
-        "525",
-        "75"
-      ],
-      "answer": "1275",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 75 × 一のくらいの 7",
-        "2だんめ 75 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-64x13",
-      "genreId": "math",
-      "prompt": "64 × 13",
-      "promptLayout": "column",
-      "steps": [
-        "192",
-        "64"
-      ],
-      "answer": "832",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 64 × 一のくらいの 3",
-        "2だんめ 64 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-79x18",
-      "genreId": "math",
-      "prompt": "79 × 18",
-      "promptLayout": "column",
-      "steps": [
-        "632",
-        "79"
-      ],
-      "answer": "1422",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 79 × 一のくらいの 8",
-        "2だんめ 79 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-34x22",
-      "genreId": "math",
-      "prompt": "34 × 22",
-      "promptLayout": "column",
-      "steps": [
-        "68",
-        "68"
-      ],
-      "answer": "748",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 34 × 一のくらいの 2",
-        "2だんめ 34 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-75x39",
-      "genreId": "math",
-      "prompt": "75 × 39",
-      "promptLayout": "column",
-      "steps": [
-        "675",
-        "225"
-      ],
-      "answer": "2925",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 75 × 一のくらいの 9",
-        "2だんめ 75 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-93x19",
-      "genreId": "math",
-      "prompt": "93 × 19",
-      "promptLayout": "column",
-      "steps": [
-        "837",
-        "93"
-      ],
-      "answer": "1767",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 93 × 一のくらいの 9",
-        "2だんめ 93 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-83x28",
-      "genreId": "math",
-      "prompt": "83 × 28",
-      "promptLayout": "column",
-      "steps": [
-        "664",
-        "166"
-      ],
-      "answer": "2324",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 83 × 一のくらいの 8",
-        "2だんめ 83 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-12x28",
-      "genreId": "math",
-      "prompt": "12 × 28",
-      "promptLayout": "column",
-      "steps": [
-        "96",
-        "24"
-      ],
-      "answer": "336",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 12 × 一のくらいの 8",
-        "2だんめ 12 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-28x31",
-      "genreId": "math",
-      "prompt": "28 × 31",
-      "promptLayout": "column",
-      "steps": [
-        "28",
-        "84"
-      ],
-      "answer": "868",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 28 × 一のくらいの 1",
-        "2だんめ 28 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-55x21",
-      "genreId": "math",
-      "prompt": "55 × 21",
-      "promptLayout": "column",
-      "steps": [
-        "55",
-        "110"
-      ],
-      "answer": "1155",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 55 × 一のくらいの 1",
-        "2だんめ 55 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-65x18",
-      "genreId": "math",
-      "prompt": "65 × 18",
-      "promptLayout": "column",
-      "steps": [
-        "520",
-        "65"
-      ],
-      "answer": "1170",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 65 × 一のくらいの 8",
-        "2だんめ 65 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-81x22",
-      "genreId": "math",
-      "prompt": "81 × 22",
-      "promptLayout": "column",
-      "steps": [
-        "162",
-        "162"
-      ],
-      "answer": "1782",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 81 × 一のくらいの 2",
-        "2だんめ 81 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-75x26",
-      "genreId": "math",
-      "prompt": "75 × 26",
-      "promptLayout": "column",
-      "steps": [
-        "450",
-        "150"
-      ],
-      "answer": "1950",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 75 × 一のくらいの 6",
-        "2だんめ 75 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-85x19",
-      "genreId": "math",
-      "prompt": "85 × 19",
-      "promptLayout": "column",
-      "steps": [
-        "765",
-        "85"
-      ],
-      "answer": "1615",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 85 × 一のくらいの 9",
-        "2だんめ 85 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-52x27",
-      "genreId": "math",
-      "prompt": "52 × 27",
-      "promptLayout": "column",
-      "steps": [
-        "364",
-        "104"
-      ],
-      "answer": "1404",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 52 × 一のくらいの 7",
-        "2だんめ 52 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-13x26",
-      "genreId": "math",
-      "prompt": "13 × 26",
-      "promptLayout": "column",
-      "steps": [
-        "78",
-        "26"
-      ],
-      "answer": "338",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 13 × 一のくらいの 6",
-        "2だんめ 13 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-21x28",
-      "genreId": "math",
-      "prompt": "21 × 28",
-      "promptLayout": "column",
-      "steps": [
-        "168",
-        "42"
-      ],
-      "answer": "588",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 21 × 一のくらいの 8",
-        "2だんめ 21 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-85x29",
-      "genreId": "math",
-      "prompt": "85 × 29",
-      "promptLayout": "column",
-      "steps": [
-        "765",
-        "170"
-      ],
-      "answer": "2465",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 85 × 一のくらいの 9",
-        "2だんめ 85 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-77x25",
-      "genreId": "math",
-      "prompt": "77 × 25",
-      "promptLayout": "column",
-      "steps": [
-        "385",
-        "154"
-      ],
-      "answer": "1925",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 77 × 一のくらいの 5",
-        "2だんめ 77 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-48x46",
-      "genreId": "math",
-      "prompt": "48 × 46",
-      "promptLayout": "column",
-      "steps": [
-        "288",
-        "192"
-      ],
-      "answer": "2208",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 48 × 一のくらいの 6",
-        "2だんめ 48 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-45x45",
-      "genreId": "math",
-      "prompt": "45 × 45",
-      "promptLayout": "column",
-      "steps": [
-        "225",
-        "180"
-      ],
-      "answer": "2025",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 45 × 一のくらいの 5",
-        "2だんめ 45 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-96x45",
-      "genreId": "math",
-      "prompt": "96 × 45",
-      "promptLayout": "column",
-      "steps": [
-        "480",
-        "384"
-      ],
-      "answer": "4320",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 96 × 一のくらいの 5",
-        "2だんめ 96 × 十のくらいの 4",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-76x15",
-      "genreId": "math",
-      "prompt": "76 × 15",
-      "promptLayout": "column",
-      "steps": [
-        "380",
-        "76"
-      ],
-      "answer": "1140",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 76 × 一のくらいの 5",
-        "2だんめ 76 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-75x16",
-      "genreId": "math",
-      "prompt": "75 × 16",
-      "promptLayout": "column",
-      "steps": [
-        "450",
-        "75"
-      ],
-      "answer": "1200",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 75 × 一のくらいの 6",
-        "2だんめ 75 × 十のくらいの 1",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-31x26",
-      "genreId": "math",
-      "prompt": "31 × 26",
-      "promptLayout": "column",
-      "steps": [
-        "186",
-        "62"
-      ],
-      "answer": "806",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 31 × 一のくらいの 6",
-        "2だんめ 31 × 十のくらいの 2",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-69x37",
-      "genreId": "math",
-      "prompt": "69 × 37",
-      "promptLayout": "column",
-      "steps": [
-        "483",
-        "207"
-      ],
-      "answer": "2553",
-      "level": "g34",
-      "hintSource": [
-        "1だんめ 69 × 一のくらいの 7",
-        "2だんめ 69 × 十のくらいの 3",
-        "2だんめは 1けた ずらす"
-      ]
-    },
-    {
-      "id": "ma-m22-47x12",
-      "genreId": "math",
-      "prompt": "47 × 12",
-      "promptLayout": "column",
-      "steps": [
-        "94",
-        "47"
-      ],
       "answer": "564",
       "level": "g34",
       "hintSource": [
-        "1だんめ 47 × 一のくらいの 2",
-        "2だんめ 47 × 十のくらいの 1",
+        "1だんめ 一のくらい 4 × 6",
+        "2だんめ 十のくらい 9 × 6",
         "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-m22-36x41",
+      "id": "ma-m21-17x3",
       "genreId": "math",
-      "prompt": "36 × 41",
+      "prompt": "17 × 3",
       "promptLayout": "column",
-      "steps": [
-        "36",
-        "144"
-      ],
-      "answer": "1476",
+      "answer": "51",
       "level": "g34",
       "hintSource": [
-        "1だんめ 36 × 一のくらいの 1",
-        "2だんめ 36 × 十のくらいの 4",
+        "1だんめ 一のくらい 7 × 3",
+        "2だんめ 十のくらい 1 × 3",
         "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-m22-51x38",
+      "id": "ma-m21-87x3",
       "genreId": "math",
-      "prompt": "51 × 38",
+      "prompt": "87 × 3",
       "promptLayout": "column",
-      "steps": [
-        "408",
-        "153"
-      ],
-      "answer": "1938",
+      "answer": "261",
       "level": "g34",
       "hintSource": [
-        "1だんめ 51 × 一のくらいの 8",
-        "2だんめ 51 × 十のくらいの 3",
+        "1だんめ 一のくらい 7 × 3",
+        "2だんめ 十のくらい 8 × 3",
         "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-m22-62x28",
+      "id": "ma-m21-44x3",
       "genreId": "math",
-      "prompt": "62 × 28",
+      "prompt": "44 × 3",
       "promptLayout": "column",
-      "steps": [
-        "496",
-        "124"
-      ],
-      "answer": "1736",
+      "answer": "132",
       "level": "g34",
       "hintSource": [
-        "1だんめ 62 × 一のくらいの 8",
-        "2だんめ 62 × 十のくらいの 2",
+        "1だんめ 一のくらい 4 × 3",
+        "2だんめ 十のくらい 4 × 3",
         "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-m22-99x18",
+      "id": "ma-m21-62x3",
       "genreId": "math",
-      "prompt": "99 × 18",
+      "prompt": "62 × 3",
       "promptLayout": "column",
-      "steps": [
-        "792",
-        "99"
-      ],
-      "answer": "1782",
+      "answer": "186",
       "level": "g34",
       "hintSource": [
-        "1だんめ 99 × 一のくらいの 8",
-        "2だんめ 99 × 十のくらいの 1",
+        "1だんめ 一のくらい 2 × 3",
+        "2だんめ 十のくらい 6 × 3",
         "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-m22-61x44",
+      "id": "ma-m21-46x7",
       "genreId": "math",
-      "prompt": "61 × 44",
+      "prompt": "46 × 7",
       "promptLayout": "column",
-      "steps": [
-        "244",
-        "244"
-      ],
-      "answer": "2684",
+      "answer": "322",
       "level": "g34",
       "hintSource": [
-        "1だんめ 61 × 一のくらいの 4",
-        "2だんめ 61 × 十のくらいの 4",
+        "1だんめ 一のくらい 6 × 7",
+        "2だんめ 十のくらい 4 × 7",
         "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-m22-53x49",
+      "id": "ma-m21-53x5",
       "genreId": "math",
-      "prompt": "53 × 49",
+      "prompt": "53 × 5",
       "promptLayout": "column",
-      "steps": [
-        "477",
-        "212"
-      ],
-      "answer": "2597",
+      "answer": "265",
       "level": "g34",
       "hintSource": [
-        "1だんめ 53 × 一のくらいの 9",
-        "2だんめ 53 × 十のくらいの 4",
+        "1だんめ 一のくらい 3 × 5",
+        "2だんめ 十のくらい 5 × 5",
         "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-m22-64x44",
+      "id": "ma-m21-87x4",
       "genreId": "math",
-      "prompt": "64 × 44",
+      "prompt": "87 × 4",
       "promptLayout": "column",
-      "steps": [
-        "256",
-        "256"
-      ],
-      "answer": "2816",
+      "answer": "348",
       "level": "g34",
       "hintSource": [
-        "1だんめ 64 × 一のくらいの 4",
-        "2だんめ 64 × 十のくらいの 4",
+        "1だんめ 一のくらい 7 × 4",
+        "2だんめ 十のくらい 8 × 4",
         "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-m22-56x21",
+      "id": "ma-m21-85x6",
       "genreId": "math",
-      "prompt": "56 × 21",
+      "prompt": "85 × 6",
       "promptLayout": "column",
-      "steps": [
-        "56",
-        "112"
-      ],
-      "answer": "1176",
+      "answer": "510",
       "level": "g34",
       "hintSource": [
-        "1だんめ 56 × 一のくらいの 1",
-        "2だんめ 56 × 十のくらいの 2",
+        "1だんめ 一のくらい 5 × 6",
+        "2だんめ 十のくらい 8 × 6",
         "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-m22-25x37",
+      "id": "ma-m21-94x8",
       "genreId": "math",
-      "prompt": "25 × 37",
+      "prompt": "94 × 8",
       "promptLayout": "column",
-      "steps": [
-        "175",
-        "75"
-      ],
-      "answer": "925",
+      "answer": "752",
       "level": "g34",
       "hintSource": [
-        "1だんめ 25 × 一のくらいの 7",
-        "2だんめ 25 × 十のくらいの 3",
+        "1だんめ 一のくらい 4 × 8",
+        "2だんめ 十のくらい 9 × 8",
         "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-m22-29x49",
+      "id": "ma-m21-35x5",
       "genreId": "math",
-      "prompt": "29 × 49",
+      "prompt": "35 × 5",
       "promptLayout": "column",
-      "steps": [
-        "261",
-        "116"
-      ],
-      "answer": "1421",
+      "answer": "175",
       "level": "g34",
       "hintSource": [
-        "1だんめ 29 × 一のくらいの 9",
-        "2だんめ 29 × 十のくらいの 4",
+        "1だんめ 一のくらい 5 × 5",
+        "2だんめ 十のくらい 3 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-14x9",
+      "genreId": "math",
+      "prompt": "14 × 9",
+      "promptLayout": "column",
+      "answer": "126",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 4 × 9",
+        "2だんめ 十のくらい 1 × 9",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-68x5",
+      "genreId": "math",
+      "prompt": "68 × 5",
+      "promptLayout": "column",
+      "answer": "340",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 8 × 5",
+        "2だんめ 十のくらい 6 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-63x6",
+      "genreId": "math",
+      "prompt": "63 × 6",
+      "promptLayout": "column",
+      "answer": "378",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 3 × 6",
+        "2だんめ 十のくらい 6 × 6",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-21x9",
+      "genreId": "math",
+      "prompt": "21 × 9",
+      "promptLayout": "column",
+      "answer": "189",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 1 × 9",
+        "2だんめ 十のくらい 2 × 9",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-41x3",
+      "genreId": "math",
+      "prompt": "41 × 3",
+      "promptLayout": "column",
+      "answer": "123",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 1 × 3",
+        "2だんめ 十のくらい 4 × 3",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-72x9",
+      "genreId": "math",
+      "prompt": "72 × 9",
+      "promptLayout": "column",
+      "answer": "648",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 2 × 9",
+        "2だんめ 十のくらい 7 × 9",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-81x5",
+      "genreId": "math",
+      "prompt": "81 × 5",
+      "promptLayout": "column",
+      "answer": "405",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 1 × 5",
+        "2だんめ 十のくらい 8 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-26x7",
+      "genreId": "math",
+      "prompt": "26 × 7",
+      "promptLayout": "column",
+      "answer": "182",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 6 × 7",
+        "2だんめ 十のくらい 2 × 7",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-91x3",
+      "genreId": "math",
+      "prompt": "91 × 3",
+      "promptLayout": "column",
+      "answer": "273",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 1 × 3",
+        "2だんめ 十のくらい 9 × 3",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-39x9",
+      "genreId": "math",
+      "prompt": "39 × 9",
+      "promptLayout": "column",
+      "answer": "351",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 9 × 9",
+        "2だんめ 十のくらい 3 × 9",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-92x5",
+      "genreId": "math",
+      "prompt": "92 × 5",
+      "promptLayout": "column",
+      "answer": "460",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 2 × 5",
+        "2だんめ 十のくらい 9 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-22x5",
+      "genreId": "math",
+      "prompt": "22 × 5",
+      "promptLayout": "column",
+      "answer": "110",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 2 × 5",
+        "2だんめ 十のくらい 2 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-61x3",
+      "genreId": "math",
+      "prompt": "61 × 3",
+      "promptLayout": "column",
+      "answer": "183",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 1 × 3",
+        "2だんめ 十のくらい 6 × 3",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-19x9",
+      "genreId": "math",
+      "prompt": "19 × 9",
+      "promptLayout": "column",
+      "answer": "171",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 9 × 9",
+        "2だんめ 十のくらい 1 × 9",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-19x7",
+      "genreId": "math",
+      "prompt": "19 × 7",
+      "promptLayout": "column",
+      "answer": "133",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 9 × 7",
+        "2だんめ 十のくらい 1 × 7",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-25x8",
+      "genreId": "math",
+      "prompt": "25 × 8",
+      "promptLayout": "column",
+      "answer": "200",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 5 × 8",
+        "2だんめ 十のくらい 2 × 8",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-61x9",
+      "genreId": "math",
+      "prompt": "61 × 9",
+      "promptLayout": "column",
+      "answer": "549",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 1 × 9",
+        "2だんめ 十のくらい 6 × 9",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-79x7",
+      "genreId": "math",
+      "prompt": "79 × 7",
+      "promptLayout": "column",
+      "answer": "553",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 9 × 7",
+        "2だんめ 十のくらい 7 × 7",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-85x9",
+      "genreId": "math",
+      "prompt": "85 × 9",
+      "promptLayout": "column",
+      "answer": "765",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 5 × 9",
+        "2だんめ 十のくらい 8 × 9",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-58x4",
+      "genreId": "math",
+      "prompt": "58 × 4",
+      "promptLayout": "column",
+      "answer": "232",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 8 × 4",
+        "2だんめ 十のくらい 5 × 4",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-88x5",
+      "genreId": "math",
+      "prompt": "88 × 5",
+      "promptLayout": "column",
+      "answer": "440",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 8 × 5",
+        "2だんめ 十のくらい 8 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-77x7",
+      "genreId": "math",
+      "prompt": "77 × 7",
+      "promptLayout": "column",
+      "answer": "539",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 7 × 7",
+        "2だんめ 十のくらい 7 × 7",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-38x6",
+      "genreId": "math",
+      "prompt": "38 × 6",
+      "promptLayout": "column",
+      "answer": "228",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 8 × 6",
+        "2だんめ 十のくらい 3 × 6",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-86x7",
+      "genreId": "math",
+      "prompt": "86 × 7",
+      "promptLayout": "column",
+      "answer": "602",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 6 × 7",
+        "2だんめ 十のくらい 8 × 7",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-98x6",
+      "genreId": "math",
+      "prompt": "98 × 6",
+      "promptLayout": "column",
+      "answer": "588",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 8 × 6",
+        "2だんめ 十のくらい 9 × 6",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-57x9",
+      "genreId": "math",
+      "prompt": "57 × 9",
+      "promptLayout": "column",
+      "answer": "513",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 7 × 9",
+        "2だんめ 十のくらい 5 × 9",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-49x4",
+      "genreId": "math",
+      "prompt": "49 × 4",
+      "promptLayout": "column",
+      "answer": "196",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 9 × 4",
+        "2だんめ 十のくらい 4 × 4",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-98x8",
+      "genreId": "math",
+      "prompt": "98 × 8",
+      "promptLayout": "column",
+      "answer": "784",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 8 × 8",
+        "2だんめ 十のくらい 9 × 8",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-57x3",
+      "genreId": "math",
+      "prompt": "57 × 3",
+      "promptLayout": "column",
+      "answer": "171",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 7 × 3",
+        "2だんめ 十のくらい 5 × 3",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-51x8",
+      "genreId": "math",
+      "prompt": "51 × 8",
+      "promptLayout": "column",
+      "answer": "408",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 1 × 8",
+        "2だんめ 十のくらい 5 × 8",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-61x4",
+      "genreId": "math",
+      "prompt": "61 × 4",
+      "promptLayout": "column",
+      "answer": "244",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 1 × 4",
+        "2だんめ 十のくらい 6 × 4",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-51x9",
+      "genreId": "math",
+      "prompt": "51 × 9",
+      "promptLayout": "column",
+      "answer": "459",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 1 × 9",
+        "2だんめ 十のくらい 5 × 9",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-22x7",
+      "genreId": "math",
+      "prompt": "22 × 7",
+      "promptLayout": "column",
+      "answer": "154",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 2 × 7",
+        "2だんめ 十のくらい 2 × 7",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-92x9",
+      "genreId": "math",
+      "prompt": "92 × 9",
+      "promptLayout": "column",
+      "answer": "828",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 2 × 9",
+        "2だんめ 十のくらい 9 × 9",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-59x3",
+      "genreId": "math",
+      "prompt": "59 × 3",
+      "promptLayout": "column",
+      "answer": "177",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 9 × 3",
+        "2だんめ 十のくらい 5 × 3",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-92x8",
+      "genreId": "math",
+      "prompt": "92 × 8",
+      "promptLayout": "column",
+      "answer": "736",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 2 × 8",
+        "2だんめ 十のくらい 9 × 8",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-75x3",
+      "genreId": "math",
+      "prompt": "75 × 3",
+      "promptLayout": "column",
+      "answer": "225",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 5 × 3",
+        "2だんめ 十のくらい 7 × 3",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-64x3",
+      "genreId": "math",
+      "prompt": "64 × 3",
+      "promptLayout": "column",
+      "answer": "192",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 4 × 3",
+        "2だんめ 十のくらい 6 × 3",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-79x4",
+      "genreId": "math",
+      "prompt": "79 × 4",
+      "promptLayout": "column",
+      "answer": "316",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 9 × 4",
+        "2だんめ 十のくらい 7 × 4",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-34x5",
+      "genreId": "math",
+      "prompt": "34 × 5",
+      "promptLayout": "column",
+      "answer": "170",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 4 × 5",
+        "2だんめ 十のくらい 3 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-75x8",
+      "genreId": "math",
+      "prompt": "75 × 8",
+      "promptLayout": "column",
+      "answer": "600",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 5 × 8",
+        "2だんめ 十のくらい 7 × 8",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-93x4",
+      "genreId": "math",
+      "prompt": "93 × 4",
+      "promptLayout": "column",
+      "answer": "372",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 3 × 4",
+        "2だんめ 十のくらい 9 × 4",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-12x6",
+      "genreId": "math",
+      "prompt": "12 × 6",
+      "promptLayout": "column",
+      "answer": "72",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 2 × 6",
+        "2だんめ 十のくらい 1 × 6",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-65x4",
+      "genreId": "math",
+      "prompt": "65 × 4",
+      "promptLayout": "column",
+      "answer": "260",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 5 × 4",
+        "2だんめ 十のくらい 6 × 4",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-75x5",
+      "genreId": "math",
+      "prompt": "75 × 5",
+      "promptLayout": "column",
+      "answer": "375",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 5 × 5",
+        "2だんめ 十のくらい 7 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-85x4",
+      "genreId": "math",
+      "prompt": "85 × 4",
+      "promptLayout": "column",
+      "answer": "340",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 5 × 4",
+        "2だんめ 十のくらい 8 × 4",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-33x8",
+      "genreId": "math",
+      "prompt": "33 × 8",
+      "promptLayout": "column",
+      "answer": "264",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 3 × 8",
+        "2だんめ 十のくらい 3 × 8",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-52x5",
+      "genreId": "math",
+      "prompt": "52 × 5",
+      "promptLayout": "column",
+      "answer": "260",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 2 × 5",
+        "2だんめ 十のくらい 5 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-13x5",
+      "genreId": "math",
+      "prompt": "13 × 5",
+      "promptLayout": "column",
+      "answer": "65",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 3 × 5",
+        "2だんめ 十のくらい 1 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-21x5",
+      "genreId": "math",
+      "prompt": "21 × 5",
+      "promptLayout": "column",
+      "answer": "105",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 1 × 5",
+        "2だんめ 十のくらい 2 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-77x5",
+      "genreId": "math",
+      "prompt": "77 × 5",
+      "promptLayout": "column",
+      "answer": "385",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 7 × 5",
+        "2だんめ 十のくらい 7 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-48x9",
+      "genreId": "math",
+      "prompt": "48 × 9",
+      "promptLayout": "column",
+      "answer": "432",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 8 × 9",
+        "2だんめ 十のくらい 4 × 9",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-76x3",
+      "genreId": "math",
+      "prompt": "76 × 3",
+      "promptLayout": "column",
+      "answer": "228",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 6 × 3",
+        "2だんめ 十のくらい 7 × 3",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-31x5",
+      "genreId": "math",
+      "prompt": "31 × 5",
+      "promptLayout": "column",
+      "answer": "155",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 1 × 5",
+        "2だんめ 十のくらい 3 × 5",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-69x7",
+      "genreId": "math",
+      "prompt": "69 × 7",
+      "promptLayout": "column",
+      "answer": "483",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 9 × 7",
+        "2だんめ 十のくらい 6 × 7",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-47x3",
+      "genreId": "math",
+      "prompt": "47 × 3",
+      "promptLayout": "column",
+      "answer": "141",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 7 × 3",
+        "2だんめ 十のくらい 4 × 3",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-36x8",
+      "genreId": "math",
+      "prompt": "36 × 8",
+      "promptLayout": "column",
+      "answer": "288",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 6 × 8",
+        "2だんめ 十のくらい 3 × 8",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-51x7",
+      "genreId": "math",
+      "prompt": "51 × 7",
+      "promptLayout": "column",
+      "answer": "357",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 1 × 7",
+        "2だんめ 十のくらい 5 × 7",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-62x6",
+      "genreId": "math",
+      "prompt": "62 × 6",
+      "promptLayout": "column",
+      "answer": "372",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 2 × 6",
+        "2だんめ 十のくらい 6 × 6",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-99x4",
+      "genreId": "math",
+      "prompt": "99 × 4",
+      "promptLayout": "column",
+      "answer": "396",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 9 × 4",
+        "2だんめ 十のくらい 9 × 4",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-56x4",
+      "genreId": "math",
+      "prompt": "56 × 4",
+      "promptLayout": "column",
+      "answer": "224",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 6 × 4",
+        "2だんめ 十のくらい 5 × 4",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-25x7",
+      "genreId": "math",
+      "prompt": "25 × 7",
+      "promptLayout": "column",
+      "answer": "175",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 5 × 7",
+        "2だんめ 十のくらい 2 × 7",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m21-29x9",
+      "genreId": "math",
+      "prompt": "29 × 9",
+      "promptLayout": "column",
+      "answer": "261",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 一のくらい 9 × 9",
+        "2だんめ 十のくらい 2 × 9",
         "2だんめは 1けた ずらす"
       ]
     },
@@ -12435,10 +10288,6 @@
       "genreId": "math",
       "prompt": "19 × 18",
       "promptLayout": "column",
-      "steps": [
-        "152",
-        "19"
-      ],
       "answer": "342",
       "level": "g34",
       "hintSource": [
@@ -12452,10 +10301,6 @@
       "genreId": "math",
       "prompt": "65 × 23",
       "promptLayout": "column",
-      "steps": [
-        "195",
-        "130"
-      ],
       "answer": "1495",
       "level": "g34",
       "hintSource": [
@@ -12469,10 +10314,6 @@
       "genreId": "math",
       "prompt": "97 × 28",
       "promptLayout": "column",
-      "steps": [
-        "776",
-        "194"
-      ],
       "answer": "2716",
       "level": "g34",
       "hintSource": [
@@ -12486,10 +10327,6 @@
       "genreId": "math",
       "prompt": "14 × 12",
       "promptLayout": "column",
-      "steps": [
-        "28",
-        "14"
-      ],
       "answer": "168",
       "level": "g34",
       "hintSource": [
@@ -12503,10 +10340,6 @@
       "genreId": "math",
       "prompt": "31 × 12",
       "promptLayout": "column",
-      "steps": [
-        "62",
-        "31"
-      ],
       "answer": "372",
       "level": "g34",
       "hintSource": [
@@ -12520,10 +10353,6 @@
       "genreId": "math",
       "prompt": "19 × 37",
       "promptLayout": "column",
-      "steps": [
-        "133",
-        "57"
-      ],
       "answer": "703",
       "level": "g34",
       "hintSource": [
@@ -12537,10 +10366,6 @@
       "genreId": "math",
       "prompt": "59 × 16",
       "promptLayout": "column",
-      "steps": [
-        "354",
-        "59"
-      ],
       "answer": "944",
       "level": "g34",
       "hintSource": [
@@ -12554,10 +10379,6 @@
       "genreId": "math",
       "prompt": "94 × 41",
       "promptLayout": "column",
-      "steps": [
-        "94",
-        "376"
-      ],
       "answer": "3854",
       "level": "g34",
       "hintSource": [
@@ -12571,10 +10392,6 @@
       "genreId": "math",
       "prompt": "12 × 27",
       "promptLayout": "column",
-      "steps": [
-        "84",
-        "24"
-      ],
       "answer": "324",
       "level": "g34",
       "hintSource": [
@@ -12588,10 +10405,6 @@
       "genreId": "math",
       "prompt": "67 × 17",
       "promptLayout": "column",
-      "steps": [
-        "469",
-        "67"
-      ],
       "answer": "1139",
       "level": "g34",
       "hintSource": [
@@ -12605,10 +10418,6 @@
       "genreId": "math",
       "prompt": "82 × 24",
       "promptLayout": "column",
-      "steps": [
-        "328",
-        "164"
-      ],
       "answer": "1968",
       "level": "g34",
       "hintSource": [
@@ -12622,10 +10431,6 @@
       "genreId": "math",
       "prompt": "88 × 18",
       "promptLayout": "column",
-      "steps": [
-        "704",
-        "88"
-      ],
       "answer": "1584",
       "level": "g34",
       "hintSource": [
@@ -12639,10 +10444,6 @@
       "genreId": "math",
       "prompt": "51 × 37",
       "promptLayout": "column",
-      "steps": [
-        "357",
-        "153"
-      ],
       "answer": "1887",
       "level": "g34",
       "hintSource": [
@@ -12656,10 +10457,6 @@
       "genreId": "math",
       "prompt": "92 × 46",
       "promptLayout": "column",
-      "steps": [
-        "552",
-        "368"
-      ],
       "answer": "4232",
       "level": "g34",
       "hintSource": [
@@ -12673,10 +10470,6 @@
       "genreId": "math",
       "prompt": "97 × 32",
       "promptLayout": "column",
-      "steps": [
-        "194",
-        "291"
-      ],
       "answer": "3104",
       "level": "g34",
       "hintSource": [
@@ -12690,10 +10483,6 @@
       "genreId": "math",
       "prompt": "79 × 44",
       "promptLayout": "column",
-      "steps": [
-        "316",
-        "316"
-      ],
       "answer": "3476",
       "level": "g34",
       "hintSource": [
@@ -12707,10 +10496,6 @@
       "genreId": "math",
       "prompt": "64 × 38",
       "promptLayout": "column",
-      "steps": [
-        "512",
-        "192"
-      ],
       "answer": "2432",
       "level": "g34",
       "hintSource": [
@@ -12724,10 +10509,6 @@
       "genreId": "math",
       "prompt": "57 × 46",
       "promptLayout": "column",
-      "steps": [
-        "342",
-        "228"
-      ],
       "answer": "2622",
       "level": "g34",
       "hintSource": [
@@ -12741,10 +10522,6 @@
       "genreId": "math",
       "prompt": "31 × 46",
       "promptLayout": "column",
-      "steps": [
-        "186",
-        "124"
-      ],
       "answer": "1426",
       "level": "g34",
       "hintSource": [
@@ -12758,10 +10535,6 @@
       "genreId": "math",
       "prompt": "65 × 25",
       "promptLayout": "column",
-      "steps": [
-        "325",
-        "130"
-      ],
       "answer": "1625",
       "level": "g34",
       "hintSource": [
@@ -12775,10 +10548,6 @@
       "genreId": "math",
       "prompt": "57 × 38",
       "promptLayout": "column",
-      "steps": [
-        "456",
-        "171"
-      ],
       "answer": "2166",
       "level": "g34",
       "hintSource": [
@@ -12792,10 +10561,6 @@
       "genreId": "math",
       "prompt": "85 × 18",
       "promptLayout": "column",
-      "steps": [
-        "680",
-        "85"
-      ],
       "answer": "1530",
       "level": "g34",
       "hintSource": [
@@ -12809,10 +10574,6 @@
       "genreId": "math",
       "prompt": "54 × 31",
       "promptLayout": "column",
-      "steps": [
-        "54",
-        "162"
-      ],
       "answer": "1674",
       "level": "g34",
       "hintSource": [
@@ -12826,10 +10587,6 @@
       "genreId": "math",
       "prompt": "82 × 42",
       "promptLayout": "column",
-      "steps": [
-        "164",
-        "328"
-      ],
       "answer": "3444",
       "level": "g34",
       "hintSource": [
@@ -12843,10 +10600,6 @@
       "genreId": "math",
       "prompt": "15 × 42",
       "promptLayout": "column",
-      "steps": [
-        "30",
-        "60"
-      ],
       "answer": "630",
       "level": "g34",
       "hintSource": [
@@ -12860,10 +10613,6 @@
       "genreId": "math",
       "prompt": "21 × 32",
       "promptLayout": "column",
-      "steps": [
-        "42",
-        "63"
-      ],
       "answer": "672",
       "level": "g34",
       "hintSource": [
@@ -12877,10 +10626,6 @@
       "genreId": "math",
       "prompt": "63 × 25",
       "promptLayout": "column",
-      "steps": [
-        "315",
-        "126"
-      ],
       "answer": "1575",
       "level": "g34",
       "hintSource": [
@@ -12894,10 +10639,6 @@
       "genreId": "math",
       "prompt": "86 × 28",
       "promptLayout": "column",
-      "steps": [
-        "688",
-        "172"
-      ],
       "answer": "2408",
       "level": "g34",
       "hintSource": [
@@ -12911,10 +10652,6 @@
       "genreId": "math",
       "prompt": "52 × 22",
       "promptLayout": "column",
-      "steps": [
-        "104",
-        "104"
-      ],
       "answer": "1144",
       "level": "g34",
       "hintSource": [
@@ -12928,10 +10665,6 @@
       "genreId": "math",
       "prompt": "34 × 29",
       "promptLayout": "column",
-      "steps": [
-        "306",
-        "68"
-      ],
       "answer": "986",
       "level": "g34",
       "hintSource": [
@@ -12945,10 +10678,6 @@
       "genreId": "math",
       "prompt": "38 × 38",
       "promptLayout": "column",
-      "steps": [
-        "304",
-        "114"
-      ],
       "answer": "1444",
       "level": "g34",
       "hintSource": [
@@ -12962,10 +10691,6 @@
       "genreId": "math",
       "prompt": "64 × 43",
       "promptLayout": "column",
-      "steps": [
-        "192",
-        "256"
-      ],
       "answer": "2752",
       "level": "g34",
       "hintSource": [
@@ -12979,10 +10704,6 @@
       "genreId": "math",
       "prompt": "33 × 42",
       "promptLayout": "column",
-      "steps": [
-        "66",
-        "132"
-      ],
       "answer": "1386",
       "level": "g34",
       "hintSource": [
@@ -12996,10 +10717,6 @@
       "genreId": "math",
       "prompt": "79 × 34",
       "promptLayout": "column",
-      "steps": [
-        "316",
-        "237"
-      ],
       "answer": "2686",
       "level": "g34",
       "hintSource": [
@@ -13013,10 +10730,6 @@
       "genreId": "math",
       "prompt": "74 × 18",
       "promptLayout": "column",
-      "steps": [
-        "592",
-        "74"
-      ],
       "answer": "1332",
       "level": "g34",
       "hintSource": [
@@ -13030,10 +10743,6 @@
       "genreId": "math",
       "prompt": "64 × 26",
       "promptLayout": "column",
-      "steps": [
-        "384",
-        "128"
-      ],
       "answer": "1664",
       "level": "g34",
       "hintSource": [
@@ -13047,10 +10756,6 @@
       "genreId": "math",
       "prompt": "36 × 19",
       "promptLayout": "column",
-      "steps": [
-        "324",
-        "36"
-      ],
       "answer": "684",
       "level": "g34",
       "hintSource": [
@@ -13064,10 +10769,6 @@
       "genreId": "math",
       "prompt": "21 × 13",
       "promptLayout": "column",
-      "steps": [
-        "63",
-        "21"
-      ],
       "answer": "273",
       "level": "g34",
       "hintSource": [
@@ -13081,10 +10782,6 @@
       "genreId": "math",
       "prompt": "98 × 24",
       "promptLayout": "column",
-      "steps": [
-        "392",
-        "196"
-      ],
       "answer": "2352",
       "level": "g34",
       "hintSource": [
@@ -13098,10 +10795,6 @@
       "genreId": "math",
       "prompt": "15 × 24",
       "promptLayout": "column",
-      "steps": [
-        "60",
-        "30"
-      ],
       "answer": "360",
       "level": "g34",
       "hintSource": [
@@ -13115,10 +10808,6 @@
       "genreId": "math",
       "prompt": "73 × 22",
       "promptLayout": "column",
-      "steps": [
-        "146",
-        "146"
-      ],
       "answer": "1606",
       "level": "g34",
       "hintSource": [
@@ -13132,10 +10821,6 @@
       "genreId": "math",
       "prompt": "82 × 14",
       "promptLayout": "column",
-      "steps": [
-        "328",
-        "82"
-      ],
       "answer": "1148",
       "level": "g34",
       "hintSource": [
@@ -13149,10 +10834,6 @@
       "genreId": "math",
       "prompt": "97 × 25",
       "promptLayout": "column",
-      "steps": [
-        "485",
-        "194"
-      ],
       "answer": "2425",
       "level": "g34",
       "hintSource": [
@@ -13166,10 +10847,6 @@
       "genreId": "math",
       "prompt": "83 × 35",
       "promptLayout": "column",
-      "steps": [
-        "415",
-        "249"
-      ],
       "answer": "2905",
       "level": "g34",
       "hintSource": [
@@ -13183,10 +10860,6 @@
       "genreId": "math",
       "prompt": "65 × 37",
       "promptLayout": "column",
-      "steps": [
-        "455",
-        "195"
-      ],
       "answer": "2405",
       "level": "g34",
       "hintSource": [
@@ -13196,14 +10869,23 @@
       ]
     },
     {
+      "id": "ma-m22-48x46",
+      "genreId": "math",
+      "prompt": "48 × 46",
+      "promptLayout": "column",
+      "answer": "2208",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 48 × 一のくらいの 6",
+        "2だんめ 48 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
       "id": "ma-m22-15x17",
       "genreId": "math",
       "prompt": "15 × 17",
       "promptLayout": "column",
-      "steps": [
-        "105",
-        "15"
-      ],
       "answer": "255",
       "level": "g34",
       "hintSource": [
@@ -13217,10 +10899,6 @@
       "genreId": "math",
       "prompt": "69 × 29",
       "promptLayout": "column",
-      "steps": [
-        "621",
-        "138"
-      ],
       "answer": "2001",
       "level": "g34",
       "hintSource": [
@@ -13234,10 +10912,6 @@
       "genreId": "math",
       "prompt": "78 × 44",
       "promptLayout": "column",
-      "steps": [
-        "312",
-        "312"
-      ],
       "answer": "3432",
       "level": "g34",
       "hintSource": [
@@ -13251,10 +10925,6 @@
       "genreId": "math",
       "prompt": "94 × 45",
       "promptLayout": "column",
-      "steps": [
-        "470",
-        "376"
-      ],
       "answer": "4230",
       "level": "g34",
       "hintSource": [
@@ -13268,10 +10938,6 @@
       "genreId": "math",
       "prompt": "45 × 39",
       "promptLayout": "column",
-      "steps": [
-        "405",
-        "135"
-      ],
       "answer": "1755",
       "level": "g34",
       "hintSource": [
@@ -13285,10 +10951,6 @@
       "genreId": "math",
       "prompt": "54 × 32",
       "promptLayout": "column",
-      "steps": [
-        "108",
-        "162"
-      ],
       "answer": "1728",
       "level": "g34",
       "hintSource": [
@@ -13302,10 +10964,6 @@
       "genreId": "math",
       "prompt": "78 × 13",
       "promptLayout": "column",
-      "steps": [
-        "234",
-        "78"
-      ],
       "answer": "1014",
       "level": "g34",
       "hintSource": [
@@ -13319,10 +10977,6 @@
       "genreId": "math",
       "prompt": "12 × 47",
       "promptLayout": "column",
-      "steps": [
-        "84",
-        "48"
-      ],
       "answer": "564",
       "level": "g34",
       "hintSource": [
@@ -13336,10 +10990,6 @@
       "genreId": "math",
       "prompt": "74 × 42",
       "promptLayout": "column",
-      "steps": [
-        "148",
-        "296"
-      ],
       "answer": "3108",
       "level": "g34",
       "hintSource": [
@@ -13353,10 +11003,6 @@
       "genreId": "math",
       "prompt": "39 × 23",
       "promptLayout": "column",
-      "steps": [
-        "117",
-        "78"
-      ],
       "answer": "897",
       "level": "g34",
       "hintSource": [
@@ -13370,10 +11016,6 @@
       "genreId": "math",
       "prompt": "39 × 15",
       "promptLayout": "column",
-      "steps": [
-        "195",
-        "39"
-      ],
       "answer": "585",
       "level": "g34",
       "hintSource": [
@@ -13387,10 +11029,6 @@
       "genreId": "math",
       "prompt": "51 × 12",
       "promptLayout": "column",
-      "steps": [
-        "102",
-        "51"
-      ],
       "answer": "612",
       "level": "g34",
       "hintSource": [
@@ -13404,10 +11042,6 @@
       "genreId": "math",
       "prompt": "88 × 19",
       "promptLayout": "column",
-      "steps": [
-        "792",
-        "88"
-      ],
       "answer": "1672",
       "level": "g34",
       "hintSource": [
@@ -13421,10 +11055,6 @@
       "genreId": "math",
       "prompt": "37 × 16",
       "promptLayout": "column",
-      "steps": [
-        "222",
-        "37"
-      ],
       "answer": "592",
       "level": "g34",
       "hintSource": [
@@ -13434,1147 +11064,1173 @@
       ]
     },
     {
-      "id": "ma-d-736d8",
+      "id": "ma-m22-78x46",
       "genreId": "math",
-      "prompt": "736 ÷ 8",
-      "promptLayout": "division",
-      "answer": "92",
+      "prompt": "78 × 46",
+      "promptLayout": "column",
+      "answer": "3588",
       "level": "g34",
       "hintSource": [
-        "上から 73 ÷ 8 で 9 たつ",
-        "8 × 9 = 72 を ひく",
-        "のこり 1 に 6 を おろす"
+        "1だんめ 78 × 一のくらいの 6",
+        "2だんめ 78 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-204d6",
+      "id": "ma-m22-55x22",
       "genreId": "math",
-      "prompt": "204 ÷ 6",
-      "promptLayout": "division",
-      "answer": "34",
+      "prompt": "55 × 22",
+      "promptLayout": "column",
+      "answer": "1210",
       "level": "g34",
       "hintSource": [
-        "上から 20 ÷ 6 で 3 たつ",
-        "6 × 3 = 18 を ひく",
-        "のこり 2 に 4 を おろす"
+        "1だんめ 55 × 一のくらいの 2",
+        "2だんめ 55 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-567d9",
+      "id": "ma-m22-92x34",
       "genreId": "math",
-      "prompt": "567 ÷ 9",
-      "promptLayout": "division",
-      "answer": "63",
+      "prompt": "92 × 34",
+      "promptLayout": "column",
+      "answer": "3128",
       "level": "g34",
       "hintSource": [
-        "上から 56 ÷ 9 で 6 たつ",
-        "9 × 6 = 54 を ひく",
-        "のこり 2 に 7 を おろす"
+        "1だんめ 92 × 一のくらいの 4",
+        "2だんめ 92 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-525d7",
+      "id": "ma-m22-56x33",
       "genreId": "math",
-      "prompt": "525 ÷ 7",
-      "promptLayout": "division",
-      "answer": "75",
+      "prompt": "56 × 33",
+      "promptLayout": "column",
+      "answer": "1848",
       "level": "g34",
       "hintSource": [
-        "上から 52 ÷ 7 で 7 たつ",
-        "7 × 7 = 49 を ひく",
-        "のこり 3 に 5 を おろす"
+        "1だんめ 56 × 一のくらいの 3",
+        "2だんめ 56 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-48d4",
+      "id": "ma-m22-73x39",
       "genreId": "math",
-      "prompt": "48 ÷ 4",
-      "promptLayout": "division",
-      "answer": "12",
+      "prompt": "73 × 39",
+      "promptLayout": "column",
+      "answer": "2847",
       "level": "g34",
       "hintSource": [
-        "上から 4 ÷ 4 で 1 たつ",
-        "4 × 1 = 4 を ひく",
-        "のこり 0 に 8 を おろす"
+        "1だんめ 73 × 一のくらいの 9",
+        "2だんめ 73 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-136d8",
+      "id": "ma-m22-35x12",
       "genreId": "math",
-      "prompt": "136 ÷ 8",
-      "promptLayout": "division",
-      "answer": "17",
+      "prompt": "35 × 12",
+      "promptLayout": "column",
+      "answer": "420",
       "level": "g34",
       "hintSource": [
-        "上から 13 ÷ 8 で 1 たつ",
-        "8 × 1 = 8 を ひく",
-        "のこり 5 に 6 を おろす"
+        "1だんめ 35 × 一のくらいの 2",
+        "2だんめ 35 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-498d6",
+      "id": "ma-m22-84x14",
       "genreId": "math",
-      "prompt": "498 ÷ 6",
-      "promptLayout": "division",
-      "answer": "83",
+      "prompt": "84 × 14",
+      "promptLayout": "column",
+      "answer": "1176",
       "level": "g34",
       "hintSource": [
-        "上から 49 ÷ 6 で 8 たつ",
-        "6 × 8 = 48 を ひく",
-        "のこり 1 に 8 を おろす"
+        "1だんめ 84 × 一のくらいの 4",
+        "2だんめ 84 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-390d6",
+      "id": "ma-m22-58x42",
       "genreId": "math",
-      "prompt": "390 ÷ 6",
-      "promptLayout": "division",
-      "answer": "65",
+      "prompt": "58 × 42",
+      "promptLayout": "column",
+      "answer": "2436",
       "level": "g34",
       "hintSource": [
-        "上から 39 ÷ 6 で 6 たつ",
-        "6 × 6 = 36 を ひく",
-        "のこり 3 に 0 を おろす"
+        "1だんめ 58 × 一のくらいの 2",
+        "2だんめ 58 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-536d8",
+      "id": "ma-m22-56x35",
       "genreId": "math",
-      "prompt": "536 ÷ 8",
-      "promptLayout": "division",
-      "answer": "67",
+      "prompt": "56 × 35",
+      "promptLayout": "column",
+      "answer": "1960",
       "level": "g34",
       "hintSource": [
-        "上から 53 ÷ 8 で 6 たつ",
-        "8 × 6 = 48 を ひく",
-        "のこり 5 に 6 を おろす"
+        "1だんめ 56 × 一のくらいの 5",
+        "2だんめ 56 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-588d7",
+      "id": "ma-m22-82x36",
       "genreId": "math",
-      "prompt": "588 ÷ 7",
-      "promptLayout": "division",
-      "answer": "84",
+      "prompt": "82 × 36",
+      "promptLayout": "column",
+      "answer": "2952",
       "level": "g34",
       "hintSource": [
-        "上から 58 ÷ 7 で 8 たつ",
-        "7 × 8 = 56 を ひく",
-        "のこり 2 に 8 を おろす"
+        "1だんめ 82 × 一のくらいの 6",
+        "2だんめ 82 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-504d8",
+      "id": "ma-m22-77x34",
       "genreId": "math",
-      "prompt": "504 ÷ 8",
-      "promptLayout": "division",
-      "answer": "63",
+      "prompt": "77 × 34",
+      "promptLayout": "column",
+      "answer": "2618",
       "level": "g34",
       "hintSource": [
-        "上から 50 ÷ 8 で 6 たつ",
-        "8 × 6 = 48 を ひく",
-        "のこり 2 に 4 を おろす"
+        "1だんめ 77 × 一のくらいの 4",
+        "2だんめ 77 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-510d6",
+      "id": "ma-m22-56x43",
       "genreId": "math",
-      "prompt": "510 ÷ 6",
-      "promptLayout": "division",
-      "answer": "85",
+      "prompt": "56 × 43",
+      "promptLayout": "column",
+      "answer": "2408",
       "level": "g34",
       "hintSource": [
-        "上から 51 ÷ 6 で 8 たつ",
-        "6 × 8 = 48 を ひく",
-        "のこり 3 に 0 を おろす"
+        "1だんめ 56 × 一のくらいの 3",
+        "2だんめ 56 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-408d6",
+      "id": "ma-m22-51x36",
       "genreId": "math",
-      "prompt": "408 ÷ 6",
-      "promptLayout": "division",
-      "answer": "68",
+      "prompt": "51 × 36",
+      "promptLayout": "column",
+      "answer": "1836",
       "level": "g34",
       "hintSource": [
-        "上から 40 ÷ 6 で 6 たつ",
-        "6 × 6 = 36 を ひく",
-        "のこり 4 に 8 を おろす"
+        "1だんめ 51 × 一のくらいの 6",
+        "2だんめ 51 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-93d3",
+      "id": "ma-m22-25x33",
       "genreId": "math",
-      "prompt": "93 ÷ 3",
-      "promptLayout": "division",
-      "answer": "31",
+      "prompt": "25 × 33",
+      "promptLayout": "column",
+      "answer": "825",
       "level": "g34",
       "hintSource": [
-        "上から 9 ÷ 3 で 3 たつ",
-        "3 × 3 = 9 を ひく",
-        "のこり 0 に 3 を おろす"
+        "1だんめ 25 × 一のくらいの 3",
+        "2だんめ 25 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-248d4",
+      "id": "ma-m22-68x44",
       "genreId": "math",
-      "prompt": "248 ÷ 4",
-      "promptLayout": "division",
-      "answer": "62",
+      "prompt": "68 × 44",
+      "promptLayout": "column",
+      "answer": "2992",
       "level": "g34",
       "hintSource": [
-        "上から 24 ÷ 4 で 6 たつ",
-        "4 × 6 = 24 を ひく",
-        "のこり 0 に 8 を おろす"
+        "1だんめ 68 × 一のくらいの 4",
+        "2だんめ 68 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-602d7",
+      "id": "ma-m22-29x46",
       "genreId": "math",
-      "prompt": "602 ÷ 7",
-      "promptLayout": "division",
-      "answer": "86",
+      "prompt": "29 × 46",
+      "promptLayout": "column",
+      "answer": "1334",
       "level": "g34",
       "hintSource": [
-        "上から 60 ÷ 7 で 8 たつ",
-        "7 × 8 = 56 を ひく",
-        "のこり 4 に 2 を おろす"
+        "1だんめ 29 × 一のくらいの 6",
+        "2だんめ 29 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-364d4",
+      "id": "ma-m22-62x41",
       "genreId": "math",
-      "prompt": "364 ÷ 4",
-      "promptLayout": "division",
-      "answer": "91",
+      "prompt": "62 × 41",
+      "promptLayout": "column",
+      "answer": "2542",
       "level": "g34",
       "hintSource": [
-        "上から 36 ÷ 4 で 9 たつ",
-        "4 × 9 = 36 を ひく",
-        "のこり 0 に 4 を おろす"
+        "1だんめ 62 × 一のくらいの 1",
+        "2だんめ 62 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-448d7",
+      "id": "ma-m22-79x45",
       "genreId": "math",
-      "prompt": "448 ÷ 7",
-      "promptLayout": "division",
-      "answer": "64",
+      "prompt": "79 × 45",
+      "promptLayout": "column",
+      "answer": "3555",
       "level": "g34",
       "hintSource": [
-        "上から 44 ÷ 7 で 6 たつ",
-        "7 × 6 = 42 を ひく",
-        "のこり 2 に 8 を おろす"
+        "1だんめ 79 × 一のくらいの 5",
+        "2だんめ 79 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-712d8",
+      "id": "ma-m22-45x22",
       "genreId": "math",
-      "prompt": "712 ÷ 8",
-      "promptLayout": "division",
-      "answer": "89",
+      "prompt": "45 × 22",
+      "promptLayout": "column",
+      "answer": "990",
       "level": "g34",
       "hintSource": [
-        "上から 71 ÷ 8 で 8 たつ",
-        "8 × 8 = 64 を ひく",
-        "のこり 7 に 2 を おろす"
+        "1だんめ 45 × 一のくらいの 2",
+        "2だんめ 45 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-175d5",
+      "id": "ma-m22-87x38",
       "genreId": "math",
-      "prompt": "175 ÷ 5",
-      "promptLayout": "division",
-      "answer": "35",
+      "prompt": "87 × 38",
+      "promptLayout": "column",
+      "answer": "3306",
       "level": "g34",
       "hintSource": [
-        "上から 17 ÷ 5 で 3 たつ",
-        "5 × 3 = 15 を ひく",
-        "のこり 2 に 5 を おろす"
+        "1だんめ 87 × 一のくらいの 8",
+        "2だんめ 87 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-648d9",
+      "id": "ma-m22-51x24",
       "genreId": "math",
-      "prompt": "648 ÷ 9",
-      "promptLayout": "division",
-      "answer": "72",
+      "prompt": "51 × 24",
+      "promptLayout": "column",
+      "answer": "1224",
       "level": "g34",
       "hintSource": [
-        "上から 64 ÷ 9 で 7 たつ",
-        "9 × 7 = 63 を ひく",
-        "のこり 1 に 8 を おろす"
+        "1だんめ 51 × 一のくらいの 4",
+        "2だんめ 51 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-477d9",
+      "id": "ma-m22-93x34",
       "genreId": "math",
-      "prompt": "477 ÷ 9",
-      "promptLayout": "division",
-      "answer": "53",
+      "prompt": "93 × 34",
+      "promptLayout": "column",
+      "answer": "3162",
       "level": "g34",
       "hintSource": [
-        "上から 47 ÷ 9 で 5 たつ",
-        "9 × 5 = 45 を ひく",
-        "のこり 2 に 7 を おろす"
+        "1だんめ 93 × 一のくらいの 4",
+        "2だんめ 93 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-372d4",
+      "id": "ma-m22-35x47",
       "genreId": "math",
-      "prompt": "372 ÷ 4",
-      "promptLayout": "division",
-      "answer": "93",
+      "prompt": "35 × 47",
+      "promptLayout": "column",
+      "answer": "1645",
       "level": "g34",
       "hintSource": [
-        "上から 37 ÷ 4 で 9 たつ",
-        "4 × 9 = 36 を ひく",
-        "のこり 1 に 2 を おろす"
+        "1だんめ 35 × 一のくらいの 7",
+        "2だんめ 35 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-147d3",
+      "id": "ma-m22-73x37",
       "genreId": "math",
-      "prompt": "147 ÷ 3",
-      "promptLayout": "division",
-      "answer": "49",
+      "prompt": "73 × 37",
+      "promptLayout": "column",
+      "answer": "2701",
       "level": "g34",
       "hintSource": [
-        "上から 14 ÷ 3 で 4 たつ",
-        "3 × 4 = 12 を ひく",
-        "のこり 2 に 7 を おろす"
+        "1だんめ 73 × 一のくらいの 7",
+        "2だんめ 73 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-66d6",
+      "id": "ma-m22-55x42",
       "genreId": "math",
-      "prompt": "66 ÷ 6",
-      "promptLayout": "division",
-      "answer": "11",
+      "prompt": "55 × 42",
+      "promptLayout": "column",
+      "answer": "2310",
       "level": "g34",
       "hintSource": [
-        "上から 6 ÷ 6 で 1 たつ",
-        "6 × 1 = 6 を ひく",
-        "のこり 0 に 6 を おろす"
+        "1だんめ 55 × 一のくらいの 2",
+        "2だんめ 55 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-243d9",
+      "id": "ma-m22-16x28",
       "genreId": "math",
-      "prompt": "243 ÷ 9",
-      "promptLayout": "division",
-      "answer": "27",
+      "prompt": "16 × 28",
+      "promptLayout": "column",
+      "answer": "448",
       "level": "g34",
       "hintSource": [
-        "上から 24 ÷ 9 で 2 たつ",
-        "9 × 2 = 18 を ひく",
-        "のこり 6 に 3 を おろす"
+        "1だんめ 16 × 一のくらいの 8",
+        "2だんめ 16 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-410d5",
+      "id": "ma-m22-55x12",
       "genreId": "math",
-      "prompt": "410 ÷ 5",
-      "promptLayout": "division",
-      "answer": "82",
+      "prompt": "55 × 12",
+      "promptLayout": "column",
+      "answer": "660",
       "level": "g34",
       "hintSource": [
-        "上から 41 ÷ 5 で 8 たつ",
-        "5 × 8 = 40 を ひく",
-        "のこり 1 に 0 を おろす"
+        "1だんめ 55 × 一のくらいの 2",
+        "2だんめ 55 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-225d3",
+      "id": "ma-m22-45x33",
       "genreId": "math",
-      "prompt": "225 ÷ 3",
-      "promptLayout": "division",
-      "answer": "75",
+      "prompt": "45 × 33",
+      "promptLayout": "column",
+      "answer": "1485",
       "level": "g34",
       "hintSource": [
-        "上から 22 ÷ 3 で 7 たつ",
-        "3 × 7 = 21 を ひく",
-        "のこり 1 に 5 を おろす"
+        "1だんめ 45 × 一のくらいの 3",
+        "2だんめ 45 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-301d7",
+      "id": "ma-m22-91x18",
       "genreId": "math",
-      "prompt": "301 ÷ 7",
-      "promptLayout": "division",
-      "answer": "43",
+      "prompt": "91 × 18",
+      "promptLayout": "column",
+      "answer": "1638",
       "level": "g34",
       "hintSource": [
-        "上から 30 ÷ 7 で 4 たつ",
-        "7 × 4 = 28 を ひく",
-        "のこり 2 に 1 を おろす"
+        "1だんめ 91 × 一のくらいの 8",
+        "2だんめ 91 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-183d3",
+      "id": "ma-m22-42x42",
       "genreId": "math",
-      "prompt": "183 ÷ 3",
-      "promptLayout": "division",
-      "answer": "61",
+      "prompt": "42 × 42",
+      "promptLayout": "column",
+      "answer": "1764",
       "level": "g34",
       "hintSource": [
-        "上から 18 ÷ 3 で 6 たつ",
-        "3 × 6 = 18 を ひく",
-        "のこり 0 に 3 を おろす"
+        "1だんめ 42 × 一のくらいの 2",
+        "2だんめ 42 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-255d5",
+      "id": "ma-m22-18x39",
       "genreId": "math",
-      "prompt": "255 ÷ 5",
-      "promptLayout": "division",
-      "answer": "51",
+      "prompt": "18 × 39",
+      "promptLayout": "column",
+      "answer": "702",
       "level": "g34",
       "hintSource": [
-        "上から 25 ÷ 5 で 5 たつ",
-        "5 × 5 = 25 を ひく",
-        "のこり 0 に 5 を おろす"
+        "1だんめ 18 × 一のくらいの 9",
+        "2だんめ 18 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-165d3",
+      "id": "ma-m22-71x25",
       "genreId": "math",
-      "prompt": "165 ÷ 3",
-      "promptLayout": "division",
-      "answer": "55",
+      "prompt": "71 × 25",
+      "promptLayout": "column",
+      "answer": "1775",
       "level": "g34",
       "hintSource": [
-        "上から 16 ÷ 3 で 5 たつ",
-        "3 × 5 = 15 を ひく",
-        "のこり 1 に 5 を おろす"
+        "1だんめ 71 × 一のくらいの 5",
+        "2だんめ 71 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-123d3",
+      "id": "ma-m22-38x29",
       "genreId": "math",
-      "prompt": "123 ÷ 3",
-      "promptLayout": "division",
-      "answer": "41",
+      "prompt": "38 × 29",
+      "promptLayout": "column",
+      "answer": "1102",
       "level": "g34",
       "hintSource": [
-        "上から 12 ÷ 3 で 4 たつ",
-        "3 × 4 = 12 を ひく",
-        "のこり 0 に 3 を おろす"
+        "1だんめ 38 × 一のくらいの 9",
+        "2だんめ 38 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-585d9",
+      "id": "ma-m22-17x25",
       "genreId": "math",
-      "prompt": "585 ÷ 9",
-      "promptLayout": "division",
-      "answer": "65",
+      "prompt": "17 × 25",
+      "promptLayout": "column",
+      "answer": "425",
       "level": "g34",
       "hintSource": [
-        "上から 58 ÷ 9 で 6 たつ",
-        "9 × 6 = 54 を ひく",
-        "のこり 4 に 5 を おろす"
+        "1だんめ 17 × 一のくらいの 5",
+        "2だんめ 17 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-282d6",
+      "id": "ma-m22-61x27",
       "genreId": "math",
-      "prompt": "282 ÷ 6",
-      "promptLayout": "division",
-      "answer": "47",
+      "prompt": "61 × 27",
+      "promptLayout": "column",
+      "answer": "1647",
       "level": "g34",
       "hintSource": [
-        "上から 28 ÷ 6 で 4 たつ",
-        "6 × 4 = 24 を ひく",
-        "のこり 4 に 2 を おろす"
+        "1だんめ 61 × 一のくらいの 7",
+        "2だんめ 61 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-375d5",
+      "id": "ma-m22-71x31",
       "genreId": "math",
-      "prompt": "375 ÷ 5",
-      "promptLayout": "division",
-      "answer": "75",
+      "prompt": "71 × 31",
+      "promptLayout": "column",
+      "answer": "2201",
       "level": "g34",
       "hintSource": [
-        "上から 37 ÷ 5 で 7 たつ",
-        "5 × 7 = 35 を ひく",
-        "のこり 2 に 5 を おろす"
+        "1だんめ 71 × 一のくらいの 1",
+        "2だんめ 71 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-392d7",
+      "id": "ma-m22-78x35",
       "genreId": "math",
-      "prompt": "392 ÷ 7",
-      "promptLayout": "division",
-      "answer": "56",
+      "prompt": "78 × 35",
+      "promptLayout": "column",
+      "answer": "2730",
       "level": "g34",
       "hintSource": [
-        "上から 39 ÷ 7 で 5 たつ",
-        "7 × 5 = 35 を ひく",
-        "のこり 4 に 2 を おろす"
+        "1だんめ 78 × 一のくらいの 5",
+        "2だんめ 78 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-528d8",
+      "id": "ma-m22-63x17",
       "genreId": "math",
-      "prompt": "528 ÷ 8",
-      "promptLayout": "division",
-      "answer": "66",
+      "prompt": "63 × 17",
+      "promptLayout": "column",
+      "answer": "1071",
       "level": "g34",
       "hintSource": [
-        "上から 52 ÷ 8 で 6 たつ",
-        "8 × 6 = 48 を ひく",
-        "のこり 4 に 8 を おろす"
+        "1だんめ 63 × 一のくらいの 7",
+        "2だんめ 63 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-168d7",
+      "id": "ma-m22-97x16",
       "genreId": "math",
-      "prompt": "168 ÷ 7",
-      "promptLayout": "division",
-      "answer": "24",
+      "prompt": "97 × 16",
+      "promptLayout": "column",
+      "answer": "1552",
       "level": "g34",
       "hintSource": [
-        "上から 16 ÷ 7 で 2 たつ",
-        "7 × 2 = 14 を ひく",
-        "のこり 2 に 8 を おろす"
+        "1だんめ 97 × 一のくらいの 6",
+        "2だんめ 97 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-665d7",
+      "id": "ma-m22-66x39",
       "genreId": "math",
-      "prompt": "665 ÷ 7",
-      "promptLayout": "division",
-      "answer": "95",
+      "prompt": "66 × 39",
+      "promptLayout": "column",
+      "answer": "2574",
       "level": "g34",
       "hintSource": [
-        "上から 66 ÷ 7 で 9 たつ",
-        "7 × 9 = 63 を ひく",
-        "のこり 3 に 5 を おろす"
+        "1だんめ 66 × 一のくらいの 9",
+        "2だんめ 66 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-864d9",
+      "id": "ma-m22-69x48",
       "genreId": "math",
-      "prompt": "864 ÷ 9",
-      "promptLayout": "division",
-      "answer": "96",
+      "prompt": "69 × 48",
+      "promptLayout": "column",
+      "answer": "3312",
       "level": "g34",
       "hintSource": [
-        "上から 86 ÷ 9 で 9 たつ",
-        "9 × 9 = 81 を ひく",
-        "のこり 5 に 4 を おろす"
+        "1だんめ 69 × 一のくらいの 8",
+        "2だんめ 69 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-495d9",
+      "id": "ma-m22-98x48",
       "genreId": "math",
-      "prompt": "495 ÷ 9",
-      "promptLayout": "division",
-      "answer": "55",
+      "prompt": "98 × 48",
+      "promptLayout": "column",
+      "answer": "4704",
       "level": "g34",
       "hintSource": [
-        "上から 49 ÷ 9 で 5 たつ",
-        "9 × 5 = 45 を ひく",
-        "のこり 4 に 5 を おろす"
+        "1だんめ 98 × 一のくらいの 8",
+        "2だんめ 98 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-325d5",
+      "id": "ma-m22-38x35",
       "genreId": "math",
-      "prompt": "325 ÷ 5",
-      "promptLayout": "division",
-      "answer": "65",
+      "prompt": "38 × 35",
+      "promptLayout": "column",
+      "answer": "1330",
       "level": "g34",
       "hintSource": [
-        "上から 32 ÷ 5 で 6 たつ",
-        "5 × 6 = 30 を ひく",
-        "のこり 2 に 5 を おろす"
+        "1だんめ 38 × 一のくらいの 5",
+        "2だんめ 38 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-280d5",
+      "id": "ma-m22-37x42",
       "genreId": "math",
-      "prompt": "280 ÷ 5",
-      "promptLayout": "division",
-      "answer": "56",
+      "prompt": "37 × 42",
+      "promptLayout": "column",
+      "answer": "1554",
       "level": "g34",
       "hintSource": [
-        "上から 28 ÷ 5 で 5 たつ",
-        "5 × 5 = 25 を ひく",
-        "のこり 3 に 0 を おろす"
+        "1だんめ 37 × 一のくらいの 2",
+        "2だんめ 37 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-295d5",
+      "id": "ma-m22-52x12",
       "genreId": "math",
-      "prompt": "295 ÷ 5",
-      "promptLayout": "division",
-      "answer": "59",
+      "prompt": "52 × 12",
+      "promptLayout": "column",
+      "answer": "624",
       "level": "g34",
       "hintSource": [
-        "上から 29 ÷ 5 で 5 たつ",
-        "5 × 5 = 25 を ひく",
-        "のこり 4 に 5 を おろす"
+        "1だんめ 52 × 一のくらいの 2",
+        "2だんめ 52 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-132d3",
+      "id": "ma-m22-48x31",
       "genreId": "math",
-      "prompt": "132 ÷ 3",
-      "promptLayout": "division",
-      "answer": "44",
+      "prompt": "48 × 31",
+      "promptLayout": "column",
+      "answer": "1488",
       "level": "g34",
       "hintSource": [
-        "上から 13 ÷ 3 で 4 たつ",
-        "3 × 4 = 12 を ひく",
-        "のこり 1 に 2 を おろす"
+        "1だんめ 48 × 一のくらいの 1",
+        "2だんめ 48 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-70d5",
+      "id": "ma-m22-45x32",
       "genreId": "math",
-      "prompt": "70 ÷ 5",
-      "promptLayout": "division",
-      "answer": "14",
+      "prompt": "45 × 32",
+      "promptLayout": "column",
+      "answer": "1440",
       "level": "g34",
       "hintSource": [
-        "上から 7 ÷ 5 で 1 たつ",
-        "5 × 1 = 5 を ひく",
-        "のこり 2 に 0 を おろす"
+        "1だんめ 45 × 一のくらいの 2",
+        "2だんめ 45 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-672d7",
+      "id": "ma-m22-12x26",
       "genreId": "math",
-      "prompt": "672 ÷ 7",
-      "promptLayout": "division",
-      "answer": "96",
+      "prompt": "12 × 26",
+      "promptLayout": "column",
+      "answer": "312",
       "level": "g34",
       "hintSource": [
-        "上から 67 ÷ 7 で 9 たつ",
-        "7 × 9 = 63 を ひく",
-        "のこり 4 に 2 を おろす"
+        "1だんめ 12 × 一のくらいの 6",
+        "2だんめ 12 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-248d8",
+      "id": "ma-m22-43x13",
       "genreId": "math",
-      "prompt": "248 ÷ 8",
-      "promptLayout": "division",
-      "answer": "31",
+      "prompt": "43 × 13",
+      "promptLayout": "column",
+      "answer": "559",
       "level": "g34",
       "hintSource": [
-        "上から 24 ÷ 8 で 3 たつ",
-        "8 × 3 = 24 を ひく",
-        "のこり 0 に 8 を おろす"
+        "1だんめ 43 × 一のくらいの 3",
+        "2だんめ 43 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-63d3",
+      "id": "ma-m22-62x48",
       "genreId": "math",
-      "prompt": "63 ÷ 3",
-      "promptLayout": "division",
-      "answer": "21",
+      "prompt": "62 × 48",
+      "promptLayout": "column",
+      "answer": "2976",
       "level": "g34",
       "hintSource": [
-        "上から 6 ÷ 3 で 2 たつ",
-        "3 × 2 = 6 を ひく",
-        "のこり 0 に 3 を おろす"
+        "1だんめ 62 × 一のくらいの 8",
+        "2だんめ 62 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-355d5",
+      "id": "ma-m22-95x29",
       "genreId": "math",
-      "prompt": "355 ÷ 5",
-      "promptLayout": "division",
-      "answer": "71",
+      "prompt": "95 × 29",
+      "promptLayout": "column",
+      "answer": "2755",
       "level": "g34",
       "hintSource": [
-        "上から 35 ÷ 5 で 7 たつ",
-        "5 × 7 = 35 を ひく",
-        "のこり 0 に 5 を おろす"
+        "1だんめ 95 × 一のくらいの 9",
+        "2だんめ 95 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-135d3",
+      "id": "ma-m22-14x16",
       "genreId": "math",
-      "prompt": "135 ÷ 3",
-      "promptLayout": "division",
-      "answer": "45",
+      "prompt": "14 × 16",
+      "promptLayout": "column",
+      "answer": "224",
       "level": "g34",
       "hintSource": [
-        "上から 13 ÷ 3 で 4 たつ",
-        "3 × 4 = 12 を ひく",
-        "のこり 1 に 5 を おろす"
+        "1だんめ 14 × 一のくらいの 6",
+        "2だんめ 14 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-249d3",
+      "id": "ma-m22-39x37",
       "genreId": "math",
-      "prompt": "249 ÷ 3",
-      "promptLayout": "division",
-      "answer": "83",
+      "prompt": "39 × 37",
+      "promptLayout": "column",
+      "answer": "1443",
       "level": "g34",
       "hintSource": [
-        "上から 24 ÷ 3 で 8 たつ",
-        "3 × 8 = 24 を ひく",
-        "のこり 0 に 9 を おろす"
+        "1だんめ 39 × 一のくらいの 7",
+        "2だんめ 39 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-144d3",
+      "id": "ma-m22-17x26",
       "genreId": "math",
-      "prompt": "144 ÷ 3",
-      "promptLayout": "division",
-      "answer": "48",
+      "prompt": "17 × 26",
+      "promptLayout": "column",
+      "answer": "442",
       "level": "g34",
       "hintSource": [
-        "上から 14 ÷ 3 で 4 たつ",
-        "3 × 4 = 12 を ひく",
-        "のこり 2 に 4 を おろす"
+        "1だんめ 17 × 一のくらいの 6",
+        "2だんめ 17 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-438d6",
+      "id": "ma-m22-24x43",
       "genreId": "math",
-      "prompt": "438 ÷ 6",
-      "promptLayout": "division",
-      "answer": "73",
+      "prompt": "24 × 43",
+      "promptLayout": "column",
+      "answer": "1032",
       "level": "g34",
       "hintSource": [
-        "上から 43 ÷ 6 で 7 たつ",
-        "6 × 7 = 42 を ひく",
-        "のこり 1 に 8 を おろす"
+        "1だんめ 24 × 一のくらいの 3",
+        "2だんめ 24 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-328d4",
+      "id": "ma-m22-15x27",
       "genreId": "math",
-      "prompt": "328 ÷ 4",
-      "promptLayout": "division",
-      "answer": "82",
+      "prompt": "15 × 27",
+      "promptLayout": "column",
+      "answer": "405",
       "level": "g34",
       "hintSource": [
-        "上から 32 ÷ 4 で 8 たつ",
-        "4 × 8 = 32 を ひく",
-        "のこり 0 に 8 を おろす"
+        "1だんめ 15 × 一のくらいの 7",
+        "2だんめ 15 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-738d9",
+      "id": "ma-m22-51x38",
       "genreId": "math",
-      "prompt": "738 ÷ 9",
-      "promptLayout": "division",
-      "answer": "82",
+      "prompt": "51 × 38",
+      "promptLayout": "column",
+      "answer": "1938",
       "level": "g34",
       "hintSource": [
-        "上から 73 ÷ 9 で 8 たつ",
-        "9 × 8 = 72 を ひく",
-        "のこり 1 に 8 を おろす"
+        "1だんめ 51 × 一のくらいの 8",
+        "2だんめ 51 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-68d4",
+      "id": "ma-m22-36x14",
       "genreId": "math",
-      "prompt": "68 ÷ 4",
-      "promptLayout": "division",
-      "answer": "17",
+      "prompt": "36 × 14",
+      "promptLayout": "column",
+      "answer": "504",
       "level": "g34",
       "hintSource": [
-        "上から 6 ÷ 4 で 1 たつ",
-        "4 × 1 = 4 を ひく",
-        "のこり 2 に 8 を おろす"
+        "1だんめ 36 × 一のくらいの 4",
+        "2だんめ 36 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-235d5",
+      "id": "ma-m22-48x27",
       "genreId": "math",
-      "prompt": "235 ÷ 5",
-      "promptLayout": "division",
-      "answer": "47",
+      "prompt": "48 × 27",
+      "promptLayout": "column",
+      "answer": "1296",
       "level": "g34",
       "hintSource": [
-        "上から 23 ÷ 5 で 4 たつ",
-        "5 × 4 = 20 を ひく",
-        "のこり 3 に 5 を おろす"
+        "1だんめ 48 × 一のくらいの 7",
+        "2だんめ 48 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-304d8",
+      "id": "ma-m22-82x23",
       "genreId": "math",
-      "prompt": "304 ÷ 8",
-      "promptLayout": "division",
-      "answer": "38",
+      "prompt": "82 × 23",
+      "promptLayout": "column",
+      "answer": "1886",
       "level": "g34",
       "hintSource": [
-        "上から 30 ÷ 8 で 3 たつ",
-        "8 × 3 = 24 を ひく",
-        "のこり 6 に 4 を おろす"
+        "1だんめ 82 × 一のくらいの 3",
+        "2だんめ 82 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-65d5",
+      "id": "ma-m22-41x12",
       "genreId": "math",
-      "prompt": "65 ÷ 5",
-      "promptLayout": "division",
-      "answer": "13",
+      "prompt": "41 × 12",
+      "promptLayout": "column",
+      "answer": "492",
       "level": "g34",
       "hintSource": [
-        "上から 6 ÷ 5 で 1 たつ",
-        "5 × 1 = 5 を ひく",
-        "のこり 1 に 5 を おろす"
+        "1だんめ 41 × 一のくらいの 2",
+        "2だんめ 41 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-192d4",
+      "id": "ma-m22-27x27",
       "genreId": "math",
-      "prompt": "192 ÷ 4",
-      "promptLayout": "division",
-      "answer": "48",
+      "prompt": "27 × 27",
+      "promptLayout": "column",
+      "answer": "729",
       "level": "g34",
       "hintSource": [
-        "上から 19 ÷ 4 で 4 たつ",
-        "4 × 4 = 16 を ひく",
-        "のこり 3 に 2 を おろす"
+        "1だんめ 27 × 一のくらいの 7",
+        "2だんめ 27 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-387d9",
+      "id": "ma-m22-92x25",
       "genreId": "math",
-      "prompt": "387 ÷ 9",
-      "promptLayout": "division",
-      "answer": "43",
+      "prompt": "92 × 25",
+      "promptLayout": "column",
+      "answer": "2300",
       "level": "g34",
       "hintSource": [
-        "上から 38 ÷ 9 で 4 たつ",
-        "9 × 4 = 36 を ひく",
-        "のこり 2 に 7 を おろす"
+        "1だんめ 92 × 一のくらいの 5",
+        "2だんめ 92 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-114d3",
+      "id": "ma-m22-56x16",
       "genreId": "math",
-      "prompt": "114 ÷ 3",
-      "promptLayout": "division",
-      "answer": "38",
+      "prompt": "56 × 16",
+      "promptLayout": "column",
+      "answer": "896",
       "level": "g34",
       "hintSource": [
-        "上から 11 ÷ 3 で 3 たつ",
-        "3 × 3 = 9 を ひく",
-        "のこり 2 に 4 を おろす"
+        "1だんめ 56 × 一のくらいの 6",
+        "2だんめ 56 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-104d4",
+      "id": "ma-m22-12x23",
       "genreId": "math",
-      "prompt": "104 ÷ 4",
-      "promptLayout": "division",
-      "answer": "26",
+      "prompt": "12 × 23",
+      "promptLayout": "column",
+      "answer": "276",
       "level": "g34",
       "hintSource": [
-        "上から 10 ÷ 4 で 2 たつ",
-        "4 × 2 = 8 を ひく",
-        "のこり 2 に 4 を おろす"
+        "1だんめ 12 × 一のくらいの 3",
+        "2だんめ 12 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-55d5",
+      "id": "ma-m22-34x18",
       "genreId": "math",
-      "prompt": "55 ÷ 5",
-      "promptLayout": "division",
-      "answer": "11",
+      "prompt": "34 × 18",
+      "promptLayout": "column",
+      "answer": "612",
       "level": "g34",
       "hintSource": [
-        "上から 5 ÷ 5 で 1 たつ",
-        "5 × 1 = 5 を ひく",
-        "のこり 0 に 5 を おろす"
+        "1だんめ 34 × 一のくらいの 8",
+        "2だんめ 34 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-784d8",
+      "id": "ma-m22-43x12",
       "genreId": "math",
-      "prompt": "784 ÷ 8",
-      "promptLayout": "division",
-      "answer": "98",
+      "prompt": "43 × 12",
+      "promptLayout": "column",
+      "answer": "516",
       "level": "g34",
       "hintSource": [
-        "上から 78 ÷ 8 で 9 たつ",
-        "8 × 9 = 72 を ひく",
-        "のこり 6 に 4 を おろす"
+        "1だんめ 43 × 一のくらいの 2",
+        "2だんめ 43 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-356d4",
+      "id": "ma-m22-81x49",
       "genreId": "math",
-      "prompt": "356 ÷ 4",
-      "promptLayout": "division",
-      "answer": "89",
+      "prompt": "81 × 49",
+      "promptLayout": "column",
+      "answer": "3969",
       "level": "g34",
       "hintSource": [
-        "上から 35 ÷ 4 で 8 たつ",
-        "4 × 8 = 32 を ひく",
-        "のこり 3 に 6 を おろす"
+        "1だんめ 81 × 一のくらいの 9",
+        "2だんめ 81 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-688d8",
+      "id": "ma-m22-27x45",
       "genreId": "math",
-      "prompt": "688 ÷ 8",
-      "promptLayout": "division",
-      "answer": "86",
+      "prompt": "27 × 45",
+      "promptLayout": "column",
+      "answer": "1215",
       "level": "g34",
       "hintSource": [
-        "上から 68 ÷ 8 で 8 たつ",
-        "8 × 8 = 64 を ひく",
-        "のこり 4 に 8 を おろす"
+        "1だんめ 27 × 一のくらいの 5",
+        "2だんめ 27 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-36d3",
+      "id": "ma-m22-75x44",
       "genreId": "math",
-      "prompt": "36 ÷ 3",
-      "promptLayout": "division",
-      "answer": "12",
+      "prompt": "75 × 44",
+      "promptLayout": "column",
+      "answer": "3300",
       "level": "g34",
       "hintSource": [
-        "上から 3 ÷ 3 で 1 たつ",
-        "3 × 1 = 3 を ひく",
-        "のこり 0 に 6 を おろす"
+        "1だんめ 75 × 一のくらいの 4",
+        "2だんめ 75 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-324d9",
+      "id": "ma-m22-15x12",
       "genreId": "math",
-      "prompt": "324 ÷ 9",
-      "promptLayout": "division",
-      "answer": "36",
+      "prompt": "15 × 12",
+      "promptLayout": "column",
+      "answer": "180",
       "level": "g34",
       "hintSource": [
-        "上から 32 ÷ 9 で 3 たつ",
-        "9 × 3 = 27 を ひく",
-        "のこり 5 に 4 を おろす"
+        "1だんめ 15 × 一のくらいの 2",
+        "2だんめ 15 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-162d6",
+      "id": "ma-m22-39x35",
       "genreId": "math",
-      "prompt": "162 ÷ 6",
-      "promptLayout": "division",
-      "answer": "27",
+      "prompt": "39 × 35",
+      "promptLayout": "column",
+      "answer": "1365",
       "level": "g34",
       "hintSource": [
-        "上から 16 ÷ 6 で 2 たつ",
-        "6 × 2 = 12 を ひく",
-        "のこり 4 に 2 を おろす"
+        "1だんめ 39 × 一のくらいの 5",
+        "2だんめ 39 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-124d4",
+      "id": "ma-m22-92x22",
       "genreId": "math",
-      "prompt": "124 ÷ 4",
-      "promptLayout": "division",
-      "answer": "31",
+      "prompt": "92 × 22",
+      "promptLayout": "column",
+      "answer": "2024",
       "level": "g34",
       "hintSource": [
-        "上から 12 ÷ 4 で 3 たつ",
-        "4 × 3 = 12 を ひく",
-        "のこり 0 に 4 を おろす"
+        "1だんめ 92 × 一のくらいの 2",
+        "2だんめ 92 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-637d7",
+      "id": "ma-m22-53x19",
       "genreId": "math",
-      "prompt": "637 ÷ 7",
-      "promptLayout": "division",
-      "answer": "91",
+      "prompt": "53 × 19",
+      "promptLayout": "column",
+      "answer": "1007",
       "level": "g34",
       "hintSource": [
-        "上から 63 ÷ 7 で 9 たつ",
-        "7 × 9 = 63 を ひく",
-        "のこり 0 に 7 を おろす"
+        "1だんめ 53 × 一のくらいの 9",
+        "2だんめ 53 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-368d4",
+      "id": "ma-m22-65x46",
       "genreId": "math",
-      "prompt": "368 ÷ 4",
-      "promptLayout": "division",
-      "answer": "92",
+      "prompt": "65 × 46",
+      "promptLayout": "column",
+      "answer": "2990",
       "level": "g34",
       "hintSource": [
-        "上から 36 ÷ 4 で 9 たつ",
-        "4 × 9 = 36 を ひく",
-        "のこり 0 に 8 を おろす"
+        "1だんめ 65 × 一のくらいの 6",
+        "2だんめ 65 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-342d9",
+      "id": "ma-m22-26x46",
       "genreId": "math",
-      "prompt": "342 ÷ 9",
-      "promptLayout": "division",
-      "answer": "38",
+      "prompt": "26 × 46",
+      "promptLayout": "column",
+      "answer": "1196",
       "level": "g34",
       "hintSource": [
-        "上から 34 ÷ 9 で 3 たつ",
-        "9 × 3 = 27 を ひく",
-        "のこり 7 に 2 を おろす"
+        "1だんめ 26 × 一のくらいの 6",
+        "2だんめ 26 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-368d8",
+      "id": "ma-m22-98x23",
       "genreId": "math",
-      "prompt": "368 ÷ 8",
-      "promptLayout": "division",
-      "answer": "46",
+      "prompt": "98 × 23",
+      "promptLayout": "column",
+      "answer": "2254",
       "level": "g34",
       "hintSource": [
-        "上から 36 ÷ 8 で 4 たつ",
-        "8 × 4 = 32 を ひく",
-        "のこり 4 に 8 を おろす"
+        "1だんめ 98 × 一のくらいの 3",
+        "2だんめ 98 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-330d5",
+      "id": "ma-m22-79x27",
       "genreId": "math",
-      "prompt": "330 ÷ 5",
-      "promptLayout": "division",
-      "answer": "66",
+      "prompt": "79 × 27",
+      "promptLayout": "column",
+      "answer": "2133",
       "level": "g34",
       "hintSource": [
-        "上から 33 ÷ 5 で 6 たつ",
-        "5 × 6 = 30 を ひく",
-        "のこり 3 に 0 を おろす"
+        "1だんめ 79 × 一のくらいの 7",
+        "2だんめ 79 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-150d6",
+      "id": "ma-m22-42x35",
       "genreId": "math",
-      "prompt": "150 ÷ 6",
-      "promptLayout": "division",
-      "answer": "25",
+      "prompt": "42 × 35",
+      "promptLayout": "column",
+      "answer": "1470",
       "level": "g34",
       "hintSource": [
-        "上から 15 ÷ 6 で 2 たつ",
-        "6 × 2 = 12 を ひく",
-        "のこり 3 に 0 を おろす"
+        "1だんめ 42 × 一のくらいの 5",
+        "2だんめ 42 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-220d5",
+      "id": "ma-m22-76x37",
       "genreId": "math",
-      "prompt": "220 ÷ 5",
-      "promptLayout": "division",
-      "answer": "44",
+      "prompt": "76 × 37",
+      "promptLayout": "column",
+      "answer": "2812",
       "level": "g34",
       "hintSource": [
-        "上から 22 ÷ 5 で 4 たつ",
-        "5 × 4 = 20 を ひく",
-        "のこり 2 に 0 を おろす"
+        "1だんめ 76 × 一のくらいの 7",
+        "2だんめ 76 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-252d9",
+      "id": "ma-m22-54x18",
       "genreId": "math",
-      "prompt": "252 ÷ 9",
-      "promptLayout": "division",
-      "answer": "28",
+      "prompt": "54 × 18",
+      "promptLayout": "column",
+      "answer": "972",
       "level": "g34",
       "hintSource": [
-        "上から 25 ÷ 9 で 2 たつ",
-        "9 × 2 = 18 を ひく",
-        "のこり 7 に 2 を おろす"
+        "1だんめ 54 × 一のくらいの 8",
+        "2だんめ 54 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-480d5",
+      "id": "ma-m22-43x26",
       "genreId": "math",
-      "prompt": "480 ÷ 5",
-      "promptLayout": "division",
-      "answer": "96",
+      "prompt": "43 × 26",
+      "promptLayout": "column",
+      "answer": "1118",
       "level": "g34",
       "hintSource": [
-        "上から 48 ÷ 5 で 9 たつ",
-        "5 × 9 = 45 を ひく",
-        "のこり 3 に 0 を おろす"
+        "1だんめ 43 × 一のくらいの 6",
+        "2だんめ 43 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-513d9",
+      "id": "ma-m22-93x19",
       "genreId": "math",
-      "prompt": "513 ÷ 9",
-      "promptLayout": "division",
-      "answer": "57",
+      "prompt": "93 × 19",
+      "promptLayout": "column",
+      "answer": "1767",
       "level": "g34",
       "hintSource": [
-        "上から 51 ÷ 9 で 5 たつ",
-        "9 × 5 = 45 を ひく",
-        "のこり 6 に 3 を おろす"
+        "1だんめ 93 × 一のくらいの 9",
+        "2だんめ 93 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-216d3",
+      "id": "ma-m22-42x48",
       "genreId": "math",
-      "prompt": "216 ÷ 3",
-      "promptLayout": "division",
-      "answer": "72",
+      "prompt": "42 × 48",
+      "promptLayout": "column",
+      "answer": "2016",
       "level": "g34",
       "hintSource": [
-        "上から 21 ÷ 3 で 7 たつ",
-        "3 × 7 = 21 を ひく",
-        "のこり 0 に 6 を おろす"
+        "1だんめ 42 × 一のくらいの 8",
+        "2だんめ 42 × 十のくらいの 4",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-231d3",
+      "id": "ma-m22-99x31",
       "genreId": "math",
-      "prompt": "231 ÷ 3",
-      "promptLayout": "division",
-      "answer": "77",
+      "prompt": "99 × 31",
+      "promptLayout": "column",
+      "answer": "3069",
       "level": "g34",
       "hintSource": [
-        "上から 23 ÷ 3 で 7 たつ",
-        "3 × 7 = 21 を ひく",
-        "のこり 2 に 1 を おろす"
+        "1だんめ 99 × 一のくらいの 1",
+        "2だんめ 99 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-196d7",
+      "id": "ma-m22-22x38",
       "genreId": "math",
-      "prompt": "196 ÷ 7",
-      "promptLayout": "division",
-      "answer": "28",
+      "prompt": "22 × 38",
+      "promptLayout": "column",
+      "answer": "836",
       "level": "g34",
       "hintSource": [
-        "上から 19 ÷ 7 で 2 たつ",
-        "7 × 2 = 14 を ひく",
-        "のこり 5 に 6 を おろす"
+        "1だんめ 22 × 一のくらいの 8",
+        "2だんめ 22 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-464d8",
+      "id": "ma-m22-74x28",
       "genreId": "math",
-      "prompt": "464 ÷ 8",
-      "promptLayout": "division",
-      "answer": "58",
+      "prompt": "74 × 28",
+      "promptLayout": "column",
+      "answer": "2072",
       "level": "g34",
       "hintSource": [
-        "上から 46 ÷ 8 で 5 たつ",
-        "8 × 5 = 40 を ひく",
-        "のこり 6 に 4 を おろす"
+        "1だんめ 74 × 一のくらいの 8",
+        "2だんめ 74 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
-      "id": "ma-d-172d4",
+      "id": "ma-m22-69x19",
       "genreId": "math",
-      "prompt": "172 ÷ 4",
-      "promptLayout": "division",
-      "answer": "43",
+      "prompt": "69 × 19",
+      "promptLayout": "column",
+      "answer": "1311",
       "level": "g34",
       "hintSource": [
-        "上から 17 ÷ 4 で 4 たつ",
-        "4 × 4 = 16 を ひく",
-        "のこり 1 に 2 を おろす"
+        "1だんめ 69 × 一のくらいの 9",
+        "2だんめ 69 × 十のくらいの 1",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m22-75x32",
+      "genreId": "math",
+      "prompt": "75 × 32",
+      "promptLayout": "column",
+      "answer": "2400",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 75 × 一のくらいの 2",
+        "2だんめ 75 × 十のくらいの 3",
+        "2だんめは 1けた ずらす"
+      ]
+    },
+    {
+      "id": "ma-m22-36x25",
+      "genreId": "math",
+      "prompt": "36 × 25",
+      "promptLayout": "column",
+      "answer": "900",
+      "level": "g34",
+      "hintSource": [
+        "1だんめ 36 × 一のくらいの 5",
+        "2だんめ 36 × 十のくらいの 2",
+        "2だんめは 1けた ずらす"
       ]
     },
     {
@@ -14669,6 +12325,19 @@
       ]
     },
     {
+      "id": "ma-d-63d3",
+      "genreId": "math",
+      "prompt": "63 ÷ 3",
+      "promptLayout": "division",
+      "answer": "21",
+      "level": "g34",
+      "hintSource": [
+        "上から 6 ÷ 3 で 2 たつ",
+        "3 × 2 = 6 を ひく",
+        "のこり 0 に 3 を おろす"
+      ]
+    },
+    {
       "id": "ma-d-666d9",
       "genreId": "math",
       "prompt": "666 ÷ 9",
@@ -14744,6 +12413,19 @@
         "上から 38 ÷ 4 で 9 たつ",
         "4 × 9 = 36 を ひく",
         "のこり 2 に 8 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-248d4",
+      "genreId": "math",
+      "prompt": "248 ÷ 4",
+      "promptLayout": "division",
+      "answer": "62",
+      "level": "g34",
+      "hintSource": [
+        "上から 24 ÷ 4 で 6 たつ",
+        "4 × 6 = 24 を ひく",
+        "のこり 0 に 8 を おろす"
       ]
     },
     {
@@ -14864,6 +12546,19 @@
       ]
     },
     {
+      "id": "ma-d-136d8",
+      "genreId": "math",
+      "prompt": "136 ÷ 8",
+      "promptLayout": "division",
+      "answer": "17",
+      "level": "g34",
+      "hintSource": [
+        "上から 13 ÷ 8 で 1 たつ",
+        "8 × 1 = 8 を ひく",
+        "のこり 5 に 6 を おろす"
+      ]
+    },
+    {
       "id": "ma-d-44d4",
       "genreId": "math",
       "prompt": "44 ÷ 4",
@@ -14900,6 +12595,19 @@
         "上から 55 ÷ 6 で 9 たつ",
         "6 × 9 = 54 を ひく",
         "のこり 1 に 2 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-567d9",
+      "genreId": "math",
+      "prompt": "567 ÷ 9",
+      "promptLayout": "division",
+      "answer": "63",
+      "level": "g34",
+      "hintSource": [
+        "上から 56 ÷ 9 で 6 たつ",
+        "9 × 6 = 54 を ひく",
+        "のこり 2 に 7 を おろす"
       ]
     },
     {
@@ -14981,6 +12689,19 @@
       ]
     },
     {
+      "id": "ma-d-736d8",
+      "genreId": "math",
+      "prompt": "736 ÷ 8",
+      "promptLayout": "division",
+      "answer": "92",
+      "level": "g34",
+      "hintSource": [
+        "上から 73 ÷ 8 で 9 たつ",
+        "8 × 9 = 72 を ひく",
+        "のこり 1 に 6 を おろす"
+      ]
+    },
+    {
       "id": "ma-d-328d8",
       "genreId": "math",
       "prompt": "328 ÷ 8",
@@ -14991,6 +12712,19 @@
         "上から 32 ÷ 8 で 4 たつ",
         "8 × 4 = 32 を ひく",
         "のこり 0 に 8 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-66d6",
+      "genreId": "math",
+      "prompt": "66 ÷ 6",
+      "promptLayout": "division",
+      "answer": "11",
+      "level": "g34",
+      "hintSource": [
+        "上から 6 ÷ 6 で 1 たつ",
+        "6 × 1 = 6 を ひく",
+        "のこり 0 に 6 を おろす"
       ]
     },
     {
@@ -15082,6 +12816,19 @@
         "上から 46 ÷ 7 で 6 たつ",
         "7 × 6 = 42 を ひく",
         "のこり 4 に 9 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-324d9",
+      "genreId": "math",
+      "prompt": "324 ÷ 9",
+      "promptLayout": "division",
+      "answer": "36",
+      "level": "g34",
+      "hintSource": [
+        "上から 32 ÷ 9 で 3 たつ",
+        "9 × 3 = 27 を ひく",
+        "のこり 5 に 4 を おろす"
       ]
     },
     {
@@ -15189,6 +12936,19 @@
       ]
     },
     {
+      "id": "ma-d-104d4",
+      "genreId": "math",
+      "prompt": "104 ÷ 4",
+      "promptLayout": "division",
+      "answer": "26",
+      "level": "g34",
+      "hintSource": [
+        "上から 10 ÷ 4 で 2 たつ",
+        "4 × 2 = 8 を ひく",
+        "のこり 2 に 4 を おろす"
+      ]
+    },
+    {
       "id": "ma-d-520d8",
       "genreId": "math",
       "prompt": "520 ÷ 8",
@@ -15225,6 +12985,19 @@
         "上から 6 ÷ 3 で 2 たつ",
         "3 × 2 = 6 を ひく",
         "のこり 0 に 9 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-438d6",
+      "genreId": "math",
+      "prompt": "438 ÷ 6",
+      "promptLayout": "division",
+      "answer": "73",
+      "level": "g34",
+      "hintSource": [
+        "上から 43 ÷ 6 で 7 たつ",
+        "6 × 7 = 42 を ひく",
+        "のこり 1 に 8 を おろす"
       ]
     },
     {
@@ -15280,6 +13053,19 @@
       ]
     },
     {
+      "id": "ma-d-235d5",
+      "genreId": "math",
+      "prompt": "235 ÷ 5",
+      "promptLayout": "division",
+      "answer": "47",
+      "level": "g34",
+      "hintSource": [
+        "上から 23 ÷ 5 で 4 たつ",
+        "5 × 4 = 20 を ひく",
+        "のこり 3 に 5 を おろす"
+      ]
+    },
+    {
       "id": "ma-d-837d9",
       "genreId": "math",
       "prompt": "837 ÷ 9",
@@ -15319,6 +13105,19 @@
       ]
     },
     {
+      "id": "ma-d-355d5",
+      "genreId": "math",
+      "prompt": "355 ÷ 5",
+      "promptLayout": "division",
+      "answer": "71",
+      "level": "g34",
+      "hintSource": [
+        "上から 35 ÷ 5 で 7 たつ",
+        "5 × 7 = 35 を ひく",
+        "のこり 0 に 5 を おろす"
+      ]
+    },
+    {
       "id": "ma-d-435d5",
       "genreId": "math",
       "prompt": "435 ÷ 5",
@@ -15329,6 +13128,19 @@
         "上から 43 ÷ 5 で 8 たつ",
         "5 × 8 = 40 を ひく",
         "のこり 3 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-477d9",
+      "genreId": "math",
+      "prompt": "477 ÷ 9",
+      "promptLayout": "division",
+      "answer": "53",
+      "level": "g34",
+      "hintSource": [
+        "上から 47 ÷ 9 で 5 たつ",
+        "9 × 5 = 45 を ひく",
+        "のこり 2 に 7 を おろす"
       ]
     },
     {
@@ -15380,6 +13192,994 @@
       "hintSource": [
         "上から 7 ÷ 3 で 2 たつ",
         "3 × 2 = 6 を ひく",
+        "のこり 1 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-704d8",
+      "genreId": "math",
+      "prompt": "704 ÷ 8",
+      "promptLayout": "division",
+      "answer": "88",
+      "level": "g34",
+      "hintSource": [
+        "上から 70 ÷ 8 で 8 たつ",
+        "8 × 8 = 64 を ひく",
+        "のこり 6 に 4 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-475d5",
+      "genreId": "math",
+      "prompt": "475 ÷ 5",
+      "promptLayout": "division",
+      "answer": "95",
+      "level": "g34",
+      "hintSource": [
+        "上から 47 ÷ 5 で 9 たつ",
+        "5 × 9 = 45 を ひく",
+        "のこり 2 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-476d7",
+      "genreId": "math",
+      "prompt": "476 ÷ 7",
+      "promptLayout": "division",
+      "answer": "68",
+      "level": "g34",
+      "hintSource": [
+        "上から 47 ÷ 7 で 6 たつ",
+        "7 × 6 = 42 を ひく",
+        "のこり 5 に 6 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-155d5",
+      "genreId": "math",
+      "prompt": "155 ÷ 5",
+      "promptLayout": "division",
+      "answer": "31",
+      "level": "g34",
+      "hintSource": [
+        "上から 15 ÷ 5 で 3 たつ",
+        "5 × 3 = 15 を ひく",
+        "のこり 0 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-336d8",
+      "genreId": "math",
+      "prompt": "336 ÷ 8",
+      "promptLayout": "division",
+      "answer": "42",
+      "level": "g34",
+      "hintSource": [
+        "上から 33 ÷ 8 で 4 たつ",
+        "8 × 4 = 32 を ひく",
+        "のこり 1 に 6 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-396d9",
+      "genreId": "math",
+      "prompt": "396 ÷ 9",
+      "promptLayout": "division",
+      "answer": "44",
+      "level": "g34",
+      "hintSource": [
+        "上から 39 ÷ 9 で 4 たつ",
+        "9 × 4 = 36 を ひく",
+        "のこり 3 に 6 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-150d6",
+      "genreId": "math",
+      "prompt": "150 ÷ 6",
+      "promptLayout": "division",
+      "answer": "25",
+      "level": "g34",
+      "hintSource": [
+        "上から 15 ÷ 6 で 2 たつ",
+        "6 × 2 = 12 を ひく",
+        "のこり 3 に 0 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-395d5",
+      "genreId": "math",
+      "prompt": "395 ÷ 5",
+      "promptLayout": "division",
+      "answer": "79",
+      "level": "g34",
+      "hintSource": [
+        "上から 39 ÷ 5 で 7 たつ",
+        "5 × 7 = 35 を ひく",
+        "のこり 4 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-315d7",
+      "genreId": "math",
+      "prompt": "315 ÷ 7",
+      "promptLayout": "division",
+      "answer": "45",
+      "level": "g34",
+      "hintSource": [
+        "上から 31 ÷ 7 で 4 たつ",
+        "7 × 4 = 28 を ひく",
+        "のこり 3 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-368d8",
+      "genreId": "math",
+      "prompt": "368 ÷ 8",
+      "promptLayout": "division",
+      "answer": "46",
+      "level": "g34",
+      "hintSource": [
+        "上から 36 ÷ 8 で 4 たつ",
+        "8 × 4 = 32 を ひく",
+        "のこり 4 に 8 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-567d7",
+      "genreId": "math",
+      "prompt": "567 ÷ 7",
+      "promptLayout": "division",
+      "answer": "81",
+      "level": "g34",
+      "hintSource": [
+        "上から 56 ÷ 7 で 8 たつ",
+        "7 × 8 = 56 を ひく",
+        "のこり 0 に 7 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-84d7",
+      "genreId": "math",
+      "prompt": "84 ÷ 7",
+      "promptLayout": "division",
+      "answer": "12",
+      "level": "g34",
+      "hintSource": [
+        "上から 8 ÷ 7 で 1 たつ",
+        "7 × 1 = 7 を ひく",
+        "のこり 1 に 4 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-48d3",
+      "genreId": "math",
+      "prompt": "48 ÷ 3",
+      "promptLayout": "division",
+      "answer": "16",
+      "level": "g34",
+      "hintSource": [
+        "上から 4 ÷ 3 で 1 たつ",
+        "3 × 1 = 3 を ひく",
+        "のこり 1 に 8 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-801d9",
+      "genreId": "math",
+      "prompt": "801 ÷ 9",
+      "promptLayout": "division",
+      "answer": "89",
+      "level": "g34",
+      "hintSource": [
+        "上から 80 ÷ 9 で 8 たつ",
+        "9 × 8 = 72 を ひく",
+        "のこり 8 に 1 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-348d6",
+      "genreId": "math",
+      "prompt": "348 ÷ 6",
+      "promptLayout": "division",
+      "answer": "58",
+      "level": "g34",
+      "hintSource": [
+        "上から 34 ÷ 6 で 5 たつ",
+        "6 × 5 = 30 を ひく",
+        "のこり 4 に 8 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-279d3",
+      "genreId": "math",
+      "prompt": "279 ÷ 3",
+      "promptLayout": "division",
+      "answer": "93",
+      "level": "g34",
+      "hintSource": [
+        "上から 27 ÷ 3 で 9 たつ",
+        "3 × 9 = 27 を ひく",
+        "のこり 0 に 9 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-504d6",
+      "genreId": "math",
+      "prompt": "504 ÷ 6",
+      "promptLayout": "division",
+      "answer": "84",
+      "level": "g34",
+      "hintSource": [
+        "上から 50 ÷ 6 で 8 たつ",
+        "6 × 8 = 48 を ひく",
+        "のこり 2 に 4 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-198d3",
+      "genreId": "math",
+      "prompt": "198 ÷ 3",
+      "promptLayout": "division",
+      "answer": "66",
+      "level": "g34",
+      "hintSource": [
+        "上から 19 ÷ 3 で 6 たつ",
+        "3 × 6 = 18 を ひく",
+        "のこり 1 に 8 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-138d6",
+      "genreId": "math",
+      "prompt": "138 ÷ 6",
+      "promptLayout": "division",
+      "answer": "23",
+      "level": "g34",
+      "hintSource": [
+        "上から 13 ÷ 6 で 2 たつ",
+        "6 × 2 = 12 を ひく",
+        "のこり 1 に 8 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-336d4",
+      "genreId": "math",
+      "prompt": "336 ÷ 4",
+      "promptLayout": "division",
+      "answer": "84",
+      "level": "g34",
+      "hintSource": [
+        "上から 33 ÷ 4 で 8 たつ",
+        "4 × 8 = 32 を ひく",
+        "のこり 1 に 6 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-161d7",
+      "genreId": "math",
+      "prompt": "161 ÷ 7",
+      "promptLayout": "division",
+      "answer": "23",
+      "level": "g34",
+      "hintSource": [
+        "上から 16 ÷ 7 で 2 たつ",
+        "7 × 2 = 14 を ひく",
+        "のこり 2 に 1 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-93d3",
+      "genreId": "math",
+      "prompt": "93 ÷ 3",
+      "promptLayout": "division",
+      "answer": "31",
+      "level": "g34",
+      "hintSource": [
+        "上から 9 ÷ 3 で 3 たつ",
+        "3 × 3 = 9 を ひく",
+        "のこり 0 に 3 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-375d5",
+      "genreId": "math",
+      "prompt": "375 ÷ 5",
+      "promptLayout": "division",
+      "answer": "75",
+      "level": "g34",
+      "hintSource": [
+        "上から 37 ÷ 5 で 7 たつ",
+        "5 × 7 = 35 を ひく",
+        "のこり 2 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-204d3",
+      "genreId": "math",
+      "prompt": "204 ÷ 3",
+      "promptLayout": "division",
+      "answer": "68",
+      "level": "g34",
+      "hintSource": [
+        "上から 20 ÷ 3 で 6 たつ",
+        "3 × 6 = 18 を ひく",
+        "のこり 2 に 4 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-255d5",
+      "genreId": "math",
+      "prompt": "255 ÷ 5",
+      "promptLayout": "division",
+      "answer": "51",
+      "level": "g34",
+      "hintSource": [
+        "上から 25 ÷ 5 で 5 たつ",
+        "5 × 5 = 25 を ひく",
+        "のこり 0 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-408d8",
+      "genreId": "math",
+      "prompt": "408 ÷ 8",
+      "promptLayout": "division",
+      "answer": "51",
+      "level": "g34",
+      "hintSource": [
+        "上から 40 ÷ 8 で 5 たつ",
+        "8 × 5 = 40 を ひく",
+        "のこり 0 に 8 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-126d6",
+      "genreId": "math",
+      "prompt": "126 ÷ 6",
+      "promptLayout": "division",
+      "answer": "21",
+      "level": "g34",
+      "hintSource": [
+        "上から 12 ÷ 6 で 2 たつ",
+        "6 × 2 = 12 を ひく",
+        "のこり 0 に 6 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-80d5",
+      "genreId": "math",
+      "prompt": "80 ÷ 5",
+      "promptLayout": "division",
+      "answer": "16",
+      "level": "g34",
+      "hintSource": [
+        "上から 8 ÷ 5 で 1 たつ",
+        "5 × 1 = 5 を ひく",
+        "のこり 3 に 0 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-760d8",
+      "genreId": "math",
+      "prompt": "760 ÷ 8",
+      "promptLayout": "division",
+      "answer": "95",
+      "level": "g34",
+      "hintSource": [
+        "上から 76 ÷ 8 で 9 たつ",
+        "8 × 9 = 72 を ひく",
+        "のこり 4 に 0 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-518d7",
+      "genreId": "math",
+      "prompt": "518 ÷ 7",
+      "promptLayout": "division",
+      "answer": "74",
+      "level": "g34",
+      "hintSource": [
+        "上から 51 ÷ 7 で 7 たつ",
+        "7 × 7 = 49 を ひく",
+        "のこり 2 に 8 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-246d3",
+      "genreId": "math",
+      "prompt": "246 ÷ 3",
+      "promptLayout": "division",
+      "answer": "82",
+      "level": "g34",
+      "hintSource": [
+        "上から 24 ÷ 3 で 8 たつ",
+        "3 × 8 = 24 を ひく",
+        "のこり 0 に 6 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-352d8",
+      "genreId": "math",
+      "prompt": "352 ÷ 8",
+      "promptLayout": "division",
+      "answer": "44",
+      "level": "g34",
+      "hintSource": [
+        "上から 35 ÷ 8 で 4 たつ",
+        "8 × 4 = 32 を ひく",
+        "のこり 3 に 2 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-42d3",
+      "genreId": "math",
+      "prompt": "42 ÷ 3",
+      "promptLayout": "division",
+      "answer": "14",
+      "level": "g34",
+      "hintSource": [
+        "上から 4 ÷ 3 で 1 たつ",
+        "3 × 1 = 3 を ひく",
+        "のこり 1 に 2 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-72d6",
+      "genreId": "math",
+      "prompt": "72 ÷ 6",
+      "promptLayout": "division",
+      "answer": "12",
+      "level": "g34",
+      "hintSource": [
+        "上から 7 ÷ 6 で 1 たつ",
+        "6 × 1 = 6 を ひく",
+        "のこり 1 に 2 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-672d7",
+      "genreId": "math",
+      "prompt": "672 ÷ 7",
+      "promptLayout": "division",
+      "answer": "96",
+      "level": "g34",
+      "hintSource": [
+        "上から 67 ÷ 7 で 9 たつ",
+        "7 × 9 = 63 を ひく",
+        "のこり 4 に 2 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-445d5",
+      "genreId": "math",
+      "prompt": "445 ÷ 5",
+      "promptLayout": "division",
+      "answer": "89",
+      "level": "g34",
+      "hintSource": [
+        "上から 44 ÷ 5 で 8 たつ",
+        "5 × 8 = 40 を ひく",
+        "のこり 4 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-207d9",
+      "genreId": "math",
+      "prompt": "207 ÷ 9",
+      "promptLayout": "division",
+      "answer": "23",
+      "level": "g34",
+      "hintSource": [
+        "上から 20 ÷ 9 で 2 たつ",
+        "9 × 2 = 18 を ひく",
+        "のこり 2 に 7 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-637d7",
+      "genreId": "math",
+      "prompt": "637 ÷ 7",
+      "promptLayout": "division",
+      "answer": "91",
+      "level": "g34",
+      "hintSource": [
+        "上から 63 ÷ 7 で 9 たつ",
+        "7 × 9 = 63 を ひく",
+        "のこり 0 に 7 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-102d6",
+      "genreId": "math",
+      "prompt": "102 ÷ 6",
+      "promptLayout": "division",
+      "answer": "17",
+      "level": "g34",
+      "hintSource": [
+        "上から 10 ÷ 6 で 1 たつ",
+        "6 × 1 = 6 を ひく",
+        "のこり 4 に 2 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-425d5",
+      "genreId": "math",
+      "prompt": "425 ÷ 5",
+      "promptLayout": "division",
+      "answer": "85",
+      "level": "g34",
+      "hintSource": [
+        "上から 42 ÷ 5 で 8 たつ",
+        "5 × 8 = 40 を ひく",
+        "のこり 2 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-270d5",
+      "genreId": "math",
+      "prompt": "270 ÷ 5",
+      "promptLayout": "division",
+      "answer": "54",
+      "level": "g34",
+      "hintSource": [
+        "上から 27 ÷ 5 で 5 たつ",
+        "5 × 5 = 25 を ひく",
+        "のこり 2 に 0 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-297d9",
+      "genreId": "math",
+      "prompt": "297 ÷ 9",
+      "promptLayout": "division",
+      "answer": "33",
+      "level": "g34",
+      "hintSource": [
+        "上から 29 ÷ 9 で 3 たつ",
+        "9 × 3 = 27 を ひく",
+        "のこり 2 に 7 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-372d6",
+      "genreId": "math",
+      "prompt": "372 ÷ 6",
+      "promptLayout": "division",
+      "answer": "62",
+      "level": "g34",
+      "hintSource": [
+        "上から 37 ÷ 6 で 6 たつ",
+        "6 × 6 = 36 を ひく",
+        "のこり 1 に 2 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-441d7",
+      "genreId": "math",
+      "prompt": "441 ÷ 7",
+      "promptLayout": "division",
+      "answer": "63",
+      "level": "g34",
+      "hintSource": [
+        "上から 44 ÷ 7 で 6 たつ",
+        "7 × 6 = 42 を ひく",
+        "のこり 2 に 1 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-96d4",
+      "genreId": "math",
+      "prompt": "96 ÷ 4",
+      "promptLayout": "division",
+      "answer": "24",
+      "level": "g34",
+      "hintSource": [
+        "上から 9 ÷ 4 で 2 たつ",
+        "4 × 2 = 8 を ひく",
+        "のこり 1 に 6 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-783d9",
+      "genreId": "math",
+      "prompt": "783 ÷ 9",
+      "promptLayout": "division",
+      "answer": "87",
+      "level": "g34",
+      "hintSource": [
+        "上から 78 ÷ 9 で 8 たつ",
+        "9 × 8 = 72 を ひく",
+        "のこり 6 に 3 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-672d8",
+      "genreId": "math",
+      "prompt": "672 ÷ 8",
+      "promptLayout": "division",
+      "answer": "84",
+      "level": "g34",
+      "hintSource": [
+        "上から 67 ÷ 8 で 8 たつ",
+        "8 × 8 = 64 を ひく",
+        "のこり 3 に 2 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-390d6",
+      "genreId": "math",
+      "prompt": "390 ÷ 6",
+      "promptLayout": "division",
+      "answer": "65",
+      "level": "g34",
+      "hintSource": [
+        "上から 39 ÷ 6 で 6 たつ",
+        "6 × 6 = 36 を ひく",
+        "のこり 3 に 0 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-402d6",
+      "genreId": "math",
+      "prompt": "402 ÷ 6",
+      "promptLayout": "division",
+      "answer": "67",
+      "level": "g34",
+      "hintSource": [
+        "上から 40 ÷ 6 で 6 たつ",
+        "6 × 6 = 36 を ひく",
+        "のこり 4 に 2 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-200d8",
+      "genreId": "math",
+      "prompt": "200 ÷ 8",
+      "promptLayout": "division",
+      "answer": "25",
+      "level": "g34",
+      "hintSource": [
+        "上から 20 ÷ 8 で 2 たつ",
+        "8 × 2 = 16 を ひく",
+        "のこり 4 に 0 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-124d4",
+      "genreId": "math",
+      "prompt": "124 ÷ 4",
+      "promptLayout": "division",
+      "answer": "31",
+      "level": "g34",
+      "hintSource": [
+        "上から 12 ÷ 4 で 3 たつ",
+        "4 × 3 = 12 を ひく",
+        "のこり 0 に 4 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-138d3",
+      "genreId": "math",
+      "prompt": "138 ÷ 3",
+      "promptLayout": "division",
+      "answer": "46",
+      "level": "g34",
+      "hintSource": [
+        "上から 13 ÷ 3 で 4 たつ",
+        "3 × 4 = 12 を ひく",
+        "のこり 1 に 8 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-621d9",
+      "genreId": "math",
+      "prompt": "621 ÷ 9",
+      "promptLayout": "division",
+      "answer": "69",
+      "level": "g34",
+      "hintSource": [
+        "上から 62 ÷ 9 で 6 たつ",
+        "9 × 6 = 54 を ひく",
+        "のこり 8 に 1 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-426d6",
+      "genreId": "math",
+      "prompt": "426 ÷ 6",
+      "promptLayout": "division",
+      "answer": "71",
+      "level": "g34",
+      "hintSource": [
+        "上から 42 ÷ 6 で 7 たつ",
+        "6 × 7 = 42 を ひく",
+        "のこり 0 に 6 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-192d4",
+      "genreId": "math",
+      "prompt": "192 ÷ 4",
+      "promptLayout": "division",
+      "answer": "48",
+      "level": "g34",
+      "hintSource": [
+        "上から 19 ÷ 4 で 4 たつ",
+        "4 × 4 = 16 を ひく",
+        "のこり 3 に 2 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-325d5",
+      "genreId": "math",
+      "prompt": "325 ÷ 5",
+      "promptLayout": "division",
+      "answer": "65",
+      "level": "g34",
+      "hintSource": [
+        "上から 32 ÷ 5 で 6 たつ",
+        "5 × 6 = 30 を ひく",
+        "のこり 2 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-480d5",
+      "genreId": "math",
+      "prompt": "480 ÷ 5",
+      "promptLayout": "division",
+      "answer": "96",
+      "level": "g34",
+      "hintSource": [
+        "上から 48 ÷ 5 で 9 たつ",
+        "5 × 9 = 45 を ひく",
+        "のこり 3 に 0 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-486d6",
+      "genreId": "math",
+      "prompt": "486 ÷ 6",
+      "promptLayout": "division",
+      "answer": "81",
+      "level": "g34",
+      "hintSource": [
+        "上から 48 ÷ 6 で 8 たつ",
+        "6 × 8 = 48 を ひく",
+        "のこり 0 に 6 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-370d5",
+      "genreId": "math",
+      "prompt": "370 ÷ 5",
+      "promptLayout": "division",
+      "answer": "74",
+      "level": "g34",
+      "hintSource": [
+        "上から 37 ÷ 5 で 7 たつ",
+        "5 × 7 = 35 を ひく",
+        "のこり 2 に 0 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-405d9",
+      "genreId": "math",
+      "prompt": "405 ÷ 9",
+      "promptLayout": "division",
+      "answer": "45",
+      "level": "g34",
+      "hintSource": [
+        "上から 40 ÷ 9 で 4 たつ",
+        "9 × 4 = 36 を ひく",
+        "のこり 4 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-406d7",
+      "genreId": "math",
+      "prompt": "406 ÷ 7",
+      "promptLayout": "division",
+      "answer": "58",
+      "level": "g34",
+      "hintSource": [
+        "上から 40 ÷ 7 で 5 たつ",
+        "7 × 5 = 35 を ひく",
+        "のこり 5 に 6 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-392d7",
+      "genreId": "math",
+      "prompt": "392 ÷ 7",
+      "promptLayout": "division",
+      "answer": "56",
+      "level": "g34",
+      "hintSource": [
+        "上から 39 ÷ 7 で 5 たつ",
+        "7 × 5 = 35 を ひく",
+        "のこり 4 に 2 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-297d3",
+      "genreId": "math",
+      "prompt": "297 ÷ 3",
+      "promptLayout": "division",
+      "answer": "99",
+      "level": "g34",
+      "hintSource": [
+        "上から 29 ÷ 3 で 9 たつ",
+        "3 × 9 = 27 を ひく",
+        "のこり 2 に 7 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-160d5",
+      "genreId": "math",
+      "prompt": "160 ÷ 5",
+      "promptLayout": "division",
+      "answer": "32",
+      "level": "g34",
+      "hintSource": [
+        "上から 16 ÷ 5 で 3 たつ",
+        "5 × 3 = 15 を ひく",
+        "のこり 1 に 0 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-333d9",
+      "genreId": "math",
+      "prompt": "333 ÷ 9",
+      "promptLayout": "division",
+      "answer": "37",
+      "level": "g34",
+      "hintSource": [
+        "上から 33 ÷ 9 で 3 たつ",
+        "9 × 3 = 27 を ひく",
+        "のこり 6 に 3 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-536d8",
+      "genreId": "math",
+      "prompt": "536 ÷ 8",
+      "promptLayout": "division",
+      "answer": "67",
+      "level": "g34",
+      "hintSource": [
+        "上から 53 ÷ 8 で 6 たつ",
+        "8 × 6 = 48 を ひく",
+        "のこり 5 に 6 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-665d7",
+      "genreId": "math",
+      "prompt": "665 ÷ 7",
+      "promptLayout": "division",
+      "answer": "95",
+      "level": "g34",
+      "hintSource": [
+        "上から 66 ÷ 7 で 9 たつ",
+        "7 × 9 = 63 を ひく",
+        "のこり 3 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-224d8",
+      "genreId": "math",
+      "prompt": "224 ÷ 8",
+      "promptLayout": "division",
+      "answer": "28",
+      "level": "g34",
+      "hintSource": [
+        "上から 22 ÷ 8 で 2 たつ",
+        "8 × 2 = 16 を ひく",
+        "のこり 6 に 4 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-216d3",
+      "genreId": "math",
+      "prompt": "216 ÷ 3",
+      "promptLayout": "division",
+      "answer": "72",
+      "level": "g34",
+      "hintSource": [
+        "上から 21 ÷ 3 で 7 たつ",
+        "3 × 7 = 21 を ひく",
+        "のこり 0 に 6 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-450d6",
+      "genreId": "math",
+      "prompt": "450 ÷ 6",
+      "promptLayout": "division",
+      "answer": "75",
+      "level": "g34",
+      "hintSource": [
+        "上から 45 ÷ 6 で 7 たつ",
+        "6 × 7 = 42 を ひく",
+        "のこり 3 に 0 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-558d9",
+      "genreId": "math",
+      "prompt": "558 ÷ 9",
+      "promptLayout": "division",
+      "answer": "62",
+      "level": "g34",
+      "hintSource": [
+        "上から 55 ÷ 9 で 6 たつ",
+        "9 × 6 = 54 を ひく",
+        "のこり 1 に 8 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-585d9",
+      "genreId": "math",
+      "prompt": "585 ÷ 9",
+      "promptLayout": "division",
+      "answer": "65",
+      "level": "g34",
+      "hintSource": [
+        "上から 58 ÷ 9 で 6 たつ",
+        "9 × 6 = 54 を ひく",
+        "のこり 4 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-602d7",
+      "genreId": "math",
+      "prompt": "602 ÷ 7",
+      "promptLayout": "division",
+      "answer": "86",
+      "level": "g34",
+      "hintSource": [
+        "上から 60 ÷ 7 で 8 たつ",
+        "7 × 8 = 56 を ひく",
+        "のこり 4 に 2 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-105d7",
+      "genreId": "math",
+      "prompt": "105 ÷ 7",
+      "promptLayout": "division",
+      "answer": "15",
+      "level": "g34",
+      "hintSource": [
+        "上から 10 ÷ 7 で 1 たつ",
+        "7 × 1 = 7 を ひく",
+        "のこり 3 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-225d9",
+      "genreId": "math",
+      "prompt": "225 ÷ 9",
+      "promptLayout": "division",
+      "answer": "25",
+      "level": "g34",
+      "hintSource": [
+        "上から 22 ÷ 9 で 2 たつ",
+        "9 × 2 = 18 を ひく",
+        "のこり 4 に 5 を おろす"
+      ]
+    },
+    {
+      "id": "ma-d-165d5",
+      "genreId": "math",
+      "prompt": "165 ÷ 5",
+      "promptLayout": "division",
+      "answer": "33",
+      "level": "g34",
+      "hintSource": [
+        "上から 16 ÷ 5 で 3 たつ",
+        "5 × 3 = 15 を ひく",
         "のこり 1 に 5 を おろす"
       ]
     }

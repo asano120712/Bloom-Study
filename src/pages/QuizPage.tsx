@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { BoxHandwriting } from '@/components/BoxHandwriting'
-import { ColumnForm, DivisionForm, type ColumnRow } from '@/components/ColumnForm'
+import { ColumnForm, DivisionForm, type ColumnCell } from '@/components/ColumnForm'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
 import { HintList } from '@/components/HintList'
 import { NumberInput } from '@/components/NumberInput'
@@ -11,7 +11,7 @@ import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { answerChoicesOf, findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
-import { answerBoxCount } from '@/features/math'
+import { answerBoxCount, answerFromSteps, columnScript } from '@/features/math'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeNumber, judgeParts, judgeTyping } from '@/features/judge'
 import { useCopy } from '@/hooks/useAudienceMode'
@@ -69,7 +69,8 @@ export function QuizPage() {
    * 問題が変わるときは画面ごと作り直される(1問答えるたびに結果画面へ移る)ので、
    * ここで問題の切り替わりを見る必要はない。
    */
-  const [filledRows, setFilledRows] = useState<ColumnRow[]>([])
+  /** 筆算で打ち終わったところ。段・位・商を打った順に持つ */
+  const [filledSteps, setFilledSteps] = useState<string[]>([])
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
 
@@ -153,21 +154,41 @@ export function QuizPage() {
 
   const promptCaption = copy.genrePrompt[genre.id]
 
-  /** 筆算の途中の段。打つのは数字のときだけ(手書きはノートに書くので要らない) */
-  const steps = inputMode === 'number' ? (question.steps ?? []) : []
-  const stepIndex = filledRows.length
-  const isLastStep = stepIndex >= steps.length
+  /**
+   * 筆算の手順。打つのは数字のときだけ(手書きはノートに書くのと同じで、
+   * 書いたものを読み取らないため途中を追えない)。
+   */
+  const script =
+    inputMode === 'number' && question.promptLayout ? columnScript(question.prompt) : []
+  const stepIndex = filledSteps.length
+  const step = script[stepIndex]
+  const isLastStep = stepIndex >= script.length - 1
 
   /**
-   * 段を1つ打ち終わったとき。合っていてもいなくても止めずに次の段へ進み、
-   * 間違えた段は正しい数に直して残す(直さないと最後の答えまで必ず合わなくなる)。
+   * 1つ打ち終わったとき。合っていてもいなくても止めずに次へ進み、
+   * 間違えたところは正しい数に直して残す(直さないと、そのあとが必ず合わなくなる)。
    */
   const commitStep = (value: string) => {
-    const expected = steps[stepIndex]
-    setFilledRows((rows) => [
-      ...rows,
-      { value: expected, shift: rows.length, corrected: value !== expected },
-    ])
+    setFilledSteps((filled) => [...filled, value])
+  }
+
+  /** 決定キーの文字は、つぎに何へ進むのかに合わせる(段・くらい・筆算のつづき) */
+  const nextStepLabel =
+    step?.slot.kind === 'row'
+      ? copy.number.nextRow
+      : step?.slot.kind === 'place'
+        ? copy.number.nextPlace
+        : copy.number.nextStep
+
+  /** 筆算のマス。打ち終わったところは正しい数で、いま打っているところはそのまま出す */
+  const columnCells = (typed?: string): ColumnCell[] => {
+    const done = script.slice(0, stepIndex).map((entry, index) => ({
+      slot: entry.slot,
+      digits: entry.expected,
+      tone: filledSteps[index] === entry.expected ? ('done' as const) : ('corrected' as const),
+    }))
+    if (typed === undefined || !step) return done
+    return [...done, { slot: step.slot, digits: typed, tone: 'typing' as const }]
   }
 
   /** 計算は「ヒント → 式 → 答え」の順に置く */
@@ -273,23 +294,25 @@ export function QuizPage() {
                     ? (typed) => (
                         <PromptBlock
                           question={question}
-                          caption={promptCaption}
-                          typed={typed}
-                          rows={filledRows}
-                          typedShift={isLastStep ? 0 : stepIndex}
+                          // 打っている場所の名前を出す(「一のくらい」「7 × 8 を かく」)
+                          caption={step?.caption ?? promptCaption}
+                          cells={columnCells(typed)}
                         />
                       )
                     : undefined
                 }
-                submitLabel={isLastStep ? copy.number.submit : copy.number.nextRow}
+                submitLabel={isLastStep ? copy.number.submit : nextStepLabel}
                 onSubmit={(value) => {
                   if (!isLastStep) {
                     commitStep(value)
                     return
                   }
-                  finish(judgeNumber(question, value), revealedCount, {
+                  // 答えは、打った途中のものから組み立てる(位ごと・商は、それ自体が答え)
+                  const typed = [...filledSteps, value]
+                  const answer = script.length > 0 ? answerFromSteps(script, typed) : value
+                  finish(judgeNumber(question, answer), revealedCount, {
                     kind: 'text',
-                    text: value,
+                    text: answer,
                   })
                 }}
               />
@@ -344,33 +367,34 @@ export function QuizPage() {
 function PromptBlock({
   question,
   caption,
-  typed,
-  rows,
-  typedShift,
+  cells,
   writeRow,
 }: {
   question: Question
   caption: string
-  typed?: string
-  rows?: ColumnRow[]
-  typedShift?: number
+  /** 筆算のマス(打ち終わったところと、いま打っているところ) */
+  cells?: ColumnCell[]
   /** 手書きで書き込むマス */
   writeRow?: ReactNode
 }) {
   return (
     <section className="mt-4 shrink-0 text-center select-none">
       <p className="text-xs text-ink-400">{caption}</p>
-      <p className="mt-1 text-[min(1.875rem,8vw)] leading-9 font-bold tracking-wide">
+      {/*
+        わり算の筆算だけ字を小さくする。商・引く段・ひいた数で6段になり、
+        他と同じ大きさだと数字キーボードまで入らない。
+      */}
+      <p
+        className={`mt-1 font-bold tracking-wide ${
+          question.promptLayout === 'division'
+            ? 'text-[min(1.5rem,6.5vw)] leading-7'
+            : 'text-[min(1.875rem,8vw)] leading-9'
+        }`}
+      >
         {question.promptLayout === 'column' ? (
-          <ColumnForm
-            expression={question.prompt}
-            typed={typed}
-            rows={rows}
-            typedShift={typedShift}
-            writeRow={writeRow}
-          />
+          <ColumnForm expression={question.prompt} cells={cells} writeRow={writeRow} />
         ) : question.promptLayout === 'division' ? (
-          <DivisionForm expression={question.prompt} typed={typed} writeRow={writeRow} />
+          <DivisionForm expression={question.prompt} cells={cells} writeRow={writeRow} />
         ) : (
           question.prompt
         )}

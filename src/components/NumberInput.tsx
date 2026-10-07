@@ -79,7 +79,15 @@ export function NumberInput({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
-      <div aria-live="polite" aria-label={copy.number.inputLabel} className="shrink-0">
+      {/*
+        筆算が縦に長くなっても(わり算は引く段で6段になる)、数字キーボードは
+        画面から押し出さない。入りきらないぶんはここだけが流れる。
+      */}
+      <div
+        aria-live="polite"
+        aria-label={copy.number.inputLabel}
+        className="flex min-h-0 shrink flex-col justify-end overflow-y-auto"
+      >
         {display ? (
           display(value)
         ) : (

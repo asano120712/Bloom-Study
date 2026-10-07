@@ -1,41 +1,40 @@
 import type { ReactNode } from 'react'
-import { parseExpression } from '@/features/math'
+import { parseExpression, type ColumnSlot } from '@/features/math'
 
-/** 筆算の1段。打ち終わった段と、いま打っている段を区別して出す */
-export interface ColumnRow {
-  /** その段に入る数 */
-  value: string
-  /** 右から何桁ずらすか。筆算の2段目は1つ左へ寄る */
-  shift: number
-  /** 打ち終わった段のうち、間違えていたもの(正しい数に直して見せる) */
-  corrected?: boolean
+/** 筆算のマス1つぶん。打ち終わったもの・いま打っているものを、場所つきで表す */
+export interface ColumnCell {
+  slot: ColumnSlot
+  /** 入っている数。空文字なら、まだ何も打っていない点線のマス */
+  digits: string
+  tone: CellTone
 }
+
+type CellTone = 'typing' | 'done' | 'corrected'
+
+/** マス1つの幅。桁をそろえるため、段のずらし幅やわり算の桁位置でも同じ値を使う */
+const CELL = '1.15em'
 
 /**
  * 筆算(たし算・ひき算・かけ算)。式を縦に積んで、桁をそろえて見せる。
  * わり算は形が違う(商を上に書く)ので DivisionForm に分けてある。
  *
- * 2桁以上のかけ算を「24 × 5」と1行で出すと暗算に近くなり、小3・4には難しい。
+ * 2桁以上の計算を「24 × 5」と1行で出すと暗算に近くなり、小3・4には難しい。
  * 筆算はこの学年で習う形なので、縦に積むほうが解きやすく、位をそろえる練習にもなる。
  *
  * 式の文字列(「24 × 5」)から組み立てる。問題データは1行の式のまま持っておきたい
  * (マイページの履歴や読み上げは1行のほうが扱いやすい)ので、分けるのは見せる側で行う。
  * 読めない形だったときは、そのまま1行で出す。
+ *
+ * どこに何が入るかは `cells` が持つ。進み方(段で打つのか、位ごとに打つのか)は
+ * 式で決まるので、その組み立ては `features/math` 側にまとめてある。
  */
 export function ColumnForm({
   expression,
-  typed,
-  rows = [],
-  typedShift = 0,
+  cells = [],
   writeRow,
 }: {
   expression: string
-  /** いま打っている数。渡すとマスが出る */
-  typed?: string
-  /** 打ち終わった途中の段 */
-  rows?: ColumnRow[]
-  /** いま打っている段のずらし幅 */
-  typedShift?: number
+  cells?: ColumnCell[]
   /** 手書きで書き込むマス。渡すと、打つマスのかわりにここへ置く */
   writeRow?: ReactNode
 }) {
@@ -43,7 +42,9 @@ export function ColumnForm({
   if (!parsed) return <span>{expression}</span>
 
   const { left, operator, right } = parsed
-  const hasSteps = rows.length > 0 || typedShift > 0
+  const rows = cells.filter((cell) => cell.slot.kind === 'row')
+  const places = cells.filter((cell) => cell.slot.kind === 'place')
+  const answer = cells.find((cell) => cell.slot.kind === 'answer')
 
   return (
     // tabular-nums: 数字の幅をそろえて、位が縦に並ぶようにする
@@ -58,69 +59,70 @@ export function ColumnForm({
       <span aria-hidden="true">{right}</span>
       <span aria-hidden="true" className="col-span-2 mt-1 border-t-2 border-ink-900" />
 
-      {/* 打ち終わった途中の段。ずらして書くのも筆算と同じ */}
-      {rows.map((row, index) => (
-        <Boxes
+      {/* かけ算の段。ずらして書くのも筆算と同じ */}
+      {rows.map((cell, index) => (
+        <Row
           key={index}
-          digits={[...row.value]}
-          shift={row.shift}
-          tone={row.corrected ? 'corrected' : 'done'}
+          digits={cell.digits}
+          tone={cell.tone}
+          shift={cell.slot.kind === 'row' ? cell.slot.shift : 0}
         />
       ))}
 
-      {/* 途中の段があるなら、答えの前にもう1本線を引く */}
-      {hasSteps && rows.length > 0 && (
+      {/* 段があるなら、答えの前にもう1本線を引く */}
+      {rows.length > 0 && (
         <span aria-hidden="true" className="col-span-2 mt-1 border-t-2 border-ink-900" />
       )}
 
-      {/*
-        いま打っているところ。紙の筆算と同じで、線のすぐ下に入る。
-
-        空のマスを出すのは、まだ何も打っていないときだけ。打った数の右に足すと、
-        数がマス1つぶん左へずれて、上の段と位がそろわなくなる。
-      */}
       {writeRow !== undefined ? (
         <span aria-hidden="true" className="col-span-2 mt-2 flex justify-end gap-1">
           {writeRow}
         </span>
       ) : (
-        typed !== undefined && (
-          <Boxes digits={typed ? [...typed] : ['']} shift={typedShift} tone="typing" />
+        /*
+          たし算・ひき算は一のくらいから打つので、右から左へ埋まっていく。
+          打ち終わった位は右に残したまま、いま打っている位をその左に置く。
+        */
+        (places.length > 0 || answer) && (
+          <span aria-hidden="true" className="col-span-2 mt-2 flex justify-end gap-1">
+            {[...places].reverse().map((cell, index) => (
+              <Digits key={index} digits={cell.digits} tone={cell.tone} />
+            ))}
+            {answer && <Digits digits={answer.digits} tone={answer.tone} />}
+          </span>
         )
       )}
     </span>
   )
 }
 
-/**
- * 数字のマス。
- *
- * 打っている段は、**答えの桁数ぶんは置かない**。マスの数が見えると桁数が分かってしまい、
- * 見当をつける手間が減る。打った数に追いて増える形にして、
- * まだ何も打っていないときだけ点線のマスを1つ出す。
- */
-function Boxes({
-  digits,
-  shift,
-  tone,
-  span = true,
-}: {
-  digits: string[]
-  shift: number
-  tone: 'typing' | 'done' | 'corrected'
-  /** 2列ぶんに広げるか。わり算の商は右の列だけに置く */
-  span?: boolean
-}) {
+/** かけ算の段1つ。ずらす段は、その幅ぶん右を空ける */
+function Row({ digits, shift, tone }: { digits: string; shift: number; tone: CellTone }) {
   return (
     <span
       aria-hidden="true"
-      className={`mt-2 flex justify-end gap-1 ${span ? 'col-span-2' : ''}`}
-      // ずらした段は、その幅ぶん右を空ける(マス1つ + すきま)
-      style={shift ? { paddingRight: `calc(${shift} * (1.15em + 0.25rem))` } : undefined}
+      className="col-span-2 mt-2 flex justify-end gap-1"
+      style={shift ? { paddingRight: `calc(${shift} * (${CELL} + 0.25rem))` } : undefined}
     >
-      {digits.map((digit, index) => (
+      <Digits digits={digits} tone={tone} />
+    </span>
+  )
+}
+
+/**
+ * 数をマスに1字ずつ。
+ *
+ * 打っているところは、**答えの桁数ぶんのマスは置かない**。マスの数が見えると
+ * 桁数が分かってしまい、見当をつける手間が減る。打った数に追いて増える形にして、
+ * まだ何も打っていないときだけ点線のマスを1つ出す。
+ */
+function Digits({ digits, tone }: { digits: string; tone: CellTone }) {
+  return (
+    <>
+      {(digits ? [...digits] : ['']).map((digit, index) => (
         <span
           key={index}
+          // 幅は CELL と同じ。Tailwind は書いたままの字面しか拾えないので、ここは直に書く
           className={`flex size-[1.15em] items-center justify-center rounded-md border-2 leading-none ${
             tone === 'corrected'
               ? 'border-warm-500 text-warm-600'
@@ -132,63 +134,137 @@ function Boxes({
           {digit}
         </span>
       ))}
-    </span>
+    </>
   )
 }
 
 /**
- * わり算の筆算。割る数 │ 割られる数 の形にして、商を上に書く。
+ * わり算の筆算(長除法)。割る数 │ 割られる数 の形にして、商を上に書く。
  *
  * かけ算の筆算と形が違うので別にしてある(縦に積むのではなく、囲って上に書く)。
- * 商のマスは右づめ。右づめにすると、商のいちばん下の桁が割られる数の一の位の上に来て、
- * 筆算で習う位置とそのまま一致する(320 ÷ 5 なら 6 が 2 の上、4 が 0 の上)。
- *
- * 引く段(5 × 6 = 30 を書いて引く…)はまだ出さない。形と位置だけでも、
- * 1行の式より桁の見当がつけやすくなる。
+ * 割られる数を1桁ずつマス目に置き、商・引く段・ひいた数を**その桁の下にそろえて**置く。
+ * 桁がずれると、どの数からどれを引いたのかが読めなくなる。
  */
 export function DivisionForm({
   expression,
-  typed,
+  cells = [],
   writeRow,
 }: {
   expression: string
-  typed?: string
-  /** 手書きで書き込むマス。渡すと、打つマスのかわりにここへ置く */
+  cells?: ColumnCell[]
   writeRow?: ReactNode
 }) {
   const parsed = parseExpression(expression)
   if (!parsed || parsed.operator !== '÷') return <span>{expression}</span>
 
   const [dividend, divisor] = [parsed.left, parsed.right]
+  const quotient = cells.filter((cell) => cell.slot.kind === 'quotient')
+  const lines = cells.filter((cell) => cell.slot.kind === 'product' || cell.slot.kind === 'rest')
+
+  /** 割られる数の桁(0始まり、左から)が、グリッドの何列目か。1列目は割る数 */
+  const columnOf = (index: number) => index + 2
+
+  /*
+    引く段とひいた数は、1行ずつ下へ積む。ひいた数の上には線を引くので、その段は2行ぶん使う。
+    線は紙と同じく**引く段の幅**に引く(ひいた数は、おろした桁のぶん右へ伸びるため)。
+  */
+  const placed = lines.reduce<Placed[]>((done, cell) => {
+    const column = cell.slot.kind === 'product' || cell.slot.kind === 'rest' ? cell.slot.column : 0
+    const span = Math.max(cell.digits.length, 1)
+    const start = Math.max(2, columnOf(column) - span + 1)
+    const above = done[done.length - 1]
+    const top = above ? above.row + 1 : 3
+    const ruled = cell.slot.kind === 'rest' && above !== undefined
+
+    return [
+      ...done,
+      {
+        cell,
+        row: ruled ? top + 1 : top,
+        start,
+        span,
+        rule: ruled ? { row: top, start: above.start, span: above.span } : undefined,
+      },
+    ]
+  }, [])
 
   return (
     <span
       // 読み上げには1行の式を渡す。囲いと数字の位置だけでは式として読まれない
       aria-label={expression}
-      className="inline-grid grid-cols-[auto_auto] gap-x-2 text-right font-bold tabular-nums"
+      className="inline-grid gap-1 text-right font-bold tabular-nums"
+      style={{ gridTemplateColumns: `auto repeat(${dividend.length}, ${CELL})` }}
     >
-      {/* 商。割られる数の上にそろえたいので、下の枠と同じだけ左を空ける */}
-      <span aria-hidden="true" />
-      <span aria-hidden="true" className="pl-2">
-        {writeRow !== undefined ? (
-          <span className="mt-2 flex justify-end gap-1">{writeRow}</span>
-        ) : typed !== undefined ? (
-          <Boxes digits={typed ? [...typed] : ['']} shift={0} tone="typing" span={false} />
-        ) : (
-          <span className="invisible">0</span>
-        )}
-      </span>
+      {/* 商。割られる数の、その桁の真上に置く */}
+      {writeRow !== undefined ? (
+        <span
+          aria-hidden="true"
+          className="flex justify-end gap-1"
+          style={{ gridRow: 1, gridColumn: `2 / span ${dividend.length}` }}
+        >
+          {writeRow}
+        </span>
+      ) : (
+        quotient.map((cell, index) => (
+          <span
+            key={index}
+            aria-hidden="true"
+            className="flex justify-center"
+            style={{
+              gridRow: 1,
+              gridColumn: cell.slot.kind === 'quotient' ? columnOf(cell.slot.column) : 2,
+            }}
+          >
+            <Digits digits={cell.digits} tone={cell.tone} />
+          </span>
+        ))
+      )}
 
       {/* 割る数 │ 割られる数 */}
-      <span aria-hidden="true" className="self-center">
+      <span aria-hidden="true" className="self-center pr-1" style={{ gridRow: 2, gridColumn: 1 }}>
         {divisor}
       </span>
-      <span
-        aria-hidden="true"
-        className="rounded-tl-md border-t-2 border-l-2 border-ink-900 pt-1 pl-2"
-      >
-        {dividend}
-      </span>
+      {[...dividend].map((digit, index) => (
+        <span
+          key={index}
+          aria-hidden="true"
+          className={`border-t-2 border-ink-900 pt-1 text-center ${
+            index === 0 ? 'rounded-tl-md border-l-2 pl-1' : ''
+          }`}
+          style={{ gridRow: 2, gridColumn: columnOf(index) }}
+        >
+          {digit}
+        </span>
+      ))}
+
+      {/* 引く段とひいた数 */}
+      {placed.map(({ cell, row, start, span, rule }, index) => (
+        <span key={index} className="contents">
+          {rule && (
+            <span
+              aria-hidden="true"
+              className="mt-1 border-t-2 border-ink-900"
+              style={{ gridRow: rule.row, gridColumn: `${rule.start} / span ${rule.span}` }}
+            />
+          )}
+          <span
+            aria-hidden="true"
+            className="flex justify-end gap-1"
+            style={{ gridRow: row, gridColumn: `${start} / span ${span}` }}
+          >
+            <Digits digits={cell.digits} tone={cell.tone} />
+          </span>
+        </span>
+      ))}
     </span>
   )
+}
+
+/** 引く段・ひいた数を、グリッドのどこに置くか */
+interface Placed {
+  cell: ColumnCell
+  row: number
+  start: number
+  span: number
+  rule?: { row: number; start: number; span: number }
 }
