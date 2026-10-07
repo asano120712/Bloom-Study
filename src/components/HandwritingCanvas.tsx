@@ -12,6 +12,20 @@ interface HandwritingCanvasProps {
 
 const LINE_WIDTH = 8
 const STROKE_COLOR = '#23292B'
+/** LINE_WIDTH を決めたときの root font-size。index.css の clamp 下限と同じ値 */
+const BASE_ROOT_FONT_SIZE = 16
+
+/**
+ * 画面の拡大率(root font-size)に合わせた線の太さ。
+ *
+ * キャンバスは rem 指定の枠いっぱいに広がるので、太さを 8px のままにすると
+ * 大きなウィンドウでは字に対して線だけが細く見える。枠と同じ倍率で太くする。
+ */
+function scaledLineWidth(): number {
+  const rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize)
+  if (!rootFontSize) return LINE_WIDTH
+  return LINE_WIDTH * (rootFontSize / BASE_ROOT_FONT_SIZE)
+}
 
 /**
  * 手書き入力キャンバス。外部ライブラリを使わず Canvas API のみで実装する。
@@ -57,7 +71,7 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
     context.scale(ratio, ratio)
     context.lineCap = 'round'
     context.lineJoin = 'round'
-    context.lineWidth = LINE_WIDTH
+    context.lineWidth = scaledLineWidth()
     context.strokeStyle = STROKE_COLOR
     // scale 済みなので CSS ピクセルの座標系で描き戻す
     if (previous) context.drawImage(previous, 0, 0, width, height)

@@ -18,6 +18,10 @@ interface AppShellProps {
 /**
  * スマホ幅を基準にした共通レイアウト。タブレット・PCでは中央寄せにする。
  *
+ * 幅の上限 max-w-md(28rem)は rem なので、index.css の root font-size が
+ * ウィンドウに追従して動くと、中身の文字や余白と同じ倍率で一緒に伸び縮みする。
+ * 画面の比率を変えたいとき以外、ここを px や vw に書き換える必要はない。
+ *
  * 高さは min-h-dvh(動的ビューポート高)を起点にした flex チェーンで渡す。
  * 親が height:auto のまま min-h-full を重ねても % が解決されず、
  * 各画面の justify-center が効かなくなるため。
