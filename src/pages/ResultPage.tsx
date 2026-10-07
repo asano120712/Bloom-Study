@@ -4,7 +4,7 @@ import { AppShell } from '@/components/AppShell'
 import { BloomMark } from '@/components/BloomMark'
 import { ModelAnswer } from '@/components/ModelAnswer'
 import { findGenre } from '@/data/genres'
-import { useCopy } from '@/hooks/useAudienceMode'
+import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
 import { useHasFinePointer } from '@/hooks/useHasFinePointer'
 import { canSpeak, speak } from '@/services/speech'
 import type { Difficulty, GenreId, InputMode, JudgeResult } from '@/types'
@@ -36,6 +36,8 @@ export function ResultPage() {
   const navigate = useNavigate()
   const copy = useCopy()
   const hasFinePointer = useHasFinePointer()
+  // 花マークはこども向けのときだけ顔つきにする(おとな向けは今までどおり花びらだけ)
+  const isKids = useAudienceMode() === 'kids'
 
   const genre = state ? findGenre(state.genreId) : undefined
   const speechLang = genre?.speechLang
@@ -82,7 +84,7 @@ export function ResultPage() {
   return (
     <AppShell>
       <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-        {result.isCorrect && <BloomMark size={100} />}
+        {result.isCorrect && <BloomMark size={100} face={isKids ? 'joy' : undefined} />}
 
         <p
           className={`text-2xl font-bold ${

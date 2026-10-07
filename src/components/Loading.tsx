@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useAudienceMode } from '@/hooks/useAudienceMode'
 import { BloomMark } from './BloomMark'
 
 /**
@@ -18,6 +19,8 @@ export function Loading({
   delayMs?: number
 }) {
   const [isVisible, setIsVisible] = useState(delayMs === 0)
+  // 花マークはこども向けのときだけ顔つきにする(おとな向けは今までどおり花びらだけ)
+  const isKids = useAudienceMode() === 'kids'
 
   useEffect(() => {
     if (delayMs === 0) return
@@ -33,7 +36,7 @@ export function Loading({
       aria-live="polite"
       className="m-auto flex flex-col items-center gap-4 py-10 text-center"
     >
-      <BloomMark size={64} motion="loop" />
+      <BloomMark size={64} motion="loop" face={isKids ? 'sleepy' : undefined} />
       <p className="text-base text-ink-600">{message}</p>
       {hint && <p className="max-w-64 text-sm text-ink-400">{hint}</p>}
     </div>

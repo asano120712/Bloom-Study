@@ -5,6 +5,7 @@ import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
 import { writeAudienceMode } from '@/services/audienceMode'
 import { TOP_PATH, type AudienceMode } from '@/types'
 import { BloomLogo } from './BloomLogo'
+import { BloomMark } from './BloomMark'
 
 interface AppHeaderProps {
   /**
@@ -23,8 +24,9 @@ const AUDIENCE_LABEL: Record<AudienceMode, string> = {
 }
 
 /**
- * 全画面共通のヘッダー。左に横組みロゴ、右におとな/こどもの切り替えを置く。
+ * 全画面共通のヘッダー。左にロゴ、右におとな/こどもの切り替えを置く。
  * 出題中(exitTo あり)だけは並びを入れ替え、左を「やめる」、右をロゴにする。
+ * ロゴの中身はモードで変わる(HeaderMark)。
  */
 export function AppHeader({ exitTo }: AppHeaderProps) {
   const navigate = useNavigate()
@@ -36,16 +38,16 @@ export function AppHeader({ exitTo }: AppHeaderProps) {
     return (
       <header className="flex items-center justify-between gap-3 border-b border-bloom-100 px-5 py-3 select-none">
         {/*
-          ロゴは横長(300:62)で、切り替えと並べると 320px 幅の端末で収まらない。
-          min-w-0 で縮めるのを許し、object-contain で縦横比を保ったまま小さくする
-          (h-9 と w-auto だけだと、縮んだ幅に合わせて字が潰れる)。
+          おとな向けのロゴは横長(300:62)で、切り替えと並べると 320px 幅の端末で収まらない。
+          min-w-0 で縮めるのを許し、object-contain(HeaderMark 側)で縦横比を保ったまま
+          小さくする(h-9 と w-auto だけだと、縮んだ幅に合わせて字が潰れる)。
         */}
         <Link
           to={TOP_PATH[mode]}
           aria-label="トップへ"
           className="inline-flex min-w-0"
         >
-          <BloomLogo variant="horizontal" className="h-9 w-auto max-w-full object-contain" />
+          <HeaderMark mode={mode} />
         </Link>
         <AudienceSwitch current={mode} />
       </header>
@@ -68,7 +70,7 @@ export function AppHeader({ exitTo }: AppHeaderProps) {
         おとな/こどもの切り替えもここでは出さない(切り替えるとトップへ移るため、
         離脱を止めたい画面に抜け道を作ってしまう)。
       */}
-      <BloomLogo variant="horizontal" className="h-9 w-auto" />
+      <HeaderMark mode={mode} />
 
       {isConfirming && (
         <ExitConfirmDialog
@@ -79,6 +81,24 @@ export function AppHeader({ exitTo }: AppHeaderProps) {
       )}
     </header>
   )
+}
+
+/**
+ * ヘッダーに出すロゴ。
+ *
+ * こども向けは**字を読めない年齢を想定している**ので、`Bloomstudy` のワードマークを外し、
+ * 顔つきのマークだけにする(言葉づかい・配色をモードで変えているのと同じ考え方)。
+ * 読めない字は目印にならず、横長のぶん切り替えと窮屈に並ぶだけになるため。
+ */
+function HeaderMark({ mode }: { mode: AudienceMode }) {
+  // 文字が無いぶん小さく見えるので、おとな向けのロゴ(h-9=36px)より一回り大きくする。
+  // トップへ戻る押し場所でもあるため、他の押し場所と同じ 44px に合わせてある。
+  //
+  // 動きは idle。ずっと出ている場所なので、遷移のたびに開き直さず、
+  // 開いた形のままゆっくり揺れて、ときどきまばたきする。
+  if (mode === 'kids') return <BloomMark size={44} motion="idle" face="smile" />
+
+  return <BloomLogo variant="horizontal" className="h-9 w-auto max-w-full object-contain" />
 }
 
 /**

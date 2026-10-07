@@ -60,7 +60,7 @@ export function TracePage() {
     return (
       <AppShell>
         <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
-          <BloomMark size={120} />
+          <BloomMark size={120} face="joy" />
           <p className="text-2xl font-bold text-bloom-700">{copy.play.allDone}</p>
 
           <div className="flex w-full flex-col gap-3">
