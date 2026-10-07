@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { Fragment, useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { HeroVisual } from '@/components/HeroVisual'
@@ -31,11 +31,12 @@ export function KidsTopPage() {
           <HeroVisual className="w-full rounded-3xl" />
 
           <p className="text-lg leading-relaxed text-ink-600">
-            {copy.top.lead[0]}
-            <br />
-            {copy.top.lead[1]}
-            <br />
-            {copy.top.lead[2]}
+            {copy.top.lead.map((line, index) => (
+              <Fragment key={line}>
+                {index > 0 && <br />}
+                {line}
+              </Fragment>
+            ))}
           </p>
 
           <div className="flex w-full flex-col gap-4">
