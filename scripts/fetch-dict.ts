@@ -20,6 +20,17 @@ import { CACHE_DIR } from './dict-cache.ts'
 /** jmdict-simplified のリリースから取るアセット */
 const JMDICT_ASSETS = ['kanjidic2-en', 'kradfile', 'jmdict-eng-common']
 
+/**
+ * JMdict の生XML(EDRDG 配布そのもの)。
+ *
+ * jmdict-simplified の JSON は優先タグ(ichi1 / news1 / nf01…)を common の真偽値へ
+ * 畳んでしまう。同じ答えに候補が複数あるときどの語で出題するかは語の頻度で決めたいので、
+ * タグを持っているこちらも取る(scripts/word-priority.ts が読む)。
+ * EDRDG は https を提供していないため http で取る。開発時にしか使わないデータ。
+ */
+const JMDICT_XML_URL = 'http://ftp.edrdg.org/pub/Nihongo/JMdict_e.gz'
+const JMDICT_XML_FILE = 'JMdict_e.xml'
+
 const RELEASE_API = 'https://api.github.com/repos/scriptin/jmdict-simplified/releases/latest'
 
 /**
@@ -60,6 +71,23 @@ async function fetchJmdict(): Promise<void> {
     execFileSync('tar', ['xzf', archive, '-C', CACHE_DIR])
     console.log('完了')
   }
+}
+
+async function fetchJmdictXml(): Promise<void> {
+  console.log('JMdict(生XML)')
+  if (existsSync(join(CACHE_DIR, JMDICT_XML_FILE))) {
+    console.log('  JMdict_e: すでにある(消せば再取得)')
+    return
+  }
+
+  process.stdout.write('  JMdict_e: 取得中... ')
+  const response = await fetch(JMDICT_XML_URL)
+  if (!response.ok) throw new Error(`JMdict(生XML) の取得に失敗: ${response.status} ${JMDICT_XML_URL}`)
+  const gz = join(CACHE_DIR, `${JMDICT_XML_FILE}.gz`)
+  writeFileSync(gz, Buffer.from(await response.arrayBuffer()))
+  // gunzip は .gz を外した名前で書き出す
+  execFileSync('gunzip', ['-f', gz])
+  console.log('完了')
 }
 
 async function fetchNgsl(): Promise<void> {
@@ -103,5 +131,6 @@ async function fetchKanjivg(): Promise<void> {
 
 mkdirSync(CACHE_DIR, { recursive: true })
 await fetchJmdict()
+await fetchJmdictXml()
 await fetchNgsl()
 await fetchKanjivg()
