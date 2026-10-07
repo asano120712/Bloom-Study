@@ -1,3 +1,6 @@
+import type { ReactNode } from 'react'
+import { parseExpression } from '@/features/math'
+
 /** 筆算の1段。打ち終わった段と、いま打っている段を区別して出す */
 export interface ColumnRow {
   /** その段に入る数 */
@@ -24,6 +27,7 @@ export function ColumnForm({
   typed,
   rows = [],
   typedShift = 0,
+  writeRow,
 }: {
   expression: string
   /** いま打っている数。渡すとマスが出る */
@@ -32,11 +36,13 @@ export function ColumnForm({
   rows?: ColumnRow[]
   /** いま打っている段のずらし幅 */
   typedShift?: number
+  /** 手書きで書き込むマス。渡すと、打つマスのかわりにここへ置く */
+  writeRow?: ReactNode
 }) {
-  const parsed = expression.match(/^(\d+)\s*([×÷+\-−])\s*(\d+)$/)
+  const parsed = parseExpression(expression)
   if (!parsed) return <span>{expression}</span>
 
-  const [, left, operator, right] = parsed
+  const { left, operator, right } = parsed
   const hasSteps = rows.length > 0 || typedShift > 0
 
   return (
@@ -73,8 +79,14 @@ export function ColumnForm({
         空のマスを出すのは、まだ何も打っていないときだけ。打った数の右に足すと、
         数がマス1つぶん左へずれて、上の段と位がそろわなくなる。
       */}
-      {typed !== undefined && (
-        <Boxes digits={typed ? [...typed] : ['']} shift={typedShift} tone="typing" />
+      {writeRow !== undefined ? (
+        <span aria-hidden="true" className="col-span-2 mt-2 flex justify-end gap-1">
+          {writeRow}
+        </span>
+      ) : (
+        typed !== undefined && (
+          <Boxes digits={typed ? [...typed] : ['']} shift={typedShift} tone="typing" />
+        )
       )}
     </span>
   )
@@ -134,11 +146,20 @@ function Boxes({
  * 引く段(5 × 6 = 30 を書いて引く…)はまだ出さない。形と位置だけでも、
  * 1行の式より桁の見当がつけやすくなる。
  */
-export function DivisionForm({ expression, typed }: { expression: string; typed?: string }) {
-  const parsed = expression.match(/^(\d+)\s*÷\s*(\d+)$/)
-  if (!parsed) return <span>{expression}</span>
+export function DivisionForm({
+  expression,
+  typed,
+  writeRow,
+}: {
+  expression: string
+  typed?: string
+  /** 手書きで書き込むマス。渡すと、打つマスのかわりにここへ置く */
+  writeRow?: ReactNode
+}) {
+  const parsed = parseExpression(expression)
+  if (!parsed || parsed.operator !== '÷') return <span>{expression}</span>
 
-  const [, dividend, divisor] = parsed
+  const [dividend, divisor] = [parsed.left, parsed.right]
 
   return (
     <span
@@ -149,7 +170,9 @@ export function DivisionForm({ expression, typed }: { expression: string; typed?
       {/* 商。割られる数の上にそろえたいので、下の枠と同じだけ左を空ける */}
       <span aria-hidden="true" />
       <span aria-hidden="true" className="pl-2">
-        {typed !== undefined ? (
+        {writeRow !== undefined ? (
+          <span className="mt-2 flex justify-end gap-1">{writeRow}</span>
+        ) : typed !== undefined ? (
           <Boxes digits={typed ? [...typed] : ['']} shift={0} tone="typing" span={false} />
         ) : (
           <span className="invisible">0</span>

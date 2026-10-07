@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
+import { BoxHandwriting } from '@/components/BoxHandwriting'
 import { ColumnForm, DivisionForm, type ColumnRow } from '@/components/ColumnForm'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
 import { HintList } from '@/components/HintList'
@@ -10,6 +11,7 @@ import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { answerChoicesOf, findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
+import { answerBoxCount } from '@/features/math'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeNumber, judgeParts, judgeTyping } from '@/features/judge'
 import { useCopy } from '@/hooks/useAudienceMode'
@@ -170,9 +172,10 @@ export function QuizPage() {
 
   /** 計算は「ヒント → 式 → 答え」の順に置く */
   const showsPromptBelow = genre.id === 'math'
-  /** 筆算で数を打つときは、式と答えのマスをひと続きに見せたいので入力側が出す */
-  const showsPromptInInput =
-    showsPromptBelow && inputMode === 'number' && question.promptLayout !== undefined
+  /** 筆算のときは、式と答えのマスをひと続きに見せたいので入力側が出す */
+  const showsPromptInInput = showsPromptBelow && question.promptLayout !== undefined
+  /** 手書きも、筆算なら大きなキャンバスではなくマスに1字ずつ書く */
+  const writesInBoxes = showsPromptInInput && inputMode === 'handwriting'
 
   return (
     <AppShell fitViewport exitTo="/genres">
@@ -208,7 +211,13 @@ export function QuizPage() {
       )}
 
       {/* 余りは入力側へ多めに配る(ヒント枠と 2:1)。キャンバスとキーはここで伸びる */}
-      <section className="mt-auto flex min-h-0 flex-2 flex-col justify-end pt-4">
+      {/*
+        マスに書くときは真ん中に寄せる。キーボードと違って縦に短く、
+        下に寄せるとヒント枠との間が大きく空いて、つながりが見えなくなる。
+      */}
+      <section
+        className={`mt-auto flex min-h-0 flex-2 flex-col pt-4 ${writesInBoxes ? 'justify-center' : 'justify-end'}`}
+      >
         {selfReport ? (
           // 手書きは自動判定しない。正解を提示したうえで自己申告してもらう
           <div className="flex flex-col gap-4 select-none">
@@ -285,7 +294,18 @@ export function QuizPage() {
                 }}
               />
             )}
-            {inputMode === 'handwriting' && (
+            {inputMode === 'handwriting' && writesInBoxes && (
+              <BoxHandwriting
+                key={`boxes-${question.id}`}
+                boxes={answerBoxCount(question.prompt)}
+                // マスは筆算の線の下に置く。式と離すと、どこに書くのか分からなくなる
+                form={(cells) => (
+                  <PromptBlock question={question} caption={promptCaption} writeRow={cells} />
+                )}
+                onSubmit={(image) => setSelfReport({ hintsUsed: revealedCount, image })}
+              />
+            )}
+            {inputMode === 'handwriting' && !writesInBoxes && (
               <HandwritingCanvas
                 key={`handwriting-${question.id}`}
                 onSubmit={(image) => setSelfReport({ hintsUsed: revealedCount, image })}
@@ -327,12 +347,15 @@ function PromptBlock({
   typed,
   rows,
   typedShift,
+  writeRow,
 }: {
   question: Question
   caption: string
   typed?: string
   rows?: ColumnRow[]
   typedShift?: number
+  /** 手書きで書き込むマス */
+  writeRow?: ReactNode
 }) {
   return (
     <section className="mt-4 shrink-0 text-center select-none">
@@ -344,9 +367,10 @@ function PromptBlock({
             typed={typed}
             rows={rows}
             typedShift={typedShift}
+            writeRow={writeRow}
           />
         ) : question.promptLayout === 'division' ? (
-          <DivisionForm expression={question.prompt} typed={typed} />
+          <DivisionForm expression={question.prompt} typed={typed} writeRow={writeRow} />
         ) : (
           question.prompt
         )}

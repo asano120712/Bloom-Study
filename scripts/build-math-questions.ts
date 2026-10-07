@@ -91,7 +91,10 @@ interface MathQuestion {
  * 式のほうが短いうえ、他の段と同じ書き方になって読む切り替えも要らない。
  */
 
-/** 2桁 × 1桁。十の位と一の位に割って掛ける */
+/**
+ * 2桁 × 1桁。筆算どおり、一の位の積と十の位の積を段に分けて書く。
+ * 95 × 8 なら 1だんめ 40(5×8)、2だんめ 72(9×8、1けたずらす)、足して 760。
+ */
 function multiply2x1(): MathQuestion | null {
   const a = pick(12, 99)
   const b = pick(3, 9)
@@ -107,12 +110,12 @@ function multiply2x1(): MathQuestion | null {
     promptLayout: 'column',
     answer: String(a * b),
     level: 'g34',
+    // 段は 2桁×2桁 と同じ考え方。1だんめが 一のくらい、2だんめが 十のくらいで1けたずれる
+    steps: [String(ones * b), String((tens / 10) * b)],
     hintSource: [
-      `一のくらい ${ones} × ${b} = ${ones * b}`,
-      ones * b >= 10
-        ? `${(ones * b) % 10} をかいて ${Math.floor((ones * b) / 10)} くりあがり`
-        : `${(ones * b) % 10} をかく`,
-      `十のくらい ${tens / 10} × ${b} = ${(tens / 10) * b}`,
+      `1だんめ 一のくらい ${ones} × ${b}`,
+      `2だんめ 十のくらい ${tens / 10} × ${b}`,
+      `2だんめは 1けた ずらす`,
     ],
   }
 }
@@ -136,9 +139,9 @@ function multiply2x2(): MathQuestion | null {
     answer: String(a * b),
     level: 'g34',
     hintSource: [
-      `1だんめ ${a} × ${ones}`,
-      `2だんめ ${a} × ${tens / 10}、1けた ずらす`,
-      `2つの だんを たす`,
+      `1だんめ ${a} × 一のくらいの ${ones}`,
+      `2だんめ ${a} × 十のくらいの ${tens / 10}`,
+      `2だんめは 1けた ずらす`,
     ],
   }
 }
