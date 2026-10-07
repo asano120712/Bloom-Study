@@ -1,9 +1,16 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, type ReactNode } from 'react'
 import { useCopy } from '@/hooks/useAudienceMode'
 import { NumberPad } from './NumberPad'
 
 interface NumberInputProps {
   onSubmit: (value: string) => void
+  /**
+   * 打った数の見せ方を差し替える。
+   *
+   * 筆算のときは、答えを式の線の下に出したい(紙の筆算と同じ場所)。
+   * 打った数はこの部品が持っているので、見せ方だけを外から渡してもらう。
+   */
+  display?: (typed: string) => ReactNode
   disabled?: boolean
 }
 
@@ -17,7 +24,7 @@ const MAX_LENGTH = 6
  * ただしキーボードを畳む仕組みは持たない。数字キーは10個しかなく、
  * 畳んでも空いた場所に出すものが無いため。
  */
-export function NumberInput({ onSubmit, disabled = false }: NumberInputProps) {
+export function NumberInput({ onSubmit, display, disabled = false }: NumberInputProps) {
   const copy = useCopy()
   const [value, setValue] = useState('')
 
@@ -65,15 +72,17 @@ export function NumberInput({ onSubmit, disabled = false }: NumberInputProps) {
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
-      <div
-        aria-live="polite"
-        aria-label={copy.number.inputLabel}
-        className="flex min-h-14 w-full shrink-0 items-center justify-center rounded-2xl border-2 border-bloom-200 bg-white px-4"
-      >
-        {value ? (
-          <span className="text-3xl font-bold tracking-[0.1em] text-ink-900">{value}</span>
+      <div aria-live="polite" aria-label={copy.number.inputLabel} className="shrink-0">
+        {display ? (
+          display(value)
         ) : (
-          <span className="text-base text-ink-400">{copy.number.placeholder}</span>
+          <div className="flex min-h-14 w-full items-center justify-center rounded-2xl border-2 border-bloom-200 bg-white px-4">
+            {value ? (
+              <span className="text-3xl font-bold tracking-[0.1em] text-ink-900">{value}</span>
+            ) : (
+              <span className="text-base text-ink-400">{copy.number.placeholder}</span>
+            )}
+          </div>
         )}
       </div>
 

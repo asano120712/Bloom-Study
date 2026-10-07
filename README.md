@@ -168,7 +168,7 @@ KRADFILE は部品を持つが**配置(左右・上下)は持たない**(`亻`+`
 JMdict(common語のみ)と NGSL から生成する。漢字と同じく開発時に生成して JSON をコミットする。
 
 ```bash
-npm run questions:english                  # 既定 → 1709問
+npm run questions:english                  # 既定 → 1617問
 npm run questions:english -- --bands=1000  # NGSL上位1000語の範囲だけ
 npm run questions:english -- --report      # 書き出さず、内訳と無作為20問だけ確認
 ```
@@ -176,24 +176,56 @@ npm run questions:english -- --report      # 書き出さず、内訳と無作�
 出力は `src/data/questions.english.generated.json`。
 出題語は漢字表記(`uk` タグの語はかな表記)、答えは第一訳、同じ語義の別訳は
 `acceptableAnswers` に入れて正解扱いにする。
+漢字表記の出題語には読みを `promptReading` に添える(椅子 → いす)。
+**読みを出しても答えは漏れない**ジャンルなので、読めない出題語を捨てずに救える。
 
 **答えの難易度は NGSL(学習者向け基本語2801語)で制御している。** これが無いと
 militarism・lipstick のような優先度の低い語まで問題になる。
 頻度で訳語を選び直すと訳が壊れる(顔ぶれ → members)ため、
 **第一訳をそのまま答えにして、それが NGSL に無ければ問題ごと捨てる**方針にしている。
 
+**1語かどうかは第一訳だけに掛ける。** 先に1語の訳だけへ絞ってから先頭を取ると、
+「最初の1語の訳」が答えになり、その語の主要な意味でない訳で出題してしまう
+(急騰 = sudden rise / sharp rise / jump → jump が答えになる)。
+
 | 除外 | 理由 |
 |---|---|
-| 1語の英単語にならない | 複数語の訳(to live on など)は判定にも1文字ずつのヒントにも向かない |
+| 第一訳が1語の英単語にならない | 複数語の訳(to live on など)は判定にも1文字ずつのヒントにも向かない |
 | 答えがNGSLに無い | 学習の優先度が低い |
 | カタカナ語 | 出題語が答えそのものになる(テーブル → table) |
 | 答えが他の問題と重複 | 同じ答えの問題を作らない |
 | 答えが4〜10文字の外 | 短いとヒントが2段階しか作れず、長いと開放しきらない |
 | 学習に出すのに向かない語 | 下記「不適切な語の除外」を参照 |
 
+#### 同じ答えに候補が複数あるとき
+
+答えは1問につき1つしか使わないので、`jump` に 跳ねる・跳躍・急騰 のような候補が
+並んだときはどれかを選ぶことになる。**辞書の並び順(ID順)で選ぶと、辞書に先に
+載っている語が勝つ**ため、急騰 → jump・減収 → fall のように新聞語彙や専門語で
+出題してしまう。
+
+そこで JMdict の優先タグで並べ替えてから選ぶ([scripts/word-priority.ts](scripts/word-priority.ts))。
+
+| 順 | 見るもの | 意味 |
+|---|---|---|
+| 1 | tier | `ichi1`(基本語彙1万語) → `spec1` → `news1` → 二次リストのみ → 無印 |
+| 2 | nf | 新聞頻度の帯(`nf01` = 上位500語) |
+| 3 | 辞書ID | ここまで同じなら辞書の並び |
+
+**tier を先に見るのが要点。** nf だけで並べると新聞語彙に偏る
+(急騰 nf15 が 跳ねる nf40 に勝つ)。基本語彙に絞ってから頻度で選ぶと
+跳ねる・落ちる・お金 のような語が残り、出題語が基本語彙(`ichi1`)である割合は
+67.6% → 84.5% になる。
+
+優先タグは **JMdict の生XML にしか入っていない**(jmdict-simplified の JSON は
+`common` の真偽値へ畳んでしまう)ため、`npm run dict:fetch` で生XMLも落としている。
+
 JMdict のタグでは弾けない問題(`おなら` → wind など)は
 `scripts/english-denylist.ts` に出題語を書いて除外する。
 生成JSONを直接編集しても次回生成で消える。
+
+順位づけでも残る偏り(同じ答えで、新聞に出るほうが日常語に勝つ)はここで落とす。
+落とすと次の候補が出題語になるので、`傷害` を落として `怪我` → injury にできる。
 
 ### 計算問題の生成
 
@@ -252,6 +284,25 @@ npm run questions:math -- --report  # 書き出さず、内訳と先頭20問だ�
 問題データは**1行の式のまま持つ**(`prompt: '24 × 5'`)。マイページの履歴や読み上げは
 1行のほうが扱いやすいため、縦に積むのは見せる側([ColumnForm](src/components/ColumnForm.tsx))で行う。
 積むかどうかは `promptLayout: 'column'` で持ち、小1・2の暗算どうしは1行のまま出す。
+
+#### 計算だけ、画面の並びが違う
+
+```
+ほかのジャンル          計算
+  出題語                ヒント
+  ヒント                式(筆算)
+  こたえかた             答えのマス
+                        キーボード
+```
+
+**計算はヒントが先。** 紙の筆算と同じで、式と答えを書く場所が隣り合っていたほうが解きやすい。
+思い出す系のジャンルは、先に出題語を見て考える流れなので出題語が上のまま。
+
+打った数は、筆算の線のすぐ下のマスに入る。打った数は `NumberInput` が持っているので、
+**見せ方だけを外から渡す**(`display` に出題ごと組み立てたものを渡す)。
+
+**マスは答えの桁数ぶんは置かない。** 置くと「3桁になる」と分かってしまい、見当をつける
+手間が減る。打った数に追いて増やし、次に入る1つだけを点線で見せる。
 
 ひき算の記号はハイフン(`-`)ではなく**マイナス記号(`−` U+2212)**。筆算で縦に積むと、
 ハイフンは短くて位置も低く、記号に見えない。
@@ -736,6 +787,46 @@ flower-petals     ✿ ❀ ❁ ❋       はなびらの数 4〜9
 - **音声モード** — ちがいさがしを、読み上げだけで遊べるようにする。
   自前で読み上げると支援技術と二重に喋るため、まずタイルのラベルを正しく持たせてある
 
+### ウィンドウの大きさに合わせる
+
+スマホ幅で作った画面を、**タブレットやPCでは比率を保ったまま大きくする**。
+拡大率は [src/index.css](src/index.css) の root `font-size` ひとつで持っている。
+
+```css
+--app-scale: min(calc(100vw / 390), calc(100svh / 780));
+font-size: clamp(1rem, calc(16 * var(--app-scale)), 1.875rem);
+```
+
+幅・余白・文字をすべて rem(Tailwind の既定単位)で書いてあるので、
+**ここを動かすだけで全部が同じ倍率で伸びる**。画面ごとに vw や % を足す必要はない。
+`AppShell` の `max-w-md`(28rem)も一緒に伸びるので、
+段組みと文字の比は 28:1 のまま変わらない。
+
+| ウィンドウ | root | 本文の列幅 |
+| --- | --- | --- |
+| スマホ(390×780 以下) | 16px | 390px(画面いっぱい) |
+| ノートPC(1512×895) | 18.4px | 514px |
+| 1920×1080 | 20.4px | 570px |
+| 2560×1440 | 27.8px | 777px |
+
+決めたこと:
+
+- **幅と高さの小さいほうに合わせる**。大きいほうだと、1画面に収める出題画面
+  (`fitViewport`)が縦にあふれる。小さいほうなら、スマホで収まっていたものは
+  どの大きさでも収まり続ける。
+- **高さは `svh` で測る**。`dvh` だとスクロールでアドレスバーが隠れるたびに
+  倍率が動き、読んでいる最中に文字の大きさがちらつく。
+- **下限は `1rem`**(px ではなく)。root の `rem` はブラウザの既定文字サイズを指すので、
+  文字を大きく設定している利用者の指定より小さくならない。
+  幅 390・高さ 780 以下では等倍、つまりスマホの見た目は変更前と1pxも変わらない
+  (実機サイズで全画面の要素位置を突き合わせて確認済み)。
+- **上限は `1.875rem`**。大きなモニタで間延びさせないための頭打ち。
+
+rem で書いていないものだけ、個別に追従させている。
+手書きキャンバスの線の太さ([src/components/HandwritingCanvas.tsx](src/components/HandwritingCanvas.tsx))は
+Canvas API に px で渡すため、root `font-size` から倍率を読んで掛けている。
+8px のままだと、大きな画面では枠と字に対して線だけが細く見える。
+
 ### 画面ごとに分けて読む
 
 **出題データとお手本データが重い**(漢字の問題で約100KB、なぞりのストロークで約170KB)。
@@ -1006,13 +1097,16 @@ QuizPage → useQuizSession → quizSource.startSession(genreId, inputMode) → 
 
 | データ | 用途 | ライセンス |
 |---|---|---|
-| [JMdict](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project) (EDRDG) | 英単語ジャンルの語義、漢字ヒントの熟語 | CC BY-SA 4.0 |
+| [JMdict](https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project) (EDRDG) | 英単語ジャンルの語義・読み・出題語の優先タグ、漢字ヒントの熟語 | CC BY-SA 4.0 |
 | [KANJIDIC2 / KRADFILE](https://www.edrdg.org/wiki/index.php/KANJIDIC_Project) (EDRDG) | 漢字の読み・画数・構成パーツ | CC BY-SA 4.0 |
 | [NGSL](https://www.newgeneralservicelist.com/) (Browne, Culligan & Phillips) | 英単語の難易度制御 | CC BY-SA 4.0 |
 | [KanjiVG](http://kanjivg.tagaini.net) (Ulrich Apel) | なぞりがきのひらがなのお手本(書き順つき) | **CC BY-SA 3.0** |
 
 - [EDRDG License](https://www.edrdg.org/edrdg/licence.html)
 - JSON 化: [jmdict-simplified](https://github.com/scriptin/jmdict-simplified) / [machine_readable_wordlists](https://github.com/lpmi-13/machine_readable_wordlists)
+- JMdict は JSON 版と生XML版の両方を使う。優先タグ(`ichi1` / `nf01`…)は
+  JSON 版が `common` の真偽値へ畳んでしまい、出題語の選び方に使えないため
+  (EDRDG は https を提供していないので生XMLだけ http で取得する)
 
 **採用を見送ったもの**: 英語頻度リスト
 [google-10000-english](https://github.com/first20hours/google-10000-english) は
@@ -1028,7 +1122,7 @@ QuizPage → useQuizSession → quizSource.startSession(genreId, inputMode) → 
 
 | パターン | 理由 |
 |---|---|
-| `.dict-cache/` | KANJIDIC2 / KRADFILE / KanjiVG のダウンロードキャッシュ。数十MBあり、スクリプトで再取得できる |
+| `.dict-cache/` | JMdict / KANJIDIC2 / KRADFILE / KanjiVG のダウンロードキャッシュ。百数十MBあり、スクリプトで再取得できる |
 | `.env` / `.env.*` | BaaS のキーなどを入れる想定。共有用の `.env.example` だけ例外的に追跡する |
 
 逆に `src/data/` の生成JSON(問題・なぞりのお手本)は自動生成だが**追跡する**。

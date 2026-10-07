@@ -22,6 +22,7 @@ import {
   type Difficulty,
   type InputMode,
   type JudgeResult,
+  type Question,
 } from '@/types'
 import { shuffleWithSeed } from '@/utils/shuffle'
 import type { ResultState, ResultSubmission } from './ResultPage'
@@ -140,6 +141,14 @@ export function QuizPage() {
     navigate('/result', { state })
   }
 
+  const promptCaption = copy.genrePrompt[genre.id]
+
+  /** 計算は「ヒント → 式 → 答え」の順に置く */
+  const showsPromptBelow = genre.id === 'math'
+  /** 筆算で数を打つときは、式と答えのマスをひと続きに見せたいので入力側が出す */
+  const showsPromptInInput =
+    showsPromptBelow && inputMode === 'number' && question.promptLayout === 'column'
+
   return (
     <AppShell fitViewport exitTo="/genres">
       {/* 出題中に読む場所は選択できなくてよい。手書きのドラッグで範囲選択されるのを防ぐ */}
@@ -148,20 +157,12 @@ export function QuizPage() {
         <span aria-live="polite">{copy.quiz.progress(stats.currentStreak, cursor + 1)}</span>
       </header>
 
-      <section className="mt-4 shrink-0 text-center select-none">
-        <p className="text-xs text-ink-400">{copy.genrePrompt[genre.id]}</p>
-        <p className="mt-1 text-[min(1.875rem,8vw)] leading-9 font-bold tracking-wide">
-          {question.promptLayout === 'column' ? (
-            <ColumnForm expression={question.prompt} />
-          ) : (
-            question.prompt
-          )}
-        </p>
-        {/* 読みは出題語より小さく。主役はあくまで伏せた語のほう */}
-        {question.promptReading && (
-          <p className="mt-1 text-base text-ink-600">{question.promptReading}</p>
-        )}
-      </section>
+      {/*
+        計算だけ、出題をヒントの下に置く(ヒント → 式 → 答え)。
+        紙の筆算と同じで、式と答えを書く場所が隣り合っていたほうが解きやすい。
+        思い出す系のジャンルは、先に出題語を見て考える流れなので上のまま。
+      */}
+      {!showsPromptBelow && <PromptBlock question={question} caption={promptCaption} />}
 
       {/*
         ヒント枠は余りを分け合うが、上限を決めて残りは入力側(特にキャンバス)へ回す。
@@ -175,6 +176,11 @@ export function QuizPage() {
           secondsToNext={secondsToNext}
         />
       </section>
+
+      {/* 計算は、ヒントのあとに出題を置く。答えを書く場所のすぐ上になる */}
+      {showsPromptBelow && !showsPromptInInput && (
+        <PromptBlock question={question} caption={promptCaption} />
+      )}
 
       {/* 余りは入力側へ多めに配る(ヒント枠と 2:1)。キャンバスとキーはここで伸びる */}
       <section className="mt-auto flex min-h-0 flex-2 flex-col justify-end pt-4">
@@ -228,6 +234,13 @@ export function QuizPage() {
             {inputMode === 'number' && (
               <NumberInput
                 key={`number-${question.id}`}
+                display={
+                  showsPromptInInput
+                    ? (typed) => (
+                        <PromptBlock question={question} caption={promptCaption} typed={typed} />
+                      )
+                    : undefined
+                }
                 onSubmit={(value) =>
                   finish(judgeNumber(question, value), revealedCount, {
                     kind: 'text',
@@ -263,5 +276,38 @@ export function QuizPage() {
         )}
       </section>
     </AppShell>
+  )
+}
+
+/**
+ * 出題(見出し + 式)。置き場所がジャンルで変わるので部品にしてある。
+ *
+ * 筆算で数を打つときは、打った数(typed)も受け取って答えのマスまで出す。
+ * 紙の筆算と同じで、式のすぐ下が答えを書く場所になる。
+ */
+function PromptBlock({
+  question,
+  caption,
+  typed,
+}: {
+  question: Question
+  caption: string
+  typed?: string
+}) {
+  return (
+    <section className="mt-4 shrink-0 text-center select-none">
+      <p className="text-xs text-ink-400">{caption}</p>
+      <p className="mt-1 text-[min(1.875rem,8vw)] leading-9 font-bold tracking-wide">
+        {question.promptLayout === 'column' ? (
+          <ColumnForm expression={question.prompt} typed={typed} />
+        ) : (
+          question.prompt
+        )}
+      </p>
+      {/* 読みは出題語より小さく。主役はあくまで伏せた語のほう */}
+      {question.promptReading && (
+        <p className="mt-1 text-base text-ink-600">{question.promptReading}</p>
+      )}
+    </section>
   )
 }
