@@ -74,8 +74,13 @@ interface MathQuestion {
 /**
  * ヒントは「解き方の段取り」を1段ずつ出す。
  *
+ * **筆算で出す問題は、筆算の手順をそのままヒントにする。**
+ * 一の位から順に計算し、くり上がり・くり下がりを使う、というのが筆算のやり方で、
+ * 「24 を 20 と 4 に分ける」は暗算のやり方。画面が筆算なのにヒントが暗算だと、
+ * 手が止まる場所とヒントの場所が合わない。
+ * 1行で出す小1・2(1桁どうし、2桁±1桁)だけは、さくらんぼ計算のままにする。
+ *
  * **最後のヒントまで出ても答えそのものは言わない**(他のジャンルと同じ)。
- * 24×5 なら 100 と 20 までを出して、足すのは解く側に残す。
  *
  * **見出し(`わけかた|` のような前置き)は付けない。** 計算は3つの段取りを
  * 同時に見て足すものなので、3段ぜんぶがヒント枠に収まらないと使えない。
@@ -103,14 +108,16 @@ function multiply2x1(): MathQuestion | null {
     answer: String(a * b),
     level: 'g34',
     hintSource: [
-      `${a} = ${tens} + ${ones}`,
-      `${tens} × ${b} = ${tens * b}`,
-      `${ones} × ${b} = ${ones * b}`,
+      `一のくらい ${ones} × ${b} = ${ones * b}`,
+      ones * b >= 10
+        ? `${(ones * b) % 10} をかいて ${Math.floor((ones * b) / 10)} くりあがり`
+        : `${(ones * b) % 10} をかく`,
+      `十のくらい ${tens / 10} × ${b} = ${(tens / 10) * b}`,
     ],
   }
 }
 
-/** 2桁 × 2桁。かける側を十の位と一の位に割る */
+/** 2桁 × 2桁。段ごとに分けて、下の段は1桁ずらす */
 function multiply2x2(): MathQuestion | null {
   const a = pick(12, 99)
   const b = pick(12, 49)
@@ -129,9 +136,9 @@ function multiply2x2(): MathQuestion | null {
     answer: String(a * b),
     level: 'g34',
     hintSource: [
-      `${b} = ${tens} + ${ones}`,
-      `${a} × ${tens} = ${a * tens}`,
-      `${a} × ${ones} = ${a * ones}`,
+      `1だんめ ${a} × ${ones}`,
+      `2だんめ ${a} × ${tens / 10}、1けた ずらす`,
+      `2つの だんを たす`,
     ],
   }
 }
@@ -143,8 +150,9 @@ function divideExact(): MathQuestion | null {
   if (quotient % 10 === 0) return null
 
   const tens = Math.floor(quotient / 10) * 10
-  const ones = quotient % 10
   const dividend = divisor * quotient
+  // 筆算で最初に立てる位。588 ÷ 7 なら 58、92 ÷ 4 なら 9
+  const head = Math.floor(dividend / 10)
 
   return {
     id: `ma-d-${dividend}d${divisor}`,
@@ -154,9 +162,9 @@ function divideExact(): MathQuestion | null {
     answer: String(quotient),
     level: 'g34',
     hintSource: [
-      `${dividend} = ${divisor * tens} + ${divisor * ones}`,
-      `${divisor * tens} ÷ ${divisor} = ${tens}`,
-      `${divisor * ones} ÷ ${divisor} = ${ones}`,
+      `上から ${head} ÷ ${divisor} で ${tens / 10} たつ`,
+      `${divisor} × ${tens / 10} = ${divisor * (tens / 10)} を ひく`,
+      `のこり ${head - divisor * (tens / 10)} に ${dividend % 10} を おろす`,
     ],
   }
 }
@@ -246,14 +254,37 @@ function subtractFromTen(): MathQuestion | null {
   }
 }
 
-/** 位ごとに分けた数。308 なら [300, 0, 8] */
-function places(value: number): [number, number, number] {
-  return [Math.floor(value / 100) * 100, Math.floor((value % 100) / 10) * 10, value % 10]
+/**
+ * 位ごとのヒント。筆算どおり**一の位から**出し、くり上がり・くり下がりも言う。
+ *
+ * 出すのは一の位と十の位まで。**百の位は出さない**(出すと答えが全桁そろってしまう)。
+ * ひき算で「十のくらいは 1 へらす」とだけ言って数を出さないのは、十の位が 0 のときに
+ * さらに上から借りることがあり、言い切れないため。
+ */
+function columnHints(a: number, b: number, operator: '+' | '−'): string[] {
+  const [a0, a1] = [a % 10, Math.floor(a / 10) % 10]
+  const [b0, b1] = [b % 10, Math.floor(b / 10) % 10]
+
+  if (operator === '+') {
+    const ones = a0 + b0
+    const carried = ones >= 10
+    return [
+      `一のくらい ${a0} + ${b0} = ${ones}`,
+      carried ? `${ones % 10} をかいて 1 くりあがり` : `くりあがりは なし`,
+      `十のくらい ${a1} + ${b1}${carried ? ' + 1' : ''} = ${a1 + b1 + (carried ? 1 : 0)}`,
+    ]
+  }
+
+  // ひき算は一の位で必ずくり下がるものだけを作っている(下の subtractThreeDigits を参照)
+  return [
+    `一のくらい ${a0} − ${b0} は ひけない`,
+    `10 かりて ${10 + a0} − ${b0} = ${10 + a0 - b0}`,
+    `十のくらいは 1 へらして ひく`,
+  ]
 }
 
 /**
- * 3桁のたし算(小3・4)。足す数を位ごとに分けて、大きい位から足す。
- * 筆算で書く形で出すので、位をそろえる練習にもなる。
+ * 3桁のたし算(小3・4)。筆算で出し、ヒントも筆算どおり一の位から順に出す。
  */
 function addThreeDigits(): MathQuestion | null {
   const a = pick(103, 879)
@@ -263,8 +294,6 @@ function addThreeDigits(): MathQuestion | null {
     return null
   }
 
-  const [hundreds, tens] = places(b)
-
   return {
     id: `ma-a3-${a}p${b}`,
     genreId: 'math',
@@ -272,23 +301,21 @@ function addThreeDigits(): MathQuestion | null {
     promptLayout: 'column',
     answer: String(a + b),
     level: 'g34',
-    hintSource: [
-      `${b} = ${hundreds} + ${tens} + ${b % 10}`,
-      `${a} + ${hundreds} = ${a + hundreds}`,
-      `${a + hundreds} + ${tens} = ${a + hundreds + tens}`,
-    ],
+    hintSource: columnHints(a, b, '+'),
   }
 }
 
-/** 3桁のひき算(小3・4)。引く数を位ごとに分けて、大きい位から引く */
+/** 3桁のひき算(小3・4)。筆算で出し、ヒントも筆算どおり一の位から順に出す */
 function subtractThreeDigits(): MathQuestion | null {
   const a = pick(205, 989)
   const b = pick(103, 879)
   if (b >= a - 10) return null
-  // くり下がりが1度も起きない組み合わせは、この段では練習にならない
-  if (a % 10 >= b % 10 && Math.floor(a / 10) % 10 >= Math.floor(b / 10) % 10) return null
-
-  const [hundreds, tens] = places(b)
+  /*
+   * 一の位で必ずくり下がる組み合わせだけにする。
+   * くり下がらない問題はこの段の練習にならないうえ、ヒントが
+   * 「一のくらいは ひける / 十のくらいは…」と場合分けだらけになる。
+   */
+  if (a % 10 >= b % 10) return null
 
   return {
     id: `ma-s3-${a}m${b}`,
@@ -297,11 +324,7 @@ function subtractThreeDigits(): MathQuestion | null {
     promptLayout: 'column',
     answer: String(a - b),
     level: 'g34',
-    hintSource: [
-      `${b} = ${hundreds} + ${tens} + ${b % 10}`,
-      `${a} - ${hundreds} = ${a - hundreds}`,
-      `${a - hundreds} - ${tens} = ${a - hundreds - tens}`,
-    ],
+    hintSource: columnHints(a, b, '−'),
   }
 }
 
