@@ -34,7 +34,7 @@ export function AppHeader({ exitTo }: AppHeaderProps) {
 
   if (!exitTo) {
     return (
-      <header className="flex items-center justify-between gap-3 border-b border-bloom-100 px-5 py-3">
+      <header className="flex items-center justify-between gap-3 border-b border-bloom-100 px-5 py-3 select-none">
         {/*
           ロゴは横長(300:62)で、切り替えと並べると 320px 幅の端末で収まらない。
           min-w-0 で縮めるのを許し、object-contain で縦横比を保ったまま小さくする
@@ -53,7 +53,8 @@ export function AppHeader({ exitTo }: AppHeaderProps) {
   }
 
   return (
-    <header className="flex items-center justify-between border-b border-bloom-100 px-5 py-3">
+    // select-none: 手書きでなぞった指がここまで来ても「やめる」の字が範囲選択されない
+    <header className="flex items-center justify-between border-b border-bloom-100 px-5 py-3 select-none">
       <button
         type="button"
         onClick={() => setIsConfirming(true)}
@@ -147,7 +148,7 @@ function ExitConfirmDialog({
         aria-modal="true"
         aria-label={words.title}
         tabIndex={-1}
-        className="animate-bloom-in relative w-full max-w-md rounded-3xl bg-base-50 px-5 pt-6 pb-6 text-center outline-none"
+        className="animate-bloom-in relative w-full max-w-md rounded-3xl bg-base-50 px-5 pt-6 pb-6 text-center outline-none select-none"
       >
         <h2 className="text-xl font-bold">{words.title}</h2>
         <p className="mt-2 text-sm text-ink-600">{words.note}</p>
