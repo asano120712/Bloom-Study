@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useCopy } from '@/hooks/useAudienceMode'
 import { useHasFinePointer } from '@/hooks/useHasFinePointer'
 import { OnScreenKeyboard } from './OnScreenKeyboard'
 
@@ -23,6 +24,7 @@ const MAX_LENGTH = 24
  * 必要なら手動で開けるようにしている。
  */
 export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
+  const copy = useCopy()
   const [value, setValue] = useState('')
   const hasFinePointer = useHasFinePointer()
   /** マウス操作の端末でも、手動で画面キーボードを開けるようにする */
@@ -77,7 +79,7 @@ export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
           <span className="text-2xl font-bold tracking-[0.15em] text-ink-900">{value}</span>
         ) : (
           <span className="text-base text-ink-400">
-            {showKeyboard ? 'こたえをタップして入力' : 'キーボードで入力'}
+            {showKeyboard ? copy.typing.placeholderTap : copy.typing.placeholderKey}
           </span>
         )}
       </div>

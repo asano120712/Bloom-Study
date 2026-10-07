@@ -1,5 +1,6 @@
 import { questionsOf } from '@/data/questions'
-import type { GenreId, InputMode, Question } from '@/types'
+import { assemblyOf } from '@/features/assemble'
+import type { Difficulty, GenreId, InputMode, Question } from '@/types'
 
 /**
  * 1回分の出題セット。
@@ -20,18 +21,47 @@ export interface QuizSession {
  * 制限を足すときも画面を触らずに済む。
  */
 export interface QuizSource {
-  startSession(genreId: GenreId, inputMode: InputMode): Promise<QuizSession>
+  startSession(
+    genreId: GenreId,
+    inputMode: InputMode,
+    difficulty: Difficulty,
+  ): Promise<QuizSession>
 }
 
 /**
  * その入力方法で出題できる問題か。
  *
- * assemble はパーツのタイルが要る。持たない問題を混ぜると、選んだはずの
- * こたえかたと違う画面が出てしまうので、最初から配らない。
+ * assemble は「へん+つくり」を左右2枠に組ませるので、左右に割れる字
+ * (assemblyOf が成立する字)だけを配る。それ以外を混ぜると、選んだはずの
+ * こたえかたと違う画面が出てしまう。
  */
 function isAnswerable(question: Question, inputMode: InputMode): boolean {
-  if (inputMode === 'assemble') return Boolean(question.parts?.length && question.partTiles?.length)
+  if (inputMode === 'assemble') return assemblyOf(question) !== null
   return true
+}
+
+/**
+ * いまその問題を配ってよいか。出題セットを作るときの条件そのもの。
+ *
+ * 保存した出題セットを復元する側にも同じ判断が要るので公開している。
+ * こたえかたの作り替えや問題データの更新で条件が変わると、
+ * 保存済みのセットには「いまは出せない問題」が残る。
+ * それをそのまま出すと、画面はその問題を描けず入力欄ごと消える。
+ */
+export function canServe(
+  question: Question,
+  inputMode: InputMode,
+  difficulty: Difficulty,
+): boolean {
+  return isAnswerable(question, inputMode) && matchesDifficulty(question, difficulty)
+}
+
+/**
+ * 選んだ難易度の問題か。難易度未設定の古い問題は「ふつう」とみなす
+ * (level を持たない問題が難易度選択で完全に出せなくならないように)。
+ */
+function matchesDifficulty(question: Question, difficulty: Difficulty): boolean {
+  return (question.level ?? 'normal') === difficulty
 }
 
 /** Fisher-Yates。出題順を決めるのも取得側の責務なのでここで混ぜる。 */
@@ -52,10 +82,12 @@ function shuffle<T>(items: T[]): T[] {
  * 画面は返ってきた数がすべてだとして扱うので、どちらでも QuizPage は変わらない。
  */
 export const localQuizSource: QuizSource = {
-  async startSession(genreId, inputMode) {
+  async startSession(genreId, inputMode, difficulty) {
     return {
       genreId,
-      questions: shuffle(questionsOf(genreId).filter((q) => isAnswerable(q, inputMode))),
+      questions: shuffle(
+        questionsOf(genreId).filter((q) => canServe(q, inputMode, difficulty)),
+      ),
     }
   },
 }

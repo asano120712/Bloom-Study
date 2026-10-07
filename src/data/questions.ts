@@ -1,31 +1,41 @@
 import type { GenreId, Question } from '@/types'
 import generatedEnglish from './questions.english.generated.json'
 import generatedKanji from './questions.kanji.generated.json'
+import generatedMath from './questions.math.generated.json'
 
 /**
  * 手で書いた問題。生成物より優先する(同じ answer があれば生成側を捨てる)。
- * 生成に向かない字や、語釈を添えないと答えが一意に決まらない字はここに置く。
+ * 生成に向かない字や、生成の対象学年から外れる字(小1・小2)はここに置く。
+ *
+ * 小1・小2の漢字は、いまは出題に回らない(この学年は なぞりがき と くみたて に
+ * 差し替えてある)。学年を選んでクイズも出したくなったときのために残してある。
  */
 const MANUAL_QUESTIONS: Question[] = [
-  { id: 'en-001', genreId: 'english', prompt: 'いちご', answer: 'strawberry' },
-  { id: 'en-002', genreId: 'english', prompt: 'ひまわり', answer: 'sunflower' },
-  { id: 'en-003', genreId: 'english', prompt: 'としょかん', answer: 'library' },
-  { id: 'en-004', genreId: 'english', prompt: 'きせつ', answer: 'season' },
-  { id: 'en-005', genreId: 'english', prompt: 'おもいで', answer: 'memory' },
+  { id: 'en-001', genreId: 'english', prompt: 'いちご', answer: 'strawberry', level: 'junior' },
+  { id: 'en-002', genreId: 'english', prompt: 'ひまわり', answer: 'sunflower', level: 'junior' },
+  { id: 'en-003', genreId: 'english', prompt: 'としょかん', answer: 'library', level: 'junior' },
+  { id: 'en-004', genreId: 'english', prompt: 'きせつ', answer: 'season', level: 'junior' },
+  { id: 'en-005', genreId: 'english', prompt: 'おもいで', answer: 'memory', level: 'junior' },
 
+  // 漢字は熟語の穴うめで出す。部首・パーツ・画数はヒントにも出さない
+  // (パーツを答えさせるモードで答えそのものになるため)
   {
     id: 'kj-001',
     genreId: 'kanji',
-    prompt: 'はな(草木のはな)',
+    prompt: '「◯火」',
+    promptReading: 'はなび',
     answer: '花',
-    hintSource: ['部首|艹(くさかんむり)', 'のこりのパーツ|化', '画数|7画', '音読み|カ'],
+    level: 'g12',
+    hintSource: ['熟語|「◯束」はなたば', '熟語|「生◯」いけばな', '訓読み|はな'],
   },
   {
     id: 'kj-002',
     genreId: 'kanji',
-    prompt: 'やすむ',
+    prompt: '「◯日」',
+    promptReading: 'きゅうじつ',
     answer: '休',
-    hintSource: ['部首|亻(にんべん)', 'のこりのパーツ|木', '画数|6画', '音読み|キュウ'],
+    level: 'g12',
+    hintSource: ['熟語|「◯憩」きゅうけい', '熟語|「連◯」れんきゅう', '訓読み|やすむ'],
   },
 ]
 
@@ -36,6 +46,7 @@ const MANUAL_QUESTIONS: Question[] = [
 const GENERATED_QUESTIONS = [
   ...generatedKanji.questions,
   ...generatedEnglish.questions,
+  ...generatedMath.questions,
 ] as Question[]
 
 const manualAnswers = new Set(MANUAL_QUESTIONS.map((question) => question.answer))

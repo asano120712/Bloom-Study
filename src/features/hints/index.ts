@@ -1,6 +1,7 @@
 import type { GenreId, HintLayout, HintRule, HintStep, Question } from '@/types'
 import { englishHintRule } from './english'
 import { kanjiHintRule } from './kanji'
+import { mathHintRule } from './math'
 
 /**
  * ジャンル別ヒント分解ルールのレジストリ。
@@ -9,6 +10,7 @@ import { kanjiHintRule } from './kanji'
 const HINT_RULES: Record<GenreId, HintRule> = {
   english: englishHintRule,
   kanji: kanjiHintRule,
+  math: mathHintRule,
 }
 
 /** ジャンルごとのヒントの並べかた */

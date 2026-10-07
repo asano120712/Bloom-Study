@@ -1,25 +1,69 @@
+/**
+ * だれ向けの画面か。トップはモードごとに別ページにする(`/` と `/kids`)。
+ * 出題・結果までは共通で、あとからジャンルをモードで出し分ける。
+ */
+export type AudienceMode = 'adult' | 'kids'
+
+/** モードごとのトップページ。ヘッダーの切り替えもここを行き先にする */
+export const TOP_PATH: Record<AudienceMode, string> = {
+  adult: '/',
+  kids: '/kids',
+}
+
 /** 出題ジャンル。ジャンル追加時はここと hints のレジストリの両方に登録する。 */
-export type GenreId = 'english' | 'kanji'
+export type GenreId = 'english' | 'kanji' | 'math'
+
+/**
+ * 出題の難易度。**だれ向けか**で切る。
+ *
+ * 何を根拠に割り当てるかはジャンルで違う。漢字は小学校のあいだは配当学年
+ * (国が決めている学年別漢字配当表)、中学以上は出現頻度。中学校の学習指導要領は
+ * 字を学年に割り当てていないので、学年では割れない。
+ * 英単語は NGSL の頻度帯しか持たないので、中学生・高校生・社会人の3つだけ。
+ */
+export type Difficulty = 'g12' | 'g34' | 'g56' | 'junior' | 'senior' | 'working'
+
+/** やさしい順。選択シートはこの順で並べる */
+export const DIFFICULTY_ORDER: readonly Difficulty[] = [
+  'g12',
+  'g34',
+  'g56',
+  'junior',
+  'senior',
+  'working',
+]
+
+export function isDifficulty(value: string | null | undefined): value is Difficulty {
+  return DIFFICULTY_ORDER.includes(value as Difficulty)
+}
 
 /**
  * 答えの入力方法。
- * assemble は部品を選んで組み立てる方式。部品は思い出したと申告するまで
- * 見せない(先に見せると再認になり、思い出す練習にならないため)。
+ * assemble は2つの部品を1つのマス(左右または上下に割れる)へ組んで漢字を作る方式。
+ * 部品は思い出したと申告するまで見せない
+ * (先に見せると再認になり、思い出す練習にならないため)。
  */
-export type InputMode = 'typing' | 'handwriting' | 'assemble'
+export type InputMode = 'typing' | 'handwriting' | 'assemble' | 'number'
 
+/**
+ * 結果画面のおてほんに敷くガイド。
+ * grid     = 1文字ずつマスに入れる(漢字ドリルのマス目)
+ * baseline = 英語ノートの罫線に単語を置く
+ * plain    = ガイドを敷かずに大きく出す(数の答えは字形をなぞる対象ではない)
+ */
+export type AnswerGuide = 'grid' | 'baseline' | 'plain'
+
+/**
+ * ジャンルの「構造」。ラベル・説明・出題語の見出しといった言葉は
+ * モードで変わるため src/data/copy.ts の genres が持つ。
+ */
 export interface Genre {
   id: GenreId
-  label: string
-  description: string
   /**
-   * そのジャンルで選べる入力方法。
-   * 漢字のタイピングのように、答えを打つのに IME が要るジャンルはここから外す。
-   * (IME の変換候補に答えが出てしまい、自前キーボードでも変換は肩代わりできない)
+   * 結果画面で正解を「おてほん」として見せるときのガイド。
+   * 字の形をどう追わせたいかはジャンルで変わるため、画面側で分岐せずここで持つ。
    */
-  inputModes: InputMode[]
-  /** 開始シートで最初に強調する入力方法 */
-  defaultInputMode: InputMode
+  answerGuide: AnswerGuide
   /**
    * 結果画面で答えを読み上げるときの言語(BCP 47)。
    * 読み方も一緒に覚えられるようにするためのもので、
@@ -33,13 +77,37 @@ export interface Question {
   genreId: GenreId
   /** 画面に出す出題語。答えは含めない */
   prompt: string
+  /**
+   * 出題語の読み。出題語だけでは語が一つに決まらないときに添える。
+   * 漢字ジャンルは熟語の穴うめ(「◯営」うんえい → 運)なので、
+   * 読みが無いと ◯ に入る字を絞れない(◯営 は 運営 / 経営 / 陣営…)。
+   */
+  promptReading?: string
+  /**
+   * 出題語の見せ方。'column' は筆算(縦に積んで桁をそろえる)、
+   * 'division' はわり算の筆算(割る数 │ 割られる数 で囲い、商を上に書く)。
+   *
+   * 2桁以上のかけ算を1行で出すと暗算に近くなり、小3・4には難しい。
+   * 筆算はこの学年で習う形なので、縦に積むほうが解きやすく、位をそろえる練習にもなる。
+   * 指定が無ければそのまま1行で出す。
+   */
+  promptLayout?: 'column' | 'division'
   /** 正解文字列 */
   answer: string
+  /**
+   * 難易度。無い問題は難易度で絞り込むと出せなくなるため、
+   * 出題側(quizSource)は未設定を「ふつう」として扱う。
+   */
+  level?: Difficulty
   /** 正解と同等に扱う表記ゆれ(送りがな違い、別綴りなど) */
   acceptableAnswers?: string[]
-  /** assemble モードの正解パーツ。順不同の集合として照合する */
+  /**
+   * KRADFILE 由来の部品。assemble モードはこのうち2部品に割れる字だけを出す。
+   * KRADFILE には配置(左右・上下)が無いので、割れる向きと先にくる部品は
+   * features/assemble の表で補う。
+   */
   parts?: string[]
-  /** assemble モードで並べるタイル(正解パーツ + 見分けにくいダミー) */
+  /** assemble モードで並べるタイル(正解の部品 + 見分けにくいダミー) */
   partTiles?: string[]
   /**
    * ジャンル固有のヒント素材。ジャンルのヒント分解ルールだけが解釈する。
