@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
-import { ColumnForm } from '@/components/ColumnForm'
+import { ColumnForm, type ColumnRow } from '@/components/ColumnForm'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
 import { HintList } from '@/components/HintList'
 import { NumberInput } from '@/components/NumberInput'
@@ -60,6 +60,14 @@ export function QuizPage() {
    * 書いた字は結果画面で見せるため、キャンバスの画像も一緒に抱えておく。
    */
   const [selfReport, setSelfReport] = useState<{ hintsUsed: number; image: string } | null>(null)
+  /**
+   * 筆算の途中の段(部分積)のうち、打ち終わったもの。
+   * 間違えた段は正しい数に直して残す。そのまま進ませると、最後の答えまで必ず合わなくなる。
+   *
+   * 問題が変わるときは画面ごと作り直される(1問答えるたびに結果画面へ移る)ので、
+   * ここで問題の切り替わりを見る必要はない。
+   */
+  const [filledRows, setFilledRows] = useState<ColumnRow[]>([])
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
 
@@ -142,6 +150,23 @@ export function QuizPage() {
   }
 
   const promptCaption = copy.genrePrompt[genre.id]
+
+  /** 筆算の途中の段。打つのは数字のときだけ(手書きはノートに書くので要らない) */
+  const steps = inputMode === 'number' ? (question.steps ?? []) : []
+  const stepIndex = filledRows.length
+  const isLastStep = stepIndex >= steps.length
+
+  /**
+   * 段を1つ打ち終わったとき。合っていてもいなくても止めずに次の段へ進み、
+   * 間違えた段は正しい数に直して残す(直さないと最後の答えまで必ず合わなくなる)。
+   */
+  const commitStep = (value: string) => {
+    const expected = steps[stepIndex]
+    setFilledRows((rows) => [
+      ...rows,
+      { value: expected, shift: rows.length, corrected: value !== expected },
+    ])
+  }
 
   /** 計算は「ヒント → 式 → 答え」の順に置く */
   const showsPromptBelow = genre.id === 'math'
@@ -233,20 +258,31 @@ export function QuizPage() {
             )}
             {inputMode === 'number' && (
               <NumberInput
-                key={`number-${question.id}`}
+                key={`number-${question.id}-${stepIndex}`}
                 display={
                   showsPromptInInput
                     ? (typed) => (
-                        <PromptBlock question={question} caption={promptCaption} typed={typed} />
+                        <PromptBlock
+                          question={question}
+                          caption={promptCaption}
+                          typed={typed}
+                          rows={filledRows}
+                          typedShift={isLastStep ? 0 : stepIndex}
+                        />
                       )
                     : undefined
                 }
-                onSubmit={(value) =>
+                submitLabel={isLastStep ? copy.number.submit : copy.number.nextRow}
+                onSubmit={(value) => {
+                  if (!isLastStep) {
+                    commitStep(value)
+                    return
+                  }
                   finish(judgeNumber(question, value), revealedCount, {
                     kind: 'text',
                     text: value,
                   })
-                }
+                }}
               />
             )}
             {inputMode === 'handwriting' && (
@@ -289,17 +325,26 @@ function PromptBlock({
   question,
   caption,
   typed,
+  rows,
+  typedShift,
 }: {
   question: Question
   caption: string
   typed?: string
+  rows?: ColumnRow[]
+  typedShift?: number
 }) {
   return (
     <section className="mt-4 shrink-0 text-center select-none">
       <p className="text-xs text-ink-400">{caption}</p>
       <p className="mt-1 text-[min(1.875rem,8vw)] leading-9 font-bold tracking-wide">
         {question.promptLayout === 'column' ? (
-          <ColumnForm expression={question.prompt} typed={typed} />
+          <ColumnForm
+            expression={question.prompt}
+            typed={typed}
+            rows={rows}
+            typedShift={typedShift}
+          />
         ) : (
           question.prompt
         )}

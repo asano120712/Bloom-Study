@@ -11,6 +11,8 @@ interface NumberInputProps {
    * 打った数はこの部品が持っているので、見せ方だけを外から渡してもらう。
    */
   display?: (typed: string) => ReactNode
+  /** 決定キーの文字。筆算の途中の段では「つぎの段へ」になる */
+  submitLabel?: string
   disabled?: boolean
 }
 
@@ -24,7 +26,12 @@ const MAX_LENGTH = 6
  * ただしキーボードを畳む仕組みは持たない。数字キーは10個しかなく、
  * 畳んでも空いた場所に出すものが無いため。
  */
-export function NumberInput({ onSubmit, display, disabled = false }: NumberInputProps) {
+export function NumberInput({
+  onSubmit,
+  display,
+  submitLabel,
+  disabled = false,
+}: NumberInputProps) {
   const copy = useCopy()
   const [value, setValue] = useState('')
 
@@ -91,7 +98,7 @@ export function NumberInput({ onSubmit, display, disabled = false }: NumberInput
         onBackspace={backspace}
         onSubmit={submit}
         canSubmit={value.length > 0}
-        submitLabel={copy.number.submit}
+        submitLabel={submitLabel ?? copy.number.submit}
         disabled={disabled}
       />
     </div>

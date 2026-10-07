@@ -55,7 +55,7 @@ export interface Copy {
   /** あそび(なぞりがき・おなじものさがし)で共通の言葉 */
   play: { allDone: string; again: string; other: string }
   /** 数で答えるとき */
-  number: { inputLabel: string; placeholder: string; submit: string }
+  number: { inputLabel: string; placeholder: string; submit: string; nextRow: string }
   trace: { guide: string; done: string }
   build: { look: string; answerIs: string }
   match: { question: string; correct: string; hint: string }
@@ -177,7 +177,12 @@ const ADULT: Copy = {
   handwriting: { clear: 'けす', done: 'かけた' },
   typing: { placeholderTap: 'こたえをタップして入力', placeholderKey: 'キーボードで入力' },
   play: { allDone: 'ぜんぶ できた!', again: 'もういちど', other: 'ほかのあそび' },
-  number: { inputLabel: '入力中のこたえ', placeholder: '数字で答えよう', submit: 'こたえあわせ' },
+  number: {
+    inputLabel: '入力中のこたえ',
+    placeholder: '数字で答えよう',
+    submit: 'こたえあわせ',
+    nextRow: 'つぎの段へ',
+  },
   trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
   build: { look: 'この漢字をよく見て、覚えよう', answerIs: 'こたえは これ' },
   match: {
@@ -305,7 +310,12 @@ const KIDS: Copy = {
   handwriting: { clear: 'けす', done: 'かけた' },
   typing: { placeholderTap: 'こたえを タップして うとう', placeholderKey: 'キーボードで うとう' },
   play: { allDone: 'ぜんぶ できた！', again: 'もういちど', other: 'ほかの あそび' },
-  number: { inputLabel: 'いま うっている こたえ', placeholder: 'すうじで こたえよう', submit: 'こたえあわせ' },
+  number: {
+    inputLabel: 'いま うっている こたえ',
+    placeholder: 'すうじで こたえよう',
+    submit: 'こたえあわせ',
+    nextRow: 'つぎの だんへ',
+  },
   trace: { guide: 'ひかってる ● から ゆびで なぞってね', done: 'できた！' },
   build: { look: 'この かんじを よく みてね', answerIs: 'こたえは これ' },
   match: {

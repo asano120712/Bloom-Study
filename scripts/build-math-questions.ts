@@ -57,6 +57,13 @@ interface MathQuestion {
    * 位をそろえる練習にもなる。たし算・ひき算の3桁も同じ。
    */
   promptLayout?: 'column'
+  /**
+   * 筆算の途中の段(部分積)を、上から順に。
+   *
+   * 23 × 14 なら ['92', '23']。2段目は筆算と同じく1桁ずらして書くので、
+   * 230 ではなく 23 で持つ(ずらす幅は何段目かで決まるので、データには持たせない)。
+   */
+  steps?: string[]
   answer: string
   level: Level
   hintSource: string[]
@@ -115,6 +122,8 @@ function multiply2x2(): MathQuestion | null {
     genreId: 'math',
     prompt: `${a} × ${b}`,
     promptLayout: 'column',
+    // 筆算の段。下の段は1桁ずらして書くので、a × (十の位の数字) をそのまま持つ
+    steps: [String(a * ones), String(a * (tens / 10))],
     answer: String(a * b),
     level: 'g34',
     hintSource: [

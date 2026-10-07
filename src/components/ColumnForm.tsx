@@ -1,3 +1,13 @@
+/** 筆算の1段。打ち終わった段と、いま打っている段を区別して出す */
+export interface ColumnRow {
+  /** その段に入る数 */
+  value: string
+  /** 右から何桁ずらすか。筆算の2段目は1つ左へ寄る */
+  shift: number
+  /** 打ち終わった段のうち、間違えていたもの(正しい数に直して見せる) */
+  corrected?: boolean
+}
+
 /**
  * 筆算。式を縦に積んで、桁をそろえて見せる。
  *
@@ -8,11 +18,25 @@
  * (マイページの履歴や読み上げは1行のほうが扱いやすい)ので、分けるのは見せる側で行う。
  * 読めない形だったときは、そのまま1行で出す。
  */
-export function ColumnForm({ expression, typed }: { expression: string; typed?: string }) {
+export function ColumnForm({
+  expression,
+  typed,
+  rows = [],
+  typedShift = 0,
+}: {
+  expression: string
+  /** いま打っている数。渡すとマスが出る */
+  typed?: string
+  /** 打ち終わった途中の段 */
+  rows?: ColumnRow[]
+  /** いま打っている段のずらし幅 */
+  typedShift?: number
+}) {
   const parsed = expression.match(/^(\d+)\s*([×÷+\-−])\s*(\d+)$/)
   if (!parsed) return <span>{expression}</span>
 
   const [, left, operator, right] = parsed
+  const hasSteps = rows.length > 0 || typedShift > 0
 
   return (
     // tabular-nums: 数字の幅をそろえて、位が縦に並ぶようにする
@@ -27,27 +51,66 @@ export function ColumnForm({ expression, typed }: { expression: string; typed?: 
       <span aria-hidden="true">{right}</span>
       <span aria-hidden="true" className="col-span-2 mt-1 border-t-2 border-ink-900" />
 
-      {/* 答えを書くところ。紙の筆算と同じで、線のすぐ下に入る */}
-      {typed !== undefined && <AnswerBoxes typed={typed} />}
+      {/* 打ち終わった途中の段。ずらして書くのも筆算と同じ */}
+      {rows.map((row, index) => (
+        <Boxes
+          key={index}
+          digits={[...row.value]}
+          shift={row.shift}
+          tone={row.corrected ? 'corrected' : 'done'}
+        />
+      ))}
+
+      {/* 途中の段があるなら、答えの前にもう1本線を引く */}
+      {hasSteps && rows.length > 0 && (
+        <span aria-hidden="true" className="col-span-2 mt-1 border-t-2 border-ink-900" />
+      )}
+
+      {/*
+        いま打っているところ。紙の筆算と同じで、線のすぐ下に入る。
+
+        空のマスを出すのは、まだ何も打っていないときだけ。打った数の右に足すと、
+        数がマス1つぶん左へずれて、上の段と位がそろわなくなる。
+      */}
+      {typed !== undefined && (
+        <Boxes digits={typed ? [...typed] : ['']} shift={typedShift} tone="typing" />
+      )}
     </span>
   )
 }
 
 /**
- * 答えのマス。打った数字ぶんと、次に入る空のマスを1つ出す。
+ * 数字のマス。
  *
- * **答えの桁数ぶんは置かない。** マスの数が見えると「3桁になる」と分かってしまい、
- * 見当をつける手間が減る。打った数に追いて増える形なら、何も漏らさずに
- * 「ここに書く」とだけ伝えられる。
+ * 打っている段は、**答えの桁数ぶんは置かない**。マスの数が見えると桁数が分かってしまい、
+ * 見当をつける手間が減る。打った数に追いて増える形にして、
+ * まだ何も打っていないときだけ点線のマスを1つ出す。
  */
-function AnswerBoxes({ typed }: { typed: string }) {
+function Boxes({
+  digits,
+  shift,
+  tone,
+}: {
+  digits: string[]
+  shift: number
+  tone: 'typing' | 'done' | 'corrected'
+}) {
   return (
-    <span aria-hidden="true" className="col-span-2 mt-2 flex justify-end gap-1">
-      {[...typed, ''].map((digit, index) => (
+    <span
+      aria-hidden="true"
+      className="col-span-2 mt-2 flex justify-end gap-1"
+      // ずらした段は、その幅ぶん右を空ける(マス1つ + すきま)
+      style={shift ? { paddingRight: `calc(${shift} * (1.15em + 0.25rem))` } : undefined}
+    >
+      {digits.map((digit, index) => (
         <span
           key={index}
           className={`flex size-[1.15em] items-center justify-center rounded-md border-2 leading-none ${
-            digit ? 'border-bloom-300 text-ink-900' : 'border-dashed border-bloom-200'
+            tone === 'corrected'
+              ? 'border-warm-500 text-warm-600'
+              : digit
+                ? 'border-bloom-300 text-ink-900'
+                : 'border-dashed border-bloom-200'
           }`}
         >
           {digit}
