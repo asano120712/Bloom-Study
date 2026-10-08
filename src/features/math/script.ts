@@ -179,7 +179,9 @@ function divideSteps(dividend: string, divisor: string): ColumnStep[] {
     steps.push({
       expected: String(quotient),
       width: 1,
-      caption: `しょうの ${placeName(dividend.length - 1 - column)}`,
+      // 小4で習う「たてる・かける・ひく・おろす」の言い方に合わせる。
+      // どの手をしているのかが見出しだけで分かるようにする
+      caption: `たてる ${placeName(dividend.length - 1 - column)}`,
       slot: { kind: 'quotient', column },
       counts: true,
     })
@@ -187,7 +189,7 @@ function divideSteps(dividend: string, divisor: string): ColumnStep[] {
       expected: String(product),
       // 引く段に入るいちばん大きい数は、割る数を9倍したもの
       width: String(by * 9).length,
-      caption: `${divisor} × ${quotient} を かく`,
+      caption: `かける ${divisor} × ${quotient}`,
       slot: { kind: 'product', column },
       counts: false,
     })
@@ -196,7 +198,7 @@ function divideSteps(dividend: string, divisor: string): ColumnStep[] {
       expected: String(isLast ? rest : rest * 10 + Number(dividend[column + 1])),
       // ひいた数は割る数より小さい。つぎの桁をおろすと、その右に1桁増える
       width: isLast ? 1 : String(by * 10 - 1).length,
-      caption: isLast ? 'ひく' : 'ひいて つぎを おろす',
+      caption: isLast ? 'ひく' : 'ひく、つぎを おろす',
       slot: { kind: 'rest', column: isLast ? column : column + 1 },
       counts: false,
     })

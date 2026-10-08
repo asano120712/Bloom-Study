@@ -156,7 +156,7 @@ function divideExact(): MathQuestion | null {
     level: 'g34',
     hintSource: [
       `上から ${head} ÷ ${divisor} で ${tens / 10} たつ`,
-      `${divisor} × ${tens / 10} = ${divisor * (tens / 10)} を ひく`,
+      `${divisor} × ${tens / 10} = ${divisor * (tens / 10)} を かいて ひく`,
       `のこり ${head - divisor * (tens / 10)} に ${dividend % 10} を おろす`,
     ],
   }
