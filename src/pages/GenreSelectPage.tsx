@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ActivityArt } from '@/components/ActivityArt'
 import { AppShell } from '@/components/AppShell'
+import { HowToSheet } from '@/components/HowToSheet'
 import { InputModeSheet } from '@/components/InputModeSheet'
-import { activitiesFor, type Activity } from '@/data/activities'
+import { activitiesFor, type Activity, type ActivityId } from '@/data/activities'
 import { findGenre, type AnswerChoice } from '@/data/genres'
 import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
 import { TOP_PATH, type Difficulty, type Genre } from '@/types'
@@ -14,6 +15,8 @@ export function GenreSelectPage() {
   const mode = useAudienceMode()
   /** 入力方法を選んでいる最中のジャンル。null なら一覧だけ */
   const [pendingGenre, setPendingGenre] = useState<Genre | null>(null)
+  /** あそびかたを開いているあそび。null なら閉じている */
+  const [howTo, setHowTo] = useState<ActivityId | null>(null)
 
   const start = (difficulty: Difficulty, choice: AnswerChoice) => {
     if (!pendingGenre) return
@@ -46,11 +49,15 @@ export function GenreSelectPage() {
 
       <ul className="mt-6 flex flex-col gap-4">
         {activitiesFor(mode).map((activity) => (
-          <li key={activity.id}>
+          /*
+            カードの中にボタンは置けない(入れ子のボタンは成立しない)ので、
+            「？」はカードの外に出して右上に重ねる。
+          */
+          <li key={activity.id} className="relative">
             <button
               type="button"
               onClick={() => open(activity)}
-              className="flex min-h-20 w-full items-center gap-4 rounded-3xl bg-bloom-100 p-4 text-left"
+              className="flex min-h-20 w-full items-center gap-4 rounded-3xl bg-bloom-100 p-4 pr-12 text-left"
             >
               {/*
                 中身を小さくして流す絵。字を読まなくても選べるよう、
@@ -61,7 +68,12 @@ export function GenreSelectPage() {
                 className={`shrink-0 ${mode === 'kids' ? 'size-24' : 'size-18'}`}
               />
               <span className="flex min-w-0 flex-col">
-                <span className="text-xl font-bold text-bloom-700">
+                {/*
+                  text-balance: 「？」のぶん幅が狭くなり、こども向けの長い名前
+                  (「かたちを なぞろう」)が折り返す。そのままだと最後の1字だけが
+                  次の行に残るので、2行を同じくらいの長さに割る。
+                */}
+                <span className="text-xl font-bold text-balance text-bloom-700">
                   {copy.activities[activity.id].label}
                 </span>
                 {/*
@@ -75,6 +87,21 @@ export function GenreSelectPage() {
                 </span>
               </span>
             </button>
+
+            {/* 押し場所は 44px。カードを押すつもりで触れても開かない大きさに収める */}
+            <button
+              type="button"
+              onClick={() => setHowTo(activity.id)}
+              aria-label={copy.howTo.open(copy.activities[activity.id].label)}
+              className="absolute top-2 right-2 flex size-11 items-center justify-center rounded-full text-lg font-bold text-bloom-700"
+            >
+              <span
+                aria-hidden="true"
+                className="flex size-7 items-center justify-center rounded-full border-2 border-bloom-300 text-sm"
+              >
+                ?
+              </span>
+            </button>
           </li>
         ))}
       </ul>
@@ -83,6 +110,8 @@ export function GenreSelectPage() {
       <Link to={TOP_PATH[mode]} className="mt-8 text-center text-sm text-ink-400 underline">
         {copy.genreSelect.back}
       </Link>
+
+      {howTo && <HowToSheet activity={howTo} onClose={() => setHowTo(null)} />}
 
       {pendingGenre && (
         <InputModeSheet
