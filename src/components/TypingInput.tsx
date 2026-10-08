@@ -39,12 +39,15 @@ export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
     setValue((current) => current.slice(0, -1))
   }, [])
 
+  /*
+    打った数をそのまま読んで渡す。
+    setValue の更新関数の中で onSubmit を呼ぶと、React が更新関数を2回走らせたとき
+    (そういう作りになっている)に1回の決定で2回進んでしまう。
+    筆算では、1回のタップで段を2つ進めて、打った数が答えとして判定されていた。
+  */
   const submit = useCallback(() => {
-    setValue((current) => {
-      if (current) onSubmit(current)
-      return current
-    })
-  }, [onSubmit])
+    if (value) onSubmit(value)
+  }, [value, onSubmit])
 
   useEffect(() => {
     if (disabled) return

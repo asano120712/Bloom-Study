@@ -82,11 +82,19 @@ function multiplySteps(left: string, right: string): ColumnStep[] {
   const digits = right.length === 1 ? [...left].reverse() : [...right].reverse()
   const other = right.length === 1 ? b : a
 
+  /*
+    見出しには、その段で**かける2つの数をそのまま**出す。
+    かける数が1桁か2桁かで、位ごとに分けるのがどちらの数かが入れ替わるので、
+    「1だんめ 一のくらい」とだけ書くと、どちらの一のくらいなのか読めない
+    (19 × 18 の2だんめは 19 × 1 で、19 × 8 ではない)。
+  */
   const steps = digits.map((digit, index) => ({
     expected: String(Number(digit) * other),
     // 段に入るいちばん大きい数は、相手の数を9倍したもの
     width: String(other * 9).length,
-    caption: `${index + 1}だんめ ${placeName(index)}`,
+    caption:
+      (right.length === 1 ? `${index + 1}だんめ ${digit} × ${right}` : `${index + 1}だんめ ${left} × ${digit}`) +
+      (index > 0 ? `(${index}けた ずらす)` : ''),
     slot: { kind: 'row', shift: index } as const,
     counts: false,
   }))
