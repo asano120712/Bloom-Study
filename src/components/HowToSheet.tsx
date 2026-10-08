@@ -1,26 +1,37 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { HowToDemo } from '@/components/HowToDemo'
+import { demosFor } from '@/data/howTo'
 import { useCopy } from '@/hooks/useAudienceMode'
 import type { ActivityId } from '@/data/activities'
 
 /**
  * あそびかた。一覧のカードの「？」から開く。
  *
- * **あそび1つぶんだけ**を出す。なぞりがきは指の動かし方、計算は筆算の打ち方と、
- * 中身がまったく違うので、1つにまとめると自分に関係のある段落を探すことになる。
+ * **あそび1つぶんを、手順ごとに1画面ずつ**出す。
+ * 手順を全部並べると、読む前に長さで降りてしまう。1つずつなら、
+ * その手順のデモと文だけを見ればよく、次に進むかどうかも自分で決められる。
  *
- * 読むのは始める前なので、やることだけを短く並べる。
- * 細かい決まり(判定のしかたなど)は、実際にその場面で出る言葉で伝える。
+ * 文の横ではなく上にデモを置くのは、狭い画面で絵が潰れないようにするため。
  */
 export function HowToSheet({ activity, onClose }: { activity: ActivityId; onClose: () => void }) {
   const copy = useCopy()
   const dialogRef = useRef<HTMLDivElement>(null)
-  const words = copy.activities[activity]
+  const [index, setIndex] = useState(0)
 
-  // 開いた直後にシート内へフォーカスを移し、Esc で閉じられるようにする(はじめかたと同じ作法)
+  const words = copy.activities[activity]
+  const steps = copy.howTo.steps[activity]
+  const demos = demosFor(activity, steps.length)
+  const isLast = index === steps.length - 1
+
+  // 開いた直後にシート内へフォーカスを移し、Esc で1つ前(先頭なら閉じる)へ戻る
   useEffect(() => {
     dialogRef.current?.focus()
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
+      if (event.key !== 'Escape') return
+      setIndex((current) => {
+        if (current === 0) onClose()
+        return Math.max(0, current - 1)
+      })
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
@@ -46,26 +57,53 @@ export function HowToSheet({ activity, onClose }: { activity: ActivityId; onClos
         <p className="text-center text-sm text-ink-400">{words.label}</p>
         <h2 className="mt-1 text-center text-xl font-bold">{copy.howTo.title}</h2>
 
-        {/* 長いあそびでも画面に収まるよう、中でだけ流す */}
-        <ol className="mt-6 flex max-h-[60vh] list-none flex-col gap-4 overflow-y-auto overscroll-contain">
-          {copy.howTo.steps[activity].map((line, index) => (
-            <li key={line} className="flex gap-3">
-              {/* 順番のある手順なので番号を振る。字を読めない子には、保護者が読む前提 */}
-              <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-bloom-100 text-sm font-bold text-bloom-700">
-                {index + 1}
-              </span>
-              <span className="text-base leading-relaxed text-ink-900">{line}</span>
-            </li>
-          ))}
-        </ol>
+        {/* key を変えて作り直す。前の手順の動きが途中から続いて見えないように */}
+        <div className="mt-5">
+          <HowToDemo key={`${activity}-${index}`} id={demos[index]} activity={activity} />
+        </div>
 
-        <button
-          type="button"
-          onClick={onClose}
-          className="mt-8 min-h-14 w-full rounded-full bg-bloom-700 text-lg font-bold text-white"
+        {/*
+          文の高さは手順で変わるが、枠は変えない。変えるとボタンの位置が動き、
+          続けて「つぎへ」を押すときに押し間違える。
+        */}
+        <p
+          aria-live="polite"
+          className="mt-4 flex min-h-20 items-start gap-3 text-base leading-relaxed"
         >
-          {copy.howTo.close}
-        </button>
+          <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-bloom-100 text-sm font-bold text-bloom-700">
+            {index + 1}
+          </span>
+          <span>{steps[index]}</span>
+        </p>
+
+        {/* いま何手目か。数より、残りの量が見えることのほうが大事なので点で出す */}
+        <div aria-hidden="true" className="mt-2 flex justify-center gap-2">
+          {steps.map((step, dot) => (
+            <span
+              key={step}
+              className={`size-2 rounded-full ${dot === index ? 'bg-bloom-700' : 'bg-bloom-200'}`}
+            />
+          ))}
+        </div>
+
+        <div className="mt-6 flex gap-3">
+          {index > 0 && (
+            <button
+              type="button"
+              onClick={() => setIndex(index - 1)}
+              className="min-h-14 flex-1 rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600"
+            >
+              {copy.howTo.back}
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => (isLast ? onClose() : setIndex(index + 1))}
+            className="min-h-14 flex-2 rounded-full bg-bloom-700 text-lg font-bold text-white"
+          >
+            {isLast ? copy.howTo.close : copy.howTo.next}
+          </button>
+        </div>
       </div>
     </div>
   )

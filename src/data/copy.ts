@@ -36,6 +36,10 @@ export interface Copy {
     /** カードの「？」の読み上げ。あそびの名前が入る */
     open: (activity: string) => string
     title: string
+    /** つぎの手順へ */
+    next: string
+    /** 1つ前の手順へ */
+    back: string
     close: string
     steps: Record<ActivityId, string[]>
   }
@@ -168,6 +172,8 @@ const ADULT: Copy = {
   howTo: {
     open: (activity) => `${activity}のあそびかた`,
     title: 'あそびかた',
+    next: 'つぎへ',
+    back: 'もどる',
     close: 'とじる',
     steps: {
       english: [
@@ -348,6 +354,8 @@ const KIDS: Copy = {
   howTo: {
     open: (activity) => `${activity}の あそびかた`,
     title: 'あそびかた',
+    next: 'つぎへ',
+    back: 'もどる',
     close: 'とじる',
     steps: {
       english: [
