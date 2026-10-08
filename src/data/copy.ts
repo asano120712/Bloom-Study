@@ -82,6 +82,8 @@ export interface Copy {
     nextPlace: string
     /** わり算で、筆算のつぎの手へ進むとき */
     nextStep: string
+    /** 間違えて、同じところを打ち直してもらうとき */
+    retry: string
   }
   trace: { guide: string; done: string }
   build: { look: string; answerIs: string }
@@ -190,8 +192,8 @@ const ADULT: Copy = {
       math: [
         '2桁以上の計算は、筆算の形で出ます。',
         '筆算は段ごと・位ごとに打ちます。上の見出しが、いま打つところを教えます。',
-        '途中で間違えても止まりません。正しい数に直して先へ進みます。',
-        '記録に残るのは最後の答えだけです。途中の段は点数に入りません。',
+        '間違えると赤い枠になります。正しく打ち直すと先へ進みます。',
+        '「できた」かどうかは1回めで決まります。打ち直しても記録は変わりません。',
       ],
       'trace-shape': [
         '光っている ● から、指でなぞります。',
@@ -258,6 +260,7 @@ const ADULT: Copy = {
     nextRow: 'つぎの段へ',
     nextPlace: 'つぎのくらいへ',
     nextStep: 'つぎへ',
+    retry: 'もういちど打ってみよう',
   },
   trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
   build: { look: 'この漢字をよく見て、覚えよう', answerIs: 'こたえは これ' },
@@ -428,6 +431,7 @@ const KIDS: Copy = {
     nextRow: 'つぎの だんへ',
     nextPlace: 'つぎの くらいへ',
     nextStep: 'つぎへ',
+    retry: 'もういちど うってみよう',
   },
   trace: { guide: 'ひかってる ● から ゆびで なぞってね', done: 'できた！' },
   build: { look: 'この かんじを よく みてね', answerIs: 'こたえは これ' },

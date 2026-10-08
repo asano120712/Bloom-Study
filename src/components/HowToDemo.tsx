@@ -13,7 +13,7 @@ import { prefersReducedMotion } from '@/utils/motion'
  *
  * - `art`    そのあそびの絵(一覧のカードと同じもの)
  * - `hint`   ヒントが1つずつ増えるところ
- * - `column` 筆算が段ごとに埋まり、まちがいが直るところ
+ * - `column` 筆算が段ごとに埋まり、まちがいが赤枠になって打ち直すところ
  * - `choice` こたえかたを選ぶところ
  * - `self`   手書きのあと、自分で合っていたかを選ぶところ
  * - `slots`  パーツをへん・つくりの枠へ入れるところ
@@ -81,7 +81,7 @@ function HintDemo() {
 }
 
 /**
- * 筆算は段ごとに打つ。まちがえても止まらず、正しい数に直して先へ進む。
+ * 筆算は段ごとに打つ。まちがえると赤枠になり、打ち直すと先へ進む。
  *
  * 本物の筆算([ColumnForm](src/components/ColumnForm.tsx))に、
  * 打ち終わった段を順に渡していく。見た目が本番と同じになる。
@@ -89,19 +89,25 @@ function HintDemo() {
 const COLUMN_DEMO = { expression: '98 × 7', rows: ['56', '63'], answer: '686' } as const
 
 function ColumnDemo() {
-  // 0: 空 → 1: 1だんめ → 2: 2だんめ(まちがい) → 3: 直る → 4: こたえ
+  // 0: 空 → 1: 1だんめ → 2: 2だんめをまちがえる(赤) → 3: 打ち直す → 4: こたえ
   const frame = useFrames(5)
 
   const cells = [
     ...(frame >= 1
-      ? [{ slot: { kind: 'row', shift: 0 } as const, digits: COLUMN_DEMO.rows[0], tone: 'done' as const }]
+      ? [
+          {
+            slot: { kind: 'row', shift: 0 } as const,
+            digits: COLUMN_DEMO.rows[0],
+            tone: 'done' as const,
+          },
+        ]
       : []),
     ...(frame >= 2
       ? [
           {
             slot: { kind: 'row', shift: 1 } as const,
             digits: frame === 2 ? '36' : COLUMN_DEMO.rows[1],
-            tone: frame === 2 ? ('typing' as const) : ('corrected' as const),
+            tone: frame === 2 ? ('wrong' as const) : ('done' as const),
           },
         ]
       : []),

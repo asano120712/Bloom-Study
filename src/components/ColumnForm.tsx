@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { parseExpression, type ColumnSlot } from '@/features/math'
 
 /** 筆算のマス1つぶん。打ち終わったもの・いま打っているものを、場所つきで表す */
@@ -16,10 +16,19 @@ export interface ColumnCell {
   tone: CellTone
 }
 
-type CellTone = 'typing' | 'done' | 'corrected'
+type CellTone = 'typing' | 'done' | 'wrong'
 
-/** マス1つの幅。桁をそろえるため、段のずらし幅やわり算の桁位置でも同じ値を使う */
+/**
+ * マス1つの幅。
+ *
+ * **式の数字も、打つマスも、同じ幅のマスに1字ずつ置く。** 幅が違うと、
+ * 上の数字と下のマスで位が縦にそろわず、どの位を打っているのか読めなくなる。
+ * 幅は CSS 変数で配り、ずらし幅やわり算の桁位置もこれを見る。
+ *
+ * 手書きのときだけ広い(指で1字書ける大きさ)。式のほうもそれに合わせて広げる。
+ */
 const CELL = '1.15em'
+const WRITE_CELL = '2em'
 
 /**
  * 筆算(たし算・ひき算・かけ算)。式を縦に積んで、桁をそろえて見せる。
@@ -59,11 +68,14 @@ export function ColumnForm({
       // 読み上げには1行の式を渡す。縦に積んだ数字だけでは式として読まれない
       aria-label={expression}
       className="inline-grid grid-cols-[auto_auto] gap-x-3 text-right font-bold tabular-nums"
+      style={{ '--cell': writeRow === undefined ? CELL : WRITE_CELL } as CSSProperties}
     >
       <span aria-hidden="true" />
-      <span aria-hidden="true">{left}</span>
-      <span aria-hidden="true">{operator}</span>
-      <span aria-hidden="true">{right}</span>
+      <PlainDigits digits={left} />
+      <span aria-hidden="true" className="self-center">
+        {operator}
+      </span>
+      <PlainDigits digits={right} />
       <span aria-hidden="true" className="col-span-2 mt-1 border-t-2 border-ink-900" />
 
       {/* かけ算の段。ずらして書くのも筆算と同じ */}
@@ -104,6 +116,22 @@ export function ColumnForm({
   )
 }
 
+/**
+ * 式の数字。枠は出さないが、**打つマスと同じ幅・同じすきま**で1字ずつ置く。
+ * こうしないと、上の数字と下のマスで位が縦にそろわない。
+ */
+function PlainDigits({ digits }: { digits: string }) {
+  return (
+    <span aria-hidden="true" className="flex justify-end gap-1">
+      {[...digits].map((digit, index) => (
+        <span key={index} className="flex size-[var(--cell)] items-center justify-center">
+          {digit}
+        </span>
+      ))}
+    </span>
+  )
+}
+
 /** かけ算の段1つ。ずらす段は、その幅ぶん右を空ける */
 function Row({
   digits,
@@ -120,7 +148,7 @@ function Row({
     <span
       aria-hidden="true"
       className="col-span-2 mt-2 flex justify-end gap-1"
-      style={shift ? { paddingRight: `calc(${shift} * (${CELL} + 0.25rem))` } : undefined}
+      style={shift ? { paddingRight: `calc(${shift} * (var(--cell) + 0.25rem))` } : undefined}
     >
       <Digits digits={digits} width={width} tone={tone} />
     </span>
@@ -144,9 +172,8 @@ function Digits({ digits, width, tone }: { digits: string; width?: number; tone:
       {cells.map((digit, index) => (
         <span
           key={index}
-          // 幅は CELL と同じ。Tailwind は書いたままの字面しか拾えないので、ここは直に書く
-          className={`flex size-[1.15em] shrink-0 items-center justify-center rounded-md border-2 leading-none ${
-            tone === 'corrected'
+          className={`flex size-[var(--cell)] shrink-0 items-center justify-center rounded-md border-2 leading-none ${
+            tone === 'wrong'
               ? 'border-warm-500 text-warm-600'
               : digit
                 ? 'border-bloom-300 text-ink-900'
@@ -216,7 +243,12 @@ export function DivisionForm({
       // 読み上げには1行の式を渡す。囲いと数字の位置だけでは式として読まれない
       aria-label={expression}
       className="inline-grid gap-1 text-right font-bold tabular-nums"
-      style={{ gridTemplateColumns: `auto repeat(${dividend.length}, ${CELL})` }}
+      style={
+        {
+          '--cell': writeRow === undefined ? CELL : WRITE_CELL,
+          gridTemplateColumns: `auto repeat(${dividend.length}, var(--cell))`,
+        } as CSSProperties
+      }
     >
       {/* 商。割られる数の、その桁の真上に置く */}
       {writeRow !== undefined ? (

@@ -69,8 +69,12 @@ export function QuizPage() {
    * 問題が変わるときは画面ごと作り直される(1問答えるたびに結果画面へ移る)ので、
    * ここで問題の切り替わりを見る必要はない。
    */
-  /** 筆算で打ち終わったところ。段・位・商を打った順に持つ */
+  /** 筆算で打ち終わったところ。段・位・商を打った順に持つ(入るのは正しい数だけ) */
   const [filledSteps, setFilledSteps] = useState<string[]>([])
+  /** いまの手で間違えて打った数。赤枠で残し、打ち直すまで先へ進めない */
+  const [missed, setMissed] = useState<string | null>(null)
+  /** 1回めで間違えた手があったか。記録はこれで決める(直して進めても「できた」にはしない) */
+  const [hasMissed, setHasMissed] = useState(false)
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
 
@@ -165,10 +169,22 @@ export function QuizPage() {
   const isLastStep = stepIndex >= script.length - 1
 
   /**
-   * 1つ打ち終わったとき。合っていてもいなくても止めずに次へ進み、
-   * 間違えたところは正しい数に直して残す(直さないと、そのあとが必ず合わなくなる)。
+   * 1つ打ち終わったとき。
+   *
+   * **合うまで先へ進まない。** 間違えたまま進むと、そのあとの段も答えも必ず合わなくなり、
+   * どこでつまずいたのか分からなくなる。紙の筆算でも、間違えたらそこを消して書き直す。
+   *
+   * 止めるのは手を進めることだけで、やり直しはさせない。
+   * **「できた」かどうかは1回めで決まる**ので、直して進めても記録は変わらない
+   * (打ち直せば必ず「できた」になるなら、記録の意味が無くなる)。
    */
-  const commitStep = (value: string) => {
+  const commitStep = (value: string, expected: string) => {
+    if (value !== expected) {
+      setMissed(value)
+      setHasMissed(true)
+      return
+    }
+    setMissed(null)
     setFilledSteps((filled) => [...filled, value])
   }
 
@@ -180,15 +196,30 @@ export function QuizPage() {
         ? copy.number.nextPlace
         : copy.number.nextStep
 
-  /** 筆算のマス。打ち終わったところは正しい数で、いま打っているところはそのまま出す */
+  /**
+   * 筆算のマス。打ち終わったところと、いま打っているところ。
+   *
+   * 間違えた数は、打ち直しを始めるまで赤枠で残す。消してしまうと、
+   * 何を打って間違えたのかが分からないまま打ち直すことになる。
+   */
   const columnCells = (typed?: string): ColumnCell[] => {
-    const done = script.slice(0, stepIndex).map((entry, index) => ({
+    const done = script.slice(0, stepIndex).map((entry) => ({
       slot: entry.slot,
       digits: entry.expected,
-      tone: filledSteps[index] === entry.expected ? ('done' as const) : ('corrected' as const),
+      tone: 'done' as const,
     }))
     if (typed === undefined || !step) return done
-    return [...done, { slot: step.slot, digits: typed, width: step.width, tone: 'typing' as const }]
+
+    const isShowingMissed = missed !== null && typed === ''
+    return [
+      ...done,
+      {
+        slot: step.slot,
+        digits: isShowingMissed ? missed : typed,
+        width: step.width,
+        tone: isShowingMissed ? ('wrong' as const) : ('typing' as const),
+      },
+    ]
   }
 
   /** 計算は「ヒント → 式 → 答え」の順に置く */
@@ -288,7 +319,8 @@ export function QuizPage() {
             )}
             {inputMode === 'number' && (
               <NumberInput
-                key={`number-${question.id}-${stepIndex}`}
+                // 打ち直しのたびに作り直して、打った数を空に戻す
+                key={`number-${question.id}-${stepIndex}-${missed ?? ''}`}
                 // 筆算は、そこに入りうる桁数より多くは打てない(マスからはみ出す)
                 maxLength={step?.width}
                 display={
@@ -296,8 +328,9 @@ export function QuizPage() {
                     ? (typed) => (
                         <PromptBlock
                           question={question}
-                          // 打っている場所の名前を出す(「一のくらい」「7 × 8 を かく」)
+                          // 打っている場所の名前を出す(「一のくらい」「かける 7 × 8」)
                           caption={step?.caption ?? promptCaption}
+                          note={missed === null ? undefined : copy.number.retry}
                           cells={columnCells(typed)}
                         />
                       )
@@ -305,14 +338,23 @@ export function QuizPage() {
                 }
                 submitLabel={isLastStep ? copy.number.submit : nextStepLabel}
                 onSubmit={(value) => {
-                  if (!isLastStep) {
-                    commitStep(value)
+                  if (step && !isLastStep) {
+                    commitStep(value, step.expected)
+                    return
+                  }
+                  /*
+                    最後の手。ここも合うまで進まないが、1回めで間違えていれば
+                    記録は「ざんねん」にする(判定に渡すのは1回めに打った数)。
+                  */
+                  if (step && value !== step.expected) {
+                    setMissed(value)
+                    setHasMissed(true)
                     return
                   }
                   // 答えは、打った途中のものから組み立てる(位ごと・商は、それ自体が答え)
                   const typed = [...filledSteps, value]
                   const answer = script.length > 0 ? answerFromSteps(script, typed) : value
-                  finish(judgeNumber(question, answer), revealedCount, {
+                  finish(judgeNumber(question, hasMissed ? '' : answer), revealedCount, {
                     kind: 'text',
                     text: answer,
                   })
@@ -370,10 +412,13 @@ function PromptBlock({
   question,
   caption,
   cells,
+  note,
   writeRow,
 }: {
   question: Question
   caption: string
+  /** 打ち直してもらうときの一言。式の上、見出しのすぐ下に出す */
+  note?: string
   /** 筆算のマス(打ち終わったところと、いま打っているところ) */
   cells?: ColumnCell[]
   /** 手書きで書き込むマス */
@@ -382,6 +427,11 @@ function PromptBlock({
   return (
     <section className="mt-4 shrink-0 text-center select-none">
       <p className="text-xs text-ink-400">{caption}</p>
+      {note && (
+        <p aria-live="assertive" className="text-xs font-bold text-warm-600">
+          {note}
+        </p>
+      )}
       {/*
         わり算の筆算だけ字を小さくする。商・引く段・ひいた数で6段になり、
         他と同じ大きさだと数字キーボードまで入らない。
