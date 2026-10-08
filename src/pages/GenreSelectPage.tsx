@@ -57,7 +57,7 @@ export function GenreSelectPage() {
             <button
               type="button"
               onClick={() => open(activity)}
-              className="flex min-h-20 w-full items-center gap-4 rounded-3xl bg-bloom-100 p-4 pr-12 text-left"
+              className="flex min-h-20 w-full items-center gap-4 rounded-3xl bg-bloom-100 p-4 pb-14 text-left"
             >
               {/*
                 中身を小さくして流す絵。字を読まなくても選べるよう、
@@ -69,9 +69,8 @@ export function GenreSelectPage() {
               />
               <span className="flex min-w-0 flex-col">
                 {/*
-                  text-balance: 「？」のぶん幅が狭くなり、こども向けの長い名前
-                  (「かたちを なぞろう」)が折り返す。そのままだと最後の1字だけが
-                  次の行に残るので、2行を同じくらいの長さに割る。
+                  text-balance: 狭い端末で名前が折り返したとき、
+                  最後の1字だけが次の行に残らないよう、2行を同じくらいの長さに割る。
                 */}
                 <span className="text-xl font-bold text-balance text-bloom-700">
                   {copy.activities[activity.id].label}
@@ -88,19 +87,20 @@ export function GenreSelectPage() {
               </span>
             </button>
 
-            {/* 押し場所は 44px。カードを押すつもりで触れても開かない大きさに収める */}
+            {/*
+              「？」ではなく言葉で出す。記号は、何が出るのか分からないまま押すことになる。
+              右上ではなく右下に置くのは、右上だと名前の幅を食って
+              こども向けの長い名前(「かたちを なぞろう」)が折り返すため。
+              カードの下に場所を空けて(pb-14)、説明と重ならないようにしてある。
+            */}
             <button
               type="button"
               onClick={() => setHowTo(activity.id)}
+              // 読み上げでは、どのあそびのものか分かるように名前を添える
               aria-label={copy.howTo.open(copy.activities[activity.id].label)}
-              className="absolute top-2 right-2 flex size-11 items-center justify-center rounded-full text-lg font-bold text-bloom-700"
+              className="absolute right-3 bottom-3 flex min-h-11 items-center rounded-full border-2 border-bloom-300 bg-base-50/80 px-4 text-sm font-bold text-bloom-700"
             >
-              <span
-                aria-hidden="true"
-                className="flex size-7 items-center justify-center rounded-full border-2 border-bloom-300 text-sm"
-              >
-                ?
-              </span>
+              {copy.howTo.title}
             </button>
           </li>
         ))}
