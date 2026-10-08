@@ -13,6 +13,8 @@ interface NumberInputProps {
   display?: (typed: string) => ReactNode
   /** 決定キーの文字。筆算の途中の段では「つぎの段へ」になる */
   submitLabel?: string
+  /** 打てる桁数。筆算では、そのマスに入りうるぶんだけ */
+  maxLength?: number
   disabled?: boolean
 }
 
@@ -30,6 +32,7 @@ export function NumberInput({
   onSubmit,
   display,
   submitLabel,
+  maxLength = MAX_LENGTH,
   disabled = false,
 }: NumberInputProps) {
   const copy = useCopy()
@@ -37,12 +40,12 @@ export function NumberInput({
 
   const append = useCallback((digit: string) => {
     setValue((current) => {
-      if (current.length >= MAX_LENGTH) return current
+      if (current.length >= maxLength) return current
       // 先頭の 0 は積まない(「007」のような入力にしない)
       if (current === '0') return digit
       return current + digit
     })
-  }, [])
+  }, [maxLength])
 
   const backspace = useCallback(() => {
     setValue((current) => current.slice(0, -1))

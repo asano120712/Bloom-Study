@@ -188,7 +188,7 @@ export function QuizPage() {
       tone: filledSteps[index] === entry.expected ? ('done' as const) : ('corrected' as const),
     }))
     if (typed === undefined || !step) return done
-    return [...done, { slot: step.slot, digits: typed, tone: 'typing' as const }]
+    return [...done, { slot: step.slot, digits: typed, width: step.width, tone: 'typing' as const }]
   }
 
   /** 計算は「ヒント → 式 → 答え」の順に置く */
@@ -289,6 +289,8 @@ export function QuizPage() {
             {inputMode === 'number' && (
               <NumberInput
                 key={`number-${question.id}-${stepIndex}`}
+                // 筆算は、そこに入りうる桁数より多くは打てない(マスからはみ出す)
+                maxLength={step?.width}
                 display={
                   showsPromptInInput
                     ? (typed) => (

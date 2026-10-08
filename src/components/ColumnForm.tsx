@@ -6,6 +6,13 @@ export interface ColumnCell {
   slot: ColumnSlot
   /** 入っている数。空文字なら、まだ何も打っていない点線のマス */
   digits: string
+  /**
+   * 出しておくマスの数(いま打っているところだけ)。
+   *
+   * 右づめのまま1字ずつ出すと、打つたびに前の数字が左へずれて読みにくい。
+   * 先に入りうるぶんのマスを出しておき、左から順に埋める。
+   */
+  width?: number
   tone: CellTone
 }
 
@@ -64,6 +71,7 @@ export function ColumnForm({
         <Row
           key={index}
           digits={cell.digits}
+          width={cell.width}
           tone={cell.tone}
           shift={cell.slot.kind === 'row' ? cell.slot.shift : 0}
         />
@@ -86,9 +94,9 @@ export function ColumnForm({
         (places.length > 0 || answer) && (
           <span aria-hidden="true" className="col-span-2 mt-2 flex justify-end gap-1">
             {[...places].reverse().map((cell, index) => (
-              <Digits key={index} digits={cell.digits} tone={cell.tone} />
+              <Digits key={index} digits={cell.digits} width={cell.width} tone={cell.tone} />
             ))}
-            {answer && <Digits digits={answer.digits} tone={answer.tone} />}
+            {answer && <Digits digits={answer.digits} width={answer.width} tone={answer.tone} />}
           </span>
         )
       )}
@@ -97,14 +105,24 @@ export function ColumnForm({
 }
 
 /** かけ算の段1つ。ずらす段は、その幅ぶん右を空ける */
-function Row({ digits, shift, tone }: { digits: string; shift: number; tone: CellTone }) {
+function Row({
+  digits,
+  width,
+  shift,
+  tone,
+}: {
+  digits: string
+  width?: number
+  shift: number
+  tone: CellTone
+}) {
   return (
     <span
       aria-hidden="true"
       className="col-span-2 mt-2 flex justify-end gap-1"
       style={shift ? { paddingRight: `calc(${shift} * (${CELL} + 0.25rem))` } : undefined}
     >
-      <Digits digits={digits} tone={tone} />
+      <Digits digits={digits} width={width} tone={tone} />
     </span>
   )
 }
@@ -116,14 +134,18 @@ function Row({ digits, shift, tone }: { digits: string; shift: number; tone: Cel
  * 桁数が分かってしまい、見当をつける手間が減る。打った数に追いて増える形にして、
  * まだ何も打っていないときだけ点線のマスを1つ出す。
  */
-function Digits({ digits, tone }: { digits: string; tone: CellTone }) {
+function Digits({ digits, width, tone }: { digits: string; width?: number; tone: CellTone }) {
+  // 足りないぶんは空のマス。width が無いときは、打った数のぶんだけ(空なら1つ)
+  const cells = [...digits]
+  while (cells.length < Math.max(width ?? 1, 1)) cells.push('')
+
   return (
     <>
-      {(digits ? [...digits] : ['']).map((digit, index) => (
+      {cells.map((digit, index) => (
         <span
           key={index}
           // 幅は CELL と同じ。Tailwind は書いたままの字面しか拾えないので、ここは直に書く
-          className={`flex size-[1.15em] items-center justify-center rounded-md border-2 leading-none ${
+          className={`flex size-[1.15em] shrink-0 items-center justify-center rounded-md border-2 leading-none ${
             tone === 'corrected'
               ? 'border-warm-500 text-warm-600'
               : digit
@@ -170,7 +192,8 @@ export function DivisionForm({
   */
   const placed = lines.reduce<Placed[]>((done, cell) => {
     const column = cell.slot.kind === 'product' || cell.slot.kind === 'rest' ? cell.slot.column : 0
-    const span = Math.max(cell.digits.length, 1)
+    // いま打っているところは、入りうるぶんの幅で置く。打つたびに置き場所が動かないように
+    const span = Math.max(cell.digits.length, cell.width ?? 1, 1)
     const start = Math.max(2, columnOf(column) - span + 1)
     const above = done[done.length - 1]
     const top = above ? above.row + 1 : 3
@@ -215,7 +238,7 @@ export function DivisionForm({
               gridColumn: cell.slot.kind === 'quotient' ? columnOf(cell.slot.column) : 2,
             }}
           >
-            <Digits digits={cell.digits} tone={cell.tone} />
+            <Digits digits={cell.digits} width={cell.width} tone={cell.tone} />
           </span>
         ))
       )}
@@ -252,7 +275,7 @@ export function DivisionForm({
             className="flex justify-end gap-1"
             style={{ gridRow: row, gridColumn: `${start} / span ${span}` }}
           >
-            <Digits digits={cell.digits} tone={cell.tone} />
+            <Digits digits={cell.digits} width={cell.width} tone={cell.tone} />
           </span>
         </span>
       ))}

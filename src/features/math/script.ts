@@ -21,6 +21,14 @@ export type ColumnSlot =
 export interface ColumnStep {
   /** その場所に入る正しい数 */
   expected: string
+  /**
+   * そこに入りうる**最大の桁数**。打つマスをいくつ出すかに使う。
+   *
+   * 答えの桁数ではなく上限(5 × 8 でも 1 × 8 でも、一のくらいの段は2マス)。
+   * 右づめのまま打たせると、打つたびに前の数字が左へずれて読みにくいので、
+   * 先にマスを出しておき、左から順に埋める。上限が見えても答えは分からない。
+   */
+  width: number
   /** 打っている間に式の上に出す見出し(「一のくらい」「7 × 8 を かく」) */
   caption: string
   slot: ColumnSlot
@@ -76,6 +84,8 @@ function multiplySteps(left: string, right: string): ColumnStep[] {
 
   const steps = digits.map((digit, index) => ({
     expected: String(Number(digit) * other),
+    // 段に入るいちばん大きい数は、相手の数を9倍したもの
+    width: String(other * 9).length,
     caption: `${index + 1}だんめ ${placeName(index)}`,
     slot: { kind: 'row', shift: index } as const,
     counts: false,
@@ -83,7 +93,13 @@ function multiplySteps(left: string, right: string): ColumnStep[] {
 
   return [
     ...steps,
-    { expected: String(a * b), caption: 'こたえ', slot: { kind: 'answer' }, counts: true },
+    {
+      expected: String(a * b),
+      width: left.length + right.length,
+      caption: 'こたえ',
+      slot: { kind: 'answer' },
+      counts: true,
+    },
   ]
 }
 
@@ -111,6 +127,8 @@ function addSteps(left: string, right: string, operator: '+' | '−'): ColumnSte
       const sum = a + b + carry
       steps.push({
         expected: isTop ? String(sum) : String(sum % 10),
+        // いちばん上の位だけ、くり上がった1を足して2桁になることがある
+        width: isTop ? 2 : 1,
         caption: placeName(place),
         slot: { kind: 'place', place },
         counts: true,
@@ -120,6 +138,7 @@ function addSteps(left: string, right: string, operator: '+' | '−'): ColumnSte
       const difference = a - b - carry
       steps.push({
         expected: String(difference < 0 ? difference + 10 : difference),
+        width: 1,
         caption: placeName(place),
         slot: { kind: 'place', place },
         counts: true,
@@ -159,12 +178,15 @@ function divideSteps(dividend: string, divisor: string): ColumnStep[] {
 
     steps.push({
       expected: String(quotient),
+      width: 1,
       caption: `しょうの ${placeName(dividend.length - 1 - column)}`,
       slot: { kind: 'quotient', column },
       counts: true,
     })
     steps.push({
       expected: String(product),
+      // 引く段に入るいちばん大きい数は、割る数を9倍したもの
+      width: String(by * 9).length,
       caption: `${divisor} × ${quotient} を かく`,
       slot: { kind: 'product', column },
       counts: false,
@@ -172,6 +194,8 @@ function divideSteps(dividend: string, divisor: string): ColumnStep[] {
     steps.push({
       // おろした桁まで含めた数。最後の桁ではおろすものが無いので、ひいた数だけ
       expected: String(isLast ? rest : rest * 10 + Number(dividend[column + 1])),
+      // ひいた数は割る数より小さい。つぎの桁をおろすと、その右に1桁増える
+      width: isLast ? 1 : String(by * 10 - 1).length,
       caption: isLast ? 'ひく' : 'ひいて つぎを おろす',
       slot: { kind: 'rest', column: isLast ? column : column + 1 },
       counts: false,
