@@ -51,13 +51,13 @@ export function GenreSelectPage() {
         {activitiesFor(mode).map((activity) => (
           /*
             カードの中にボタンは置けない(入れ子のボタンは成立しない)ので、
-            「？」はカードの外に出して右上に重ねる。
+            あそびかたのボタンはカードの外に出して、名前の行の右へ重ねる。
           */
           <li key={activity.id} className="relative">
             <button
               type="button"
               onClick={() => open(activity)}
-              className="flex min-h-20 w-full items-center gap-4 rounded-3xl bg-bloom-100 p-4 pb-14 text-left"
+              className="flex min-h-20 w-full items-center gap-4 rounded-3xl bg-bloom-100 p-4 text-left"
             >
               {/*
                 中身を小さくして流す絵。字を読まなくても選べるよう、
@@ -69,10 +69,20 @@ export function GenreSelectPage() {
               />
               <span className="flex min-w-0 flex-col">
                 {/*
-                  text-balance: 狭い端末で名前が折り返したとき、
-                  最後の1字だけが次の行に残らないよう、2行を同じくらいの長さに割る。
+                  text-balance は掛けない。下の float で1行目だけが短くなっているので、
+                  balance を掛けると「かた / ちを なぞろう」のように、
+                  短い1行目にそろえて2行目まで切り詰めてしまう。
                 */}
-                <span className="text-xl font-bold text-balance text-bloom-700">
+                <span className="text-xl font-bold text-bloom-700">
+                  {/*
+                    あそびかたのボタンのぶんを、**名前の行にだけ**空ける。
+                    カード全体に右の余白を取ると、下の説明まで一緒に狭くなる。
+                    float なら、ボタンに重なる行だけが短くなり、説明は幅いっぱい使える。
+                  */}
+                  <span
+                    aria-hidden="true"
+                    className={`float-right h-7 ${mode === 'kids' ? 'w-24' : 'w-12'}`}
+                  />
                   {copy.activities[activity.id].label}
                 </span>
                 {/*
@@ -88,20 +98,32 @@ export function GenreSelectPage() {
             </button>
 
             {/*
-              「？」ではなく言葉で出す。記号は、何が出るのか分からないまま押すことになる。
-              右上ではなく右下に置くのは、右上だと名前の幅を食って
-              こども向けの長い名前(「かたちを なぞろう」)が折り返すため。
-              カードの下に場所を空けて(pb-14)、説明と重ならないようにしてある。
+              こども向けは「あそびかた」と言葉で出す。記号だけだと、何が出るのか
+              分からないまま押すことになる(読む相手は保護者)。
+              おとな向けは名前が短く、言葉を置くと名前の行を食うので「？」のまま。
             */}
             <button
               type="button"
               onClick={() => setHowTo(activity.id)}
               // 読み上げでは、どのあそびのものか分かるように名前を添える
               aria-label={copy.howTo.open(copy.activities[activity.id].label)}
-              className="absolute right-3 bottom-3 flex min-h-11 items-center rounded-full border-2 border-bloom-300 bg-base-50/80 px-4 text-sm font-bold text-bloom-700"
+              className="absolute top-1.5 right-2 flex min-h-11 items-center px-2"
             >
-              {copy.howTo.title}
+              {/*
+                押し場所は 44px のまま、**見た目は1行ぶんの高さ**に収める。
+                見た目まで 44px にすると、名前の2行目まで場所を空けることになり、
+                こども向けの長い名前が3行になる。
+              */}
+              <span
+                aria-hidden="true"
+                className={`flex h-7 items-center justify-center rounded-full border-2 border-bloom-300 bg-base-50/80 font-bold text-bloom-700 ${
+                  mode === 'kids' ? 'px-3 text-xs' : 'w-7 text-sm'
+                }`}
+              >
+                {mode === 'kids' ? copy.howTo.title : '?'}
+              </span>
             </button>
+
           </li>
         ))}
       </ul>
