@@ -11,7 +11,7 @@ import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { answerChoicesOf, findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
-import { answerBoxCount, answerFromSteps, columnScript } from '@/features/math'
+import { answerBoxCount, answerFromSteps, columnScript, type ColumnStep } from '@/features/math'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeNumber, judgeParts, judgeTyping } from '@/features/judge'
 import { useCopy } from '@/hooks/useAudienceMode'
@@ -73,8 +73,13 @@ export function QuizPage() {
   const [filledSteps, setFilledSteps] = useState<string[]>([])
   /** いまの手で間違えて打った数。赤枠で残し、打ち直すまで先へ進めない */
   const [missed, setMissed] = useState<string | null>(null)
-  /** 1回めで間違えた手があったか。記録はこれで決める(直して進めても「できた」にはしない) */
-  const [hasMissed, setHasMissed] = useState(false)
+  /**
+   * 答えになる手を、1回めで間違えたか。記録はこれで決める。
+   *
+   * かけ算の段やわり算の引く段は**答えではない**ので、ここには入れない。
+   * 途中の書き間違いで「ざんねん」にすると、答えが合っているのに間違い扱いになる。
+   */
+  const [missedAnswer, setMissedAnswer] = useState(false)
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
 
@@ -174,14 +179,15 @@ export function QuizPage() {
    * **合うまで先へ進まない。** 間違えたまま進むと、そのあとの段も答えも必ず合わなくなり、
    * どこでつまずいたのか分からなくなる。紙の筆算でも、間違えたらそこを消して書き直す。
    *
-   * 止めるのは手を進めることだけで、やり直しはさせない。
-   * **「できた」かどうかは1回めで決まる**ので、直して進めても記録は変わらない
-   * (打ち直せば必ず「できた」になるなら、記録の意味が無くなる)。
+   * 記録に残すのは**答えの部分を1回めで打てたか**だけ。打ち直せば必ず「できた」に
+   * なるのでは記録の意味が無いが、途中の段の書き間違いまで「ざんねん」にすると、
+   * 答えが合っているのに間違い扱いになる。
    */
-  const commitStep = (value: string, expected: string) => {
-    if (value !== expected) {
+  const commitStep = (value: string, entry: ColumnStep) => {
+    if (value !== entry.expected) {
       setMissed(value)
-      setHasMissed(true)
+      // 答えになる手(位ごとの数・商・こたえ)を間違えたときだけ、記録に残す
+      if (entry.counts) setMissedAnswer(true)
       return
     }
     setMissed(null)
@@ -339,25 +345,25 @@ export function QuizPage() {
                 submitLabel={isLastStep ? copy.number.submit : nextStepLabel}
                 onSubmit={(value) => {
                   if (step && !isLastStep) {
-                    commitStep(value, step.expected)
+                    commitStep(value, step)
                     return
                   }
-                  /*
-                    最後の手。ここも合うまで進まないが、1回めで間違えていれば
-                    記録は「ざんねん」にする(判定に渡すのは1回めに打った数)。
-                  */
+                  // 最後の手。ここも合うまで進まない
                   if (step && value !== step.expected) {
                     setMissed(value)
-                    setHasMissed(true)
+                    if (step.counts) setMissedAnswer(true)
                     return
                   }
                   // 答えは、打った途中のものから組み立てる(位ごと・商は、それ自体が答え)
                   const typed = [...filledSteps, value]
                   const answer = script.length > 0 ? answerFromSteps(script, typed) : value
-                  finish(judgeNumber(question, hasMissed ? '' : answer), revealedCount, {
-                    kind: 'text',
-                    text: answer,
-                  })
+                  const judged = judgeNumber(question, answer)
+                  finish(
+                    // 答えの部分を1回めで間違えていたら、打ち直して合っても「ざんねん」
+                    missedAnswer ? { ...judged, verdict: 'incorrect', isCorrect: false } : judged,
+                    revealedCount,
+                    { kind: 'text', text: answer },
+                  )
                 }}
               />
             )}
