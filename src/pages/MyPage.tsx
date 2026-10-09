@@ -1,19 +1,46 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { Loading } from '@/components/Loading'
 import { TRIAL_LIMIT } from '@/config'
-import { findQuestion } from '@/data/questions'
+import { questionsOf } from '@/data/questions'
 import { useCopy } from '@/hooks/useAudienceMode'
 import { useStats } from '@/hooks/useStats'
+import type { AnswerRecord } from '@/types'
 
 /**
  * 履歴に出す出題語。漢字は熟語を伏せた形(「◯犬」)なので、
  * 読みまで添えないとどの問題だったか分からない。
+ *
+ * 問題データはジャンルごとに読み込むので、履歴に出ているジャンルのぶんだけを
+ * 後から読む。読めるまでは id のまま出す(行の高さは変わらない)。
  */
-function promptTextOf(questionId: string): string {
-  const question = findQuestion(questionId)
-  if (!question) return questionId
-  return `${question.prompt}${question.promptReading ?? ''}`
+function usePromptTexts(history: AnswerRecord[]): Map<string, string> {
+  const [texts, setTexts] = useState<Map<string, string>>(new Map)
+
+  // 履歴の中身が変わったときだけ読み直す。並び替えや再描画では読み直さない
+  const key = history.map((record) => `${record.genreId}:${record.questionId}`).join(',')
+
+  useEffect(() => {
+    let cancelled = false
+    const genres = [...new Set(history.map((record) => record.genreId))]
+
+    void Promise.all(genres.map((genreId) => questionsOf(genreId))).then((lists) => {
+      if (cancelled) return
+      const found = new Map<string, string>()
+      for (const question of lists.flat()) {
+        found.set(question.id, `${question.prompt}${question.promptReading ?? ''}`)
+      }
+      setTexts(found)
+    })
+
+    return () => {
+      cancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key])
+
+  return texts
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
@@ -32,6 +59,7 @@ function Stat({ label, value }: { label: string; value: string }) {
 export function MyPage() {
   const { stats, isLoading, reset } = useStats()
   const copy = useCopy()
+  const promptTexts = usePromptTexts(stats.history)
 
   if (isLoading) {
     return (
@@ -70,7 +98,7 @@ export function MyPage() {
             >
               <span>
                 {copy.activities[record.genreId].label} /{' '}
-                {promptTextOf(record.questionId)}
+                {promptTexts.get(record.questionId) ?? record.questionId}
               </span>
               {/*
                 正誤は色でも分かるが、色だけに頼らない。絵文字をやめたので、

@@ -1,7 +1,4 @@
 import type { GenreId, Question } from '@/types'
-import generatedEnglish from './questions.english.generated.json'
-import generatedKanji from './questions.kanji.generated.json'
-import generatedMath from './questions.math.generated.json'
 
 /**
  * 手で書いた問題。生成物より優先する(同じ answer があれば生成側を捨てる)。
@@ -42,27 +39,55 @@ const MANUAL_QUESTIONS: Question[] = [
 /**
  * 辞書から生成した問題。中身を直接編集しても次回生成で消える。
  * 漢字: scripts/build-kanji-questions.ts / 英単語: scripts/build-english-questions.ts
+ * 計算: scripts/build-math-questions.ts(辞書は使わず規則で作る)
+ *
+ * **ジャンルごとに、使うときだけ読む。** まとめて読むと、計算をやる人も
+ * 漢字と英単語のデータ(合わせて1MB超)を一緒に読むことになる。
+ * 1ジャンルぶんなら、その3分の1以下で済む。
  */
-const GENERATED_QUESTIONS = [
-  ...generatedKanji.questions,
-  ...generatedEnglish.questions,
-  ...generatedMath.questions,
-] as Question[]
+const LOADERS: Record<GenreId, () => Promise<{ default: { questions: unknown[] } }>> = {
+  kanji: () => import('./questions.kanji.generated.json'),
+  english: () => import('./questions.english.generated.json'),
+  math: () => import('./questions.math.generated.json'),
+}
+
+/** 一度読んだジャンルは覚えておく。問題を出すたびに読み直さない */
+const loaded = new Map<GenreId, Promise<Question[]>>()
 
 const manualAnswers = new Set(MANUAL_QUESTIONS.map((question) => question.answer))
 
 /**
- * 本番では BaaS 側から取得する想定のため、参照は questionsOf() 経由に統一する。
+ * そのジャンルの問題。
+ *
+ * 本番では BaaS 側から取得する想定のため、参照はこの関数経由に統一する。
+ * 取得が非同期なのは、いまのファイル読み込みでも将来の通信でも同じ形にするため。
  */
-const QUESTIONS: Question[] = [
-  ...MANUAL_QUESTIONS,
-  ...GENERATED_QUESTIONS.filter((question) => !manualAnswers.has(question.answer)),
-]
+export function questionsOf(genreId: GenreId): Promise<Question[]> {
+  const cached = loaded.get(genreId)
+  if (cached) return cached
 
-export function questionsOf(genreId: GenreId): Question[] {
-  return QUESTIONS.filter((question) => question.genreId === genreId)
+  const loading = LOADERS[genreId]().then((module) => {
+    const generated = module.default.questions as Question[]
+    const manual = MANUAL_QUESTIONS.filter((question) => question.genreId === genreId)
+    return [
+      ...manual,
+      // 手で書いたものを優先する(同じ答えがあれば生成側を捨てる)
+      ...generated.filter((question) => !manualAnswers.has(question.answer)),
+    ]
+  })
+  loaded.set(genreId, loading)
+  return loading
 }
 
-export function findQuestion(id: string): Question | undefined {
-  return QUESTIONS.find((question) => question.id === id)
+/**
+ * 1問を id で引く。履歴の表示に使う。
+ *
+ * ジャンルも一緒に受け取るのは、どのファイルを読めばよいか決めるため
+ * (id だけだと全ジャンルを読むことになり、分けた意味が無くなる)。
+ */
+export async function findQuestion(
+  genreId: GenreId,
+  id: string,
+): Promise<Question | undefined> {
+  return (await questionsOf(genreId)).find((question) => question.id === id)
 }

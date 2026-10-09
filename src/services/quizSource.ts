@@ -86,7 +86,7 @@ export const localQuizSource: QuizSource = {
     return {
       genreId,
       questions: shuffle(
-        questionsOf(genreId).filter((q) => canServe(q, inputMode, difficulty)),
+        (await questionsOf(genreId)).filter((q) => canServe(q, inputMode, difficulty)),
       ),
     }
   },

@@ -20,7 +20,7 @@ import type { Level } from './difficulty.ts'
 const OUT_PATH = fileURLToPath(new URL('../src/data/questions.math.generated.json', import.meta.url))
 
 /** 種類ごとの問題数。多すぎても全部は解かれないので、ほどほどに */
-const PER_KIND = 150
+const PER_KIND = 400
 
 /**
  * 種を決めた乱数(mulberry32)。
