@@ -33,7 +33,16 @@ type CellTone = 'typing' | 'done' | 'wrong'
  * 手書きのときだけ広い(指で1字書ける大きさ)。式のほうもそれに合わせて広げる。
  */
 const CELL = '1.15em'
-const WRITE_CELL = '2em'
+/*
+  手書きのマスは字の大きさの2倍ほしいが、**上限も要る**。
+  段のある筆算は縦に長く(わり算は9マス)、字に比例させたままだと
+  背の低い端末で画面からはみ出し、書いている最中に画面が引っ張られる。
+
+  2.75rem(44px)は、指で押す・書くときの下限として他の場所でも使っている大きさ。
+  それでも入らない背の低い画面のために、画面の高さにも頭打ちを掛ける。
+  svh(ブラウザのバーが出ている状態の高さ)で測るのは、バーのぶんを見込むため。
+*/
+const WRITE_CELL = 'min(2em, 2.75rem, 6svh)'
 
 /**
  * 筆算(たし算・ひき算・かけ算)。式を縦に積んで、桁をそろえて見せる。
@@ -89,6 +98,7 @@ export function ColumnForm({
           key={index}
           cell={cell}
           shift={cell.slot.kind === 'row' ? cell.slot.shift : 0}
+          tight={writing}
         />
       ))}
 
@@ -102,7 +112,10 @@ export function ColumnForm({
         打ち終わった位は右に残したまま、いま打っている位をその左に置く。
       */}
       {(places.length > 0 || answer) && (
-        <span aria-hidden="true" className="col-span-2 mt-2 flex justify-end gap-1">
+        <span
+          aria-hidden="true"
+          className={`col-span-2 flex justify-end gap-1 ${writing ? 'mt-1' : 'mt-2'}`}
+        >
           {[...places].reverse().map((cell, index) => (
             <Cell key={index} cell={cell} />
           ))}
@@ -130,11 +143,12 @@ function PlainDigits({ digits }: { digits: string }) {
 }
 
 /** かけ算の段1つ。ずらす段は、その幅ぶん右を空ける */
-function Row({ cell, shift }: { cell: ColumnCell; shift: number }) {
+function Row({ cell, shift, tight }: { cell: ColumnCell; shift: number; tight?: boolean }) {
   return (
     <span
       aria-hidden="true"
-      className="col-span-2 mt-2 flex justify-end gap-1"
+      // 手書きはマスが大きく段も増えるので、行間を詰めて画面に収める
+      className={`col-span-2 flex justify-end gap-1 ${tight ? 'mt-1' : 'mt-2'}`}
       style={shift ? { paddingRight: `calc(${shift} * (var(--cell) + 0.25rem))` } : undefined}
     >
       <Cell cell={cell} />
@@ -235,7 +249,7 @@ export function DivisionForm({
     <span
       // 読み上げには1行の式を渡す。囲いと数字の位置だけでは式として読まれない
       aria-label={expression}
-      className="inline-grid gap-1 text-right font-bold tabular-nums"
+      className={`inline-grid text-right font-bold tabular-nums ${writing ? 'gap-0.5' : 'gap-1'}`}
       style={
         {
           '--cell': writing ? WRITE_CELL : CELL,

@@ -145,8 +145,11 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
         onMouseDown={(event) => event.preventDefault()}
         draggable={false}
         aria-label={copy.handwriting.boxLabel(index + 1)}
-        // 指で1字書ける大きさにする。数字のマス(1.15em)のままだと小さすぎて書けない
-        className="size-[2em] touch-none rounded-md border-2 border-dashed border-bloom-200 bg-white select-none"
+        /*
+          大きさは筆算側(ColumnForm)が決める --cell に合わせる。
+          指で1字書ける大きさが要るが、段のぶん縦に長くなるので上限もそこで掛けている。
+        */
+        className="size-[var(--cell)] touch-none rounded-md border-2 border-dashed border-bloom-200 bg-white select-none"
       />
     ))
   }
