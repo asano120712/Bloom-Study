@@ -1,7 +1,7 @@
 import type { ActivityId } from '@/data/activities'
 import type { AnswerChoiceId } from '@/data/genres'
 import type { AssembleLayout } from '@/features/assemble'
-import type { AudienceMode, Difficulty, GenreId, JudgeVerdict } from '@/types'
+import type { AudienceMode, Difficulty, GenreId, JudgeVerdict, PromptForm } from '@/types'
 
 /**
  * 画面に出す言葉を、モード(おとな / こども)ごとにここへ集める。
@@ -47,6 +47,11 @@ export interface Copy {
     start: string
     chooseDifficulty: string
     chooseMode: string
+    /** 筆算か1行の式かを選ぶ見出し(計算だけ) */
+    chooseForm: string
+    forms: Record<PromptForm, { label: string; note: string }>
+    /** 解く形から、こたえかたへ戻る */
+    backToMode: string
     /** こたえかたを選ぶ画面に出す「いま選んでいるなんいど」 */
     levelIs: (level: string) => string
     backToDifficulty: string
@@ -55,6 +60,8 @@ export interface Copy {
   quiz: {
     /** 右上の進み具合。「3 れんぞく / 5 問め」 */
     progress: (streak: number, index: number) => string
+    /** 分からない問題を飛ばす。答えは見せるが記録には残さない */
+    pass: string
     answerLabel: string
     wrong: string
     right: string
@@ -156,6 +163,7 @@ const ADULT: Copy = {
     incorrect: 'ざんねん',
     'self-correct': 'できた',
     'self-incorrect': 'ちがった',
+    passed: 'パスした',
   },
   top: {
     lead: [
@@ -222,12 +230,19 @@ const ADULT: Copy = {
     start: 'はじめる',
     chooseDifficulty: 'なんいどをえらぶ',
     chooseMode: 'こたえかたをえらぶ',
+    chooseForm: 'どの形で解く?',
+    forms: {
+      column: { label: '筆算で解く', note: '位をそろえて、段ごとに打つ' },
+      plain: { label: '1行の式で解く', note: '式を見て、答えだけ打つ' },
+    },
     levelIs: (level) => `なんいど：${level}`,
+    backToMode: 'こたえかたにもどる',
     backToDifficulty: 'なんいどにもどる',
     close: 'もどる',
   },
   quiz: {
     progress: (streak, index) => `${streak} れんぞく / ${index} 問め`,
+    pass: 'パスする',
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',
@@ -343,6 +358,7 @@ const KIDS: Copy = {
     incorrect: 'ざんねん',
     'self-correct': 'できた！',
     'self-incorrect': 'ちがった',
+    passed: 'パスしたよ',
   },
   top: {
     lead: ['したのボタンで すすめるよ', 'きになったのを やってみよう！'],
@@ -393,12 +409,19 @@ const KIDS: Copy = {
     start: 'はじめる',
     chooseDifficulty: 'むずかしさを えらぼう',
     chooseMode: 'どうやって こたえる？',
+    chooseForm: 'どの かたちで とく？',
+    forms: {
+      column: { label: 'ひっさんで とく', note: 'くらいを そろえて、だんごとに' },
+      plain: { label: '1ぎょうの しきで とく', note: 'しきを みて、こたえだけ' },
+    },
     levelIs: (level) => `むずかしさ：${level}`,
+    backToMode: 'こたえかたに もどる',
     backToDifficulty: 'むずかしさに もどる',
     close: 'もどる',
   },
   quiz: {
     progress: (streak, index) => `${streak} れんぞく / ${index} もんめ`,
+    pass: 'パスする',
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',

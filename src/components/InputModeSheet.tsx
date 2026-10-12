@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
-import { answerChoicesOf, difficultiesOf, type AnswerChoice } from '@/data/genres'
+import { answerChoicesOf, difficultiesOf, hasColumnForm, type AnswerChoice } from '@/data/genres'
 import { useCopy } from '@/hooks/useAudienceMode'
-import type { Difficulty, Genre } from '@/types'
+import type { Difficulty, Genre, PromptForm } from '@/types'
 
 interface InputModeSheetProps {
   genre: Genre
-  /** なんいどとこたえかたが決まったとき。行き先の出し分けは呼び出し側が決める */
-  onStart: (difficulty: Difficulty, choice: AnswerChoice) => void
+  /**
+   * なんいどとこたえかた(と、筆算で出す学年なら解く形)が決まったとき。
+   * 行き先の出し分けは呼び出し側が決める。
+   */
+  onStart: (difficulty: Difficulty, choice: AnswerChoice, form?: PromptForm) => void
   onClose: () => void
 }
 
@@ -22,14 +25,17 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
   const copy = useCopy()
   const genreWords = copy.activities[genre.id]
   const dialogRef = useRef<HTMLDivElement>(null)
-  /** 'difficulty' = なんいど選択、'answer' = こたえかた選択 */
-  const [step, setStep] = useState<'difficulty' | 'answer'>('difficulty')
+  /** 'difficulty' = なんいど選択、'answer' = こたえかた選択、'form' = 筆算か1行か */
+  const [step, setStep] = useState<'difficulty' | 'answer' | 'form'>('difficulty')
   /** なんいどステップで選んだ難易度。こたえかた確定時に一緒に渡す */
   const [selected, setSelected] = useState<Difficulty | null>(null)
+  /** こたえかたステップで選んだもの。解く形を選んでから始める */
+  const [mode, setMode] = useState<AnswerChoice | null>(null)
 
   const backToDifficulty = () => {
     setStep('difficulty')
     setSelected(null)
+    setMode(null)
   }
 
   // 開いた直後にシート内へフォーカスを移し、Esc で1つ前(こたえかた→なんいど、
@@ -38,7 +44,8 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
     dialogRef.current?.focus()
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return
-      if (step === 'answer') backToDifficulty()
+      if (step === 'form') setStep('answer')
+      else if (step === 'answer') backToDifficulty()
       else onClose()
     }
     window.addEventListener('keydown', onKeyDown)
@@ -48,6 +55,22 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
   const chooseDifficulty = (difficulty: Difficulty) => {
     setSelected(difficulty)
     setStep('answer')
+  }
+
+  /**
+   * こたえかたを選んだあと。
+   *
+   * 筆算で出す学年(計算の小3・4以上)だけ、解く形をもう1つ選んでから始める。
+   * 筆算で出す問題が無い学年で聞くと、選んでも何も変わらない。
+   */
+  const chooseMode = (choice: AnswerChoice) => {
+    if (!selected) return
+    if (choice.path || !hasColumnForm(genre.id, selected)) {
+      onStart(selected, choice)
+      return
+    }
+    setMode(choice)
+    setStep('form')
   }
 
   const choices = selected ? answerChoicesOf(genre.id, selected) : []
@@ -71,7 +94,38 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
       >
         <p className="text-center text-sm text-ink-400">{genreWords.label}</p>
 
-        {step === 'difficulty' ? (
+        {step === 'form' ? (
+          <>
+            <h2 className="mt-1 text-center text-xl font-bold">{copy.sheet.chooseForm}</h2>
+
+            <div className="mt-6 flex flex-col gap-3">
+              {(['column', 'plain'] as const).map((form, index) => (
+                <button
+                  key={form}
+                  type="button"
+                  onClick={() => selected && mode && onStart(selected, mode, form)}
+                  className={`flex min-h-16 flex-col justify-center rounded-2xl px-5 text-left ${
+                    // 筆算を先に勧める。小3・4で習う形で、手順の練習になる
+                    index === 0 ? 'bg-bloom-700 text-white' : 'border-2 border-bloom-200 text-ink-900'
+                  }`}
+                >
+                  <span className="text-lg font-bold">{copy.sheet.forms[form].label}</span>
+                  <span className={`text-sm ${index === 0 ? 'text-bloom-100' : 'text-ink-600'}`}>
+                    {copy.sheet.forms[form].note}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setStep('answer')}
+              className="mt-6 w-full text-sm text-ink-400 underline"
+            >
+              {copy.sheet.backToMode}
+            </button>
+          </>
+        ) : step === 'difficulty' ? (
           <>
             <h2 className="mt-1 text-center text-xl font-bold">{copy.sheet.chooseDifficulty}</h2>
 
@@ -114,7 +168,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
                 <button
                   key={choice.id}
                   type="button"
-                  onClick={() => selected && onStart(selected, choice)}
+                  onClick={() => chooseMode(choice)}
                   className={`flex min-h-16 flex-col justify-center rounded-2xl px-5 text-left ${
                     // 先頭を勧める(並び順がそのまま勧める順)
                     index === 0 ? 'bg-bloom-700 text-white' : 'border-2 border-bloom-200 text-ink-900'

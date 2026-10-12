@@ -20,10 +20,12 @@ import { useQuizSession } from '@/hooks/useQuizSession'
 import { useStats } from '@/hooks/useStats'
 import {
   isDifficulty,
+  isPromptForm,
   type AnswerRecord,
   type Difficulty,
   type InputMode,
   type JudgeResult,
+  type PromptForm,
   type Question,
 } from '@/types'
 import { shuffleWithSeed } from '@/utils/shuffle'
@@ -43,6 +45,13 @@ export function QuizPage() {
    */
   const levelParam = searchParams.get('level')
   const difficulty: Difficulty = isDifficulty(levelParam) ? levelParam : 'junior'
+
+  /**
+   * 解く形。筆算で出す問題でも、1行の式で解くことを選べる
+   * (`form=plain`)。既定は筆算で、選ばなければ今までどおり。
+   */
+  const formParam = searchParams.get('form')
+  const promptForm: PromptForm = isPromptForm(formParam) ? formParam : 'column'
 
   const modeParam = searchParams.get('mode')
   const inputMode: InputMode =
@@ -152,11 +161,37 @@ export function QuizPage() {
       genreId: genre.id,
       inputMode,
       difficulty,
+      promptForm,
       // 自分が書いた・打ったこたえを結果画面で見せる
       submission,
       // この出題セットに次の問題が残っているときだけ「つぎへ」を出す
       hasNext: cursor + 1 < questions.length,
       currentStreak: next.currentStreak,
+    }
+    navigate('/result', { state })
+  }
+
+  /**
+   * パスする。
+   *
+   * 答えを見せてから次の問題へ進むが、**記録には残さない**(正解数にも不正解数にも
+   * 入れず、れんぞくも途切れない)。分からない問題で止まったままになるより、
+   * 答えを見て次へ行けるほうがよい。ごまかしに使えてしまうが、
+   * 自分のために解くアプリなので、それで困るのは自分だけ。
+   */
+  const pass = () => {
+    commitAdvance()
+
+    const state: ResultState = {
+      result: { verdict: 'passed', isCorrect: false, answer: question.answer },
+      prompt: question.prompt,
+      promptReading: question.promptReading,
+      genreId: genre.id,
+      inputMode,
+      difficulty,
+      promptForm,
+      hasNext: cursor + 1 < questions.length,
+      currentStreak: stats.currentStreak,
     }
     navigate('/result', { state })
   }
@@ -167,8 +202,9 @@ export function QuizPage() {
    * 筆算の手順。打つのは数字のときだけ(手書きはノートに書くのと同じで、
    * 書いたものを読み取らないため途中を追えない)。
    */
-  const script =
-    inputMode === 'number' && question.promptLayout ? columnScript(question.prompt) : []
+  /** この問題を筆算で出すか。1行の式を選んだときは、答えだけ打つ形にする */
+  const layout = promptForm === 'plain' ? undefined : question.promptLayout
+  const script = inputMode === 'number' && layout ? columnScript(question.prompt) : []
   const stepIndex = filledSteps.length
   const step = script[stepIndex]
   const isLastStep = stepIndex >= script.length - 1
@@ -231,7 +267,7 @@ export function QuizPage() {
   /** 計算は「ヒント → 式 → 答え」の順に置く */
   const showsPromptBelow = genre.id === 'math'
   /** 筆算のときは、式と答えのマスをひと続きに見せたいので入力側が出す */
-  const showsPromptInInput = showsPromptBelow && question.promptLayout !== undefined
+  const showsPromptInInput = showsPromptBelow && layout !== undefined
   /** 手書きも、筆算なら大きなキャンバスではなくマスに1字ずつ書く */
   const writesInBoxes = showsPromptInInput && inputMode === 'handwriting'
 
@@ -248,7 +284,9 @@ export function QuizPage() {
         紙の筆算と同じで、式と答えを書く場所が隣り合っていたほうが解きやすい。
         思い出す系のジャンルは、先に出題語を見て考える流れなので上のまま。
       */}
-      {!showsPromptBelow && <PromptBlock question={question} caption={promptCaption} />}
+      {!showsPromptBelow && (
+        <PromptBlock question={question} layout={layout} caption={promptCaption} />
+      )}
 
       {/*
         ヒント枠は余りを分け合うが、上限を決めて残りは入力側(特にキャンバス)へ回す。
@@ -261,11 +299,24 @@ export function QuizPage() {
           layout={hintLayoutOf(genre.id)}
           secondsToNext={secondsToNext}
         />
+
+        {/*
+          パスはヒントの下に置く。考えている間に目に入る場所で、
+          入力のボタン(こたえあわせ・つぎの段へ)からは離しておく。
+          小さい字の下線つきにしてあるのは、押し間違えても困らない脇役だから。
+        */}
+        <button
+          type="button"
+          onClick={pass}
+          className="mt-1 self-end text-xs text-ink-400 underline"
+        >
+          {copy.quiz.pass}
+        </button>
       </section>
 
       {/* 計算は、ヒントのあとに出題を置く。答えを書く場所のすぐ上になる */}
       {showsPromptBelow && !showsPromptInInput && (
-        <PromptBlock question={question} caption={promptCaption} />
+        <PromptBlock question={question} layout={layout} caption={promptCaption} />
       )}
 
       {/* 余りは入力側へ多めに配る(ヒント枠と 2:1)。キャンバスとキーはここで伸びる */}
@@ -334,6 +385,7 @@ export function QuizPage() {
                     ? (typed) => (
                         <PromptBlock
                           question={question}
+                          layout={layout}
                           // 打っている場所の名前を出す(「一のくらい」「かける 7 × 8」)
                           caption={step?.caption ?? promptCaption}
                           note={missed === null ? undefined : copy.number.retry}
@@ -373,7 +425,12 @@ export function QuizPage() {
                 boxes={answerBoxCount(question.prompt)}
                 // マスは筆算の線の下に置く。式と離すと、どこに書くのか分からなくなる
                 form={(cells) => (
-                  <PromptBlock question={question} caption={promptCaption} writeRow={cells} />
+                  <PromptBlock
+                    question={question}
+                    layout={layout}
+                    caption={promptCaption}
+                    writeRow={cells}
+                  />
                 )}
                 onSubmit={(image) => setSelfReport({ hintsUsed: revealedCount, image })}
               />
@@ -416,12 +473,15 @@ export function QuizPage() {
  */
 function PromptBlock({
   question,
+  layout,
   caption,
   cells,
   note,
   writeRow,
 }: {
   question: Question
+  /** 筆算で出すか。渡さなければ1行の式のまま出す */
+  layout?: 'column' | 'division'
   caption: string
   /** 打ち直してもらうときの一言。式の上、見出しのすぐ下に出す */
   note?: string
@@ -444,14 +504,14 @@ function PromptBlock({
       */}
       <p
         className={`mt-1 font-bold tracking-wide ${
-          question.promptLayout === 'division'
+          layout === 'division'
             ? 'text-[min(1.5rem,6.5vw)] leading-7'
             : 'text-[min(1.875rem,8vw)] leading-9'
         }`}
       >
-        {question.promptLayout === 'column' ? (
+        {layout === 'column' ? (
           <ColumnForm expression={question.prompt} cells={cells} writeRow={writeRow} />
-        ) : question.promptLayout === 'division' ? (
+        ) : layout === 'division' ? (
           <DivisionForm expression={question.prompt} cells={cells} writeRow={writeRow} />
         ) : (
           question.prompt

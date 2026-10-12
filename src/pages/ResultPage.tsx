@@ -7,7 +7,7 @@ import { findGenre } from '@/data/genres'
 import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
 import { useHasFinePointer } from '@/hooks/useHasFinePointer'
 import { canSpeak, speak } from '@/services/speech'
-import type { Difficulty, GenreId, InputMode, JudgeResult } from '@/types'
+import type { Difficulty, GenreId, InputMode, JudgeResult, PromptForm } from '@/types'
 
 /** 結果画面で見せる「自分のこたえ」。入力方法によって形が違う */
 export type ResultSubmission =
@@ -25,8 +25,10 @@ export interface ResultState {
   inputMode: InputMode
   /** 「つぎの問題へ」で同じ難易度を引き継ぐ */
   difficulty: Difficulty
-  /** 自分が書いた・打ったこたえ */
-  submission: ResultSubmission
+  /** 「つぎの問題へ」で同じ解く形(筆算 / 1行の式)を引き継ぐ */
+  promptForm?: PromptForm
+  /** 自分が書いた・打ったこたえ。パスしたときは無い */
+  submission?: ResultSubmission
   hasNext: boolean
   currentStreak: number
 }
@@ -44,7 +46,9 @@ export function ResultPage() {
   const answer = state?.result.answer
   const nextPath = state
     ? state.hasNext
-      ? `/quiz/${state.genreId}?mode=${state.inputMode}&level=${state.difficulty}`
+      ? `/quiz/${state.genreId}?mode=${state.inputMode}&level=${state.difficulty}${
+          state.promptForm ? `&form=${state.promptForm}` : ''
+        }`
       : '/genres'
     : '/genres'
 
@@ -86,9 +90,14 @@ export function ResultPage() {
       <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
         {result.isCorrect && <BloomMark size={100} face={isKids ? 'joy' : undefined} />}
 
+        {/* パスは正解でも不正解でもないので、赤くも緑にもしない */}
         <p
           className={`text-2xl font-bold ${
-            result.isCorrect ? 'text-bloom-700' : 'text-warm-600'
+            result.verdict === 'passed'
+              ? 'text-ink-600'
+              : result.isCorrect
+                ? 'text-bloom-700'
+                : 'text-warm-600'
           }`}
         >
           {copy.verdicts[result.verdict]}
@@ -116,7 +125,7 @@ export function ResultPage() {
           )}
         </div>
 
-        <SubmissionView submission={submission} labels={copy.result.mine} />
+        {submission && <SubmissionView submission={submission} labels={copy.result.mine} />}
 
         <p className="text-sm text-ink-600">{copy.result.streak(currentStreak)}</p>
 
