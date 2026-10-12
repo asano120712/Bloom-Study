@@ -122,7 +122,7 @@ export function MyPage() {
         <button
           type="button"
           onClick={() => void reset()}
-          className="text-sm text-ink-400 underline"
+          className="flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600"
         >
           {copy.myPage.reset}
         </button>

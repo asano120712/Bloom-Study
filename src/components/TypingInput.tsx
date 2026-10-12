@@ -108,7 +108,7 @@ export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
           <button
             type="button"
             onClick={() => setForceKeyboard(true)}
-            className="text-sm text-ink-400 underline"
+            className="mx-auto flex min-h-11 items-center justify-center rounded-full border-2 border-bloom-200 px-5 text-sm font-bold text-ink-600"
           >
             画面のキーボードを使う
           </button>

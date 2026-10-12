@@ -130,7 +130,7 @@ export function GenreSelectPage() {
       </ul>
 
       {/* 戻り先はモードごとのトップ。こどもは /kids から来ている */}
-      <Link to={TOP_PATH[mode]} className="mt-8 text-center text-sm text-ink-400 underline">
+      <Link to={TOP_PATH[mode]} className="mt-8 flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600">
         {copy.genreSelect.back}
       </Link>
 

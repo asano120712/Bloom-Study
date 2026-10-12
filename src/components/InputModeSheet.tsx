@@ -120,7 +120,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
             <button
               type="button"
               onClick={() => setStep('answer')}
-              className="mt-6 w-full text-sm text-ink-400 underline"
+              className="mt-6 flex min-h-12 w-full items-center justify-center rounded-full border-2 border-bloom-200 text-sm font-bold text-ink-600"
             >
               {copy.sheet.backToMode}
             </button>
@@ -147,7 +147,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
             <button
               type="button"
               onClick={onClose}
-              className="mt-6 w-full text-sm text-ink-400 underline"
+              className="mt-6 flex min-h-12 w-full items-center justify-center rounded-full border-2 border-bloom-200 text-sm font-bold text-ink-600"
             >
               {copy.sheet.close}
             </button>
@@ -185,7 +185,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
             <button
               type="button"
               onClick={backToDifficulty}
-              className="mt-6 w-full text-sm text-ink-400 underline"
+              className="mt-6 flex min-h-12 w-full items-center justify-center rounded-full border-2 border-bloom-200 text-sm font-bold text-ink-600"
             >
               {copy.sheet.backToDifficulty}
             </button>

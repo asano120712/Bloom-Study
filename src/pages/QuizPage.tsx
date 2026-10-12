@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { BoxHandwriting } from '@/components/BoxHandwriting'
@@ -11,7 +11,7 @@ import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { answerChoicesOf, findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
-import { answerBoxCount, answerFromSteps, columnScript, type ColumnStep } from '@/features/math'
+import { answerFromSteps, columnScript, type ColumnStep } from '@/features/math'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeNumber, judgeParts, judgeTyping } from '@/features/judge'
 import { useCopy } from '@/hooks/useAudienceMode'
@@ -80,6 +80,8 @@ export function QuizPage() {
    */
   /** 筆算で打ち終わったところ。段・位・商を打った順に持つ(入るのは正しい数だけ) */
   const [filledSteps, setFilledSteps] = useState<string[]>([])
+  /** 手書きで書き終えた行の数。段のある筆算は1段ずつ書く */
+  const [writtenRows, setWrittenRows] = useState(0)
   /** いまの手で間違えて打った数。赤枠で残し、打ち直すまで先へ進めない */
   const [missed, setMissed] = useState<string | null>(null)
   /**
@@ -264,6 +266,27 @@ export function QuizPage() {
     ]
   }
 
+  /**
+   * 手書きで書く行。
+   *
+   * 段のある筆算は、数字で打つときと同じ手順で1段ずつ書く。
+   * 答えだけ書かせると、部分積や引く段を紙に書く手順が抜けてしまう。
+   * 手書きは字を読み取らないので、合っているかはここでは見ない(自己申告のまま)。
+   */
+  const writeScript =
+    inputMode === 'handwriting' && layout
+      ? columnScript(question.prompt)
+      : []
+  const writeRows = writeScript
+    .slice(0, writtenRows + 1)
+    .map((entry, index) => ({ key: `${question.id}-${index}`, boxes: entry.width }))
+  const writeStepLabel =
+    writeScript[writtenRows]?.slot.kind === 'row'
+      ? copy.number.nextRow
+      : writeScript[writtenRows]?.slot.kind === 'place'
+        ? copy.number.nextPlace
+        : copy.number.nextStep
+
   /** 計算は「ヒント → 式 → 答え」の順に置く */
   const showsPromptBelow = genre.id === 'math'
   /** 筆算のときは、式と答えのマスをひと続きに見せたいので入力側が出す */
@@ -274,9 +297,25 @@ export function QuizPage() {
   return (
     <AppShell fitViewport exitTo="/genres">
       {/* 出題中に読む場所は選択できなくてよい。手書きのドラッグで範囲選択されるのを防ぐ */}
-      <header className="flex items-center justify-between text-sm text-ink-600 select-none">
-        <span>{copy.activities[genre.id].label}</span>
-        <span aria-live="polite">{copy.quiz.progress(stats.currentStreak, cursor + 1)}</span>
+      <header className="flex items-center justify-between gap-2 text-sm text-ink-600 select-none">
+        <span className="min-w-0 truncate">{copy.activities[genre.id].label}</span>
+
+        <span className="flex shrink-0 items-center gap-2">
+          <span aria-live="polite">{copy.quiz.progress(stats.currentStreak, cursor + 1)}</span>
+          {/*
+            パスは進み具合の横。分からないまま止まったときに探す場所は、
+            入力の近くではなく「この問題をやめる」ことを考える場所(上)のほう。
+            やめるとは反対側に置いて、押し間違えないようにしてある。
+          */}
+          <button
+            type="button"
+            onClick={pass}
+            aria-label={copy.quiz.passAria}
+            className="flex min-h-8 shrink-0 items-center rounded-full border-2 border-bloom-200 px-3 text-xs font-bold text-ink-600"
+          >
+            {copy.quiz.pass}
+          </button>
+        </span>
       </header>
 
       {/*
@@ -300,18 +339,6 @@ export function QuizPage() {
           secondsToNext={secondsToNext}
         />
 
-        {/*
-          パスはヒントの下に置く。考えている間に目に入る場所で、
-          入力のボタン(こたえあわせ・つぎの段へ)からは離しておく。
-          小さい字の下線つきにしてあるのは、押し間違えても困らない脇役だから。
-        */}
-        <button
-          type="button"
-          onClick={pass}
-          className="mt-1 self-end text-xs text-ink-400 underline"
-        >
-          {copy.quiz.pass}
-        </button>
       </section>
 
       {/* 計算は、ヒントのあとに出題を置く。答えを書く場所のすぐ上になる */}
@@ -422,16 +449,29 @@ export function QuizPage() {
             {inputMode === 'handwriting' && writesInBoxes && (
               <BoxHandwriting
                 key={`boxes-${question.id}`}
-                boxes={answerBoxCount(question.prompt)}
-                // マスは筆算の線の下に置く。式と離すと、どこに書くのか分からなくなる
-                form={(cells) => (
+                rows={writeRows}
+                isLast={writtenRows >= writeScript.length - 1}
+                nextLabel={writeStepLabel}
+                /*
+                  マスは筆算のその場所に置く。式と離すと、どこに書くのか分からなくなる。
+                  段のある筆算では、書き終えた段も残したまま次の段のマスを出す。
+                */
+                form={(cellsOf) => (
                   <PromptBlock
                     question={question}
                     layout={layout}
-                    caption={promptCaption}
-                    writeRow={cells}
+                    caption={writeScript[writtenRows]?.caption ?? promptCaption}
+                    writing
+                    cells={writeRows.map((row, index) => ({
+                      slot: writeScript[index].slot,
+                      digits: '',
+                      width: row.boxes,
+                      tone: 'typing' as const,
+                      content: cellsOf(row.key),
+                    }))}
                   />
                 )}
+                onNext={() => setWrittenRows((done) => done + 1)}
                 onSubmit={(image) => setSelfReport({ hintsUsed: revealedCount, image })}
               />
             )}
@@ -477,7 +517,7 @@ function PromptBlock({
   caption,
   cells,
   note,
-  writeRow,
+  writing,
 }: {
   question: Question
   /** 筆算で出すか。渡さなければ1行の式のまま出す */
@@ -487,8 +527,8 @@ function PromptBlock({
   note?: string
   /** 筆算のマス(打ち終わったところと、いま打っているところ) */
   cells?: ColumnCell[]
-  /** 手書きで書き込むマス */
-  writeRow?: ReactNode
+  /** 手書きで書くとき。マスが指で書ける大きさになる */
+  writing?: boolean
 }) {
   return (
     <section className="mt-4 shrink-0 text-center select-none">
@@ -510,9 +550,9 @@ function PromptBlock({
         }`}
       >
         {layout === 'column' ? (
-          <ColumnForm expression={question.prompt} cells={cells} writeRow={writeRow} />
+          <ColumnForm expression={question.prompt} cells={cells} writing={writing} />
         ) : layout === 'division' ? (
-          <DivisionForm expression={question.prompt} cells={cells} writeRow={writeRow} />
+          <DivisionForm expression={question.prompt} cells={cells} writing={writing} />
         ) : (
           question.prompt
         )}

@@ -62,6 +62,8 @@ export interface Copy {
     progress: (streak: number, index: number) => string
     /** 分からない問題を飛ばす。答えは見せるが記録には残さない */
     pass: string
+    /** 読み上げ用。「パス」だけでは何をパスするのか分からない */
+    passAria: string
     answerLabel: string
     wrong: string
     right: string
@@ -242,7 +244,8 @@ const ADULT: Copy = {
   },
   quiz: {
     progress: (streak, index) => `${streak} れんぞく / ${index} 問め`,
-    pass: 'パスする',
+    pass: 'パス',
+    passAria: 'この問題をパスする',
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',
@@ -421,7 +424,8 @@ const KIDS: Copy = {
   },
   quiz: {
     progress: (streak, index) => `${streak} れんぞく / ${index} もんめ`,
-    pass: 'パスする',
+    pass: 'パス',
+    passAria: 'この もんだいを パスする',
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',

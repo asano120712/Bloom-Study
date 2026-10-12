@@ -7,6 +7,11 @@ export interface ColumnCell {
   /** 入っている数。空文字なら、まだ何も打っていない点線のマス */
   digits: string
   /**
+   * 数のかわりに置くもの(手書きのマスなど)。
+   * 渡すと、数のマスのかわりにこれを同じ場所へ置く。
+   */
+  content?: ReactNode
+  /**
    * 出しておくマスの数(いま打っているところだけ)。
    *
    * 右づめのまま1字ずつ出すと、打つたびに前の数字が左へずれて読みにくい。
@@ -47,12 +52,12 @@ const WRITE_CELL = '2em'
 export function ColumnForm({
   expression,
   cells = [],
-  writeRow,
+  writing = false,
 }: {
   expression: string
   cells?: ColumnCell[]
-  /** 手書きで書き込むマス。渡すと、打つマスのかわりにここへ置く */
-  writeRow?: ReactNode
+  /** 手書きで書くとき。マスが指で書ける大きさになり、式のほうも一緒に広がる */
+  writing?: boolean
 }) {
   const parsed = parseExpression(expression)
   if (!parsed) return <span>{expression}</span>
@@ -68,7 +73,7 @@ export function ColumnForm({
       // 読み上げには1行の式を渡す。縦に積んだ数字だけでは式として読まれない
       aria-label={expression}
       className="inline-grid grid-cols-[auto_auto] gap-x-3 text-right font-bold tabular-nums"
-      style={{ '--cell': writeRow === undefined ? CELL : WRITE_CELL } as CSSProperties}
+      style={{ '--cell': writing ? WRITE_CELL : CELL } as CSSProperties}
     >
       <span aria-hidden="true" />
       <PlainDigits digits={left} />
@@ -82,9 +87,7 @@ export function ColumnForm({
       {rows.map((cell, index) => (
         <Row
           key={index}
-          digits={cell.digits}
-          width={cell.width}
-          tone={cell.tone}
+          cell={cell}
           shift={cell.slot.kind === 'row' ? cell.slot.shift : 0}
         />
       ))}
@@ -94,23 +97,17 @@ export function ColumnForm({
         <span aria-hidden="true" className="col-span-2 mt-1 border-t-2 border-ink-900" />
       )}
 
-      {writeRow !== undefined ? (
+      {/*
+        たし算・ひき算は一のくらいから打つので、右から左へ埋まっていく。
+        打ち終わった位は右に残したまま、いま打っている位をその左に置く。
+      */}
+      {(places.length > 0 || answer) && (
         <span aria-hidden="true" className="col-span-2 mt-2 flex justify-end gap-1">
-          {writeRow}
+          {[...places].reverse().map((cell, index) => (
+            <Cell key={index} cell={cell} />
+          ))}
+          {answer && <Cell cell={answer} />}
         </span>
-      ) : (
-        /*
-          たし算・ひき算は一のくらいから打つので、右から左へ埋まっていく。
-          打ち終わった位は右に残したまま、いま打っている位をその左に置く。
-        */
-        (places.length > 0 || answer) && (
-          <span aria-hidden="true" className="col-span-2 mt-2 flex justify-end gap-1">
-            {[...places].reverse().map((cell, index) => (
-              <Digits key={index} digits={cell.digits} width={cell.width} tone={cell.tone} />
-            ))}
-            {answer && <Digits digits={answer.digits} width={answer.width} tone={answer.tone} />}
-          </span>
-        )
       )}
     </span>
   )
@@ -133,26 +130,22 @@ function PlainDigits({ digits }: { digits: string }) {
 }
 
 /** かけ算の段1つ。ずらす段は、その幅ぶん右を空ける */
-function Row({
-  digits,
-  width,
-  shift,
-  tone,
-}: {
-  digits: string
-  width?: number
-  shift: number
-  tone: CellTone
-}) {
+function Row({ cell, shift }: { cell: ColumnCell; shift: number }) {
   return (
     <span
       aria-hidden="true"
       className="col-span-2 mt-2 flex justify-end gap-1"
       style={shift ? { paddingRight: `calc(${shift} * (var(--cell) + 0.25rem))` } : undefined}
     >
-      <Digits digits={digits} width={width} tone={tone} />
+      <Cell cell={cell} />
     </span>
   )
+}
+
+/** マス1つぶんの中身。手書きのマス(content)があればそれを、無ければ数を置く */
+function Cell({ cell }: { cell: ColumnCell }) {
+  if (cell.content !== undefined) return <>{cell.content}</>
+  return <Digits digits={cell.digits} width={cell.width} tone={cell.tone} />
 }
 
 /**
@@ -197,11 +190,11 @@ function Digits({ digits, width, tone }: { digits: string; width?: number; tone:
 export function DivisionForm({
   expression,
   cells = [],
-  writeRow,
+  writing = false,
 }: {
   expression: string
   cells?: ColumnCell[]
-  writeRow?: ReactNode
+  writing?: boolean
 }) {
   const parsed = parseExpression(expression)
   if (!parsed || parsed.operator !== '÷') return <span>{expression}</span>
@@ -245,35 +238,25 @@ export function DivisionForm({
       className="inline-grid gap-1 text-right font-bold tabular-nums"
       style={
         {
-          '--cell': writeRow === undefined ? CELL : WRITE_CELL,
+          '--cell': writing ? WRITE_CELL : CELL,
           gridTemplateColumns: `auto repeat(${dividend.length}, var(--cell))`,
         } as CSSProperties
       }
     >
       {/* 商。割られる数の、その桁の真上に置く */}
-      {writeRow !== undefined ? (
+      {quotient.map((cell, index) => (
         <span
+          key={index}
           aria-hidden="true"
-          className="flex justify-end gap-1"
-          style={{ gridRow: 1, gridColumn: `2 / span ${dividend.length}` }}
+          className="flex justify-center"
+          style={{
+            gridRow: 1,
+            gridColumn: cell.slot.kind === 'quotient' ? columnOf(cell.slot.column) : 2,
+          }}
         >
-          {writeRow}
+          <Cell cell={cell} />
         </span>
-      ) : (
-        quotient.map((cell, index) => (
-          <span
-            key={index}
-            aria-hidden="true"
-            className="flex justify-center"
-            style={{
-              gridRow: 1,
-              gridColumn: cell.slot.kind === 'quotient' ? columnOf(cell.slot.column) : 2,
-            }}
-          >
-            <Digits digits={cell.digits} width={cell.width} tone={cell.tone} />
-          </span>
-        ))
-      )}
+      ))}
 
       {/* 割る数 │ 割られる数 */}
       <span aria-hidden="true" className="self-center pr-1" style={{ gridRow: 2, gridColumn: 1 }}>
@@ -307,7 +290,7 @@ export function DivisionForm({
             className="flex justify-end gap-1"
             style={{ gridRow: row, gridColumn: `${start} / span ${span}` }}
           >
-            <Digits digits={cell.digits} width={cell.width} tone={cell.tone} />
+            <Cell cell={cell} />
           </span>
         </span>
       ))}

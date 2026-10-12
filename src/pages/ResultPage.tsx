@@ -148,7 +148,7 @@ export function ResultPage() {
           {hasFinePointer && (
             <p className="text-center text-xs text-ink-400">{copy.result.enterHint}</p>
           )}
-          <Link to="/mypage" className="text-sm text-ink-400 underline">
+          <Link to="/mypage" className="flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600">
             {copy.result.record}
           </Link>
         </div>
