@@ -1,21 +1,20 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-  type PointerEvent as ReactPointerEvent,
-  type ReactNode,
-} from 'react'
+import { useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import { useCopy } from '@/hooks/useAudienceMode'
 
-interface BoxHandwritingProps {
-  /** 並べるマスの数。答えが入りうる最大の桁数 */
+/** 書く場所1行ぶん。筆算の段・位・商にそのまま対応する */
+export interface WriteRow {
+  /** 行を見分ける名前。打ち終わった行の字を残すために使う */
+  key: string
+  /** その行のマスの数 */
   boxes: number
-  /**
-   * マスの置き場所。渡すと、筆算の線の下など好きな場所へ置ける。
-   * 書くところと式を離すと、どこに書くのか分からなくなる。
-   */
-  form?: (cells: ReactNode) => ReactNode
-  /** 「かけた」を押したとき。書いた字をつなげた1枚の画像を渡す */
+}
+
+interface BoxHandwritingProps {
+  /** 書く行。筆算の段・位・商のぶんを上から順に */
+  rows: WriteRow[]
+  /** マスの置き場所。行の名前を渡すと、その行のマスが返る */
+  form: (cellsOf: (key: string) => ReactNode) => ReactNode
+  /** 書き終えたとき。書いたもの全体を1枚の画像で渡す */
   onSubmit: (imageDataUrl: string) => void
   disabled?: boolean
 }
@@ -31,32 +30,23 @@ const CELL = 120
  * 大きなキャンバス1枚ではなく、筆算の答えを書く場所と同じ形のマスに書く。
  * 紙の筆算と同じで、位をそろえて1桁ずつ書く練習になる。
  *
+ * **段のある筆算は、全部の段のマスを最初から出す。** 答えだけ書かせると、
+ * かけ算の部分積やわり算の引く段を紙に書く手順が抜ける。かといって1段ずつ
+ * ボタンで進ませると、紙に書くのとは違う手数が増えるだけになる。紙と同じく
+ * **どの段にもいつでも書ける**ようにして、ボタンは消すときと書き終えたときだけ。
+ *
  * マスの数は**答えが入りうる最大の桁数**で、答えの桁数ではない
  * (95 × 8 なら3マス。60 のような2桁の答えなら、右に寄せて2マス使う)。
- * 紙のマス目と同じで、上限が見えても答えは分からない。
  *
  * 判定は手書きと同じく自己申告。字の読み取りはしない。
  */
-export function BoxHandwriting({ boxes, form, onSubmit, disabled = false }: BoxHandwritingProps) {
+export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHandwritingProps) {
   const copy = useCopy()
-  const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([])
+  /** 行の名前 → その行のマス。打ち終わった行の字も、ここに残って見えている */
+  const canvases = useRef(new Map<string, (HTMLCanvasElement | null)[]>())
   const drawingRef = useRef(false)
+  /** 何か書いたか。書く前に「かけた」を押させない */
   const [hasStroke, setHasStroke] = useState(false)
-
-  // 書いたものを保ったまま高解像度にする。マスは大きさが変わらないので1度だけでよい
-  useEffect(() => {
-    for (const canvas of canvasRefs.current) {
-      if (!canvas || canvas.width === CELL) continue
-      canvas.width = CELL
-      canvas.height = CELL
-      const context = canvas.getContext('2d')
-      if (!context) continue
-      context.lineCap = 'round'
-      context.lineJoin = 'round'
-      context.lineWidth = LINE_WIDTH
-      context.strokeStyle = STROKE_COLOR
-    }
-  }, [boxes])
 
   /** 画面の座標を、そのマスの描画バッファの座標へ */
   const positionOf = (event: ReactPointerEvent<HTMLCanvasElement>) => {
@@ -95,49 +85,78 @@ export function BoxHandwriting({ boxes, form, onSubmit, disabled = false }: BoxH
     drawingRef.current = false
   }
 
+  /** 書いたものを全部消す。どの段にも書けるので、消すほうも全部まとめて */
   const clear = () => {
-    for (const canvas of canvasRefs.current) {
-      canvas?.getContext('2d')?.clearRect(0, 0, CELL, CELL)
+    for (const cells of canvases.current.values()) {
+      for (const canvas of cells) canvas?.getContext('2d')?.clearRect(0, 0, CELL, CELL)
     }
     setHasStroke(false)
   }
 
-  /** 書いた字を横につなげて1枚にする。結果画面で見せるのは全体の1枚でよい */
+  /** 書いた字を1枚にまとめる。結果画面で見せるのは全体の1枚でよい */
   const exportImage = (): string => {
+    const width = Math.max(...rows.map((row) => row.boxes)) * CELL
     const sheet = document.createElement('canvas')
-    sheet.width = CELL * boxes
-    sheet.height = CELL
+    sheet.width = width
+    sheet.height = CELL * rows.length
     const context = sheet.getContext('2d')
     if (!context) return ''
     context.fillStyle = '#ffffff'
     context.fillRect(0, 0, sheet.width, sheet.height)
-    canvasRefs.current.forEach((canvas, index) => {
-      if (canvas) context.drawImage(canvas, index * CELL, 0)
+
+    rows.forEach((row, line) => {
+      const cells = canvases.current.get(row.key) ?? []
+      // 右づめ。筆算は位をそろえて読むので、まとめた絵でもそろえておく
+      const offset = width - row.boxes * CELL
+      cells.forEach((canvas, index) => {
+        if (canvas) context.drawImage(canvas, offset + index * CELL, line * CELL)
+      })
     })
     return sheet.toDataURL('image/png')
   }
 
-  const cells = Array.from({ length: boxes }, (_, index) => (
-    <canvas
-      key={index}
-      ref={(element) => {
-        canvasRefs.current[index] = element
-      }}
-      onPointerDown={startStroke}
-      onPointerMove={extendStroke}
-      onPointerUp={endStroke}
-      onPointerCancel={endStroke}
-      onMouseDown={(event) => event.preventDefault()}
-      draggable={false}
-      aria-label={copy.handwriting.boxLabel(index + 1)}
-      // 指で1字書ける大きさにする。数字のマス(1.15em)のままだと小さすぎて書けない
-      className="size-[2em] touch-none rounded-md border-2 border-dashed border-bloom-200 bg-white select-none"
-    />
-  ))
+  const cellsOf = (key: string): ReactNode => {
+    const row = rows.find((entry) => entry.key === key)
+    if (!row) return null
+
+    return Array.from({ length: row.boxes }, (_, index) => (
+      <canvas
+        key={index}
+        ref={(element) => {
+          const list = canvases.current.get(key) ?? []
+          list[index] = element
+          canvases.current.set(key, list)
+          if (element && element.width !== CELL) {
+            element.width = CELL
+            element.height = CELL
+            const context = element.getContext('2d')
+            if (context) {
+              context.lineCap = 'round'
+              context.lineJoin = 'round'
+              context.lineWidth = LINE_WIDTH
+              context.strokeStyle = STROKE_COLOR
+            }
+          }
+        }}
+        onPointerDown={startStroke}
+        onPointerMove={extendStroke}
+        onPointerUp={endStroke}
+        onPointerCancel={endStroke}
+        onMouseDown={(event) => event.preventDefault()}
+        draggable={false}
+        aria-label={copy.handwriting.boxLabel(index + 1)}
+        /*
+          大きさは筆算側(ColumnForm)が決める --cell に合わせる。
+          指で1字書ける大きさが要るが、段のぶん縦に長くなるので上限もそこで掛けている。
+        */
+        className="size-[var(--cell)] touch-none rounded-md border-2 border-dashed border-bloom-200 bg-white select-none"
+      />
+    ))
+  }
 
   return (
     <div className="flex flex-col gap-3">
-      {form ? form(cells) : <div className="flex justify-end gap-1">{cells}</div>}
+      {form(cellsOf)}
 
       <div className="flex shrink-0 gap-3 text-base">
         <button

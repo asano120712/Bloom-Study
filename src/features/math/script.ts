@@ -21,6 +21,14 @@ export type ColumnSlot =
 export interface ColumnStep {
   /** その場所に入る正しい数 */
   expected: string
+  /**
+   * そこに入りうる**最大の桁数**。打つマスをいくつ出すかに使う。
+   *
+   * 答えの桁数ではなく上限(5 × 8 でも 1 × 8 でも、一のくらいの段は2マス)。
+   * 右づめのまま打たせると、打つたびに前の数字が左へずれて読みにくいので、
+   * 先にマスを出しておき、左から順に埋める。上限が見えても答えは分からない。
+   */
+  width: number
   /** 打っている間に式の上に出す見出し(「一のくらい」「7 × 8 を かく」) */
   caption: string
   slot: ColumnSlot
@@ -74,16 +82,32 @@ function multiplySteps(left: string, right: string): ColumnStep[] {
   const digits = right.length === 1 ? [...left].reverse() : [...right].reverse()
   const other = right.length === 1 ? b : a
 
+  /*
+    見出しには、その段で**かける2つの数をそのまま**出す。
+    かける数が1桁か2桁かで、位ごとに分けるのがどちらの数かが入れ替わるので、
+    「1だんめ 一のくらい」とだけ書くと、どちらの一のくらいなのか読めない
+    (19 × 18 の2だんめは 19 × 1 で、19 × 8 ではない)。
+  */
   const steps = digits.map((digit, index) => ({
     expected: String(Number(digit) * other),
-    caption: `${index + 1}だんめ ${placeName(index)}`,
+    // 段に入るいちばん大きい数は、相手の数を9倍したもの
+    width: String(other * 9).length,
+    caption:
+      (right.length === 1 ? `${index + 1}だんめ ${digit} × ${right}` : `${index + 1}だんめ ${left} × ${digit}`) +
+      (index > 0 ? `(${index}けた ずらす)` : ''),
     slot: { kind: 'row', shift: index } as const,
     counts: false,
   }))
 
   return [
     ...steps,
-    { expected: String(a * b), caption: 'こたえ', slot: { kind: 'answer' }, counts: true },
+    {
+      expected: String(a * b),
+      width: left.length + right.length,
+      caption: 'こたえ',
+      slot: { kind: 'answer' },
+      counts: true,
+    },
   ]
 }
 
@@ -105,12 +129,13 @@ function addSteps(left: string, right: string, operator: '+' | '−'): ColumnSte
   for (let place = 0; place < columns; place += 1) {
     const a = digitAt(left, place)
     const b = digitAt(right, place)
-    const isTop = place === columns - 1
 
     if (operator === '+') {
       const sum = a + b + carry
       steps.push({
-        expected: isTop ? String(sum) : String(sum % 10),
+        // どの位も1けただけ。10 をこえたぶんは、くり上がりとして左の位に回す
+        expected: String(sum % 10),
+        width: 1,
         caption: placeName(place),
         slot: { kind: 'place', place },
         counts: true,
@@ -120,6 +145,7 @@ function addSteps(left: string, right: string, operator: '+' | '−'): ColumnSte
       const difference = a - b - carry
       steps.push({
         expected: String(difference < 0 ? difference + 10 : difference),
+        width: 1,
         caption: placeName(place),
         slot: { kind: 'place', place },
         counts: true,
@@ -127,6 +153,22 @@ function addSteps(left: string, right: string, operator: '+' | '−'): ColumnSte
       carry = difference < 0 ? 1 : 0
     }
   }
+
+  /*
+    最後にくり上がりが残ったら、**その左の位に1けたで書く**(888 + 239 の 1127 の 1)。
+    いちばん上の位で「11」と2けた打たせると、紙の筆算と手の動きが変わってしまう。
+    くり上がりは1より大きくならない(9 + 9 + 1 = 19)ので、ここは必ず1けた。
+  */
+  if (carry > 0) {
+    steps.push({
+      expected: String(carry),
+      width: 1,
+      caption: placeName(columns),
+      slot: { kind: 'place', place: columns },
+      counts: true,
+    })
+  }
+
   return steps
 }
 
@@ -159,20 +201,27 @@ function divideSteps(dividend: string, divisor: string): ColumnStep[] {
 
     steps.push({
       expected: String(quotient),
-      caption: `しょうの ${placeName(dividend.length - 1 - column)}`,
+      width: 1,
+      // 小4で習う「たてる・かける・ひく・おろす」の言い方に合わせる。
+      // どの手をしているのかが見出しだけで分かるようにする
+      caption: `たてる ${placeName(dividend.length - 1 - column)}`,
       slot: { kind: 'quotient', column },
       counts: true,
     })
     steps.push({
       expected: String(product),
-      caption: `${divisor} × ${quotient} を かく`,
+      // 引く段に入るいちばん大きい数は、割る数を9倍したもの
+      width: String(by * 9).length,
+      caption: `かける ${divisor} × ${quotient}`,
       slot: { kind: 'product', column },
       counts: false,
     })
     steps.push({
       // おろした桁まで含めた数。最後の桁ではおろすものが無いので、ひいた数だけ
       expected: String(isLast ? rest : rest * 10 + Number(dividend[column + 1])),
-      caption: isLast ? 'ひく' : 'ひいて つぎを おろす',
+      // ひいた数は割る数より小さい。つぎの桁をおろすと、その右に1桁増える
+      width: isLast ? 1 : String(by * 10 - 1).length,
+      caption: isLast ? 'ひく' : 'ひく、つぎを おろす',
       slot: { kind: 'rest', column: isLast ? column : column + 1 },
       counts: false,
     })

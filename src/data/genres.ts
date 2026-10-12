@@ -43,6 +43,19 @@ export function difficultiesOf(genreId: GenreId): Difficulty[] {
 }
 
 /**
+ * 筆算で出す問題があるか。
+ *
+ * ある学年だけ「筆算で解く / 1行の式で解く」を選べるようにしたいので、
+ * 問題データを読む前に(こたえかたを選ぶシートで)判断できる形にしてある。
+ * 小1・2は1桁どうしの暗算なので筆算にしない。
+ */
+const COLUMN_LEVELS: Difficulty[] = ['g34', 'g56', 'junior', 'senior', 'working']
+
+export function hasColumnForm(genreId: GenreId, difficulty: Difficulty): boolean {
+  return genreId === 'math' && COLUMN_LEVELS.includes(difficulty)
+}
+
+/**
  * こたえかたの選択肢。
  *
  * クイズのこたえかた(inputMode)と、別画面のあそび(path)が並ぶ。

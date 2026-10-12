@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { AppHeader } from './AppHeader'
 
 interface AppShellProps {
@@ -27,6 +27,15 @@ interface AppShellProps {
  * 各画面の justify-center が効かなくなるため。
  */
 export function AppShell({ children, fitViewport = false, exitTo }: AppShellProps) {
+  /*
+    画面を開いたら、中身のスクロールを先頭へ戻す。
+    スクロールするのは文書ではなく #root なので、
+    ブラウザの「遷移したら先頭から」が効かない。
+  */
+  useEffect(() => {
+    document.getElementById('root')?.scrollTo({ top: 0 })
+  }, [])
+
   return (
     <div
       className={`flex flex-col bg-base-50 ${fitViewport ? 'h-dvh overflow-hidden' : 'min-h-dvh'}`}

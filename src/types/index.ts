@@ -148,6 +148,21 @@ export interface HintRule {
   build: (question: Question) => HintStep[]
 }
 
+/**
+ * 計算の見せ方。
+ *
+ * `column` 筆算(位をそろえて縦に積み、段・位ごとに打つ)
+ * `plain`  1行の式(「888 + 239」を見て、答えだけ打つ)
+ *
+ * 筆算は小3・4で習う形で、手順の練習になる。ただし暗算の練習をしたい人には
+ * 手数が多い。どちらで解くかは選べるようにしてある。
+ */
+export type PromptForm = 'column' | 'plain'
+
+export function isPromptForm(value: string | null | undefined): value is PromptForm {
+  return value === 'column' || value === 'plain'
+}
+
 export type JudgeVerdict =
   | 'correct'
   /** 編集距離での許容範囲内(タイプミス扱い) */
@@ -156,6 +171,8 @@ export type JudgeVerdict =
   /** 手書きモードの自己申告 */
   | 'self-correct'
   | 'self-incorrect'
+  /** パスした(答えを見ただけ。記録には残さない) */
+  | 'passed'
 
 export interface JudgeResult {
   verdict: JudgeVerdict

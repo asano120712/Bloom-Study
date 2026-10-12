@@ -1,7 +1,7 @@
 import type { ActivityId } from '@/data/activities'
 import type { AnswerChoiceId } from '@/data/genres'
 import type { AssembleLayout } from '@/features/assemble'
-import type { AudienceMode, Difficulty, GenreId, JudgeVerdict } from '@/types'
+import type { AudienceMode, Difficulty, GenreId, JudgeVerdict, PromptForm } from '@/types'
 
 /**
  * 画面に出す言葉を、モード(おとな / こども)ごとにここへ集める。
@@ -14,8 +14,14 @@ import type { AudienceMode, Difficulty, GenreId, JudgeVerdict } from '@/types'
 export interface Copy {
   /** 一覧に並べるもの(クイズのジャンル・あそび)の名前と説明 */
   activities: Record<ActivityId, { label: string; description: string }>
-  /** 出題語の上に出す一言。何を思い出すのかはジャンルで変わる */
-  genrePrompt: Record<GenreId, string>
+  /**
+   * 出題語の上に出す一言。何を思い出すのかはジャンルで変わる。
+   *
+   * **計算には置かない。** 式が出ていれば何をするかは分かるので、
+   * 「この式を計算しよう」は読む手間が増えるだけになる
+   * (筆算の途中では、ここに「1だんめ 3 × 5」のような手の名前が入る)。
+   */
+  genrePrompt: Partial<Record<GenreId, string>>
   /** こたえかた。クイズの入力方法と、小1・小2のあそび(なぞり・くみたて) */
   answerModes: Record<AnswerChoiceId, { label: string; note: string }>
   difficulties: Record<Difficulty, { label: string; note: string }>
@@ -26,10 +32,32 @@ export interface Copy {
   verdicts: Record<JudgeVerdict, string>
   top: { lead: string[]; start: string; record: string }
   genreSelect: { title: string; note: string; back: string }
+  /**
+   * あそびかた(一覧のカードから開く)。
+   *
+   * あそびごとに分けてあるのは、**中身がまったく違う**ため(なぞりがきは指の動かし方、
+   * 計算は筆算の打ち方)。1つにまとめると、自分に関係のある段落を探すことになる。
+   */
+  howTo: {
+    /** カードの「？」の読み上げ。あそびの名前が入る */
+    open: (activity: string) => string
+    title: string
+    /** つぎの手順へ */
+    next: string
+    /** 1つ前の手順へ */
+    back: string
+    close: string
+    steps: Record<ActivityId, string[]>
+  }
   sheet: {
     start: string
     chooseDifficulty: string
     chooseMode: string
+    /** 筆算か1行の式かを選ぶ見出し(計算だけ) */
+    chooseForm: string
+    forms: Record<PromptForm, { label: string; note: string }>
+    /** 解く形から、こたえかたへ戻る */
+    backToMode: string
     /** こたえかたを選ぶ画面に出す「いま選んでいるなんいど」 */
     levelIs: (level: string) => string
     backToDifficulty: string
@@ -38,6 +66,10 @@ export interface Copy {
   quiz: {
     /** 右上の進み具合。「3 れんぞく / 5 問め」 */
     progress: (streak: number, index: number) => string
+    /** 分からない問題を飛ばす。答えは見せるが記録には残さない */
+    pass: string
+    /** 読み上げ用。「パス」だけでは何をパスするのか分からない */
+    passAria: string
     answerLabel: string
     wrong: string
     right: string
@@ -65,6 +97,8 @@ export interface Copy {
     nextPlace: string
     /** わり算で、筆算のつぎの手へ進むとき */
     nextStep: string
+    /** 間違えて、同じところを打ち直してもらうとき */
+    retry: string
   }
   trace: { guide: string; done: string }
   build: { look: string; answerIs: string }
@@ -109,7 +143,6 @@ const ADULT: Copy = {
   genrePrompt: {
     english: 'この言葉を思い出そう',
     kanji: '◯ に入る漢字を思い出そう',
-    math: 'この式を計算しよう',
   },
   answerModes: {
     handwriting: { label: '手書き', note: '指でなぞって書く' },
@@ -137,6 +170,7 @@ const ADULT: Copy = {
     incorrect: 'ざんねん',
     'self-correct': 'できた',
     'self-incorrect': 'ちがった',
+    passed: 'パスした',
   },
   top: {
     lead: [
@@ -152,16 +186,71 @@ const ADULT: Copy = {
     note: 'ジャンルごとにヒントの出かたが変わります。',
     back: 'トップにもどる',
   },
+  howTo: {
+    open: (activity) => `${activity}のあそびかた`,
+    title: 'あそびかた',
+    next: 'つぎへ',
+    back: 'もどる',
+    close: 'とじる',
+    steps: {
+      english: [
+        '日本語の出題語が出ます。英単語を思い出して答えます。',
+        'こたえかたは、手書きとタイピングから選べます。',
+        'ヒントは時間がたつと1つずつ増えます。待つほどやさしくなります。',
+        '手書きは字を読み取りません。書けたら、自分で合っていたかを選びます。',
+      ],
+      kanji: [
+        '熟語の ◯ に入る漢字を1字答えます。読みも一緒に出ます。',
+        '小1・2は、なぞりがきと、パーツを組むあそびから選べます。',
+        'パーツを組むときは、へんとつくりの枠へスライドして入れます。',
+      ],
+      math: [
+        '2桁以上の計算は、筆算の形で出ます。',
+        '筆算は段ごと・位ごとに打ちます。上の見出しが、いま打つところを教えます。',
+        '間違えると赤い枠になります。正しく打ち直すと先へ進みます。',
+        '記録に残るのは答えのところだけです。途中の段を打ち直しても「できた」のままです。',
+      ],
+      'trace-shape': [
+        '光っている ● から、指でなぞります。',
+        '線から外れても大丈夫です。離した場所から引き直せます。',
+      ],
+      'trace-hiragana': [
+        '光っている ● から、書き順どおりに指でなぞります。',
+        '1画なぞると、つぎの画の ● が光ります。',
+      ],
+      'trace-kanji': [
+        '光っている ● から、書き順どおりに指でなぞります。',
+        '小1・小2で習う漢字が出ます。',
+      ],
+      'build-kanji': [
+        'はじめにお手本の漢字が出ます。覚えたら先へ進みます。',
+        'パーツをスライドして、へんとつくりの枠に入れます。',
+        '組み上がると、その漢字になって見えます。',
+      ],
+      match: [
+        'お手本と同じ形を、4つの中から1つ選びます。',
+        '色も向きも同じで、形だけが少し違います。よく見比べてください。',
+      ],
+    },
+  },
   sheet: {
     start: 'はじめる',
     chooseDifficulty: 'なんいどをえらぶ',
     chooseMode: 'こたえかたをえらぶ',
+    chooseForm: 'どの形で解く?',
+    forms: {
+      column: { label: '筆算で解く', note: '位をそろえて、段ごとに打つ' },
+      plain: { label: '1行の式で解く', note: '式を見て、答えだけ打つ' },
+    },
     levelIs: (level) => `なんいど：${level}`,
+    backToMode: 'こたえかたにもどる',
     backToDifficulty: 'なんいどにもどる',
     close: 'もどる',
   },
   quiz: {
     progress: (streak, index) => `${streak} れんぞく / ${index} 問め`,
+    pass: 'パス',
+    passAria: 'この問題をパスする',
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',
@@ -194,6 +283,7 @@ const ADULT: Copy = {
     nextRow: 'つぎの段へ',
     nextPlace: 'つぎのくらいへ',
     nextStep: 'つぎへ',
+    retry: 'もういちど打ってみよう',
   },
   trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
   build: { look: 'この漢字をよく見て、覚えよう', answerIs: 'こたえは これ' },
@@ -252,7 +342,6 @@ const KIDS: Copy = {
   genrePrompt: {
     english: 'この ことばを おもいだそう',
     kanji: '◯ に はいる かんじは なにかな？',
-    math: 'この しきを けいさんしよう',
   },
   answerModes: {
     handwriting: { label: 'てがき', note: 'ゆびで かいて こたえる' },
@@ -276,6 +365,7 @@ const KIDS: Copy = {
     incorrect: 'ざんねん',
     'self-correct': 'できた！',
     'self-incorrect': 'ちがった',
+    passed: 'パスしたよ',
   },
   top: {
     lead: ['したのボタンで すすめるよ', 'きになったのを やってみよう！'],
@@ -287,16 +377,59 @@ const KIDS: Copy = {
     note: 'えらぶと ヒントの でかたが かわるよ。',
     back: 'さいしょに もどる',
   },
+  howTo: {
+    open: (activity) => `${activity}の あそびかた`,
+    title: 'あそびかた',
+    next: 'つぎへ',
+    back: 'もどる',
+    close: 'とじる',
+    steps: {
+      english: [
+        'にほんごを みて、えいごを おもいだそう。',
+        'まっていると ヒントが でてくるよ。',
+      ],
+      kanji: ['◯ に はいる かんじを かこう。', 'まっていると ヒントが でてくるよ。'],
+      math: [
+        'ふたけた いじょうの けいさんは ひっさんで でるよ。',
+        'うえの もじが、いま うつ ところを おしえてくれるよ。',
+      ],
+      'trace-shape': [
+        'ひかっている ● から、ゆびで なぞってね。',
+        'せんから はみだしても だいじょうぶ。',
+      ],
+      'trace-hiragana': [
+        'ひかっている ● から、ゆびで なぞってね。',
+        'いっかく なぞると、つぎの ● が ひかるよ。',
+      ],
+      'trace-kanji': ['ひかっている ● から、ゆびで なぞってね。'],
+      'build-kanji': [
+        'さいしょに おてほんを よく みてね。',
+        'ぶひんを うごかして、ますに いれよう。',
+      ],
+      match: [
+        'おてほんと おなじ かたちを、4つから えらぼう。',
+        'いろも むきも おなじ。かたちだけ すこし ちがうよ。',
+      ],
+    },
+  },
   sheet: {
     start: 'はじめる',
     chooseDifficulty: 'むずかしさを えらぼう',
     chooseMode: 'どうやって こたえる？',
+    chooseForm: 'どの かたちで とく？',
+    forms: {
+      column: { label: 'ひっさんで とく', note: 'くらいを そろえて、だんごとに' },
+      plain: { label: '1ぎょうの しきで とく', note: 'しきを みて、こたえだけ' },
+    },
     levelIs: (level) => `むずかしさ：${level}`,
+    backToMode: 'こたえかたに もどる',
     backToDifficulty: 'むずかしさに もどる',
     close: 'もどる',
   },
   quiz: {
     progress: (streak, index) => `${streak} れんぞく / ${index} もんめ`,
+    pass: 'パス',
+    passAria: 'この もんだいを パスする',
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',
@@ -329,6 +462,7 @@ const KIDS: Copy = {
     nextRow: 'つぎの だんへ',
     nextPlace: 'つぎの くらいへ',
     nextStep: 'つぎへ',
+    retry: 'もういちど うってみよう',
   },
   trace: { guide: 'ひかってる ● から ゆびで なぞってね', done: 'できた！' },
   build: { look: 'この かんじを よく みてね', answerIs: 'こたえは これ' },

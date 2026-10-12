@@ -157,14 +157,36 @@ body,
   height: 100%;
 }
 
+/*
+ * 引っ張って更新・端の跳ね返りを止める。
+ *
+ * 指でなぞって書くアプリなので、下へ引く動きが「更新」になってしまうと
+ * 書いている途中で画面が流れる。`overscroll-behavior: none` だけでは、
+ * 文書そのものがスクロールできる状態だとブラウザ側の動きが残るため、
+ * **文書はスクロールさせず、中身(#root)の中だけでスクロールさせる**。
+ *
+ * 画面ごとの縦の収まりは各画面が持つ(出題画面は h-dvh で1画面に収める)。
+ * ここは「画面の外側は動かさない」だけを決めている。
+ */
+html {
+  overscroll-behavior: none;
+}
+
 body {
   margin: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
   background: var(--color-base-50);
   color: var(--color-ink-900);
   font-family: var(--font-sans);
-  /* 手書きキャンバスでの指入力中に画面が引っ張られないようにする */
-  overscroll-behavior: none;
   -webkit-text-size-adjust: 100%;
+}
+
+#root {
+  overflow-y: auto;
+  overscroll-behavior: none;
+  /* iOS で中身のスクロールに慣性を残す(文書のスクロールは止めたまま) */
+  -webkit-overflow-scrolling: touch;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { BoxHandwriting } from '@/components/BoxHandwriting'
@@ -11,7 +11,7 @@ import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { answerChoicesOf, findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
-import { answerBoxCount, answerFromSteps, columnScript } from '@/features/math'
+import { answerFromSteps, columnScript, type ColumnStep } from '@/features/math'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeNumber, judgeParts, judgeTyping } from '@/features/judge'
 import { useCopy } from '@/hooks/useAudienceMode'
@@ -20,10 +20,12 @@ import { useQuizSession } from '@/hooks/useQuizSession'
 import { useStats } from '@/hooks/useStats'
 import {
   isDifficulty,
+  isPromptForm,
   type AnswerRecord,
   type Difficulty,
   type InputMode,
   type JudgeResult,
+  type PromptForm,
   type Question,
 } from '@/types'
 import { shuffleWithSeed } from '@/utils/shuffle'
@@ -43,6 +45,13 @@ export function QuizPage() {
    */
   const levelParam = searchParams.get('level')
   const difficulty: Difficulty = isDifficulty(levelParam) ? levelParam : 'junior'
+
+  /**
+   * 解く形。筆算で出す問題でも、1行の式で解くことを選べる
+   * (`form=plain`)。既定は筆算で、選ばなければ今までどおり。
+   */
+  const formParam = searchParams.get('form')
+  const promptForm: PromptForm = isPromptForm(formParam) ? formParam : 'column'
 
   const modeParam = searchParams.get('mode')
   const inputMode: InputMode =
@@ -69,8 +78,17 @@ export function QuizPage() {
    * 問題が変わるときは画面ごと作り直される(1問答えるたびに結果画面へ移る)ので、
    * ここで問題の切り替わりを見る必要はない。
    */
-  /** 筆算で打ち終わったところ。段・位・商を打った順に持つ */
+  /** 筆算で打ち終わったところ。段・位・商を打った順に持つ(入るのは正しい数だけ) */
   const [filledSteps, setFilledSteps] = useState<string[]>([])
+  /** いまの手で間違えて打った数。赤枠で残し、打ち直すまで先へ進めない */
+  const [missed, setMissed] = useState<string | null>(null)
+  /**
+   * 答えになる手を、1回めで間違えたか。記録はこれで決める。
+   *
+   * かけ算の段やわり算の引く段は**答えではない**ので、ここには入れない。
+   * 途中の書き間違いで「ざんねん」にすると、答えが合っているのに間違い扱いになる。
+   */
+  const [missedAnswer, setMissedAnswer] = useState(false)
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
 
@@ -143,11 +161,37 @@ export function QuizPage() {
       genreId: genre.id,
       inputMode,
       difficulty,
+      promptForm,
       // 自分が書いた・打ったこたえを結果画面で見せる
       submission,
       // この出題セットに次の問題が残っているときだけ「つぎへ」を出す
       hasNext: cursor + 1 < questions.length,
       currentStreak: next.currentStreak,
+    }
+    navigate('/result', { state })
+  }
+
+  /**
+   * パスする。
+   *
+   * 答えを見せてから次の問題へ進むが、**記録には残さない**(正解数にも不正解数にも
+   * 入れず、れんぞくも途切れない)。分からない問題で止まったままになるより、
+   * 答えを見て次へ行けるほうがよい。ごまかしに使えてしまうが、
+   * 自分のために解くアプリなので、それで困るのは自分だけ。
+   */
+  const pass = () => {
+    commitAdvance()
+
+    const state: ResultState = {
+      result: { verdict: 'passed', isCorrect: false, answer: question.answer },
+      prompt: question.prompt,
+      promptReading: question.promptReading,
+      genreId: genre.id,
+      inputMode,
+      difficulty,
+      promptForm,
+      hasNext: cursor + 1 < questions.length,
+      currentStreak: stats.currentStreak,
     }
     navigate('/result', { state })
   }
@@ -158,17 +202,31 @@ export function QuizPage() {
    * 筆算の手順。打つのは数字のときだけ(手書きはノートに書くのと同じで、
    * 書いたものを読み取らないため途中を追えない)。
    */
-  const script =
-    inputMode === 'number' && question.promptLayout ? columnScript(question.prompt) : []
+  /** この問題を筆算で出すか。1行の式を選んだときは、答えだけ打つ形にする */
+  const layout = promptForm === 'plain' ? undefined : question.promptLayout
+  const script = inputMode === 'number' && layout ? columnScript(question.prompt) : []
   const stepIndex = filledSteps.length
   const step = script[stepIndex]
   const isLastStep = stepIndex >= script.length - 1
 
   /**
-   * 1つ打ち終わったとき。合っていてもいなくても止めずに次へ進み、
-   * 間違えたところは正しい数に直して残す(直さないと、そのあとが必ず合わなくなる)。
+   * 1つ打ち終わったとき。
+   *
+   * **合うまで先へ進まない。** 間違えたまま進むと、そのあとの段も答えも必ず合わなくなり、
+   * どこでつまずいたのか分からなくなる。紙の筆算でも、間違えたらそこを消して書き直す。
+   *
+   * 記録に残すのは**答えの部分を1回めで打てたか**だけ。打ち直せば必ず「できた」に
+   * なるのでは記録の意味が無いが、途中の段の書き間違いまで「ざんねん」にすると、
+   * 答えが合っているのに間違い扱いになる。
    */
-  const commitStep = (value: string) => {
+  const commitStep = (value: string, entry: ColumnStep) => {
+    if (value !== entry.expected) {
+      setMissed(value)
+      // 答えになる手(位ごとの数・商・こたえ)を間違えたときだけ、記録に残す
+      if (entry.counts) setMissedAnswer(true)
+      return
+    }
+    setMissed(null)
     setFilledSteps((filled) => [...filled, value])
   }
 
@@ -180,30 +238,77 @@ export function QuizPage() {
         ? copy.number.nextPlace
         : copy.number.nextStep
 
-  /** 筆算のマス。打ち終わったところは正しい数で、いま打っているところはそのまま出す */
+  /**
+   * 筆算のマス。打ち終わったところと、いま打っているところ。
+   *
+   * 間違えた数は、打ち直しを始めるまで赤枠で残す。消してしまうと、
+   * 何を打って間違えたのかが分からないまま打ち直すことになる。
+   */
   const columnCells = (typed?: string): ColumnCell[] => {
-    const done = script.slice(0, stepIndex).map((entry, index) => ({
+    const done = script.slice(0, stepIndex).map((entry) => ({
       slot: entry.slot,
       digits: entry.expected,
-      tone: filledSteps[index] === entry.expected ? ('done' as const) : ('corrected' as const),
+      tone: 'done' as const,
     }))
     if (typed === undefined || !step) return done
-    return [...done, { slot: step.slot, digits: typed, tone: 'typing' as const }]
+
+    const isShowingMissed = missed !== null && typed === ''
+    return [
+      ...done,
+      {
+        slot: step.slot,
+        digits: isShowingMissed ? missed : typed,
+        width: step.width,
+        tone: isShowingMissed ? ('wrong' as const) : ('typing' as const),
+      },
+    ]
   }
+
+  /**
+   * 手書きで書く行。
+   *
+   * 段のある筆算は、全部の段のマスを出す。答えだけ書かせると、部分積や引く段を
+   * 紙に書く手順が抜けてしまう。どの段から書くかは紙と同じで自由。
+   * 手書きは字を読み取らないので、合っているかはここでは見ない(自己申告のまま)。
+   */
+  const writeScript =
+    inputMode === 'handwriting' && layout
+      ? columnScript(question.prompt)
+      : []
+  const writeRows = writeScript.map((entry, index) => ({
+    key: `${question.id}-${index}`,
+    boxes: entry.width,
+  }))
 
   /** 計算は「ヒント → 式 → 答え」の順に置く */
   const showsPromptBelow = genre.id === 'math'
   /** 筆算のときは、式と答えのマスをひと続きに見せたいので入力側が出す */
-  const showsPromptInInput = showsPromptBelow && question.promptLayout !== undefined
+  const showsPromptInInput = showsPromptBelow && layout !== undefined
   /** 手書きも、筆算なら大きなキャンバスではなくマスに1字ずつ書く */
   const writesInBoxes = showsPromptInInput && inputMode === 'handwriting'
 
   return (
     <AppShell fitViewport exitTo="/genres">
       {/* 出題中に読む場所は選択できなくてよい。手書きのドラッグで範囲選択されるのを防ぐ */}
-      <header className="flex items-center justify-between text-sm text-ink-600 select-none">
-        <span>{copy.activities[genre.id].label}</span>
-        <span aria-live="polite">{copy.quiz.progress(stats.currentStreak, cursor + 1)}</span>
+      <header className="flex items-center justify-between gap-2 text-sm text-ink-600 select-none">
+        <span className="min-w-0 truncate">{copy.activities[genre.id].label}</span>
+
+        <span className="flex shrink-0 items-center gap-2">
+          <span aria-live="polite">{copy.quiz.progress(stats.currentStreak, cursor + 1)}</span>
+          {/*
+            パスは進み具合の横。分からないまま止まったときに探す場所は、
+            入力の近くではなく「この問題をやめる」ことを考える場所(上)のほう。
+            やめるとは反対側に置いて、押し間違えないようにしてある。
+          */}
+          <button
+            type="button"
+            onClick={pass}
+            aria-label={copy.quiz.passAria}
+            className="flex min-h-8 shrink-0 items-center rounded-full border-2 border-bloom-200 px-3 text-xs font-bold text-ink-600"
+          >
+            {copy.quiz.pass}
+          </button>
+        </span>
       </header>
 
       {/*
@@ -211,7 +316,9 @@ export function QuizPage() {
         紙の筆算と同じで、式と答えを書く場所が隣り合っていたほうが解きやすい。
         思い出す系のジャンルは、先に出題語を見て考える流れなので上のまま。
       */}
-      {!showsPromptBelow && <PromptBlock question={question} caption={promptCaption} />}
+      {!showsPromptBelow && (
+        <PromptBlock question={question} layout={layout} caption={promptCaption} />
+      )}
 
       {/*
         ヒント枠は余りを分け合うが、上限を決めて残りは入力側(特にキャンバス)へ回す。
@@ -224,11 +331,12 @@ export function QuizPage() {
           layout={hintLayoutOf(genre.id)}
           secondsToNext={secondsToNext}
         />
+
       </section>
 
       {/* 計算は、ヒントのあとに出題を置く。答えを書く場所のすぐ上になる */}
       {showsPromptBelow && !showsPromptInInput && (
-        <PromptBlock question={question} caption={promptCaption} />
+        <PromptBlock question={question} layout={layout} caption={promptCaption} />
       )}
 
       {/* 余りは入力側へ多めに配る(ヒント枠と 2:1)。キャンバスとキーはここで伸びる */}
@@ -288,14 +396,19 @@ export function QuizPage() {
             )}
             {inputMode === 'number' && (
               <NumberInput
-                key={`number-${question.id}-${stepIndex}`}
+                // 打ち直しのたびに作り直して、打った数を空に戻す
+                key={`number-${question.id}-${stepIndex}-${missed ?? ''}`}
+                // 筆算は、そこに入りうる桁数より多くは打てない(マスからはみ出す)
+                maxLength={step?.width}
                 display={
                   showsPromptInInput
                     ? (typed) => (
                         <PromptBlock
                           question={question}
-                          // 打っている場所の名前を出す(「一のくらい」「7 × 8 を かく」)
+                          layout={layout}
+                          // 打っている場所の名前を出す(「一のくらい」「かける 7 × 8」)
                           caption={step?.caption ?? promptCaption}
+                          note={missed === null ? undefined : copy.number.retry}
                           cells={columnCells(typed)}
                         />
                       )
@@ -303,27 +416,48 @@ export function QuizPage() {
                 }
                 submitLabel={isLastStep ? copy.number.submit : nextStepLabel}
                 onSubmit={(value) => {
-                  if (!isLastStep) {
-                    commitStep(value)
+                  if (step && !isLastStep) {
+                    commitStep(value, step)
+                    return
+                  }
+                  // 最後の手。ここも合うまで進まない
+                  if (step && value !== step.expected) {
+                    setMissed(value)
+                    if (step.counts) setMissedAnswer(true)
                     return
                   }
                   // 答えは、打った途中のものから組み立てる(位ごと・商は、それ自体が答え)
                   const typed = [...filledSteps, value]
                   const answer = script.length > 0 ? answerFromSteps(script, typed) : value
-                  finish(judgeNumber(question, answer), revealedCount, {
-                    kind: 'text',
-                    text: answer,
-                  })
+                  const judged = judgeNumber(question, answer)
+                  finish(
+                    // 答えの部分を1回めで間違えていたら、打ち直して合っても「ざんねん」
+                    missedAnswer ? { ...judged, verdict: 'incorrect', isCorrect: false } : judged,
+                    revealedCount,
+                    { kind: 'text', text: answer },
+                  )
                 }}
               />
             )}
             {inputMode === 'handwriting' && writesInBoxes && (
               <BoxHandwriting
                 key={`boxes-${question.id}`}
-                boxes={answerBoxCount(question.prompt)}
-                // マスは筆算の線の下に置く。式と離すと、どこに書くのか分からなくなる
-                form={(cells) => (
-                  <PromptBlock question={question} caption={promptCaption} writeRow={cells} />
+                rows={writeRows}
+                // マスは筆算のその場所に置く。式と離すと、どこに書くのか分からなくなる
+                form={(cellsOf) => (
+                  <PromptBlock
+                    question={question}
+                    layout={layout}
+                    caption={promptCaption}
+                    writing
+                    cells={writeRows.map((row, index) => ({
+                      slot: writeScript[index].slot,
+                      digits: '',
+                      width: row.boxes,
+                      tone: 'typing' as const,
+                      content: cellsOf(row.key),
+                    }))}
+                  />
                 )}
                 onSubmit={(image) => setSelfReport({ hintsUsed: revealedCount, image })}
               />
@@ -366,35 +500,47 @@ export function QuizPage() {
  */
 function PromptBlock({
   question,
+  layout,
   caption,
   cells,
-  writeRow,
+  note,
+  writing,
 }: {
   question: Question
-  caption: string
+  /** 筆算で出すか。渡さなければ1行の式のまま出す */
+  layout?: 'column' | 'division'
+  /** 出題語の上の一言。無いジャンル(計算)もある */
+  caption?: string
+  /** 打ち直してもらうときの一言。式の上、見出しのすぐ下に出す */
+  note?: string
   /** 筆算のマス(打ち終わったところと、いま打っているところ) */
   cells?: ColumnCell[]
-  /** 手書きで書き込むマス */
-  writeRow?: ReactNode
+  /** 手書きで書くとき。マスが指で書ける大きさになる */
+  writing?: boolean
 }) {
   return (
     <section className="mt-4 shrink-0 text-center select-none">
-      <p className="text-xs text-ink-400">{caption}</p>
+      {caption && <p className="text-xs text-ink-400">{caption}</p>}
+      {note && (
+        <p aria-live="assertive" className="text-xs font-bold text-warm-600">
+          {note}
+        </p>
+      )}
       {/*
         わり算の筆算だけ字を小さくする。商・引く段・ひいた数で6段になり、
         他と同じ大きさだと数字キーボードまで入らない。
       */}
       <p
         className={`mt-1 font-bold tracking-wide ${
-          question.promptLayout === 'division'
+          layout === 'division'
             ? 'text-[min(1.5rem,6.5vw)] leading-7'
             : 'text-[min(1.875rem,8vw)] leading-9'
         }`}
       >
-        {question.promptLayout === 'column' ? (
-          <ColumnForm expression={question.prompt} cells={cells} writeRow={writeRow} />
-        ) : question.promptLayout === 'division' ? (
-          <DivisionForm expression={question.prompt} cells={cells} writeRow={writeRow} />
+        {layout === 'column' ? (
+          <ColumnForm expression={question.prompt} cells={cells} writing={writing} />
+        ) : layout === 'division' ? (
+          <DivisionForm expression={question.prompt} cells={cells} writing={writing} />
         ) : (
           question.prompt
         )}

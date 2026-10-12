@@ -79,7 +79,7 @@ export function BuildPage() {
             >
               {copy.play.again}
             </button>
-            <Link to="/genres" className="text-base text-ink-400 underline">
+            <Link to="/genres" className="flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600">
               {copy.play.other}
             </Link>
           </div>
