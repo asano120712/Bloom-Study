@@ -129,14 +129,13 @@ function addSteps(left: string, right: string, operator: '+' | '−'): ColumnSte
   for (let place = 0; place < columns; place += 1) {
     const a = digitAt(left, place)
     const b = digitAt(right, place)
-    const isTop = place === columns - 1
 
     if (operator === '+') {
       const sum = a + b + carry
       steps.push({
-        expected: isTop ? String(sum) : String(sum % 10),
-        // いちばん上の位だけ、くり上がった1を足して2桁になることがある
-        width: isTop ? 2 : 1,
+        // どの位も1けただけ。10 をこえたぶんは、くり上がりとして左の位に回す
+        expected: String(sum % 10),
+        width: 1,
         caption: placeName(place),
         slot: { kind: 'place', place },
         counts: true,
@@ -154,6 +153,22 @@ function addSteps(left: string, right: string, operator: '+' | '−'): ColumnSte
       carry = difference < 0 ? 1 : 0
     }
   }
+
+  /*
+    最後にくり上がりが残ったら、**その左の位に1けたで書く**(888 + 239 の 1127 の 1)。
+    いちばん上の位で「11」と2けた打たせると、紙の筆算と手の動きが変わってしまう。
+    くり上がりは1より大きくならない(9 + 9 + 1 = 19)ので、ここは必ず1けた。
+  */
+  if (carry > 0) {
+    steps.push({
+      expected: String(carry),
+      width: 1,
+      caption: placeName(columns),
+      slot: { kind: 'place', place: columns },
+      counts: true,
+    })
+  }
+
   return steps
 }
 
