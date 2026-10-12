@@ -10,17 +10,11 @@ export interface WriteRow {
 }
 
 interface BoxHandwritingProps {
-  /** 上から順に。最後の要素がいま書く行 */
+  /** 書く行。筆算の段・位・商のぶんを上から順に */
   rows: WriteRow[]
-  /** いま書く行が最後かどうか。最後なら「かけた」、途中なら「つぎの段へ」 */
-  isLast: boolean
-  /** 途中の行で押したときの文字 */
-  nextLabel: string
   /** マスの置き場所。行の名前を渡すと、その行のマスが返る */
   form: (cellsOf: (key: string) => ReactNode) => ReactNode
-  /** 途中の行を書き終えたとき */
-  onNext: () => void
-  /** 最後の行を書き終えたとき。書いたもの全体を1枚の画像で渡す */
+  /** 書き終えたとき。書いたもの全体を1枚の画像で渡す */
   onSubmit: (imageDataUrl: string) => void
   disabled?: boolean
 }
@@ -36,33 +30,23 @@ const CELL = 120
  * 大きなキャンバス1枚ではなく、筆算の答えを書く場所と同じ形のマスに書く。
  * 紙の筆算と同じで、位をそろえて1桁ずつ書く練習になる。
  *
- * **段のある筆算は、段ごとに書く。** 答えだけ書かせると、かけ算の部分積や
- * わり算の引く段を紙に書く手順が抜ける。書き終えた段はそのまま残るので、
- * 下の段を書くときに見ながら足せる(数字で打つときと同じ進み方)。
+ * **段のある筆算は、全部の段のマスを最初から出す。** 答えだけ書かせると、
+ * かけ算の部分積やわり算の引く段を紙に書く手順が抜ける。かといって1段ずつ
+ * ボタンで進ませると、紙に書くのとは違う手数が増えるだけになる。紙と同じく
+ * **どの段にもいつでも書ける**ようにして、ボタンは消すときと書き終えたときだけ。
  *
  * マスの数は**答えが入りうる最大の桁数**で、答えの桁数ではない
  * (95 × 8 なら3マス。60 のような2桁の答えなら、右に寄せて2マス使う)。
  *
  * 判定は手書きと同じく自己申告。字の読み取りはしない。
  */
-export function BoxHandwriting({
-  rows,
-  isLast,
-  nextLabel,
-  form,
-  onNext,
-  onSubmit,
-  disabled = false,
-}: BoxHandwritingProps) {
+export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHandwritingProps) {
   const copy = useCopy()
   /** 行の名前 → その行のマス。打ち終わった行の字も、ここに残って見えている */
   const canvases = useRef(new Map<string, (HTMLCanvasElement | null)[]>())
   const drawingRef = useRef(false)
-  /** 何か書いた行。書く前に次へ進ませない */
-  const [drawnKey, setDrawnKey] = useState<string | null>(null)
-
-  const activeKey = rows[rows.length - 1]?.key ?? ''
-  const hasStroke = drawnKey === activeKey
+  /** 何か書いたか。書く前に「かけた」を押させない */
+  const [hasStroke, setHasStroke] = useState(false)
 
   /** 画面の座標を、そのマスの描画バッファの座標へ */
   const positionOf = (event: ReactPointerEvent<HTMLCanvasElement>) => {
@@ -84,7 +68,7 @@ export function BoxHandwriting({
     const { x, y } = positionOf(event)
     context.beginPath()
     context.moveTo(x, y)
-    setDrawnKey(activeKey)
+    setHasStroke(true)
   }
 
   const extendStroke = (event: ReactPointerEvent<HTMLCanvasElement>) => {
@@ -101,12 +85,12 @@ export function BoxHandwriting({
     drawingRef.current = false
   }
 
-  /** 消すのは、いま書いている行だけ。打ち終わった段は紙と同じで残す */
+  /** 書いたものを全部消す。どの段にも書けるので、消すほうも全部まとめて */
   const clear = () => {
-    for (const canvas of canvases.current.get(activeKey) ?? []) {
-      canvas?.getContext('2d')?.clearRect(0, 0, CELL, CELL)
+    for (const cells of canvases.current.values()) {
+      for (const canvas of cells) canvas?.getContext('2d')?.clearRect(0, 0, CELL, CELL)
     }
-    setDrawnKey(null)
+    setHasStroke(false)
   }
 
   /** 書いた字を1枚にまとめる。結果画面で見せるのは全体の1枚でよい */
@@ -134,7 +118,6 @@ export function BoxHandwriting({
   const cellsOf = (key: string): ReactNode => {
     const row = rows.find((entry) => entry.key === key)
     if (!row) return null
-    const isActive = key === activeKey
 
     return Array.from({ length: row.boxes }, (_, index) => (
       <canvas
@@ -155,21 +138,15 @@ export function BoxHandwriting({
             }
           }
         }}
-        onPointerDown={isActive ? startStroke : undefined}
-        onPointerMove={isActive ? extendStroke : undefined}
-        onPointerUp={isActive ? endStroke : undefined}
-        onPointerCancel={isActive ? endStroke : undefined}
+        onPointerDown={startStroke}
+        onPointerMove={extendStroke}
+        onPointerUp={endStroke}
+        onPointerCancel={endStroke}
         onMouseDown={(event) => event.preventDefault()}
         draggable={false}
         aria-label={copy.handwriting.boxLabel(index + 1)}
-        /*
-          指で1字書ける大きさにする。数字のマス(1.15em)のままだと小さすぎて書けない。
-          書き終えた行は枠も下地も消して、書いた字だけが残るようにする
-          (紙と同じで、マス目は書くときの目印でしかない)。
-        */
-        className={`size-[2em] touch-none rounded-md border-2 select-none ${
-          isActive ? 'border-dashed border-bloom-200 bg-white' : 'border-transparent'
-        }`}
+        // 指で1字書ける大きさにする。数字のマス(1.15em)のままだと小さすぎて書けない
+        className="size-[2em] touch-none rounded-md border-2 border-dashed border-bloom-200 bg-white select-none"
       />
     ))
   }
@@ -189,18 +166,11 @@ export function BoxHandwriting({
         </button>
         <button
           type="button"
-          onClick={() => {
-            if (!isLast) {
-              onNext()
-              setDrawnKey(null)
-              return
-            }
-            onSubmit(exportImage())
-          }}
+          onClick={() => onSubmit(exportImage())}
           disabled={disabled || !hasStroke}
           className="min-h-14 flex-2 rounded-full bg-bloom-700 px-6 font-bold text-white disabled:bg-bloom-200"
         >
-          {isLast ? copy.handwriting.done : nextLabel}
+          {copy.handwriting.done}
         </button>
       </div>
     </div>

@@ -80,8 +80,6 @@ export function QuizPage() {
    */
   /** 筆算で打ち終わったところ。段・位・商を打った順に持つ(入るのは正しい数だけ) */
   const [filledSteps, setFilledSteps] = useState<string[]>([])
-  /** 手書きで書き終えた行の数。段のある筆算は1段ずつ書く */
-  const [writtenRows, setWrittenRows] = useState(0)
   /** いまの手で間違えて打った数。赤枠で残し、打ち直すまで先へ進めない */
   const [missed, setMissed] = useState<string | null>(null)
   /**
@@ -269,23 +267,18 @@ export function QuizPage() {
   /**
    * 手書きで書く行。
    *
-   * 段のある筆算は、数字で打つときと同じ手順で1段ずつ書く。
-   * 答えだけ書かせると、部分積や引く段を紙に書く手順が抜けてしまう。
+   * 段のある筆算は、全部の段のマスを出す。答えだけ書かせると、部分積や引く段を
+   * 紙に書く手順が抜けてしまう。どの段から書くかは紙と同じで自由。
    * 手書きは字を読み取らないので、合っているかはここでは見ない(自己申告のまま)。
    */
   const writeScript =
     inputMode === 'handwriting' && layout
       ? columnScript(question.prompt)
       : []
-  const writeRows = writeScript
-    .slice(0, writtenRows + 1)
-    .map((entry, index) => ({ key: `${question.id}-${index}`, boxes: entry.width }))
-  const writeStepLabel =
-    writeScript[writtenRows]?.slot.kind === 'row'
-      ? copy.number.nextRow
-      : writeScript[writtenRows]?.slot.kind === 'place'
-        ? copy.number.nextPlace
-        : copy.number.nextStep
+  const writeRows = writeScript.map((entry, index) => ({
+    key: `${question.id}-${index}`,
+    boxes: entry.width,
+  }))
 
   /** 計算は「ヒント → 式 → 答え」の順に置く */
   const showsPromptBelow = genre.id === 'math'
@@ -450,17 +443,12 @@ export function QuizPage() {
               <BoxHandwriting
                 key={`boxes-${question.id}`}
                 rows={writeRows}
-                isLast={writtenRows >= writeScript.length - 1}
-                nextLabel={writeStepLabel}
-                /*
-                  マスは筆算のその場所に置く。式と離すと、どこに書くのか分からなくなる。
-                  段のある筆算では、書き終えた段も残したまま次の段のマスを出す。
-                */
+                // マスは筆算のその場所に置く。式と離すと、どこに書くのか分からなくなる
                 form={(cellsOf) => (
                   <PromptBlock
                     question={question}
                     layout={layout}
-                    caption={writeScript[writtenRows]?.caption ?? promptCaption}
+                    caption={promptCaption}
                     writing
                     cells={writeRows.map((row, index) => ({
                       slot: writeScript[index].slot,
@@ -471,7 +459,6 @@ export function QuizPage() {
                     }))}
                   />
                 )}
-                onNext={() => setWrittenRows((done) => done + 1)}
                 onSubmit={(image) => setSelfReport({ hintsUsed: revealedCount, image })}
               />
             )}
