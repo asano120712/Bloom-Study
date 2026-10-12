@@ -509,7 +509,8 @@ function PromptBlock({
   question: Question
   /** 筆算で出すか。渡さなければ1行の式のまま出す */
   layout?: 'column' | 'division'
-  caption: string
+  /** 出題語の上の一言。無いジャンル(計算)もある */
+  caption?: string
   /** 打ち直してもらうときの一言。式の上、見出しのすぐ下に出す */
   note?: string
   /** 筆算のマス(打ち終わったところと、いま打っているところ) */
@@ -519,7 +520,7 @@ function PromptBlock({
 }) {
   return (
     <section className="mt-4 shrink-0 text-center select-none">
-      <p className="text-xs text-ink-400">{caption}</p>
+      {caption && <p className="text-xs text-ink-400">{caption}</p>}
       {note && (
         <p aria-live="assertive" className="text-xs font-bold text-warm-600">
           {note}

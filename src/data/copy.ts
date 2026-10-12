@@ -14,8 +14,14 @@ import type { AudienceMode, Difficulty, GenreId, JudgeVerdict, PromptForm } from
 export interface Copy {
   /** 一覧に並べるもの(クイズのジャンル・あそび)の名前と説明 */
   activities: Record<ActivityId, { label: string; description: string }>
-  /** 出題語の上に出す一言。何を思い出すのかはジャンルで変わる */
-  genrePrompt: Record<GenreId, string>
+  /**
+   * 出題語の上に出す一言。何を思い出すのかはジャンルで変わる。
+   *
+   * **計算には置かない。** 式が出ていれば何をするかは分かるので、
+   * 「この式を計算しよう」は読む手間が増えるだけになる
+   * (筆算の途中では、ここに「1だんめ 3 × 5」のような手の名前が入る)。
+   */
+  genrePrompt: Partial<Record<GenreId, string>>
   /** こたえかた。クイズの入力方法と、小1・小2のあそび(なぞり・くみたて) */
   answerModes: Record<AnswerChoiceId, { label: string; note: string }>
   difficulties: Record<Difficulty, { label: string; note: string }>
@@ -137,7 +143,6 @@ const ADULT: Copy = {
   genrePrompt: {
     english: 'この言葉を思い出そう',
     kanji: '◯ に入る漢字を思い出そう',
-    math: 'この式を計算しよう',
   },
   answerModes: {
     handwriting: { label: '手書き', note: '指でなぞって書く' },
@@ -337,7 +342,6 @@ const KIDS: Copy = {
   genrePrompt: {
     english: 'この ことばを おもいだそう',
     kanji: '◯ に はいる かんじは なにかな？',
-    math: 'この しきを けいさんしよう',
   },
   answerModes: {
     handwriting: { label: 'てがき', note: 'ゆびで かいて こたえる' },
