@@ -1,18 +1,25 @@
 import { useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import { useCopy } from '@/hooks/useAudienceMode'
 
-/** 書く場所1行ぶん。筆算の段・位・商にそのまま対応する */
+/** 書く場所1つぶん。筆算の位・商・こたえにそのまま対応する */
 export interface WriteRow {
-  /** 行を見分ける名前。打ち終わった行の字を残すために使う */
+  /** 書く場所を見分ける名前。書いた字を残すために使う */
   key: string
-  /** その行のマスの数 */
+  /** そこのマスの数 */
   boxes: number
+  /**
+   * 画面で何行めに並ぶか(省略すると1つずつ別の行)。
+   *
+   * たし算の位や、わり算の商は**横に1行で**並ぶ。まとめた画像でも
+   * 同じ並びにしておかないと、答えが縦に割れて読めなくなる。
+   */
+  line?: number
 }
 
 interface BoxHandwritingProps {
-  /** 書く行。筆算の段・位・商のぶんを上から順に */
+  /** 書く場所。筆算のその並び順(左から、上から)で */
   rows: WriteRow[]
-  /** マスの置き場所。行の名前を渡すと、その行のマスが返る */
+  /** マスの置き場所。書く場所の名前を渡すと、そこのマスが返る */
   form: (cellsOf: (key: string) => ReactNode) => ReactNode
   /** 書き終えたとき。書いたもの全体を1枚の画像で渡す */
   onSubmit: (imageDataUrl: string) => void
@@ -30,10 +37,10 @@ const CELL = 120
  * 大きなキャンバス1枚ではなく、筆算の答えを書く場所と同じ形のマスに書く。
  * 紙の筆算と同じで、位をそろえて1桁ずつ書く練習になる。
  *
- * **段のある筆算は、全部の段のマスを最初から出す。** 答えだけ書かせると、
- * かけ算の部分積やわり算の引く段を紙に書く手順が抜ける。かといって1段ずつ
- * ボタンで進ませると、紙に書くのとは違う手数が増えるだけになる。紙と同じく
- * **どの段にもいつでも書ける**ようにして、ボタンは消すときと書き終えたときだけ。
+ * **出すのは答えを書くマスだけ。** かけ算の部分積やわり算の引く段までマスにすると、
+ * 答えを書く場所が埋もれて分からなくなり、縦にマスが3段・4段と積もって
+ * 背の低い端末では画面からはみ出す。途中の計算は紙の余白と同じで、
+ * 書く場所をこちらで決めない(読み取りもしないので、見る相手もいない)。
  *
  * マスの数は**答えが入りうる最大の桁数**で、答えの桁数ではない
  * (95 × 8 なら3マス。60 のような2桁の答えなら、右に寄せて2マス使う)。
@@ -85,7 +92,7 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     drawingRef.current = false
   }
 
-  /** 書いたものを全部消す。どの段にも書けるので、消すほうも全部まとめて */
+  /** 書いたものを全部消す。どのマスにも書けるので、消すほうも全部まとめて */
   const clear = () => {
     for (const cells of canvases.current.values()) {
       for (const canvas of cells) canvas?.getContext('2d')?.clearRect(0, 0, CELL, CELL)
@@ -95,22 +102,32 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
 
   /** 書いた字を1枚にまとめる。結果画面で見せるのは全体の1枚でよい */
   const exportImage = (): string => {
-    const width = Math.max(...rows.map((row) => row.boxes)) * CELL
+    // 同じ行のものは横に並べる(たし算の位、わり算の商は1行に並ぶ)
+    const lineOf = (row: WriteRow, index: number) => row.line ?? index
+    const lines = [...new Set(rows.map(lineOf))].sort((a, b) => a - b)
+    const rowsIn = (line: number) => rows.filter((row, index) => lineOf(row, index) === line)
+    const boxesIn = (line: number) => rowsIn(line).reduce((count, row) => count + row.boxes, 0)
+
+    const width = Math.max(...lines.map(boxesIn)) * CELL
     const sheet = document.createElement('canvas')
     sheet.width = width
-    sheet.height = CELL * rows.length
+    sheet.height = CELL * lines.length
     const context = sheet.getContext('2d')
     if (!context) return ''
     context.fillStyle = '#ffffff'
     context.fillRect(0, 0, sheet.width, sheet.height)
 
-    rows.forEach((row, line) => {
-      const cells = canvases.current.get(row.key) ?? []
+    lines.forEach((line, top) => {
       // 右づめ。筆算は位をそろえて読むので、まとめた絵でもそろえておく
-      const offset = width - row.boxes * CELL
-      cells.forEach((canvas, index) => {
-        if (canvas) context.drawImage(canvas, offset + index * CELL, line * CELL)
-      })
+      let left = width - boxesIn(line) * CELL
+      for (const row of rowsIn(line)) {
+        const cells = canvases.current.get(row.key) ?? []
+        for (let index = 0; index < row.boxes; index += 1) {
+          const canvas = cells[index]
+          if (canvas) context.drawImage(canvas, left + index * CELL, top * CELL)
+        }
+        left += row.boxes * CELL
+      }
     })
     return sheet.toDataURL('image/png')
   }
@@ -147,7 +164,7 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
         aria-label={copy.handwriting.boxLabel(index + 1)}
         /*
           大きさは筆算側(ColumnForm)が決める --cell に合わせる。
-          指で1字書ける大きさが要るが、段のぶん縦に長くなるので上限もそこで掛けている。
+          指で1字書ける大きさが要るが、画面からはみ出さないよう上限もそこで掛けている。
         */
         className="size-[var(--cell)] touch-none rounded-md border-2 border-dashed border-bloom-200 bg-white select-none"
       />
