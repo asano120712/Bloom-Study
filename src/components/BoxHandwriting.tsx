@@ -14,8 +14,11 @@ interface BoxHandwritingProps {
   rows: WriteRow[]
   /** マスの置き場所。行の名前を渡すと、その行のマスが返る */
   form: (cellsOf: (key: string) => ReactNode) => ReactNode
-  /** 書き終えたとき。書いたもの全体を1枚の画像で渡す */
-  onSubmit: (imageDataUrl: string) => void
+  /**
+   * 書き終えたとき。
+   * 全体を1枚にした画像(結果画面で見せる)と、行ごとのマスの絵(読み取りに使う)を渡す。
+   */
+  onSubmit: (imageDataUrl: string, rows: { key: string; cells: ImageData[] }[]) => void
   disabled?: boolean
 }
 
@@ -93,6 +96,16 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     setHasStroke(false)
   }
 
+  /** 行ごとのマスの絵。読み取りに渡す(1マス1字なので、切り出しが要らない) */
+  const cellImages = () =>
+    rows.map((row) => ({
+      key: row.key,
+      cells: (canvases.current.get(row.key) ?? []).flatMap((canvas) => {
+        const context = canvas?.getContext('2d')
+        return context ? [context.getImageData(0, 0, CELL, CELL)] : []
+      }),
+    }))
+
   /** 書いた字を1枚にまとめる。結果画面で見せるのは全体の1枚でよい */
   const exportImage = (): string => {
     const width = Math.max(...rows.map((row) => row.boxes)) * CELL
@@ -169,7 +182,7 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
         </button>
         <button
           type="button"
-          onClick={() => onSubmit(exportImage())}
+          onClick={() => onSubmit(exportImage(), cellImages())}
           disabled={disabled || !hasStroke}
           className="min-h-14 flex-2 rounded-full bg-bloom-700 px-6 font-bold text-white disabled:bg-bloom-200"
         >

@@ -25,6 +25,13 @@ const MyPage = lazy(() => import('@/pages/MyPage').then((m) => ({ default: m.MyP
 const TrialEndPage = lazy(() =>
   import('@/pages/TrialEndPage').then((m) => ({ default: m.TrialEndPage })),
 )
+/**
+ * 読み取りの試し場。開発中だけ使う。
+ * 本番のビルドからは丸ごと消えるよう、取り込み自体を DEV で切り分ける。
+ */
+const RecognizeLabPage = import.meta.env.DEV
+  ? lazy(() => import('@/pages/RecognizeLabPage').then((m) => ({ default: m.RecognizeLabPage })))
+  : null
 
 /**
  * いまのモードを <html data-audience> に貼る。
@@ -72,6 +79,13 @@ export default function App() {
           <Route path="/match" element={<MatchPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/trial-end" element={<TrialEndPage />} />
+          {/*
+            読み取りの試し場。開発中だけ出す(本番のビルドには入らない)。
+            自動判定を画面へ入れる前に、自分の字でどれだけ当たるかを見るための場所。
+          */}
+          {RecognizeLabPage && (
+            <Route path="/dev/recognize" element={<RecognizeLabPage />} />
+          )}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>

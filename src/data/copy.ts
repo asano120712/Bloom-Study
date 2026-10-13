@@ -70,6 +70,8 @@ export interface Copy {
     pass: string
     /** 読み上げ用。「パス」だけでは何をパスするのか分からない */
     passAria: string
+    /** 書いた字が何に読めたか。読み取れなかったときに見せる */
+    readAs: (text: string) => string
     answerLabel: string
     wrong: string
     right: string
@@ -251,6 +253,7 @@ const ADULT: Copy = {
     progress: (streak, index) => `${streak} れんぞく / ${index} 問め`,
     pass: 'パス',
     passAria: 'この問題をパスする',
+    readAs: (text) => `書いた字は「${text}」に見えました`,
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',
@@ -430,6 +433,7 @@ const KIDS: Copy = {
     progress: (streak, index) => `${streak} れんぞく / ${index} もんめ`,
     pass: 'パス',
     passAria: 'この もんだいを パスする',
+    readAs: (text) => `かいた じは「${text}」に みえたよ`,
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',
