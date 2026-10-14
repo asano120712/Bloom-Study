@@ -594,14 +594,19 @@ function PromptBlock({
         </p>
       )}
       {/*
+        字の大きさは画面の高さでも頭打ちにする。数字キーボードと同じ画面に入れるため、
+        背の低い端末(iPhone SE)では今までの大きさより小さくはせず、背の高い端末でだけ大きくなる。
         わり算の筆算だけ字を小さくする。商・引く段・ひいた数で6段になり、
         他と同じ大きさだと数字キーボードまで入らない。
+        手書きはキーボードが無く、書くのも答えの1行だけなので、わり算も含めて大きく出す。
       */}
       <p
         className={`mt-1 font-bold tracking-wide ${
-          layout === 'division'
-            ? 'text-[min(1.5rem,6.5vw)] leading-7'
-            : 'text-[min(1.875rem,8vw)] leading-9'
+          writing
+            ? 'text-[min(2.5rem,10vw)] leading-[1.2]'
+            : layout === 'division'
+              ? 'text-[min(1.875rem,7.5vw,max(1.5rem,3.2svh))] leading-[1.15]'
+              : 'text-[min(2.25rem,9vw,max(1.875rem,4svh))] leading-[1.2]'
         }`}
       >
         {layout === 'column' ? (
