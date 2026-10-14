@@ -45,6 +45,12 @@ const CELL = '1.15em'
   書く場所は答えの1行だけなので、頭打ちは段のあった頃ほどきつくなくてよい。
 */
 const WRITE_CELL = 'min(2em, 4rem, 11svh)'
+/*
+  かけ算の段があるときは、式2行・段2行・こたえで5行になる。11svh のままだと
+  iPhone SE でボタンが画面から押し出されるので、高さの頭打ちをきつくする
+  (SE で 50px ほど。背の高い端末では 4rem のまま)。
+*/
+const WRITE_CELL_ROWS = 'min(2em, 4rem, 7.5svh)'
 
 /**
  * 筆算(たし算・ひき算・かけ算)。式を縦に積んで、桁をそろえて見せる。
@@ -90,7 +96,9 @@ export function ColumnForm({
       // 読み上げには1行の式を渡す。縦に積んだ数字だけでは式として読まれない
       aria-label={expression}
       className="inline-grid grid-cols-[auto_auto] gap-x-3 text-right font-bold tabular-nums"
-      style={{ '--cell': writing ? WRITE_CELL : CELL } as CSSProperties}
+      style={
+        { '--cell': writing ? (rows.length > 0 ? WRITE_CELL_ROWS : WRITE_CELL) : CELL } as CSSProperties
+      }
     >
       <span aria-hidden="true" />
       <PlainDigits digits={left} />

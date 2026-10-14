@@ -14,6 +14,11 @@ export interface WriteRow {
    * 同じ並びにしておかないと、答えが縦に割れて読めなくなる。
    */
   line?: number
+  /**
+   * 途中の計算(かけ算の段)。書く場所は出すが、まとめた画像には入れない。
+   * 確認や結果の画面で見比べたいのは答えだけで、段まで並ぶと答えが小さく埋もれる。
+   */
+  scratch?: boolean
 }
 
 interface BoxHandwritingProps {
@@ -116,9 +121,11 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
   /** 書いた字を1枚にまとめる。結果画面で見せるのは全体の1枚でよい */
   const exportImage = (): string => {
     // 同じ行のものは横に並べる(たし算の位、わり算の商は1行に並ぶ)
+    // 途中の計算(かけ算の段)は入れない。見せるのは答えだけ
     const lineOf = (row: WriteRow, index: number) => row.line ?? index
-    const lines = [...new Set(rows.map(lineOf))].sort((a, b) => a - b)
-    const rowsIn = (line: number) => rows.filter((row, index) => lineOf(row, index) === line)
+    const shown = rows.flatMap((row, index) => (row.scratch ? [] : [{ row, line: lineOf(row, index) }]))
+    const lines = [...new Set(shown.map((entry) => entry.line))].sort((a, b) => a - b)
+    const rowsIn = (line: number) => shown.filter((entry) => entry.line === line).map((entry) => entry.row)
     const boxesIn = (line: number) => rowsIn(line).reduce((count, row) => count + row.boxes, 0)
 
     const width = Math.max(...lines.map(boxesIn)) * CELL
