@@ -1,5 +1,6 @@
 import levenshtein from 'fast-levenshtein'
 import { levenshteinTolerance } from '@/config'
+import { assemblyOf } from '@/features/assemble'
 import type { JudgeResult, Question } from '@/types'
 
 /**
@@ -51,6 +52,33 @@ export function judgeTyping(question: Question, input: string): JudgeResult {
 }
 
 /**
+ * 数で答えるときの判定。
+ *
+ * 文字列の一致ではなく**数として**見る。全角で打たれた「１２０」、前の 0、
+ * 区切りのカンマ、前後の空白は、どれも同じ数を指しているのに文字としては別物になる。
+ * 正規化(NFKC + 記号の除去)してから数に直して比べる。
+ *
+ * 小数や分数はまだ出題していない。出すときは、ここに
+ * 「0.5 と 1/2 と .5 を同じとみなすか」の判断を足すこと。
+ */
+export function judgeNumber(question: Question, input: string): JudgeResult {
+  const toNumber = (value: string) => {
+    const normalized = value.normalize('NFKC').replace(/[\s,]/g, '')
+    return /^-?\d+(\.\d+)?$/.test(normalized) ? Number(normalized) : null
+  }
+
+  const answered = toNumber(input)
+  const isCorrect =
+    answered !== null && candidatesOf(question).some((candidate) => toNumber(candidate) === answered)
+
+  return {
+    verdict: isCorrect ? 'correct' : 'incorrect',
+    isCorrect,
+    answer: question.answer,
+  }
+}
+
+/**
  * 手書き入力の判定。自動判定は行わず、正解提示後の自己申告をそのまま結果にする。
  */
 export function judgeHandwriting(question: Question, didRecall: boolean): JudgeResult {
@@ -64,13 +92,13 @@ export function judgeHandwriting(question: Question, didRecall: boolean): JudgeR
 /**
  * assemble モードの判定。
  *
- * パーツは順不同なので集合として比べる。並べ方(左右・上下)は問わない。
- * KRADFILE に配置の情報が無く、画数から推測すると同画数の字で誤るため。
+ * 2つの部品を、置いた枠のとおりに照合する(first = 左または上)。
+ * 割れる向きと先にくる部品は assemble の表で持っているので、
+ * 「どちらに置いたか」まで正解に含められる(位 を 立亻 と組んだら不正解)。
  */
-export function judgeParts(question: Question, selected: string[]): JudgeResult {
-  const correct = question.parts ?? []
-  const isCorrect =
-    selected.length === correct.length && correct.every((part) => selected.includes(part))
+export function judgeParts(question: Question, first: string, second: string): JudgeResult {
+  const assembly = assemblyOf(question)
+  const isCorrect = assembly !== null && first === assembly.first && second === assembly.second
 
   return {
     verdict: isCorrect ? 'correct' : 'incorrect',

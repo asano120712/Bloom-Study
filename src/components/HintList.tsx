@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useCopy } from '@/hooks/useAudienceMode'
 import type { HintLayout, HintStep } from '@/types'
 
 interface HintListProps {
@@ -18,6 +19,7 @@ interface HintListProps {
  * 手書き中にスクロールが起きるため。
  */
 export function HintList({ hints, layout, secondsToNext }: HintListProps) {
+  const copy = useCopy()
   const isInline = layout === 'inline'
   const boxRef = useRef<HTMLDivElement>(null)
 
@@ -28,7 +30,9 @@ export function HintList({ hints, layout, secondsToNext }: HintListProps) {
   }, [hints.length])
 
   return (
-    <div className="flex min-h-0 w-full flex-1 flex-col">
+    // select-none: 手書き中になぞった指がここへ入っても、ヒントや残り秒数が
+    // 範囲選択されない(選択の青枠が出ると書きかけの字が見えなくなる)
+    <div className="flex min-h-0 w-full flex-1 flex-col select-none">
       <div
         ref={boxRef}
         aria-live="polite"
@@ -42,10 +46,10 @@ export function HintList({ hints, layout, secondsToNext }: HintListProps) {
         }`}
       >
         {hints.length === 0 ? (
-          <span className="text-sm text-ink-400">まもなくヒントが出ます</span>
+          <span className="text-sm text-ink-400">{copy.hints.waiting}</span>
         ) : isInline ? (
           // 綴りを1文字ずつ連ねる。文字単位で浮かび上がらせたいので span を分ける
-          <p className="text-3xl font-bold tracking-[0.2em] text-bloom-700">
+          <p className="text-[min(1.875rem,8vw)] leading-9 font-bold tracking-[0.2em] text-bloom-700">
             {hints.map((hint) => (
               <span key={hint.index} className="animate-bloom-in inline-block">
                 {hint.text}
@@ -56,14 +60,22 @@ export function HintList({ hints, layout, secondsToNext }: HintListProps) {
           hints.map((hint) => (
             <div key={hint.index} className="animate-bloom-in text-left">
               {hint.caption && <span className="block text-xs text-ink-400">{hint.caption}</span>}
-              <span className="block text-xl tracking-widest text-bloom-700">{hint.text}</span>
+              {/*
+                文字の大きさを画面幅で頭打ちにする(狭い端末ほど小さくなる)。
+                px で決め打ちにすると、端末の幅・フォント・文字サイズの設定しだいで
+                枠から出る。幅に対する割合で上限を掛けておけば、どの幅でも収まる。
+                それでも長い文は折り返す(2行になってよい)。
+              */}
+              <span className="block text-[min(1.25rem,5vw)] leading-7 tracking-wide break-words text-bloom-700">
+                {hint.text}
+              </span>
             </div>
           ))
         )}
       </div>
 
       <p className="mt-2 text-center text-sm text-ink-400">
-        {secondsToNext === null ? 'ヒントはここまで' : `つぎのヒントまで ${secondsToNext} 秒`}
+        {secondsToNext === null ? copy.hints.done : copy.hints.next(secondsToNext)}
       </p>
     </div>
   )

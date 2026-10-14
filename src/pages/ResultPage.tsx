@@ -2,41 +2,53 @@ import { useCallback, useEffect, useRef } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { BloomMark } from '@/components/BloomMark'
+import { ModelAnswer } from '@/components/ModelAnswer'
 import { findGenre } from '@/data/genres'
+import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
 import { useHasFinePointer } from '@/hooks/useHasFinePointer'
 import { canSpeak, speak } from '@/services/speech'
-import type { GenreId, InputMode, JudgeResult } from '@/types'
+import type { Difficulty, GenreId, InputMode, JudgeResult, PromptForm } from '@/types'
+
+/** 結果画面で見せる「自分のこたえ」。入力方法によって形が違う */
+export type ResultSubmission =
+  | { kind: 'text'; text: string }
+  | { kind: 'parts'; parts: string[] }
+  | { kind: 'handwriting'; imageDataUrl: string }
 
 export interface ResultState {
   result: JudgeResult
   prompt: string
+  /** 出題語の読み(漢字ジャンルの熟語など、読みが無いと語が決まらないもの) */
+  promptReading?: string
   genreId: GenreId
   /** 「つぎの問題へ」で同じこたえかたを引き継ぐ */
   inputMode: InputMode
+  /** 「つぎの問題へ」で同じ難易度を引き継ぐ */
+  difficulty: Difficulty
+  /** 「つぎの問題へ」で同じ解く形(筆算 / 1行の式)を引き継ぐ */
+  promptForm?: PromptForm
+  /** 自分が書いた・打ったこたえ。パスしたときは無い */
+  submission?: ResultSubmission
   hasNext: boolean
   currentStreak: number
-}
-
-/** 色だけに頼らず、アイコン+テキストでも正誤が分かるようにする */
-const VERDICT_LABEL: Record<JudgeResult['verdict'], string> = {
-  correct: '⭕️ せいかい',
-  near: '⭕️ おしい! せいかいあつかい',
-  incorrect: '✖️ ざんねん',
-  'self-correct': '⭕️ できた',
-  'self-incorrect': '✖️ ちがった',
 }
 
 export function ResultPage() {
   const { state } = useLocation() as { state: ResultState | null }
   const navigate = useNavigate()
+  const copy = useCopy()
   const hasFinePointer = useHasFinePointer()
+  // 花マークはこども向けのときだけ顔つきにする(おとな向けは今までどおり花びらだけ)
+  const isKids = useAudienceMode() === 'kids'
 
   const genre = state ? findGenre(state.genreId) : undefined
   const speechLang = genre?.speechLang
   const answer = state?.result.answer
   const nextPath = state
     ? state.hasNext
-      ? `/quiz/${state.genreId}?mode=${state.inputMode}`
+      ? `/quiz/${state.genreId}?mode=${state.inputMode}&level=${state.difficulty}${
+          state.promptForm ? `&form=${state.promptForm}` : ''
+        }`
       : '/genres'
     : '/genres'
 
@@ -70,39 +82,52 @@ export function ResultPage() {
 
   if (!state) return <Navigate to="/genres" replace />
 
-  const { result, prompt, hasNext, currentStreak } = state
+  const { result, prompt, promptReading, submission, hasNext, currentStreak } = state
   const canReadAloud = Boolean(speechLang) && canSpeak()
 
   return (
     <AppShell>
       <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-        {result.isCorrect && <BloomMark size={100} />}
+        {result.isCorrect && <BloomMark size={100} face={isKids ? 'joy' : undefined} />}
 
+        {/* パスは正解でも不正解でもないので、赤くも緑にもしない */}
         <p
           className={`text-2xl font-bold ${
-            result.isCorrect ? 'text-bloom-700' : 'text-warm-600'
+            result.verdict === 'passed'
+              ? 'text-ink-600'
+              : result.isCorrect
+                ? 'text-bloom-700'
+                : 'text-warm-600'
           }`}
         >
-          {VERDICT_LABEL[result.verdict]}
+          {copy.verdicts[result.verdict]}
         </p>
 
         <div className="w-full rounded-3xl bg-bloom-50 px-5 py-6">
-          <p className="text-sm text-ink-400">{prompt}</p>
-          <p className="mt-2 text-3xl font-bold text-bloom-700">{result.answer}</p>
+          <p className="text-sm text-ink-400">
+            {prompt}
+            {promptReading && <span className="ml-1">{promptReading}</span>}
+          </p>
+
+          <div className="mt-4">
+            <ModelAnswer answer={result.answer} guide={genre?.answerGuide ?? 'baseline'} />
+          </div>
 
           {canReadAloud && (
             <button
               type="button"
               onClick={readAloud}
               aria-label={`${result.answer} の読み方を聞く`}
-              className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-bloom-200 px-5 text-base font-bold text-bloom-700"
+              className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-bloom-200 px-5 text-base font-bold text-bloom-700"
             >
-              🔊 読み方を聞く
+              {copy.result.listen}
             </button>
           )}
         </div>
 
-        <p className="text-sm text-ink-600">🌱 {currentStreak} 問れんぞく正解中</p>
+        {submission && <SubmissionView submission={submission} labels={copy.result.mine} />}
+
+        <p className="text-sm text-ink-600">{copy.result.streak(currentStreak)}</p>
 
         <div className="flex w-full flex-col gap-3">
           {hasNext ? (
@@ -110,22 +135,66 @@ export function ResultPage() {
               to={nextPath}
               className="flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
             >
-              つぎの問題へ
+              {copy.result.next}
             </Link>
           ) : (
             <Link
               to={nextPath}
               className="flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
             >
-              ジャンルをえらぶ
+              {copy.result.chooseGenre}
             </Link>
           )}
-          {hasFinePointer && <p className="text-center text-xs text-ink-400">Enter でも進めます</p>}
-          <Link to="/mypage" className="text-sm text-ink-400 underline">
-            記録を見る
+          {hasFinePointer && (
+            <p className="text-center text-xs text-ink-400">{copy.result.enterHint}</p>
+          )}
+          <Link to="/mypage" className="flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600">
+            {copy.result.record}
           </Link>
         </div>
       </div>
     </AppShell>
+  )
+}
+
+/** 自分が書いた・打った・組んだこたえを見せる。入力方法ごとに見せ方を変える */
+function SubmissionView({
+  submission,
+  labels,
+}: {
+  submission: ResultSubmission
+  labels: { text: string; parts: string; handwriting: string }
+}) {
+  if (submission.kind === 'handwriting') {
+    return (
+      <div className="w-full">
+        <p className="text-sm text-ink-400">{labels.handwriting}</p>
+        <img
+          src={submission.imageDataUrl}
+          alt="自分が書いたこたえ"
+          className="mx-auto mt-2 w-full max-w-xs rounded-2xl border-2 border-bloom-200 bg-white"
+        />
+      </div>
+    )
+  }
+
+  if (submission.kind === 'parts') {
+    return (
+      <div className="w-full">
+        <p className="text-sm text-ink-400">{labels.parts}</p>
+        <p className="mt-2 text-2xl font-bold text-ink-900">
+          {submission.parts.length ? submission.parts.join(' ＋ ') : '—'}
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full">
+      <p className="text-sm text-ink-400">{labels.text}</p>
+      <p className="mt-2 text-2xl font-bold tracking-wide text-ink-900">
+        {submission.text || '—'}
+      </p>
+    </div>
   )
 }

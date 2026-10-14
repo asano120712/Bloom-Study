@@ -14,8 +14,10 @@ import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 import { readDict } from './dict-cache.ts'
+import { englishLevelOf, type Level } from './difficulty.ts'
 import { ENGLISH_DENYLIST } from './english-denylist.ts'
 import { isUnsuitable } from './unsuitable.ts'
+import { NO_PRIORITY, priorityKey, readWordPriority, type WordPriority } from './word-priority.ts'
 
 // ---------------------------------------------------------------- 辞書側の型
 
@@ -24,7 +26,8 @@ interface Jmdict {
   words: {
     id: string
     kanji: { common: boolean; text: string; tags: string[] }[]
-    kana: { common: boolean; text: string; tags: string[] }[]
+    /** appliesToKanji は「その読みがどの漢字表記のものか」。'*' は全表記 */
+    kana: { common: boolean; text: string; tags: string[]; appliesToKanji?: string[] }[]
     sense: {
       partOfSpeech: string[]
       misc: string[]
@@ -113,11 +116,24 @@ function isSingleWord(value: string): boolean {
   return /^[a-z]+$/.test(value)
 }
 
+/**
+ * 出題の候補。1つの答えに複数の日本語が候補になるので、
+ * 先に全部集めてから「どの語で出すか」を決める。
+ */
+interface Candidate {
+  question: GeneratedQuestion
+  /** JMdict の優先タグ。学習者が知っている語から先に選ぶための順位づけに使う */
+  priority: WordPriority
+}
+
 export interface GeneratedQuestion {
   id: string
   genreId: 'english'
   prompt: string
+  /** 出題語の読み。漢字表記のときだけ添える */
+  promptReading?: string
   answer: string
+  level: Level
   acceptableAnswers?: string[]
 }
 
@@ -127,6 +143,7 @@ function main(): void {
   const jmdict = readDict<Jmdict>('jmdict-eng-common')
   const kanjidic = readDict<Kanjidic2>('kanjidic2-en')
   const ngsl = readDict<Ngsl>('ngsl')
+  const wordPriority = readWordPriority()
 
   /** NGSL の見出し語 → 頻度帯。語族(been, beings 等)は見出し語ではないので入れない */
   const ngslBand = new Map<string, string>()
@@ -148,13 +165,9 @@ function main(): void {
     return true
   }
 
-  const questions: GeneratedQuestion[] = []
+  const candidates: Candidate[] = []
   const skipped: Record<string, number> = {}
   const skip = (reason: string) => { skipped[reason] = (skipped[reason] ?? 0) + 1 }
-
-  /** 同じ出題語・同じ答えを2問作らない */
-  const usedPrompts = new Set<string>()
-  const usedAnswers = new Set<string>()
 
   for (const word of jmdict.words) {
     const sense = word.sense[0]
@@ -171,6 +184,17 @@ function main(): void {
     const prompt = (!usuallyKana && kanji ? kanji.text : kana?.text) ?? ''
     if (!prompt) { skip('常用の表記が無い'); continue }
 
+    // 漢字で出す語には読みを添える。英単語ジャンルは出題語の読み自体は答えでないので、
+    // 読みを出しても答えは漏れない。読めない出題語(椅子・薪炭)を捨てずに救うため。
+    // appliesToKanji を見るのは、表記ごとに読みが分かれる語に別の読みを付けないため。
+    const reading = !KANJI.test(prompt)
+      ? undefined
+      : word.kana.find(
+          (k) =>
+            k.common &&
+            (!k.appliesToKanji || k.appliesToKanji.includes('*') || k.appliesToKanji.includes(prompt)),
+        )?.text
+
     // カタカナ語は英語からの借用がほとんどで、出題語が答えそのものになる(テーブル → table)
     if (KATAKANA.test(prompt)) { skip('カタカナ語(答えが露出する)'); continue }
     if (!isWritableWithinGrades(prompt)) { skip(`配当学年 ${GRADES.join('/')} の外の漢字を含む`); continue }
@@ -178,13 +202,18 @@ function main(): void {
     const glosses = sense.gloss
       .filter((g) => g.lang === 'eng')
       .map((g) => normalizeGloss(g.text))
-      .filter(isSingleWord)
-    if (!glosses.length) { skip('1語の英単語にならない'); continue }
+    if (!glosses.length) { skip('英語の語義が無い'); continue }
 
     // 頻度で訳語を選び直すと訳が壊れる(顔ぶれ → members)。
     // 第一訳をそのまま答えにして、それが NGSL に無ければ問題ごと捨てる。
     // 答えの側で判定する。acceptableAnswers まで見ると、
     // 二次的な訳語を持つだけの普通の語が落ちる(営み → activity / execution)
+    //
+    // 1語かどうかは第一訳だけに掛ける。先に1語の訳へ絞ってから先頭を取ると、
+    // 「最初の1語の訳」が答えになり、その語の主要な意味でない訳で出題してしまう
+    // (急騰 = sudden rise / sharp rise / jump → jump が答えになり、
+    //  本来の 跳ねる は「答えが重複」で落ちる)。
+    if (!isSingleWord(glosses[0])) { skip('第一訳が1語の英単語にならない'); continue }
     if (isUnsuitable(glosses[0])) { skip('学習に出すのに向かない語'); continue }
 
     const answer = glosses[0]
@@ -196,22 +225,52 @@ function main(): void {
     if (!band) { skip('答えがNGSL(学習者向け基本語)に無い'); continue }
 
     if (ENGLISH_DENYLIST.has(prompt)) { skip('レビューで除外(english-denylist.ts)'); continue }
-    if (usedPrompts.has(prompt)) { skip('出題語が重複'); continue }
-    if (usedAnswers.has(answer)) { skip('答えが他の問題と重複'); continue }
-    usedPrompts.add(prompt)
-    usedAnswers.add(answer)
 
-    // 同じ語義の別訳は正解として扱う(思い出 → memories / recollections)
-    const alternatives = [...new Set(glosses.slice(1))]
+    // 同じ語義の別訳は正解として扱う(思い出 → memories / recollections)。
+    // 判定は文字列の一致なので、1語にならない訳は正解にできない
+    const alternatives = [...new Set(glosses.slice(1).filter(isSingleWord))]
 
-    questions.push({
-      id: `en-${word.id}`,
-      genreId: 'english',
-      prompt,
-      answer,
-      ...(alternatives.length ? { acceptableAnswers: alternatives } : {}),
+    candidates.push({
+      priority: wordPriority.get(priorityKey(word.id, prompt)) ?? NO_PRIORITY,
+      question: {
+        id: `en-${word.id}`,
+        genreId: 'english',
+        prompt,
+        ...(reading ? { promptReading: reading } : {}),
+        answer,
+        level: englishLevelOf(band),
+        ...(alternatives.length ? { acceptableAnswers: alternatives } : {}),
+      },
     })
   }
+
+  /**
+   * 同じ答えの問題は作らない(同じ出題語も1度だけ)。どれを残すかは早い者勝ちにせず、
+   * 学習者が知っている語から選ぶ。辞書ID順にすると、辞書に先に載っている語が勝って
+   * 急騰 → jump・減収 → fall のような新聞語彙・専門語で出題してしまう。
+   *
+   * 並べる順は tier(基本語彙かどうか)→ nf(新聞頻度の帯)→ 辞書ID。
+   * tier を先に見るのが要点で、nf だけだと新聞語彙に偏る(word-priority.ts を参照)。
+   */
+  const ranked = [...candidates].sort((a, b) =>
+    a.priority.tier - b.priority.tier ||
+    a.priority.nf - b.priority.nf ||
+    Number(a.question.id.slice('en-'.length)) - Number(b.question.id.slice('en-'.length)),
+  )
+
+  const questions: GeneratedQuestion[] = []
+  const usedPrompts = new Set<string>()
+  const usedAnswers = new Set<string>()
+  for (const { question } of ranked) {
+    if (usedPrompts.has(question.prompt)) { skip('出題語が重複'); continue }
+    if (usedAnswers.has(question.answer)) { skip('答えが他の問題と重複'); continue }
+    usedPrompts.add(question.prompt)
+    usedAnswers.add(question.answer)
+    questions.push(question)
+  }
+
+  // 書き出しは辞書の並び(ID順)に戻す。生成のたびに並びが変わると差分が読めない
+  questions.sort((a, b) => a.id.localeCompare(b.id))
 
   console.log(`JMdict(common)の見出し語: ${jmdict.words.length}語`)
   console.log(`生成できた問題: ${questions.length}問`)

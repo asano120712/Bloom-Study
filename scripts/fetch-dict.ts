@@ -4,6 +4,8 @@
  * - JMdict / KANJIDIC2 / KRADFILE: EDRDG。CC BY-SA 4.0。
  *   jmdict-simplified が JSON 化して毎週リリースしているものを使う。
  * - NGSL: 学習者向けの英語基本語2801語。CC BY-SA 4.0。
+ * - KanjiVG: 字形を「書き順どおりのストローク」で持つデータ。CC BY-SA 3.0。
+ *   なぞりがき(こども向け)のお手本に使う。
  *
  * いずれも README のクレジット記載を消さないこと。
  *
@@ -18,6 +20,17 @@ import { CACHE_DIR } from './dict-cache.ts'
 /** jmdict-simplified のリリースから取るアセット */
 const JMDICT_ASSETS = ['kanjidic2-en', 'kradfile', 'jmdict-eng-common']
 
+/**
+ * JMdict の生XML(EDRDG 配布そのもの)。
+ *
+ * jmdict-simplified の JSON は優先タグ(ichi1 / news1 / nf01…)を common の真偽値へ
+ * 畳んでしまう。同じ答えに候補が複数あるときどの語で出題するかは語の頻度で決めたいので、
+ * タグを持っているこちらも取る(scripts/word-priority.ts が読む)。
+ * EDRDG は https を提供していないため http で取る。開発時にしか使わないデータ。
+ */
+const JMDICT_XML_URL = 'http://ftp.edrdg.org/pub/Nihongo/JMdict_e.gz'
+const JMDICT_XML_FILE = 'JMdict_e.xml'
+
 const RELEASE_API = 'https://api.github.com/repos/scriptin/jmdict-simplified/releases/latest'
 
 /**
@@ -26,6 +39,10 @@ const RELEASE_API = 'https://api.github.com/repos/scriptin/jmdict-simplified/rel
  */
 const NGSL_URL = 'https://raw.githubusercontent.com/lpmi-13/machine_readable_wordlists/master/General/NGSL/NGSL.json'
 const NGSL_FILE = 'ngsl.json'
+
+/** KanjiVG のリリース。1ファイルにまとまった XML を使う */
+const KANJIVG_RELEASE_API = 'https://api.github.com/repos/KanjiVG/kanjivg/releases/latest'
+const KANJIVG_FILE = 'kanjivg.xml'
 
 /** 前方一致で既に展開済みかどうか */
 function alreadyHave(prefix: string): boolean {
@@ -56,6 +73,23 @@ async function fetchJmdict(): Promise<void> {
   }
 }
 
+async function fetchJmdictXml(): Promise<void> {
+  console.log('JMdict(生XML)')
+  if (existsSync(join(CACHE_DIR, JMDICT_XML_FILE))) {
+    console.log('  JMdict_e: すでにある(消せば再取得)')
+    return
+  }
+
+  process.stdout.write('  JMdict_e: 取得中... ')
+  const response = await fetch(JMDICT_XML_URL)
+  if (!response.ok) throw new Error(`JMdict(生XML) の取得に失敗: ${response.status} ${JMDICT_XML_URL}`)
+  const gz = join(CACHE_DIR, `${JMDICT_XML_FILE}.gz`)
+  writeFileSync(gz, Buffer.from(await response.arrayBuffer()))
+  // gunzip は .gz を外した名前で書き出す
+  execFileSync('gunzip', ['-f', gz])
+  console.log('完了')
+}
+
 async function fetchNgsl(): Promise<void> {
   console.log('NGSL')
   if (existsSync(join(CACHE_DIR, NGSL_FILE))) {
@@ -70,6 +104,33 @@ async function fetchNgsl(): Promise<void> {
   console.log('完了')
 }
 
+async function fetchKanjivg(): Promise<void> {
+  console.log('KanjiVG')
+  if (existsSync(join(CACHE_DIR, KANJIVG_FILE))) {
+    console.log('  kanjivg: すでにある(消せば再取得)')
+    return
+  }
+
+  const release = (await (await fetch(KANJIVG_RELEASE_API)).json()) as {
+    tag_name: string
+    assets: { name: string; browser_download_url: string }[]
+  }
+  // 1ファイルにまとまった .xml.gz(zip の中身はファイル分割版なので使わない)
+  const asset = release.assets.find((a) => a.name.endsWith('.xml.gz'))
+  if (!asset) throw new Error(`KanjiVG の xml.gz が ${release.tag_name} に無い`)
+
+  process.stdout.write(`  kanjivg ${release.tag_name}: 取得中... `)
+  const response = await fetch(asset.browser_download_url)
+  if (!response.ok) throw new Error(`KanjiVG の取得に失敗: ${response.status}`)
+  const gz = join(CACHE_DIR, `${KANJIVG_FILE}.gz`)
+  writeFileSync(gz, Buffer.from(await response.arrayBuffer()))
+  execFileSync('gunzip', ['-f', gz])
+  // gunzip は .gz を外した名前で書き出す
+  console.log('完了')
+}
+
 mkdirSync(CACHE_DIR, { recursive: true })
 await fetchJmdict()
+await fetchJmdictXml()
 await fetchNgsl()
+await fetchKanjivg()

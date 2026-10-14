@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useCopy } from '@/hooks/useAudienceMode'
 import { useHasFinePointer } from '@/hooks/useHasFinePointer'
 import { OnScreenKeyboard } from './OnScreenKeyboard'
 
@@ -23,6 +24,7 @@ const MAX_LENGTH = 24
  * 必要なら手動で開けるようにしている。
  */
 export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
+  const copy = useCopy()
   const [value, setValue] = useState('')
   const hasFinePointer = useHasFinePointer()
   /** マウス操作の端末でも、手動で画面キーボードを開けるようにする */
@@ -37,12 +39,15 @@ export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
     setValue((current) => current.slice(0, -1))
   }, [])
 
+  /*
+    打った数をそのまま読んで渡す。
+    setValue の更新関数の中で onSubmit を呼ぶと、React が更新関数を2回走らせたとき
+    (そういう作りになっている)に1回の決定で2回進んでしまう。
+    筆算では、1回のタップで段を2つ進めて、打った数が答えとして判定されていた。
+  */
   const submit = useCallback(() => {
-    setValue((current) => {
-      if (current) onSubmit(current)
-      return current
-    })
-  }, [onSubmit])
+    if (value) onSubmit(value)
+  }, [value, onSubmit])
 
   useEffect(() => {
     if (disabled) return
@@ -77,7 +82,7 @@ export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
           <span className="text-2xl font-bold tracking-[0.15em] text-ink-900">{value}</span>
         ) : (
           <span className="text-base text-ink-400">
-            {showKeyboard ? 'こたえをタップして入力' : 'キーボードで入力'}
+            {showKeyboard ? copy.typing.placeholderTap : copy.typing.placeholderKey}
           </span>
         )}
       </div>
@@ -103,7 +108,7 @@ export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
           <button
             type="button"
             onClick={() => setForceKeyboard(true)}
-            className="text-sm text-ink-400 underline"
+            className="mx-auto flex min-h-11 items-center justify-center rounded-full border-2 border-bloom-200 px-5 text-sm font-bold text-ink-600"
           >
             画面のキーボードを使う
           </button>
