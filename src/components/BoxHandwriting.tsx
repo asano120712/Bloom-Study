@@ -185,7 +185,12 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    /*
+      ボタンの字も含めて、文字として選ばせない。書いている指がマスからはみ出して
+      「けす」「かけた」に乗ると、iPhone がその字を選び始め(長押しの選択・拡大鏡)、
+      書いている途中の線が止まってしまう。
+    */
+    <div className="flex flex-col gap-3 select-none [-webkit-touch-callout:none]">
       {form(cellsOf)}
 
       <div className="flex shrink-0 gap-3 text-base">

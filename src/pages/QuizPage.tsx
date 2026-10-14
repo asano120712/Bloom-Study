@@ -413,9 +413,20 @@ export function QuizPage() {
         {selfReport ? (
           // 読み取れなかった・違って見えたときは、正解を見せて自己申告してもらう
           <div className="flex flex-col gap-4 select-none">
-            <div className="rounded-3xl bg-bloom-50 px-5 py-6 text-center">
+            <div className="rounded-3xl bg-bloom-50 px-5 py-4 text-center">
               <p className="text-sm text-ink-400">{copy.quiz.answerLabel}</p>
-              <p className="mt-2 text-3xl font-bold text-bloom-700">{question.answer}</p>
+              <p className="mt-1 text-3xl font-bold text-bloom-700">{question.answer}</p>
+              {/*
+                自分が書いたものを、こたえと並べて見せる。書いたマスはこの画面では消えるので、
+                見せないと何を書いたかを思い出して比べるしかない。
+                画像の分だけ枠が縦に長くなるので、背の低い端末でヒントの枠に重ならないよう余白を詰めてある。
+              */}
+              <p className="mt-3 text-sm text-ink-400">{copy.result.mine.handwriting}</p>
+              <img
+                src={selfReport.image}
+                alt={copy.result.mine.handwriting}
+                className="mx-auto mt-1 max-h-20 max-w-full rounded-xl border-2 border-bloom-200 bg-white"
+              />
               {/* 何と読めたのかを見せる。書き直すときの手がかりになる */}
               {selfReport.read && (
                 <p className="mt-3 text-sm text-ink-600">{copy.quiz.readAs(selfReport.read)}</p>
@@ -594,14 +605,19 @@ function PromptBlock({
         </p>
       )}
       {/*
+        字の大きさは画面の高さでも頭打ちにする。数字キーボードと同じ画面に入れるため、
+        背の低い端末(iPhone SE)では今までの大きさより小さくはせず、背の高い端末でだけ大きくなる。
         わり算の筆算だけ字を小さくする。商・引く段・ひいた数で6段になり、
         他と同じ大きさだと数字キーボードまで入らない。
+        手書きはキーボードが無く、書くのも答えの1行だけなので、わり算も含めて大きく出す。
       */}
       <p
         className={`mt-1 font-bold tracking-wide ${
-          layout === 'division'
-            ? 'text-[min(1.5rem,6.5vw)] leading-7'
-            : 'text-[min(1.875rem,8vw)] leading-9'
+          writing
+            ? 'text-[min(2.5rem,10vw)] leading-[1.2]'
+            : layout === 'division'
+              ? 'text-[min(1.875rem,7.5vw,max(1.5rem,3.2svh))] leading-[1.15]'
+              : 'text-[min(2.25rem,9vw,max(1.875rem,4svh))] leading-[1.2]'
         }`}
       >
         {layout === 'column' ? (
