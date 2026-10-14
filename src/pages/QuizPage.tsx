@@ -413,9 +413,20 @@ export function QuizPage() {
         {selfReport ? (
           // 読み取れなかった・違って見えたときは、正解を見せて自己申告してもらう
           <div className="flex flex-col gap-4 select-none">
-            <div className="rounded-3xl bg-bloom-50 px-5 py-6 text-center">
+            <div className="rounded-3xl bg-bloom-50 px-5 py-4 text-center">
               <p className="text-sm text-ink-400">{copy.quiz.answerLabel}</p>
-              <p className="mt-2 text-3xl font-bold text-bloom-700">{question.answer}</p>
+              <p className="mt-1 text-3xl font-bold text-bloom-700">{question.answer}</p>
+              {/*
+                自分が書いたものを、こたえと並べて見せる。書いたマスはこの画面では消えるので、
+                見せないと何を書いたかを思い出して比べるしかない。
+                画像の分だけ枠が縦に長くなるので、背の低い端末でヒントの枠に重ならないよう余白を詰めてある。
+              */}
+              <p className="mt-3 text-sm text-ink-400">{copy.result.mine.handwriting}</p>
+              <img
+                src={selfReport.image}
+                alt={copy.result.mine.handwriting}
+                className="mx-auto mt-1 max-h-20 max-w-full rounded-xl border-2 border-bloom-200 bg-white"
+              />
               {/* 何と読めたのかを見せる。書き直すときの手がかりになる */}
               {selfReport.read && (
                 <p className="mt-3 text-sm text-ink-600">{copy.quiz.readAs(selfReport.read)}</p>
