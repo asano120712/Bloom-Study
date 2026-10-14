@@ -68,6 +68,14 @@ interface Resampled {
   height: number
 }
 
+/** Python の round() と同じ丸め(ちょうど半分なら偶数へ)。学習側と1ピクセルもずらさないため */
+function roundHalfEven(value: number): number {
+  const floor = Math.floor(value)
+  const rest = value - floor
+  if (rest !== 0.5) return Math.round(value)
+  return floor % 2 === 0 ? floor : floor + 1
+}
+
 function resample(image: ImageData, box: number): Resampled | null {
   const bounds = boundsOf(image)
   if (!bounds) return null
@@ -78,20 +86,23 @@ function resample(image: ImageData, box: number): Resampled | null {
 
   // 縮めた先の1マスが、元の何ピクセルぶんか
   const step = 1 / scale
-  const drawnWidth = Math.max(1, Math.round(width * scale))
-  const drawnHeight = Math.max(1, Math.round(height * scale))
+  const drawnWidth = Math.max(1, roundHalfEven(width * scale))
+  const drawnHeight = Math.max(1, roundHalfEven(height * scale))
 
+  // 数える範囲は学習側(scripts/train/preprocess.py)の切り出しと1ピクセルまで揃える。
+  // 端の1列を余分に数えるだけで確からしさが 0.70 → 0.94 に動いた字があった
   const cells = new Float32Array(drawnWidth * drawnHeight)
   for (let y = 0; y < drawnHeight; y += 1) {
     for (let x = 0; x < drawnWidth; x += 1) {
-      const fromX = bounds.left + x * step
-      const fromY = bounds.top + y * step
+      const fromX = x * step
+      const fromY = y * step
       let ink = 0
       let seen = 0
-      for (let sy = Math.floor(fromY); sy < Math.min(image.height, fromY + step); sy += 1) {
-        for (let sx = Math.floor(fromX); sx < Math.min(image.width, fromX + step); sx += 1) {
+      for (let sy = Math.floor(fromY); sy < Math.floor(Math.min(height, fromY + step)); sy += 1) {
+        for (let sx = Math.floor(fromX); sx < Math.floor(Math.min(width, fromX + step)); sx += 1) {
           seen += 1
-          if (image.data[(sy * image.width + sx) * 4 + 3] >= INK_ALPHA) ink += 1
+          const at = ((bounds.top + sy) * image.width + bounds.left + sx) * 4 + 3
+          if (image.data[at] >= INK_ALPHA) ink += 1
         }
       }
       cells[y * drawnWidth + x] = seen === 0 ? 0 : ink / seen
@@ -123,8 +134,8 @@ function offsetOf(sheet: Resampled, size: number, threshold: number): { x: numbe
   if (weight === 0) return null
 
   return {
-    x: Math.round(size / 2 - sumX / weight),
-    y: Math.round(size / 2 - sumY / weight),
+    x: roundHalfEven(size / 2 - sumX / weight),
+    y: roundHalfEven(size / 2 - sumY / weight),
   }
 }
 
