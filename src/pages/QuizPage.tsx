@@ -279,19 +279,30 @@ export function QuizPage() {
   }
 
   /**
-   * 手書きで書く行。
+   * 手書きで書くマス。
    *
-   * 段のある筆算は、全部の段のマスを出す。答えだけ書かせると、部分積や引く段を
-   * 紙に書く手順が抜けてしまう。どの段から書くかは紙と同じで自由。
+   * **答えのところだけ**(たし算・ひき算は位ごと、わり算は商、かけ算はこたえ)。
+   * 部分積や引く段までマスにすると、答えを書く場所が埋もれるうえ、マスが縦に
+   * 3段・4段と積もって背の低い端末ではみ出す。途中の計算は紙の余白と同じで、
+   * 書く場所をこちらで決めない(読み取りもしないので、見る相手もいない)。
+   *
    * 手書きは字を読み取らないので、合っているかはここでは見ない(自己申告のまま)。
    */
-  const writeScript =
+  const answerSteps =
     inputMode === 'handwriting' && layout
-      ? columnScript(question.prompt)
+      ? columnScript(question.prompt).filter((entry) => entry.counts)
       : []
+  /*
+    並べる順は**画面と同じ左から右**。たし算・ひき算の位は一のくらいから作られるので
+    向きを変える。まとめた画像もこの順で並ぶため、ここでそろえておく。
+  */
+  const writeScript =
+    answerSteps[0]?.slot.kind === 'place' ? [...answerSteps].reverse() : answerSteps
   const writeRows = writeScript.map((entry, index) => ({
     key: `${question.id}-${index}`,
     boxes: entry.width,
+    // 答えは横に1行。わり算の商も、位ごとの答えも同じ行に並ぶ
+    line: 0,
   }))
 
   /**

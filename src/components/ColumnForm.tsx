@@ -35,14 +35,15 @@ type CellTone = 'typing' | 'done' | 'wrong'
 const CELL = '1.15em'
 /*
   手書きのマスは字の大きさの2倍ほしいが、**上限も要る**。
-  段のある筆算は縦に長く(わり算は9マス)、字に比例させたままだと
-  背の低い端末で画面からはみ出し、書いている最中に画面が引っ張られる。
+  字に比例させたままだと、背の低い端末で画面からはみ出し、
+  書いている最中に画面が引っ張られる。
 
   2.75rem(44px)は、指で押す・書くときの下限として他の場所でも使っている大きさ。
   それでも入らない背の低い画面のために、画面の高さにも頭打ちを掛ける。
   svh(ブラウザのバーが出ている状態の高さ)で測るのは、バーのぶんを見込むため。
+  書く場所は答えの1行だけなので、頭打ちは段のあった頃ほどきつくなくてよい。
 */
-const WRITE_CELL = 'min(2em, 2.75rem, 6svh)'
+const WRITE_CELL = 'min(2em, 2.75rem, 10svh)'
 
 /**
  * 筆算(たし算・ひき算・かけ算)。式を縦に積んで、桁をそろえて見せる。
@@ -73,7 +74,13 @@ export function ColumnForm({
 
   const { left, operator, right } = parsed
   const rows = cells.filter((cell) => cell.slot.kind === 'row')
-  const places = cells.filter((cell) => cell.slot.kind === 'place')
+  /*
+    位のマスは**位の大きいほうから左へ**並べる。渡された順ではなく位で並べるのは、
+    打つとき(一のくらいから)と手書き(左から書く)で渡す順が違うため。
+  */
+  const places = cells
+    .flatMap((cell) => (cell.slot.kind === 'place' ? [{ cell, place: cell.slot.place }] : []))
+    .sort((a, b) => b.place - a.place)
   const answer = cells.find((cell) => cell.slot.kind === 'answer')
 
   return (
@@ -107,16 +114,13 @@ export function ColumnForm({
         <span aria-hidden="true" className="col-span-2 mt-1 border-t-2 border-ink-900" />
       )}
 
-      {/*
-        たし算・ひき算は一のくらいから打つので、右から左へ埋まっていく。
-        打ち終わった位は右に残したまま、いま打っている位をその左に置く。
-      */}
+      {/* たし算・ひき算の答え。位の大きいほうから左へ並ぶ */}
       {(places.length > 0 || answer) && (
         <span
           aria-hidden="true"
           className={`col-span-2 flex justify-end gap-1 ${writing ? 'mt-1' : 'mt-2'}`}
         >
-          {[...places].reverse().map((cell, index) => (
+          {places.map(({ cell }, index) => (
             <Cell key={index} cell={cell} />
           ))}
           {answer && <Cell cell={answer} />}
