@@ -281,16 +281,19 @@ export function QuizPage() {
   /**
    * 手書きで書くマス。
    *
-   * **答えのところだけ**(たし算・ひき算は位ごと、わり算は商、かけ算はこたえ)。
-   * 部分積や引く段までマスにすると、答えを書く場所が埋もれるうえ、マスが縦に
-   * 3段・4段と積もって背の低い端末ではみ出す。途中の計算は紙の余白と同じで、
-   * 書く場所をこちらで決めない(読み取るのは答えのマスだけ)。
+   * 答えのところ(たし算・ひき算は位ごと、わり算は商、かけ算はこたえ)に加えて、
+   * **かけ算だけは2つの段(部分積)のマスも出す。** 2けたのかけ算を答えだけで書かせると
+   * 暗算に近くなって難しい。紙の筆算と同じく、段を2つ計算してから答えを書く形にする。
+   * わり算の引く段までは出さない(縦に6段積もり、背の低い端末ではみ出す)。
    *
    * 書いた字は最後にまとめて読み取って判定する(judgeWritten)。
+   * 読んで点数にするのは答えのマスだけで、段は紙の途中計算と同じく見ない。
    */
   const answerSteps =
     inputMode === 'handwriting' && layout
-      ? columnScript(question.prompt).filter((entry) => entry.counts)
+      ? columnScript(question.prompt).filter(
+          (entry) => entry.counts || entry.slot.kind === 'row',
+        )
       : []
   /*
     並べる順は**画面と同じ左から右**。たし算・ひき算の位は一のくらいから作られるので
@@ -298,11 +301,14 @@ export function QuizPage() {
   */
   const writeScript =
     answerSteps[0]?.slot.kind === 'place' ? [...answerSteps].reverse() : answerSteps
+  const rowCount = writeScript.filter((entry) => entry.slot.kind === 'row').length
   const writeRows = writeScript.map((entry, index) => ({
     key: `${question.id}-${index}`,
     boxes: entry.width,
-    // 答えは横に1行。わり算の商も、位ごとの答えも同じ行に並ぶ
-    line: 0,
+    // かけ算の段は1段ずつ別の行、答えはその下。わり算の商も、位ごとの答えも横に1行で並ぶ
+    line: entry.slot.kind === 'row' ? index : rowCount,
+    // 段は途中の計算。確認や結果の画面に出す画像には入れず、答えだけを見せる
+    scratch: entry.slot.kind === 'row',
   }))
 
   /**
