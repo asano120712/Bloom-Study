@@ -12,6 +12,7 @@ import { TypingInput } from '@/components/TypingInput'
 import { answerChoicesOf, findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
 import { answerFromSteps, columnScript, type ColumnStep } from '@/features/math'
+import { readCells } from '@/features/recognize'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeNumber, judgeParts, judgeTyping } from '@/features/judge'
 import { useCopy } from '@/hooks/useAudienceMode'
@@ -30,6 +31,14 @@ import {
 } from '@/types'
 import { shuffleWithSeed } from '@/utils/shuffle'
 import type { ResultState, ResultSubmission } from './ResultPage'
+
+/**
+ * 自動で「せいかい」にしてよい自信の下限。
+ *
+ * ここを下回ったら、読み取った数を見せて本人に決めてもらう。
+ * 実機で測ったところ、きれいに書けていれば 0.9 を超える。
+ */
+const READ_CONFIDENCE = 0.9
 
 export function QuizPage() {
   const { genreId } = useParams<{ genreId: string }>()
@@ -70,7 +79,12 @@ export function QuizPage() {
    * 手書きモードで「かけた」を押した後、自己申告を待っている状態。
    * 書いた字は結果画面で見せるため、キャンバスの画像も一緒に抱えておく。
    */
-  const [selfReport, setSelfReport] = useState<{ hintsUsed: number; image: string } | null>(null)
+  const [selfReport, setSelfReport] = useState<{
+    hintsUsed: number
+    image: string
+    /** 読み取れた数。読み取りに回さなかった(漢字・英単語の)ときは無い */
+    read?: string
+  } | null>(null)
   /**
    * 筆算の途中の段(部分積)のうち、打ち終わったもの。
    * 間違えた段は正しい数に直して残す。そのまま進ませると、最後の答えまで必ず合わなくなる。
@@ -270,9 +284,9 @@ export function QuizPage() {
    * **答えのところだけ**(たし算・ひき算は位ごと、わり算は商、かけ算はこたえ)。
    * 部分積や引く段までマスにすると、答えを書く場所が埋もれるうえ、マスが縦に
    * 3段・4段と積もって背の低い端末ではみ出す。途中の計算は紙の余白と同じで、
-   * 書く場所をこちらで決めない(読み取りもしないので、見る相手もいない)。
+   * 書く場所をこちらで決めない(読み取るのは答えのマスだけ)。
    *
-   * 手書きは字を読み取らないので、合っているかはここでは見ない(自己申告のまま)。
+   * 書いた字は最後にまとめて読み取って判定する(judgeWritten)。
    */
   const answerSteps =
     inputMode === 'handwriting' && layout
@@ -290,6 +304,44 @@ export function QuizPage() {
     // 答えは横に1行。わり算の商も、位ごとの答えも同じ行に並ぶ
     line: 0,
   }))
+
+  /**
+   * 書いた数を読み取って判定する(計算の筆算だけ)。
+   *
+   * **合っているときだけ自動で決める。** 読み取りは完全ではないので、
+   * 違って見えたときに「ちがった」と決めつけると、正しく書けたのに
+   * 間違い扱いになる。そのときは読み取った数を見せて、本人に決めてもらう
+   * (これまでの自己申告と同じ画面)。
+   *
+   * 自信(いちばん怪しいマスの値)が足りないときも、同じく本人に預ける。
+   */
+  const judgeWritten = async (
+    image: string,
+    rows: { key: string; cells: ImageData[] }[],
+  ): Promise<void> => {
+    const hintsUsed = revealedCount
+
+    // 答えになる手(位ごとの数・商・こたえ)だけを読む。途中の段は点数に入れない
+    const parts = await Promise.all(
+      writeScript.map(async (entry, index) =>
+        entry.counts ? await readCells(rows[index]?.cells ?? []) : { text: '', confidence: 1 },
+      ),
+    )
+    // マスは画面と同じ左から右に並べ直してあるので、読んだ字をそのままつなげば答えになる。
+    // answerFromSteps は打つ順(一のくらいから)を前提に並べ替えるため、ここでは使わない
+    const answered = parts.map((part) => part.text).join('')
+    const confidence = parts
+      .filter((_, index) => writeScript[index].counts)
+      .reduce((lowest, part) => Math.min(lowest, part.confidence), 1)
+
+    const judged = judgeNumber(question, answered)
+    if (judged.isCorrect && confidence >= READ_CONFIDENCE) {
+      finish(judged, hintsUsed, { kind: 'handwriting', imageDataUrl: image })
+      return
+    }
+
+    setSelfReport({ hintsUsed, image, read: answered })
+  }
 
   /** 計算は「ヒント → 式 → 答え」の順に置く */
   const showsPromptBelow = genre.id === 'math'
@@ -359,11 +411,15 @@ export function QuizPage() {
         className={`mt-auto flex min-h-0 flex-2 flex-col pt-4 ${writesInBoxes ? 'justify-center' : 'justify-end'}`}
       >
         {selfReport ? (
-          // 手書きは自動判定しない。正解を提示したうえで自己申告してもらう
+          // 読み取れなかった・違って見えたときは、正解を見せて自己申告してもらう
           <div className="flex flex-col gap-4 select-none">
             <div className="rounded-3xl bg-bloom-50 px-5 py-6 text-center">
               <p className="text-sm text-ink-400">{copy.quiz.answerLabel}</p>
               <p className="mt-2 text-3xl font-bold text-bloom-700">{question.answer}</p>
+              {/* 何と読めたのかを見せる。書き直すときの手がかりになる */}
+              {selfReport.read && (
+                <p className="mt-3 text-sm text-ink-600">{copy.quiz.readAs(selfReport.read)}</p>
+              )}
             </div>
             <div className="flex gap-3">
               <button
@@ -470,7 +526,7 @@ export function QuizPage() {
                     }))}
                   />
                 )}
-                onSubmit={(image) => setSelfReport({ hintsUsed: revealedCount, image })}
+                onSubmit={(image, rows) => void judgeWritten(image, rows)}
               />
             )}
             {inputMode === 'handwriting' && !writesInBoxes && (
