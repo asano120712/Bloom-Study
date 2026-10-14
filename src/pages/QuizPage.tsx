@@ -284,9 +284,9 @@ export function QuizPage() {
    * **答えのところだけ**(たし算・ひき算は位ごと、わり算は商、かけ算はこたえ)。
    * 部分積や引く段までマスにすると、答えを書く場所が埋もれるうえ、マスが縦に
    * 3段・4段と積もって背の低い端末ではみ出す。途中の計算は紙の余白と同じで、
-   * 書く場所をこちらで決めない(読み取りもしないので、見る相手もいない)。
+   * 書く場所をこちらで決めない(読み取るのは答えのマスだけ)。
    *
-   * 手書きは字を読み取らないので、合っているかはここでは見ない(自己申告のまま)。
+   * 書いた字は最後にまとめて読み取って判定する(judgeWritten)。
    */
   const answerSteps =
     inputMode === 'handwriting' && layout
@@ -327,10 +327,9 @@ export function QuizPage() {
         entry.counts ? await readCells(rows[index]?.cells ?? []) : { text: '', confidence: 1 },
       ),
     )
-    const answered = answerFromSteps(
-      writeScript,
-      parts.map((part) => part.text),
-    )
+    // マスは画面と同じ左から右に並べ直してあるので、読んだ字をそのままつなげば答えになる。
+    // answerFromSteps は打つ順(一のくらいから)を前提に並べ替えるため、ここでは使わない
+    const answered = parts.map((part) => part.text).join('')
     const confidence = parts
       .filter((_, index) => writeScript[index].counts)
       .reduce((lowest, part) => Math.min(lowest, part.confidence), 1)
