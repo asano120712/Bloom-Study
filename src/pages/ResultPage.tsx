@@ -7,7 +7,8 @@ import { findGenre } from '@/data/genres'
 import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
 import { useHasFinePointer } from '@/hooks/useHasFinePointer'
 import { canSpeak, speak } from '@/services/speech'
-import type { Difficulty, GenreId, InputMode, JudgeResult, PromptForm } from '@/types'
+import type { Difficulty, GenreId, InputMode, JudgeResult, MathTopic, PromptForm } from '@/types'
+import { quizPathOf } from '@/utils/quizPath'
 
 /** 結果画面で見せる「自分のこたえ」。入力方法によって形が違う */
 export type ResultSubmission =
@@ -27,6 +28,8 @@ export interface ResultState {
   difficulty: Difficulty
   /** 「つぎの問題へ」で同じ解く形(筆算 / 1行の式)を引き継ぐ */
   promptForm?: PromptForm
+  /** 「つぎの問題へ」で同じ計算の種類を引き継ぐ。無ければランダム */
+  topic?: MathTopic
   /** 自分が書いた・打ったこたえ。パスしたときは無い */
   submission?: ResultSubmission
   hasNext: boolean
@@ -46,9 +49,12 @@ export function ResultPage() {
   const answer = state?.result.answer
   const nextPath = state
     ? state.hasNext
-      ? `/quiz/${state.genreId}?mode=${state.inputMode}&level=${state.difficulty}${
-          state.promptForm ? `&form=${state.promptForm}` : ''
-        }`
+      ? quizPathOf(state.genreId, {
+          inputMode: state.inputMode,
+          difficulty: state.difficulty,
+          form: state.promptForm,
+          topic: state.topic,
+        })
       : '/genres'
     : '/genres'
 

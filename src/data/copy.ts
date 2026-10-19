@@ -1,7 +1,7 @@
 import type { ActivityId } from '@/data/activities'
 import type { AnswerChoiceId } from '@/data/genres'
 import type { AssembleLayout } from '@/features/assemble'
-import type { AudienceMode, Difficulty, GenreId, JudgeVerdict, PromptForm } from '@/types'
+import type { AudienceMode, Difficulty, GenreId, JudgeVerdict, MathTopic, PromptForm } from '@/types'
 
 /**
  * 画面に出す言葉を、モード(おとな / こども)ごとにここへ集める。
@@ -56,6 +56,15 @@ export interface Copy {
     /** 筆算か1行の式かを選ぶ見出し(計算だけ) */
     chooseForm: string
     forms: Record<PromptForm, { label: string; note: string }>
+    /** 計算の種類を選ぶ見出し(計算だけ) */
+    chooseTopic: string
+    topics: Record<MathTopic, string>
+    /** 種類で絞らず、その学年の問題をまぜて出す */
+    mixedTopic: { label: string; note: string }
+    /** 種類の下に添える式の例 */
+    topicExample: (expression: string) => string
+    /** 解く形から、計算の種類へ戻る */
+    backToTopic: string
     /** 解く形から、こたえかたへ戻る */
     backToMode: string
     /** こたえかたを選ぶ画面に出す「いま選んでいるなんいど」 */
@@ -84,7 +93,13 @@ export interface Copy {
     slot: Record<AssembleLayout, { first: string; second: string }>
     submit: string
   }
-  handwriting: { clear: string; done: string; boxLabel: (place: number) => string }
+  handwriting: {
+    clear: string
+    /** 消すモードのあいだの「けす」ボタン。押すと書くモードへ戻る(SE の幅で折り返さない短さに) */
+    stopErasing: string
+    done: string
+    boxLabel: (place: number) => string
+  }
   typing: { placeholderTap: string; placeholderKey: string }
   /** あそび(なぞりがき・おなじものさがし)で共通の言葉 */
   play: { allDone: string; again: string; other: string }
@@ -245,6 +260,11 @@ const ADULT: Copy = {
       plain: { label: '1行の式で解く', note: '式を見て、答えだけ打つ' },
     },
     levelIs: (level) => `なんいど：${level}`,
+    chooseTopic: 'どの計算をする?',
+    topics: { add: 'たし算', sub: 'ひき算', mul: 'かけ算', div: 'わり算' },
+    mixedTopic: { label: 'ランダム', note: 'ぜんぶの種類をまぜて出す' },
+    topicExample: (expression) => `れい ${expression}`,
+    backToTopic: '計算の種類にもどる',
     backToMode: 'こたえかたにもどる',
     backToDifficulty: 'なんいどにもどる',
     close: 'もどる',
@@ -276,7 +296,12 @@ const ADULT: Copy = {
     },
     submit: 'こたえあわせ',
   },
-  handwriting: { clear: 'けす', done: 'かけた', boxLabel: (place) => `こたえの ${place} マスめ` },
+  handwriting: {
+    clear: 'けす',
+    stopErasing: 'かく',
+    done: 'かけた',
+    boxLabel: (place) => `こたえの ${place} マスめ`,
+  },
   typing: { placeholderTap: 'こたえをタップして入力', placeholderKey: 'キーボードで入力' },
   play: { allDone: 'ぜんぶ できた!', again: 'もういちど', other: 'ほかのあそび' },
   number: {
@@ -425,6 +450,11 @@ const KIDS: Copy = {
       plain: { label: '1ぎょうの しきで とく', note: 'しきを みて、こたえだけ' },
     },
     levelIs: (level) => `むずかしさ：${level}`,
+    chooseTopic: 'どの けいさんを する？',
+    topics: { add: 'たしざん', sub: 'ひきざん', mul: 'かけざん', div: 'わりざん' },
+    mixedTopic: { label: 'おまかせ', note: 'いろいろな けいさんが でるよ' },
+    topicExample: (expression) => `れい ${expression}`,
+    backToTopic: 'けいさんの しゅるいに もどる',
     backToMode: 'こたえかたに もどる',
     backToDifficulty: 'むずかしさに もどる',
     close: 'もどる',
@@ -456,7 +486,12 @@ const KIDS: Copy = {
     },
     submit: 'こたえあわせ',
   },
-  handwriting: { clear: 'けす', done: 'かけた', boxLabel: (place) => `こたえの ${place} マスめ` },
+  handwriting: {
+    clear: 'けす',
+    stopErasing: 'かく',
+    done: 'かけた',
+    boxLabel: (place) => `こたえの ${place} マスめ`,
+  },
   typing: { placeholderTap: 'こたえを タップして うとう', placeholderKey: 'キーボードで うとう' },
   play: { allDone: 'ぜんぶ できた！', again: 'もういちど', other: 'ほかの あそび' },
   number: {

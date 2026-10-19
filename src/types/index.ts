@@ -38,6 +38,20 @@ export function isDifficulty(value: string | null | undefined): value is Difficu
 }
 
 /**
+ * 計算の種類。計算ジャンルの問題だけが持つ。
+ *
+ * 苦手な計算だけを続けて練習できるよう、出題の前に選ばせる。
+ * 何も選ばない(ランダム)ときは種類で絞らず、その学年の問題をまぜて出す。
+ */
+export type MathTopic = 'add' | 'sub' | 'mul' | 'div'
+
+const MATH_TOPICS: readonly MathTopic[] = ['add', 'sub', 'mul', 'div']
+
+export function isMathTopic(value: string | null | undefined): value is MathTopic {
+  return MATH_TOPICS.includes(value as MathTopic)
+}
+
+/**
  * 答えの入力方法。
  * assemble は2つの部品を1つのマス(左右または上下に割れる)へ組んで漢字を作る方式。
  * 部品は思い出したと申告するまで見せない
@@ -99,6 +113,8 @@ export interface Question {
    * 出題側(quizSource)は未設定を「ふつう」として扱う。
    */
   level?: Difficulty
+  /** 計算の種類(計算ジャンルだけ)。出題の前に選んだ種類で絞り込む */
+  topic?: MathTopic
   /** 正解と同等に扱う表記ゆれ(送りがな違い、別綴りなど) */
   acceptableAnswers?: string[]
   /**

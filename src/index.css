@@ -189,6 +189,18 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
+/*
+ * 手書きで答えているあいだ(QuizPage が付け外しする)。
+ * 書く途中で指が止まったのを長押しと受け取られ、字の選択やリンクのメニューが
+ * 出ないようにする。* まで掛けるのは、user-select が子へ継がれないブラウザがあるため。
+ */
+.no-press-menu,
+.no-press-menu * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

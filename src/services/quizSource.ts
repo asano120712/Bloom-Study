@@ -1,6 +1,6 @@
 import { questionsOf } from '@/data/questions'
 import { assemblyOf } from '@/features/assemble'
-import type { Difficulty, GenreId, InputMode, Question } from '@/types'
+import type { Difficulty, GenreId, InputMode, MathTopic, Question } from '@/types'
 
 /**
  * 1回分の出題セット。
@@ -25,6 +25,8 @@ export interface QuizSource {
     genreId: GenreId,
     inputMode: InputMode,
     difficulty: Difficulty,
+    /** 計算の種類。無ければ種類で絞らない(ランダム) */
+    topic?: MathTopic,
   ): Promise<QuizSession>
 }
 
@@ -52,8 +54,13 @@ export function canServe(
   question: Question,
   inputMode: InputMode,
   difficulty: Difficulty,
+  topic?: MathTopic,
 ): boolean {
-  return isAnswerable(question, inputMode) && matchesDifficulty(question, difficulty)
+  return (
+    isAnswerable(question, inputMode) &&
+    matchesDifficulty(question, difficulty) &&
+    (topic === undefined || question.topic === topic)
+  )
 }
 
 /**
@@ -82,11 +89,11 @@ function shuffle<T>(items: T[]): T[] {
  * 画面は返ってきた数がすべてだとして扱うので、どちらでも QuizPage は変わらない。
  */
 export const localQuizSource: QuizSource = {
-  async startSession(genreId, inputMode, difficulty) {
+  async startSession(genreId, inputMode, difficulty, topic) {
     return {
       genreId,
       questions: shuffle(
-        (await questionsOf(genreId)).filter((q) => canServe(q, inputMode, difficulty)),
+        (await questionsOf(genreId)).filter((q) => canServe(q, inputMode, difficulty, topic)),
       ),
     }
   },

@@ -7,7 +7,8 @@ import { InputModeSheet } from '@/components/InputModeSheet'
 import { activitiesFor, type Activity, type ActivityId } from '@/data/activities'
 import { findGenre, type AnswerChoice } from '@/data/genres'
 import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
-import { TOP_PATH, type Difficulty, type Genre, type PromptForm } from '@/types'
+import { TOP_PATH, type Difficulty, type Genre, type MathTopic, type PromptForm } from '@/types'
+import { quizPathOf } from '@/utils/quizPath'
 
 export function GenreSelectPage() {
   const navigate = useNavigate()
@@ -18,7 +19,12 @@ export function GenreSelectPage() {
   /** あそびかたを開いているあそび。null なら閉じている */
   const [howTo, setHowTo] = useState<ActivityId | null>(null)
 
-  const start = (difficulty: Difficulty, choice: AnswerChoice, form?: PromptForm) => {
+  const start = (
+    difficulty: Difficulty,
+    choice: AnswerChoice,
+    form?: PromptForm,
+    topic?: MathTopic,
+  ) => {
     if (!pendingGenre) return
     // 別画面のあそび(小1・小2の漢字)は、そのまま行き先へ
     if (choice.path) {
@@ -26,8 +32,8 @@ export function GenreSelectPage() {
       return
     }
     // 再読み込みや結果画面からの戻りでも保てるよう、選んだものは URL に持たせる
-    const query = `mode=${choice.inputMode}&level=${difficulty}${form ? `&form=${form}` : ''}`
-    navigate(`/quiz/${pendingGenre.id}?${query}`)
+    if (!choice.inputMode) return
+    navigate(quizPathOf(pendingGenre.id, { inputMode: choice.inputMode, difficulty, form, topic }))
   }
 
   /**

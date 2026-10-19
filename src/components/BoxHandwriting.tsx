@@ -1,4 +1,11 @@
-import { useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import {
+  useLayoutEffect,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+  type ReactNode,
+  type RefObject,
+} from 'react'
 import { useCopy } from '@/hooks/useAudienceMode'
 
 /** 書く場所1つぶん。筆算の位・商・こたえにそのまま対応する */
@@ -40,28 +47,92 @@ const STROKE_COLOR = '#23292B'
 const CELL = 120
 
 /**
+ * マスの大きさの下限と上限(px)。
+ * 下限は指で1字書ける最小。上限は、タブレットのような広い画面でマスだけ大きくなりすぎないため。
+ */
+const FIT_MIN = 32
+const FIT_MAX = 128
+
+/**
+ * マスを、書く場所に入る最大の大きさにする。
+ *
+ * 筆算の高さと幅は、マスの大きさにほぼ比例する(字の大きさもマスに合わせてあるため)。
+ * 残りは線やすきまのような決まった大きさなので、**2つの大きさで実際に置いて測り**、
+ * 「大きさ = 傾き × マス + 決まった分」を出してから、書く場所に収まる最大のマスを逆算する。
+ * 式の行数・途中の段の数・画面の大きさで答えが変わるので、決め打ちの上限より無駄が出ない。
+ *
+ * 書く場所の大きさが変わったら(画面を回したとき、ブラウザのバーが出入りしたとき)測り直す。
+ */
+function useFitCell(area: RefObject<HTMLDivElement | null>) {
+  useLayoutEffect(() => {
+    const box = area.current
+    if (!box) return
+
+    const fit = () => {
+      const content = box.firstElementChild
+      const widest = box.querySelector('[data-fit-width]')
+      if (!(content instanceof HTMLElement) || !(widest instanceof HTMLElement)) return
+
+      const at = (size: number) => {
+        box.style.setProperty('--fit-cell', `${size}px`)
+        return {
+          height: content.getBoundingClientRect().height,
+          width: widest.getBoundingClientRect().width,
+        }
+      }
+      const [small, large] = [40, 80]
+      const a = at(small)
+      const b = at(large)
+      const slope = { height: (b.height - a.height) / (large - small), width: (b.width - a.width) / (large - small) }
+      const fixed = { height: a.height - slope.height * small, width: a.width - slope.width * small }
+
+      const byHeight = (box.clientHeight - fixed.height) / slope.height
+      const byWidth = (box.clientWidth - fixed.width) / slope.width
+      const size = Math.floor(Math.min(byHeight, byWidth, FIT_MAX))
+      box.style.setProperty('--fit-cell', `${Math.max(FIT_MIN, size)}px`)
+    }
+
+    fit()
+    const observer = new ResizeObserver(fit)
+    observer.observe(box)
+    return () => observer.disconnect()
+  }, [area])
+}
+
+/**
  * マスに1字ずつ書く手書き入力。
  *
  * 大きなキャンバス1枚ではなく、筆算の答えを書く場所と同じ形のマスに書く。
  * 紙の筆算と同じで、位をそろえて1桁ずつ書く練習になる。
  *
- * **出すのは答えを書くマスだけ。** かけ算の部分積やわり算の引く段までマスにすると、
- * 答えを書く場所が埋もれて分からなくなり、縦にマスが3段・4段と積もって
- * 背の低い端末では画面からはみ出す。途中の計算は紙の余白と同じで、
- * 書く場所をこちらで決めない(読み取りもしないので、見る相手もいない)。
+ * どこにマスを出すか(答えだけか、途中の計算もか)は呼ぶ側が決める。
+ * 途中の計算のマスは `scratch` を付けて渡すと、まとめた画像に入らない。
  *
  * マスの数は**答えが入りうる最大の桁数**で、答えの桁数ではない
  * (95 × 8 なら3マス。60 のような2桁の答えなら、右に寄せて2マス使う)。
  *
- * 判定は手書きと同じく自己申告。字の読み取りはしない。
+ * 読み取りと判定は呼ぶ側(QuizPage の judgeWritten)が、渡したマスの絵で行う。
  */
 export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHandwritingProps) {
   const copy = useCopy()
   /** 行の名前 → その行のマス。打ち終わった行の字も、ここに残って見えている */
   const canvases = useRef(new Map<string, (HTMLCanvasElement | null)[]>())
   const drawingRef = useRef(false)
+  /** 何か書いてあるマス。1マスずつ消せるので、どこが空になったかまで持つ */
+  const written = useRef(new Set<HTMLCanvasElement>())
   /** 何か書いたか。書く前に「かけた」を押させない */
   const [hasStroke, setHasStroke] = useState(false)
+  /**
+   * 消すモード。このあいだはマスをタップすると、そのマスだけが空になる。
+   *
+   * 全部まとめて消すと、合っていた桁まで書き直しになる。紙で消しゴムを当てるのと同じく
+   * 消したいマスだけを選ばせる。書くのと同じ指の動きで消すと、書き始めと区別できないので
+   * モードを分けた。
+   */
+  const [erasing, setErasing] = useState(false)
+  /** 筆算を置く場所。ここに入る最大の大きさにマスを広げる */
+  const area = useRef<HTMLDivElement>(null)
+  useFitCell(area)
 
   /** 画面の座標を、そのマスの描画バッファの座標へ */
   const positionOf = (event: ReactPointerEvent<HTMLCanvasElement>) => {
@@ -78,12 +149,15 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     if (!context) return
     event.preventDefault()
     window.getSelection()?.removeAllRanges()
+    if (erasing) {
+      eraseCell(event.currentTarget)
+      return
+    }
     event.currentTarget.setPointerCapture(event.pointerId)
     drawingRef.current = true
     const { x, y } = positionOf(event)
     context.beginPath()
     context.moveTo(x, y)
-    setHasStroke(true)
   }
 
   const extendStroke = (event: ReactPointerEvent<HTMLCanvasElement>) => {
@@ -94,18 +168,23 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     const { x, y } = positionOf(event)
     context.lineTo(x, y)
     context.stroke()
+    // 書いたと数えるのは線を引いたとき。触れただけ(タップ)では何も残らないので数えない
+    written.current.add(event.currentTarget)
+    setHasStroke(true)
   }
 
   const endStroke = () => {
     drawingRef.current = false
   }
 
-  /** 書いたものを全部消す。どのマスにも書けるので、消すほうも全部まとめて */
-  const clear = () => {
-    for (const cells of canvases.current.values()) {
-      for (const canvas of cells) canvas?.getContext('2d')?.clearRect(0, 0, CELL, CELL)
+  /** タップしたマスだけを空にする。消すものが無くなったら書くモードへ戻す */
+  const eraseCell = (canvas: HTMLCanvasElement) => {
+    canvas.getContext('2d')?.clearRect(0, 0, CELL, CELL)
+    written.current.delete(canvas)
+    if (written.current.size === 0) {
+      setHasStroke(false)
+      setErasing(false)
     }
-    setHasStroke(false)
   }
 
   /** 行ごとのマスの絵。読み取りに渡す(1マス1字なので、切り出しが要らない) */
@@ -186,7 +265,10 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
           大きさは筆算側(ColumnForm)が決める --cell に合わせる。
           指で1字書ける大きさが要るが、画面からはみ出さないよう上限もそこで掛けている。
         */
-        className="size-[var(--cell)] touch-none rounded-md border-2 border-dashed border-bloom-200 bg-white select-none"
+        className={`size-[var(--cell)] touch-none rounded-md border-2 bg-white select-none ${
+          // 消すモードのあいだは枠を赤くして、タップすると消えることを見せる
+          erasing ? 'border-warm-500' : 'border-dashed border-bloom-200'
+        }`}
       />
     ))
   }
@@ -197,22 +279,29 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
       「けす」「かけた」に乗ると、iPhone がその字を選び始め(長押しの選択・拡大鏡)、
       書いている途中の線が止まってしまう。
     */
-    <div className="flex flex-col gap-3 select-none [-webkit-touch-callout:none]">
-      {form(cellsOf)}
+    <div className="flex h-full min-h-0 flex-col gap-3 select-none [-webkit-touch-callout:none]">
+      {/* 残りの高さを全部使う。中の筆算は、ここに入る最大の大きさまで広がる */}
+      <div ref={area} className="flex min-h-0 flex-1 items-center justify-center overflow-hidden">
+        {form(cellsOf)}
+      </div>
 
       <div className="flex shrink-0 gap-3 text-base">
         <button
           type="button"
-          onClick={clear}
+          onClick={() => setErasing((current) => !current)}
           disabled={disabled || !hasStroke}
-          className="min-h-14 flex-1 rounded-full border-2 border-bloom-200 px-6 font-bold text-ink-600 disabled:text-ink-400"
+          aria-pressed={erasing}
+          className={`min-h-14 flex-1 rounded-full border-2 px-6 font-bold disabled:text-ink-400 ${
+            erasing ? 'border-warm-500 bg-warm-500 text-white' : 'border-bloom-200 text-ink-600'
+          }`}
         >
-          {copy.handwriting.clear}
+          {erasing ? copy.handwriting.stopErasing : copy.handwriting.clear}
         </button>
         <button
           type="button"
           onClick={() => onSubmit(exportImage(), cellImages())}
-          disabled={disabled || !hasStroke}
+          // 消している途中で出すと、消し残しに気づかないまま答えになる
+          disabled={disabled || !hasStroke || erasing}
           className="min-h-14 flex-2 rounded-full bg-bloom-700 px-6 font-bold text-white disabled:bg-bloom-200"
         >
           {copy.handwriting.done}

@@ -21,6 +21,7 @@ import { useQuizSession } from '@/hooks/useQuizSession'
 import { useStats } from '@/hooks/useStats'
 import {
   isDifficulty,
+  isMathTopic,
   isPromptForm,
   type AnswerRecord,
   type Difficulty,
@@ -39,6 +40,11 @@ import type { ResultState, ResultSubmission } from './ResultPage'
  * 実機で測ったところ、きれいに書けていれば 0.9 を超える。
  */
 const READ_CONFIDENCE = 0.9
+
+/** 手書きで出す途中の計算のマス(かけ算の段、わり算の「かける」「ひく」) */
+function isScratch(step: ColumnStep): boolean {
+  return step.slot.kind === 'row' || step.slot.kind === 'product' || step.slot.kind === 'rest'
+}
 
 export function QuizPage() {
   const { genreId } = useParams<{ genreId: string }>()
@@ -62,6 +68,10 @@ export function QuizPage() {
   const formParam = searchParams.get('form')
   const promptForm: PromptForm = isPromptForm(formParam) ? formParam : 'column'
 
+  /** 計算の種類(`topic=mul` など)。無ければランダムで、種類で絞らない */
+  const topicParam = searchParams.get('topic')
+  const topic = isMathTopic(topicParam) ? topicParam : undefined
+
   const modeParam = searchParams.get('mode')
   const inputMode: InputMode =
     modeParam === 'typing' || modeParam === 'handwriting' || modeParam === 'assemble'
@@ -73,6 +83,7 @@ export function QuizPage() {
     genre?.id,
     inputMode,
     difficulty,
+    topic,
   )
   const question = questions[cursor]
   /**
@@ -128,6 +139,27 @@ export function QuizPage() {
 
   const isPreparing = isStatsLoading || isSessionLoading
 
+  /*
+    手書きで答えるあいだは、画面全体で長押しのメニューと文字の選択を止める。
+
+    書いている途中で指が止まると、Chrome はそれを長押しと受け取り、近くの字を選んで
+    「コピー・リンクをコピー・共有」のメニュー(今のページの URL つき)を上に出す。
+    出ると書いている線もそこで止まる。マスやボタンだけ止めても、長押しがどの要素に
+    当たったとされるかはブラウザ次第なので、出題画面ごと止める。
+    結果画面など他の画面では、これまでどおり長押しできる。
+  */
+  useEffect(() => {
+    if (inputMode !== 'handwriting') return
+    const root = document.documentElement
+    const stopMenu = (event: Event) => event.preventDefault()
+    root.classList.add('no-press-menu')
+    document.addEventListener('contextmenu', stopMenu)
+    return () => {
+      root.classList.remove('no-press-menu')
+      document.removeEventListener('contextmenu', stopMenu)
+    }
+  }, [inputMode])
+
   // 出題セットが空 = もう出せる問題が無い。
   // いまは回数制限が無いので実質到達しないが、出題数に上限を入れたときの行き先。
   useEffect(() => {
@@ -176,6 +208,7 @@ export function QuizPage() {
       inputMode,
       difficulty,
       promptForm,
+      topic,
       // 自分が書いた・打ったこたえを結果画面で見せる
       submission,
       // この出題セットに次の問題が残っているときだけ「つぎへ」を出す
@@ -204,6 +237,7 @@ export function QuizPage() {
       inputMode,
       difficulty,
       promptForm,
+      topic,
       hasNext: cursor + 1 < questions.length,
       currentStreak: stats.currentStreak,
     }
@@ -282,18 +316,16 @@ export function QuizPage() {
    * 手書きで書くマス。
    *
    * 答えのところ(たし算・ひき算は位ごと、わり算は商、かけ算はこたえ)に加えて、
-   * **かけ算だけは2つの段(部分積)のマスも出す。** 2けたのかけ算を答えだけで書かせると
-   * 暗算に近くなって難しい。紙の筆算と同じく、段を2つ計算してから答えを書く形にする。
-   * わり算の引く段までは出さない(縦に6段積もり、背の低い端末ではみ出す)。
+   * **かけ算とわり算は途中の計算のマスも出す。** かけ算は2つの段(部分積)、
+   * わり算は「かける」「ひく(おろす)」の段。答えだけで書かせると暗算に近くなって難しい。
+   * 紙の筆算と同じく、途中を書きながら答えまでたどる形にする。
    *
    * 書いた字は最後にまとめて読み取って判定する(judgeWritten)。
-   * 読んで点数にするのは答えのマスだけで、段は紙の途中計算と同じく見ない。
+   * 読んで点数にするのは答えのマスだけで、途中の計算は紙と同じく見ない。
    */
   const answerSteps =
     inputMode === 'handwriting' && layout
-      ? columnScript(question.prompt).filter(
-          (entry) => entry.counts || entry.slot.kind === 'row',
-        )
+      ? columnScript(question.prompt).filter((entry) => entry.counts || isScratch(entry))
       : []
   /*
     並べる順は**画面と同じ左から右**。たし算・ひき算の位は一のくらいから作られるので
@@ -301,14 +333,13 @@ export function QuizPage() {
   */
   const writeScript =
     answerSteps[0]?.slot.kind === 'place' ? [...answerSteps].reverse() : answerSteps
-  const rowCount = writeScript.filter((entry) => entry.slot.kind === 'row').length
   const writeRows = writeScript.map((entry, index) => ({
     key: `${question.id}-${index}`,
     boxes: entry.width,
-    // かけ算の段は1段ずつ別の行、答えはその下。わり算の商も、位ごとの答えも横に1行で並ぶ
-    line: entry.slot.kind === 'row' ? index : rowCount,
-    // 段は途中の計算。確認や結果の画面に出す画像には入れず、答えだけを見せる
-    scratch: entry.slot.kind === 'row',
+    // 答えは横に1行(わり算の商も、位ごとの答えも)。途中の計算は画像に入れないので行は問わない
+    line: isScratch(entry) ? index + 1 : 0,
+    // 途中の計算。確認や結果の画面に出す画像には入れず、答えだけを見せる
+    scratch: isScratch(entry),
   }))
 
   /**
@@ -394,11 +425,19 @@ export function QuizPage() {
         上限が 44(176px)だと、計算の3段のどれかが2行になったとき最後の段が切れる。
         52(208px)なら2行ぶん増えても収まる。
       */}
-      <section className="mt-4 flex max-h-52 min-h-0 flex-1 flex-col">
+      {/*
+        筆算のときはヒントの枠を詰めて、高さを固定する(伸ばさない)。
+        筆算は式・途中の段・答えのマスで縦に長く、背の低い端末(iPhone SE)では
+        書くマスや数字キーボードが押し出される。ヒントの枠に回していた高さをマスへ回す。
+      */}
+      <section
+        className={`flex min-h-0 flex-col ${showsPromptInInput ? 'mt-2 shrink-0' : 'mt-4 max-h-52 flex-1'}`}
+      >
         <HintList
           hints={revealedHints(hints, revealedCount)}
           layout={hintLayoutOf(genre.id)}
           secondsToNext={secondsToNext}
+          compact={showsPromptInInput}
         />
 
       </section>
@@ -413,8 +452,16 @@ export function QuizPage() {
         マスに書くときは真ん中に寄せる。キーボードと違って縦に短く、
         下に寄せるとヒント枠との間が大きく空いて、つながりが見えなくなる。
       */}
+      {/*
+        マスに書くときは、ヒントの下の高さを全部使う(マスはそこに入る最大の大きさまで広がる)。
+        確認の画面に変わったら、今までどおり真ん中に寄せる。
+      */}
       <section
-        className={`mt-auto flex min-h-0 flex-2 flex-col pt-4 ${writesInBoxes ? 'justify-center' : 'justify-end'}`}
+        className={`flex min-h-0 flex-col ${
+          writesInBoxes && !selfReport
+            ? 'flex-1 pt-2'
+            : `mt-auto flex-2 pt-4 ${writesInBoxes ? 'justify-center' : 'justify-end'}`
+        }`}
       >
         {selfReport ? (
           // 読み取れなかった・違って見えたときは、正解を見せて自己申告してもらう
@@ -603,7 +650,8 @@ function PromptBlock({
   writing?: boolean
 }) {
   return (
-    <section className="mt-4 shrink-0 text-center select-none">
+    // 手書きのマスに書くときは上の余白を取らない。その分もマスを大きくするのに回す
+    <section className={`shrink-0 text-center select-none ${writing ? '' : 'mt-4'}`}>
       {caption && <p className="text-xs text-ink-400">{caption}</p>}
       {note && (
         <p aria-live="assertive" className="text-xs font-bold text-warm-600">

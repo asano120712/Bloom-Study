@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { canServe, quizSource } from '@/services/quizSource'
 import { readSession, writeSession } from '@/services/quizSession'
-import type { Difficulty, GenreId, InputMode, Question } from '@/types'
+import type { Difficulty, GenreId, InputMode, MathTopic, Question } from '@/types'
 
 /**
  * 保存してあった出題セットのうち、いまも出せる問題だけを復元する。
@@ -13,14 +13,19 @@ import type { Difficulty, GenreId, InputMode, Question } from '@/types'
  * 位置は、出し終わった分のうち残った問題の数に読み替える。
  * 落とした問題のぶんだけ前に詰めないと、飛ばした問題がもう一度出てしまう。
  */
-function restoreSession(genreId: GenreId, inputMode: InputMode, difficulty: Difficulty) {
-  const stored = readSession(genreId, inputMode, difficulty)
+function restoreSession(
+  genreId: GenreId,
+  inputMode: InputMode,
+  difficulty: Difficulty,
+  topic: MathTopic | undefined,
+) {
+  const stored = readSession(genreId, inputMode, difficulty, topic)
   if (!stored) return null
 
-  const questions = stored.questions.filter((q) => canServe(q, inputMode, difficulty))
+  const questions = stored.questions.filter((q) => canServe(q, inputMode, difficulty, topic))
   const cursor = stored.questions
     .slice(0, stored.cursor)
-    .filter((q) => canServe(q, inputMode, difficulty)).length
+    .filter((q) => canServe(q, inputMode, difficulty, topic)).length
 
   // 残りが無くなったら取り直させる
   if (cursor >= questions.length) return null
@@ -45,11 +50,13 @@ export function useQuizSession(
   genreId: GenreId | undefined,
   inputMode: InputMode,
   difficulty: Difficulty,
+  /** 計算の種類。無ければランダム */
+  topic?: MathTopic,
 ) {
   // sessionStorage は同期に読めるので、初回描画の時点で確定させる。
   // effect の中で復元すると、問題が無い状態が1フレーム描画される。
   const [restored] = useState(() =>
-    genreId ? restoreSession(genreId, inputMode, difficulty) : null,
+    genreId ? restoreSession(genreId, inputMode, difficulty, topic) : null,
   )
   const [questions, setQuestions] = useState<Question[]>(restored?.questions ?? [])
   const [isLoading, setIsLoading] = useState(restored === null)
@@ -62,14 +69,14 @@ export function useQuizSession(
 
     if (restored) {
       // 復元した問題も「出した」ことにする。答えずに離れたらつぎの問題へ送るため
-      writeSession(genreId, inputMode, difficulty, { ...restored, presented: true })
+      writeSession(genreId, inputMode, difficulty, topic, { ...restored, presented: true })
       return
     }
 
     let active = true
-    quizSource.startSession(genreId, inputMode, difficulty).then((session) => {
+    quizSource.startSession(genreId, inputMode, difficulty, topic).then((session) => {
       if (!active) return
-      writeSession(genreId, inputMode, difficulty, {
+      writeSession(genreId, inputMode, difficulty, topic, {
         questions: session.questions,
         cursor: 0,
         presented: true,
@@ -81,7 +88,7 @@ export function useQuizSession(
     return () => {
       active = false
     }
-  }, [genreId, inputMode, difficulty, restored])
+  }, [genreId, inputMode, difficulty, topic, restored])
 
   /**
    * 1問進んだことを記録する。
@@ -93,12 +100,12 @@ export function useQuizSession(
    */
   const commitAdvance = useCallback(() => {
     if (!genreId) return
-    writeSession(genreId, inputMode, difficulty, {
+    writeSession(genreId, inputMode, difficulty, topic, {
       questions,
       cursor: cursor + 1,
       presented: false,
     })
-  }, [genreId, inputMode, difficulty, questions, cursor])
+  }, [genreId, inputMode, difficulty, topic, questions, cursor])
 
   return { questions, cursor, isLoading, commitAdvance }
 }
