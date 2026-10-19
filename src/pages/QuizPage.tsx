@@ -134,6 +134,27 @@ export function QuizPage() {
 
   const isPreparing = isStatsLoading || isSessionLoading
 
+  /*
+    手書きで答えるあいだは、画面全体で長押しのメニューと文字の選択を止める。
+
+    書いている途中で指が止まると、Chrome はそれを長押しと受け取り、近くの字を選んで
+    「コピー・リンクをコピー・共有」のメニュー(今のページの URL つき)を上に出す。
+    出ると書いている線もそこで止まる。マスやボタンだけ止めても、長押しがどの要素に
+    当たったとされるかはブラウザ次第なので、出題画面ごと止める。
+    結果画面など他の画面では、これまでどおり長押しできる。
+  */
+  useEffect(() => {
+    if (inputMode !== 'handwriting') return
+    const root = document.documentElement
+    const stopMenu = (event: Event) => event.preventDefault()
+    root.classList.add('no-press-menu')
+    document.addEventListener('contextmenu', stopMenu)
+    return () => {
+      root.classList.remove('no-press-menu')
+      document.removeEventListener('contextmenu', stopMenu)
+    }
+  }, [inputMode])
+
   // 出題セットが空 = もう出せる問題が無い。
   // いまは回数制限が無いので実質到達しないが、出題数に上限を入れたときの行き先。
   useEffect(() => {
