@@ -12,6 +12,11 @@ interface HandwritingCanvasProps {
 
 const LINE_WIDTH = 8
 const STROKE_COLOR = '#23292B'
+/**
+ * 消しゴムの太さ(書く線の何倍か)。指でこすって消すので、書く線よりかなり太くする。
+ * 細いと、1画を消すのに何度もなぞることになる。
+ */
+const ERASER_SCALE = 4
 /** LINE_WIDTH を決めたときの root font-size。index.css の clamp 下限と同じ値 */
 const BASE_ROOT_FONT_SIZE = 16
 
@@ -36,6 +41,13 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const drawingRef = useRef(false)
   const [hasStroke, setHasStroke] = useState(false)
+  /**
+   * 消しゴムのモード。このあいだは、指でこすったところだけが消える。
+   *
+   * 全部まとめて消すと、合っていた画まで書き直しになる。紙と同じく消しゴムで
+   * 間違えたところだけ消せるようにする。書くのと同じ指の動きで消すので、モードを分けた。
+   */
+  const [erasing, setErasing] = useState(false)
 
   /**
    * 表示サイズに合わせて描画バッファを取り直す(高解像度ディスプレイ対応)。
@@ -103,10 +115,17 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
     window.getSelection()?.removeAllRanges()
     event.currentTarget.setPointerCapture(event.pointerId)
     drawingRef.current = true
+    // 消しゴムは「描いたところを透明に戻す」線として引く
+    context.globalCompositeOperation = erasing ? 'destination-out' : 'source-over'
+    context.lineWidth = scaledLineWidth() * (erasing ? ERASER_SCALE : 1)
     const { x, y } = positionOf(event)
     context.beginPath()
     context.moveTo(x, y)
-    setHasStroke(true)
+    if (erasing) {
+      // 触れただけでも、その場所は消す(長さ0の線は丸い先端だけが描かれる)
+      context.lineTo(x, y)
+      context.stroke()
+    }
   }
 
   const extendStroke = (event: React.PointerEvent<HTMLCanvasElement>) => {
@@ -117,10 +136,28 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
     const { x, y } = positionOf(event)
     context.lineTo(x, y)
     context.stroke()
+    // 書いたと数えるのは線を引いたとき。触れただけ(タップ)では何も残らないので数えない
+    if (!erasing) setHasStroke(true)
   }
 
   const endStroke = () => {
+    if (!drawingRef.current) return
     drawingRef.current = false
+    // 消しゴムで全部消えたら、書くモードへ戻す(消すものが無いので)
+    if (erasing && isBlank()) {
+      setHasStroke(false)
+      setErasing(false)
+    }
+  }
+
+  /** 何も書かれていないか。消しゴムで消し切ったかを見るため */
+  const isBlank = (): boolean => {
+    const canvas = canvasRef.current
+    const context = canvas?.getContext('2d')
+    if (!canvas || !context || !canvas.width || !canvas.height) return true
+    const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data
+    for (let i = 3; i < pixels.length; i += 4) if (pixels[i] !== 0) return false
+    return true
   }
 
   /**
@@ -152,14 +189,6 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
     return flattened.toDataURL('image/png')
   }
 
-  const clear = () => {
-    const canvas = canvasRef.current
-    const context = canvas?.getContext('2d')
-    if (!canvas || !context) return
-    context.clearRect(0, 0, canvas.width, canvas.height)
-    setHasStroke(false)
-  }
-
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3 select-none">
       {/*
@@ -177,21 +206,28 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
         draggable={false}
         aria-label="手書き入力エリア"
         // select-none: なぞったときに周りが範囲選択される(青い枠)のを防ぐ
-        className="w-full min-h-0 flex-1 touch-none select-none rounded-2xl border-2 border-bloom-200 bg-white"
+        className={`w-full min-h-0 flex-1 touch-none select-none rounded-2xl border-2 bg-white ${
+          // 消しゴムのあいだは枠を赤くして、こすると消えることを見せる
+          erasing ? 'border-warm-500' : 'border-bloom-200'
+        }`}
       />
       <div className="flex shrink-0 gap-3">
         <button
           type="button"
-          onClick={clear}
+          onClick={() => setErasing((current) => !current)}
           disabled={disabled || !hasStroke}
-          className="min-h-14 flex-1 rounded-full border-2 border-bloom-200 px-6 text-lg font-bold text-ink-600 disabled:text-ink-400"
+          aria-pressed={erasing}
+          className={`min-h-14 flex-1 rounded-full border-2 px-6 text-lg font-bold disabled:text-ink-400 ${
+            erasing ? 'border-warm-500 bg-warm-500 text-white' : 'border-bloom-200 text-ink-600'
+          }`}
         >
-          {copy.handwriting.clear}
+          {erasing ? copy.handwriting.stopErasing : copy.handwriting.clear}
         </button>
         <button
           type="button"
           onClick={() => onSubmit(exportImage())}
-          disabled={disabled || !hasStroke}
+          // 消している途中で出すと、消し残しに気づかないまま答えになる
+          disabled={disabled || !hasStroke || erasing}
           className="min-h-14 flex-2 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
         >
           {copy.handwriting.done}
