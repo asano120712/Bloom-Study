@@ -95,7 +95,21 @@ function useFitCell(area: RefObject<HTMLDivElement | null>) {
     fit()
     const observer = new ResizeObserver(fit)
     observer.observe(box)
-    return () => observer.disconnect()
+    /*
+      ウェブフォントの読み込みが終わると、字の幅(「=」や式の数字)が変わる。
+      書く場所の大きさは変わらないので ResizeObserver では気づけず、読み込み前の字幅で
+      決めたマスのまま、筆算が書く場所からはみ出していた。読み込みが済んだら測り直す。
+    */
+    let active = true
+    void document.fonts?.ready.then(() => {
+      if (active) fit()
+    })
+    document.fonts?.addEventListener('loadingdone', fit)
+    return () => {
+      active = false
+      observer.disconnect()
+      document.fonts?.removeEventListener('loadingdone', fit)
+    }
   }, [area])
 }
 
