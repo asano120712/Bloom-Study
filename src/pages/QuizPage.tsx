@@ -21,6 +21,7 @@ import { useQuizSession } from '@/hooks/useQuizSession'
 import { useStats } from '@/hooks/useStats'
 import {
   isDifficulty,
+  isMathTopic,
   isPromptForm,
   type AnswerRecord,
   type Difficulty,
@@ -62,6 +63,10 @@ export function QuizPage() {
   const formParam = searchParams.get('form')
   const promptForm: PromptForm = isPromptForm(formParam) ? formParam : 'column'
 
+  /** 計算の種類(`topic=mul` など)。無ければランダムで、種類で絞らない */
+  const topicParam = searchParams.get('topic')
+  const topic = isMathTopic(topicParam) ? topicParam : undefined
+
   const modeParam = searchParams.get('mode')
   const inputMode: InputMode =
     modeParam === 'typing' || modeParam === 'handwriting' || modeParam === 'assemble'
@@ -73,6 +78,7 @@ export function QuizPage() {
     genre?.id,
     inputMode,
     difficulty,
+    topic,
   )
   const question = questions[cursor]
   /**
@@ -176,6 +182,7 @@ export function QuizPage() {
       inputMode,
       difficulty,
       promptForm,
+      topic,
       // 自分が書いた・打ったこたえを結果画面で見せる
       submission,
       // この出題セットに次の問題が残っているときだけ「つぎへ」を出す
@@ -204,6 +211,7 @@ export function QuizPage() {
       inputMode,
       difficulty,
       promptForm,
+      topic,
       hasNext: cursor + 1 < questions.length,
       currentStreak: stats.currentStreak,
     }

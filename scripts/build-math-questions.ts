@@ -61,6 +61,11 @@ interface MathQuestion {
   promptLayout?: 'column' | 'division'
   answer: string
   level: Level
+  /**
+   * 計算の種類。出題の前に選んだ種類で絞り込む(src/types の MathTopic と同じ値)。
+   * ここは src への依存を作らないよう文字列リテラルで持つ。
+   */
+  topic: 'add' | 'sub' | 'mul' | 'div'
   hintSource: string[]
 }
 
@@ -103,6 +108,7 @@ function multiply2x1(): MathQuestion | null {
     promptLayout: 'column',
     answer: String(a * b),
     level: 'g34',
+    topic: 'mul',
     hintSource: [
       `1だんめ 一のくらい ${ones} × ${b}`,
       `2だんめ 十のくらい ${tens / 10} × ${b}`,
@@ -111,23 +117,39 @@ function multiply2x1(): MathQuestion | null {
   }
 }
 
-/** 2桁 × 2桁。段ごとに分けて、下の段は1桁ずらす */
+/** 2桁 × 2桁(小3・4)。段ごとに分けて、下の段は1桁ずらす */
 function multiply2x2(): MathQuestion | null {
-  const a = pick(12, 99)
-  const b = pick(12, 49)
+  return multiplyBy2Digits({ a: [12, 99], b: [12, 49], level: 'g34', idPrefix: 'ma-m22' })
+}
+
+/** 3桁 × 2桁(小5・6)。かけ方は 2桁 × 2桁 と同じで、段の数字が1けた長くなる */
+function multiply3x2(): MathQuestion | null {
+  return multiplyBy2Digits({ a: [102, 987], b: [12, 98], level: 'g56', idPrefix: 'ma-m32' })
+}
+
+/** かける数が2桁のかけ算。段は かける数の位ごとに2つ */
+function multiplyBy2Digits(range: {
+  a: [number, number]
+  b: [number, number]
+  level: Level
+  idPrefix: string
+}): MathQuestion | null {
+  const a = pick(...range.a)
+  const b = pick(...range.b)
   if (a % 10 === 0 || b % 10 === 0) return null
 
   const tens = Math.floor(b / 10) * 10
   const ones = b % 10
 
   return {
-    id: `ma-m22-${a}x${b}`,
+    id: `${range.idPrefix}-${a}x${b}`,
     genreId: 'math',
     prompt: `${a} × ${b}`,
     promptLayout: 'column',
     // 筆算の段。下の段は1桁ずらして書くので、a × (十の位の数字) をそのまま持つ
     answer: String(a * b),
-    level: 'g34',
+    level: range.level,
+    topic: 'mul',
     hintSource: [
       `1だんめ ${a} × 一のくらいの ${ones}`,
       `2だんめ ${a} × 十のくらいの ${tens / 10}`,
@@ -136,11 +158,30 @@ function multiply2x2(): MathQuestion | null {
   }
 }
 
-/** わりきれるわり算。商を十の位と一の位に割って戻す */
+/** わりきれるわり算(小3・4)。1けたでわる */
 function divideExact(): MathQuestion | null {
-  const divisor = pick(3, 9)
+  return divideTwoDigitQuotient({ divisor: [3, 9], level: 'g34', idPrefix: 'ma-d' })
+}
+
+/**
+ * 2けたでわる わりきれるわり算(小5・6)。
+ * 割る数が2けたになると、商の見当をつける(かりの商)のが難しくなる。
+ * 立て方・ヒントの段取りは1けたでわるときと同じ。
+ */
+function divideBy2Digits(): MathQuestion | null {
+  return divideTwoDigitQuotient({ divisor: [12, 49], level: 'g56', idPrefix: 'ma-d2' })
+}
+
+/** 商が2けたになる、わりきれるわり算。商を十の位と一の位に割って戻す */
+function divideTwoDigitQuotient(range: {
+  divisor: [number, number]
+  level: Level
+  idPrefix: string
+}): MathQuestion | null {
+  const divisor = pick(...range.divisor)
   const quotient = pick(11, 99)
-  if (quotient % 10 === 0) return null
+  // 割る数が 20 や 30 だと、かりの商を立てる練習にならない(十の位だけで割れる)
+  if (quotient % 10 === 0 || (divisor >= 10 && divisor % 10 === 0)) return null
 
   const tens = Math.floor(quotient / 10) * 10
   const dividend = divisor * quotient
@@ -148,12 +189,13 @@ function divideExact(): MathQuestion | null {
   const head = Math.floor(dividend / 10)
 
   return {
-    id: `ma-d-${dividend}d${divisor}`,
+    id: `${range.idPrefix}-${dividend}d${divisor}`,
     genreId: 'math',
     prompt: `${dividend} ÷ ${divisor}`,
     promptLayout: 'division',
     answer: String(quotient),
-    level: 'g34',
+    level: range.level,
+    topic: 'div',
     hintSource: [
       `上から ${head} ÷ ${divisor} で ${tens / 10} たつ`,
       `${divisor} × ${tens / 10} = ${divisor * (tens / 10)} を かいて ひく`,
@@ -181,6 +223,7 @@ function addCarry(): MathQuestion | null {
     prompt: `${a} + ${b}`,
     answer: String(a + b),
     level: 'g12',
+    topic: 'add',
     hintSource: [`${b} = ${toTen} + ${rest}`, `${a} + ${toTen} = 10`, `10 + ${rest}`],
   }
 }
@@ -201,6 +244,7 @@ function subtractBorrow(): MathQuestion | null {
     prompt: `${a} − ${b}`,
     answer: String(a - b),
     level: 'g12',
+    topic: 'sub',
     hintSource: [`${a} = 10 + ${a - 10}`, `10 - ${b} = ${10 - b}`, `${10 - b} + ${a - 10}`],
   }
 }
@@ -224,6 +268,7 @@ function addToNextTen(): MathQuestion | null {
     prompt: `${a} + ${b}`,
     answer: String(a + b),
     level: 'g12',
+    topic: 'add',
     hintSource: [`${b} = ${toTen} + ${rest}`, `${a} + ${toTen} = ${ten}`, `${ten} + ${rest}`],
   }
 }
@@ -243,6 +288,7 @@ function subtractFromTen(): MathQuestion | null {
     prompt: `${a} − ${b}`,
     answer: String(a - b),
     level: 'g12',
+    topic: 'sub',
     hintSource: [`${a} = ${a - 10} + 10`, `10 - ${b} = ${10 - b}`, `${a - 10} + ${10 - b}`],
   }
 }
@@ -294,6 +340,7 @@ function addThreeDigits(): MathQuestion | null {
     promptLayout: 'column',
     answer: String(a + b),
     level: 'g34',
+    topic: 'add',
     hintSource: columnHints(a, b, '+'),
   }
 }
@@ -322,6 +369,7 @@ function subtractThreeDigits(): MathQuestion | null {
     promptLayout: 'column',
     answer: String(a - b),
     level: 'g34',
+    topic: 'sub',
     hintSource: columnHints(a, b, '−'),
   }
 }
@@ -336,6 +384,9 @@ const KINDS: { name: string; make: () => MathQuestion | null }[] = [
   { name: '2桁×1桁', make: multiply2x1 },
   { name: '2桁×2桁', make: multiply2x2 },
   { name: 'わりきれるわり算', make: divideExact },
+  // 小5・6。今ある問題が入れ替わらないよう、種類は必ず後ろに足す(同じ種の乱数を順に引くため)
+  { name: '3桁×2桁(小5・6)', make: multiply3x2 },
+  { name: '2桁でわるわり算(小5・6)', make: divideBy2Digits },
 ]
 
 function main(): void {

@@ -1,4 +1,4 @@
-import type { Difficulty, GenreId, InputMode, Question } from '@/types'
+import type { Difficulty, GenreId, InputMode, MathTopic, Question } from '@/types'
 
 /** 出題セットと、その中でつぎに出す位置 */
 export interface SessionCursor {
@@ -31,11 +31,16 @@ export interface StoredSession extends SessionCursor {
 const KEY_PREFIX = 'bloomstudy:session:v4:'
 
 /**
- * 入力方法と難易度で出せる問題が変わるため、セッションはその組み合わせごとに分ける。
- * (難易度を切り替えて戻ったとき、別の難易度の途中セットを復元しないようにする)
+ * 入力方法・難易度・計算の種類で出せる問題が変わるため、セッションはその組み合わせごとに分ける。
+ * (難易度や種類を切り替えて戻ったとき、別の条件の途中セットを復元しないようにする)
+ * 種類が無い(ランダム)ときは、種類を持つ前と同じ鍵になる。
  */
-const keyOf = (genreId: GenreId, inputMode: InputMode, difficulty: Difficulty) =>
-  `${KEY_PREFIX}${genreId}:${inputMode}:${difficulty}`
+const keyOf = (
+  genreId: GenreId,
+  inputMode: InputMode,
+  difficulty: Difficulty,
+  topic: MathTopic | undefined,
+) => `${KEY_PREFIX}${genreId}:${inputMode}:${difficulty}${topic ? `:${topic}` : ''}`
 
 /**
  * 中断していたセットの「つぎに出す問題」を返す。
@@ -45,9 +50,10 @@ export function readSession(
   genreId: GenreId,
   inputMode: InputMode,
   difficulty: Difficulty,
+  topic: MathTopic | undefined,
 ): SessionCursor | null {
   try {
-    const raw = sessionStorage.getItem(keyOf(genreId, inputMode, difficulty))
+    const raw = sessionStorage.getItem(keyOf(genreId, inputMode, difficulty, topic))
     if (!raw) return null
 
     const parsed = JSON.parse(raw) as Partial<StoredSession>
@@ -68,10 +74,11 @@ export function writeSession(
   genreId: GenreId,
   inputMode: InputMode,
   difficulty: Difficulty,
+  topic: MathTopic | undefined,
   session: StoredSession,
 ): void {
   try {
-    sessionStorage.setItem(keyOf(genreId, inputMode, difficulty), JSON.stringify(session))
+    sessionStorage.setItem(keyOf(genreId, inputMode, difficulty, topic), JSON.stringify(session))
   } catch {
     // 保存できなくても、そのタブ内での出題は最後まで続けられる
   }
