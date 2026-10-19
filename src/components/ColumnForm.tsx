@@ -314,7 +314,8 @@ export function DivisionForm({
           )}
           <span
             aria-hidden="true"
-            className="flex justify-end gap-1"
+            // マスのすきまは表のすきまと同じにする。違うと、何マスか並ぶうちに桁の位置がずれる
+            className={`flex justify-end ${writing ? 'gap-0.5' : 'gap-1'}`}
             style={{ gridRow: row, gridColumn: `${start} / span ${span}` }}
           >
             <Cell cell={cell} />

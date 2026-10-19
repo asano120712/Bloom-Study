@@ -41,6 +41,11 @@ import type { ResultState, ResultSubmission } from './ResultPage'
  */
 const READ_CONFIDENCE = 0.9
 
+/** 手書きで出す途中の計算のマス(かけ算の段、わり算の「かける」「ひく」) */
+function isScratch(step: ColumnStep): boolean {
+  return step.slot.kind === 'row' || step.slot.kind === 'product' || step.slot.kind === 'rest'
+}
+
 export function QuizPage() {
   const { genreId } = useParams<{ genreId: string }>()
   const [searchParams] = useSearchParams()
@@ -311,18 +316,16 @@ export function QuizPage() {
    * 手書きで書くマス。
    *
    * 答えのところ(たし算・ひき算は位ごと、わり算は商、かけ算はこたえ)に加えて、
-   * **かけ算だけは2つの段(部分積)のマスも出す。** 2けたのかけ算を答えだけで書かせると
-   * 暗算に近くなって難しい。紙の筆算と同じく、段を2つ計算してから答えを書く形にする。
-   * わり算の引く段までは出さない(縦に6段積もり、背の低い端末ではみ出す)。
+   * **かけ算とわり算は途中の計算のマスも出す。** かけ算は2つの段(部分積)、
+   * わり算は「かける」「ひく(おろす)」の段。答えだけで書かせると暗算に近くなって難しい。
+   * 紙の筆算と同じく、途中を書きながら答えまでたどる形にする。
    *
    * 書いた字は最後にまとめて読み取って判定する(judgeWritten)。
-   * 読んで点数にするのは答えのマスだけで、段は紙の途中計算と同じく見ない。
+   * 読んで点数にするのは答えのマスだけで、途中の計算は紙と同じく見ない。
    */
   const answerSteps =
     inputMode === 'handwriting' && layout
-      ? columnScript(question.prompt).filter(
-          (entry) => entry.counts || entry.slot.kind === 'row',
-        )
+      ? columnScript(question.prompt).filter((entry) => entry.counts || isScratch(entry))
       : []
   /*
     並べる順は**画面と同じ左から右**。たし算・ひき算の位は一のくらいから作られるので
@@ -330,14 +333,13 @@ export function QuizPage() {
   */
   const writeScript =
     answerSteps[0]?.slot.kind === 'place' ? [...answerSteps].reverse() : answerSteps
-  const rowCount = writeScript.filter((entry) => entry.slot.kind === 'row').length
   const writeRows = writeScript.map((entry, index) => ({
     key: `${question.id}-${index}`,
     boxes: entry.width,
-    // かけ算の段は1段ずつ別の行、答えはその下。わり算の商も、位ごとの答えも横に1行で並ぶ
-    line: entry.slot.kind === 'row' ? index : rowCount,
-    // 段は途中の計算。確認や結果の画面に出す画像には入れず、答えだけを見せる
-    scratch: entry.slot.kind === 'row',
+    // 答えは横に1行(わり算の商も、位ごとの答えも)。途中の計算は画像に入れないので行は問わない
+    line: isScratch(entry) ? index + 1 : 0,
+    // 途中の計算。確認や結果の画面に出す画像には入れず、答えだけを見せる
+    scratch: isScratch(entry),
   }))
 
   /**
