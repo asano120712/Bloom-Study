@@ -60,8 +60,18 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
   /** 行の名前 → その行のマス。打ち終わった行の字も、ここに残って見えている */
   const canvases = useRef(new Map<string, (HTMLCanvasElement | null)[]>())
   const drawingRef = useRef(false)
+  /** 何か書いてあるマス。1マスずつ消せるので、どこが空になったかまで持つ */
+  const written = useRef(new Set<HTMLCanvasElement>())
   /** 何か書いたか。書く前に「かけた」を押させない */
   const [hasStroke, setHasStroke] = useState(false)
+  /**
+   * 消すモード。このあいだはマスをタップすると、そのマスだけが空になる。
+   *
+   * 全部まとめて消すと、合っていた桁まで書き直しになる。紙で消しゴムを当てるのと同じく
+   * 消したいマスだけを選ばせる。書くのと同じ指の動きで消すと、書き始めと区別できないので
+   * モードを分けた。
+   */
+  const [erasing, setErasing] = useState(false)
 
   /** 画面の座標を、そのマスの描画バッファの座標へ */
   const positionOf = (event: ReactPointerEvent<HTMLCanvasElement>) => {
@@ -78,12 +88,15 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     if (!context) return
     event.preventDefault()
     window.getSelection()?.removeAllRanges()
+    if (erasing) {
+      eraseCell(event.currentTarget)
+      return
+    }
     event.currentTarget.setPointerCapture(event.pointerId)
     drawingRef.current = true
     const { x, y } = positionOf(event)
     context.beginPath()
     context.moveTo(x, y)
-    setHasStroke(true)
   }
 
   const extendStroke = (event: ReactPointerEvent<HTMLCanvasElement>) => {
@@ -94,18 +107,23 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     const { x, y } = positionOf(event)
     context.lineTo(x, y)
     context.stroke()
+    // 書いたと数えるのは線を引いたとき。触れただけ(タップ)では何も残らないので数えない
+    written.current.add(event.currentTarget)
+    setHasStroke(true)
   }
 
   const endStroke = () => {
     drawingRef.current = false
   }
 
-  /** 書いたものを全部消す。どのマスにも書けるので、消すほうも全部まとめて */
-  const clear = () => {
-    for (const cells of canvases.current.values()) {
-      for (const canvas of cells) canvas?.getContext('2d')?.clearRect(0, 0, CELL, CELL)
+  /** タップしたマスだけを空にする。消すものが無くなったら書くモードへ戻す */
+  const eraseCell = (canvas: HTMLCanvasElement) => {
+    canvas.getContext('2d')?.clearRect(0, 0, CELL, CELL)
+    written.current.delete(canvas)
+    if (written.current.size === 0) {
+      setHasStroke(false)
+      setErasing(false)
     }
-    setHasStroke(false)
   }
 
   /** 行ごとのマスの絵。読み取りに渡す(1マス1字なので、切り出しが要らない) */
@@ -186,7 +204,10 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
           大きさは筆算側(ColumnForm)が決める --cell に合わせる。
           指で1字書ける大きさが要るが、画面からはみ出さないよう上限もそこで掛けている。
         */
-        className="size-[var(--cell)] touch-none rounded-md border-2 border-dashed border-bloom-200 bg-white select-none"
+        className={`size-[var(--cell)] touch-none rounded-md border-2 bg-white select-none ${
+          // 消すモードのあいだは枠を赤くして、タップすると消えることを見せる
+          erasing ? 'border-warm-500' : 'border-dashed border-bloom-200'
+        }`}
       />
     ))
   }
@@ -203,16 +224,20 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
       <div className="flex shrink-0 gap-3 text-base">
         <button
           type="button"
-          onClick={clear}
+          onClick={() => setErasing((current) => !current)}
           disabled={disabled || !hasStroke}
-          className="min-h-14 flex-1 rounded-full border-2 border-bloom-200 px-6 font-bold text-ink-600 disabled:text-ink-400"
+          aria-pressed={erasing}
+          className={`min-h-14 flex-1 rounded-full border-2 px-6 font-bold disabled:text-ink-400 ${
+            erasing ? 'border-warm-500 bg-warm-500 text-white' : 'border-bloom-200 text-ink-600'
+          }`}
         >
-          {copy.handwriting.clear}
+          {erasing ? copy.handwriting.stopErasing : copy.handwriting.clear}
         </button>
         <button
           type="button"
           onClick={() => onSubmit(exportImage(), cellImages())}
-          disabled={disabled || !hasStroke}
+          // 消している途中で出すと、消し残しに気づかないまま答えになる
+          disabled={disabled || !hasStroke || erasing}
           className="min-h-14 flex-2 rounded-full bg-bloom-700 px-6 font-bold text-white disabled:bg-bloom-200"
         >
           {copy.handwriting.done}

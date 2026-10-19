@@ -93,7 +93,13 @@ export interface Copy {
     slot: Record<AssembleLayout, { first: string; second: string }>
     submit: string
   }
-  handwriting: { clear: string; done: string; boxLabel: (place: number) => string }
+  handwriting: {
+    clear: string
+    /** 消すモードのあいだの「けす」ボタン。押すと書くモードへ戻る(SE の幅で折り返さない短さに) */
+    stopErasing: string
+    done: string
+    boxLabel: (place: number) => string
+  }
   typing: { placeholderTap: string; placeholderKey: string }
   /** あそび(なぞりがき・おなじものさがし)で共通の言葉 */
   play: { allDone: string; again: string; other: string }
@@ -290,7 +296,12 @@ const ADULT: Copy = {
     },
     submit: 'こたえあわせ',
   },
-  handwriting: { clear: 'けす', done: 'かけた', boxLabel: (place) => `こたえの ${place} マスめ` },
+  handwriting: {
+    clear: 'けす',
+    stopErasing: 'かく',
+    done: 'かけた',
+    boxLabel: (place) => `こたえの ${place} マスめ`,
+  },
   typing: { placeholderTap: 'こたえをタップして入力', placeholderKey: 'キーボードで入力' },
   play: { allDone: 'ぜんぶ できた!', again: 'もういちど', other: 'ほかのあそび' },
   number: {
@@ -475,7 +486,12 @@ const KIDS: Copy = {
     },
     submit: 'こたえあわせ',
   },
-  handwriting: { clear: 'けす', done: 'かけた', boxLabel: (place) => `こたえの ${place} マスめ` },
+  handwriting: {
+    clear: 'けす',
+    stopErasing: 'かく',
+    done: 'かけた',
+    boxLabel: (place) => `こたえの ${place} マスめ`,
+  },
   typing: { placeholderTap: 'こたえを タップして うとう', placeholderKey: 'キーボードで うとう' },
   play: { allDone: 'ぜんぶ できた！', again: 'もういちど', other: 'ほかの あそび' },
   number: {
