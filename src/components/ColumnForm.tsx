@@ -34,23 +34,17 @@ type CellTone = 'typing' | 'done' | 'wrong'
  */
 const CELL = '1.15em'
 /*
-  手書きのマスは字の大きさの2倍ほしいが、**上限も要る**。
-  字に比例させたままだと、背の低い端末で画面からはみ出し、
-  書いている最中に画面が引っ張られる。
-
-  4rem(64px)は、指で1字書くのに窮屈でない大きさ。筆算でいちばん横に長いのは
-  4列(79 × 33、371 + 742)で、この大きさでも iPhone SE の幅に収まる。
-  それでも入らない背の低い画面のために、画面の高さにも頭打ちを掛ける。
-  svh(ブラウザのバーが出ている状態の高さ)で測るのは、バーのぶんを見込むため。
-  書く場所は答えの1行だけなので、頭打ちは段のあった頃ほどきつくなくてよい。
+  手書きのマスは、**書く場所に入る最大の大きさ**にする。
+  大きさは BoxHandwriting が書く場所の高さと幅を測って `--fit-cell` で渡す
+  (式の行数・途中の段の数・画面の大きさで、入る大きさが毎回変わるため)。
+  測る前の1回目の描画だけ、画面の高さから見た控えめな大きさを使う。
 */
-const WRITE_CELL = 'min(2em, 4rem, 11svh)'
-/*
-  かけ算の段があるときは、式2行・段2行・こたえで5行になる。11svh のままだと
-  iPhone SE でボタンが画面から押し出されるので、高さの頭打ちをきつくする
-  (SE で 50px ほど。背の高い端末では 4rem のまま)。
-*/
-const WRITE_CELL_ROWS = 'min(2em, 4rem, 7.5svh)'
+const WRITE_CELL = 'var(--fit-cell, min(3rem, 7svh))'
+/**
+ * 手書きのときの字の大きさ。マスに合わせて大きくする(マスの 0.625 倍)。
+ * マスだけ大きくなって数字が小さいままだと、式とマスの位がそろって見えない。
+ */
+const WRITE_FONT = 'calc(var(--cell) * 0.625)'
 
 /**
  * 筆算(たし算・ひき算・かけ算)。式を縦に積んで、桁をそろえて見せる。
@@ -96,8 +90,12 @@ export function ColumnForm({
       // 読み上げには1行の式を渡す。縦に積んだ数字だけでは式として読まれない
       aria-label={expression}
       className="inline-grid grid-cols-[auto_auto] gap-x-3 text-right font-bold tabular-nums"
+      data-fit-width={writing || undefined}
       style={
-        { '--cell': writing ? (rows.length > 0 ? WRITE_CELL_ROWS : WRITE_CELL) : CELL } as CSSProperties
+        {
+          '--cell': writing ? WRITE_CELL : CELL,
+          fontSize: writing ? WRITE_FONT : undefined,
+        } as CSSProperties
       }
     >
       <span aria-hidden="true" />
@@ -262,10 +260,12 @@ export function DivisionForm({
     <span
       // 読み上げには1行の式を渡す。囲いと数字の位置だけでは式として読まれない
       aria-label={expression}
+      data-fit-width={writing || undefined}
       className={`inline-grid text-right font-bold tabular-nums ${writing ? 'gap-0.5' : 'gap-1'}`}
       style={
         {
           '--cell': writing ? WRITE_CELL : CELL,
+          fontSize: writing ? WRITE_FONT : undefined,
           gridTemplateColumns: `auto repeat(${dividend.length}, var(--cell))`,
         } as CSSProperties
       }

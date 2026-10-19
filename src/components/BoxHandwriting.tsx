@@ -1,4 +1,11 @@
-import { useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import {
+  useLayoutEffect,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+  type ReactNode,
+  type RefObject,
+} from 'react'
 import { useCopy } from '@/hooks/useAudienceMode'
 
 /** 書く場所1つぶん。筆算の位・商・こたえにそのまま対応する */
@@ -40,6 +47,59 @@ const STROKE_COLOR = '#23292B'
 const CELL = 120
 
 /**
+ * マスの大きさの下限と上限(px)。
+ * 下限は指で1字書ける最小。上限は、タブレットのような広い画面でマスだけ大きくなりすぎないため。
+ */
+const FIT_MIN = 32
+const FIT_MAX = 128
+
+/**
+ * マスを、書く場所に入る最大の大きさにする。
+ *
+ * 筆算の高さと幅は、マスの大きさにほぼ比例する(字の大きさもマスに合わせてあるため)。
+ * 残りは線やすきまのような決まった大きさなので、**2つの大きさで実際に置いて測り**、
+ * 「大きさ = 傾き × マス + 決まった分」を出してから、書く場所に収まる最大のマスを逆算する。
+ * 式の行数・途中の段の数・画面の大きさで答えが変わるので、決め打ちの上限より無駄が出ない。
+ *
+ * 書く場所の大きさが変わったら(画面を回したとき、ブラウザのバーが出入りしたとき)測り直す。
+ */
+function useFitCell(area: RefObject<HTMLDivElement | null>) {
+  useLayoutEffect(() => {
+    const box = area.current
+    if (!box) return
+
+    const fit = () => {
+      const content = box.firstElementChild
+      const widest = box.querySelector('[data-fit-width]')
+      if (!(content instanceof HTMLElement) || !(widest instanceof HTMLElement)) return
+
+      const at = (size: number) => {
+        box.style.setProperty('--fit-cell', `${size}px`)
+        return {
+          height: content.getBoundingClientRect().height,
+          width: widest.getBoundingClientRect().width,
+        }
+      }
+      const [small, large] = [40, 80]
+      const a = at(small)
+      const b = at(large)
+      const slope = { height: (b.height - a.height) / (large - small), width: (b.width - a.width) / (large - small) }
+      const fixed = { height: a.height - slope.height * small, width: a.width - slope.width * small }
+
+      const byHeight = (box.clientHeight - fixed.height) / slope.height
+      const byWidth = (box.clientWidth - fixed.width) / slope.width
+      const size = Math.floor(Math.min(byHeight, byWidth, FIT_MAX))
+      box.style.setProperty('--fit-cell', `${Math.max(FIT_MIN, size)}px`)
+    }
+
+    fit()
+    const observer = new ResizeObserver(fit)
+    observer.observe(box)
+    return () => observer.disconnect()
+  }, [area])
+}
+
+/**
  * マスに1字ずつ書く手書き入力。
  *
  * 大きなキャンバス1枚ではなく、筆算の答えを書く場所と同じ形のマスに書く。
@@ -70,6 +130,9 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
    * モードを分けた。
    */
   const [erasing, setErasing] = useState(false)
+  /** 筆算を置く場所。ここに入る最大の大きさにマスを広げる */
+  const area = useRef<HTMLDivElement>(null)
+  useFitCell(area)
 
   /** 画面の座標を、そのマスの描画バッファの座標へ */
   const positionOf = (event: ReactPointerEvent<HTMLCanvasElement>) => {
@@ -216,8 +279,11 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
       「けす」「かけた」に乗ると、iPhone がその字を選び始め(長押しの選択・拡大鏡)、
       書いている途中の線が止まってしまう。
     */
-    <div className="flex flex-col gap-3 select-none [-webkit-touch-callout:none]">
-      {form(cellsOf)}
+    <div className="flex h-full min-h-0 flex-col gap-3 select-none [-webkit-touch-callout:none]">
+      {/* 残りの高さを全部使う。中の筆算は、ここに入る最大の大きさまで広がる */}
+      <div ref={area} className="flex min-h-0 flex-1 items-center justify-center overflow-hidden">
+        {form(cellsOf)}
+      </div>
 
       <div className="flex shrink-0 gap-3 text-base">
         <button

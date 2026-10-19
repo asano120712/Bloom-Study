@@ -425,11 +425,19 @@ export function QuizPage() {
         上限が 44(176px)だと、計算の3段のどれかが2行になったとき最後の段が切れる。
         52(208px)なら2行ぶん増えても収まる。
       */}
-      <section className="mt-4 flex max-h-52 min-h-0 flex-1 flex-col">
+      {/*
+        筆算のときはヒントの枠を詰めて、高さを固定する(伸ばさない)。
+        筆算は式・途中の段・答えのマスで縦に長く、背の低い端末(iPhone SE)では
+        書くマスや数字キーボードが押し出される。ヒントの枠に回していた高さをマスへ回す。
+      */}
+      <section
+        className={`flex min-h-0 flex-col ${showsPromptInInput ? 'mt-2 shrink-0' : 'mt-4 max-h-52 flex-1'}`}
+      >
         <HintList
           hints={revealedHints(hints, revealedCount)}
           layout={hintLayoutOf(genre.id)}
           secondsToNext={secondsToNext}
+          compact={showsPromptInInput}
         />
 
       </section>
@@ -444,8 +452,16 @@ export function QuizPage() {
         マスに書くときは真ん中に寄せる。キーボードと違って縦に短く、
         下に寄せるとヒント枠との間が大きく空いて、つながりが見えなくなる。
       */}
+      {/*
+        マスに書くときは、ヒントの下の高さを全部使う(マスはそこに入る最大の大きさまで広がる)。
+        確認の画面に変わったら、今までどおり真ん中に寄せる。
+      */}
       <section
-        className={`mt-auto flex min-h-0 flex-2 flex-col pt-4 ${writesInBoxes ? 'justify-center' : 'justify-end'}`}
+        className={`flex min-h-0 flex-col ${
+          writesInBoxes && !selfReport
+            ? 'flex-1 pt-2'
+            : `mt-auto flex-2 pt-4 ${writesInBoxes ? 'justify-center' : 'justify-end'}`
+        }`}
       >
         {selfReport ? (
           // 読み取れなかった・違って見えたときは、正解を見せて自己申告してもらう
@@ -634,7 +650,8 @@ function PromptBlock({
   writing?: boolean
 }) {
   return (
-    <section className="mt-4 shrink-0 text-center select-none">
+    // 手書きのマスに書くときは上の余白を取らない。その分もマスを大きくするのに回す
+    <section className={`shrink-0 text-center select-none ${writing ? '' : 'mt-4'}`}>
       {caption && <p className="text-xs text-ink-400">{caption}</p>}
       {note && (
         <p aria-live="assertive" className="text-xs font-bold text-warm-600">
