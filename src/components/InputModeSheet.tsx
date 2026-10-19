@@ -8,6 +8,7 @@ import {
   type AnswerChoice,
 } from '@/data/genres'
 import { useCopy } from '@/hooks/useAudienceMode'
+import { MathText } from './MathText'
 import type { Difficulty, Genre, MathTopic, PromptForm } from '@/types'
 
 interface InputModeSheetProps {
@@ -103,7 +104,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
   const chooseTopic = (choice: AnswerChoice, chosen: MathTopic | undefined) => {
     if (!selected) return
     setTopic(chosen)
-    if (hasColumnForm(genre.id, selected)) setStep('form')
+    if (hasColumnForm(genre.id, selected, chosen)) setStep('form')
     else onStart(selected, choice, undefined, chosen)
   }
 
@@ -179,7 +180,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
                   <span className="text-lg font-bold">{copy.sheet.topics[entry]}</span>
                   {selected && (
                     <span className="text-sm text-ink-600 tabular-nums">
-                      {copy.sheet.topicExample(mathTopicExample(selected, entry))}
+                      <MathText text={copy.sheet.topicExample(mathTopicExample(selected, entry))} />
                     </span>
                   )}
                 </button>

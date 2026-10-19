@@ -26,6 +26,14 @@ export interface WriteRow {
    * 確認や結果の画面で見比べたいのは答えだけで、段まで並ぶと答えが小さく埋もれる。
    */
   scratch?: boolean
+  /**
+   * まとめた画像の中で置く位置(マス単位)。指定があると、行の右づめではなくここに置く。
+   * 分数のように、整数を左・分子を上・分母を下に置く形は、行だけでは表せないため。
+   * line は半分の位置(0.5)も取れる(帯分数の整数を、分子と分母の間の高さに置く)。
+   */
+  at?: { column: number; line: number }
+  /** まとめた画像で、このマスの上に線を引く(分数の線) */
+  ruleAbove?: boolean
 }
 
 interface BoxHandwritingProps {
@@ -212,7 +220,35 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     }))
 
   /** 書いた字を1枚にまとめる。結果画面で見せるのは全体の1枚でよい */
-  const exportImage = (): string => {
+  const exportImage = (): string =>
+    rows.some((row) => row.at) ? exportPlaced() : exportLines()
+
+  /** 位置の指定(at)どおりに置く。分数の答え */
+  const exportPlaced = (): string => {
+    const placed = rows.flatMap((row) => (row.at && !row.scratch ? [{ row, at: row.at }] : []))
+    const sheet = document.createElement('canvas')
+    sheet.width = Math.max(...placed.map(({ row, at }) => at.column + row.boxes)) * CELL
+    sheet.height = Math.ceil(Math.max(...placed.map(({ at }) => at.line + 1))) * CELL
+    const context = sheet.getContext('2d')
+    if (!context) return ''
+    context.fillStyle = '#ffffff'
+    context.fillRect(0, 0, sheet.width, sheet.height)
+
+    for (const { row, at } of placed) {
+      const cells = canvases.current.get(row.key) ?? []
+      cells.slice(0, row.boxes).forEach((canvas, index) => {
+        if (canvas) context.drawImage(canvas, (at.column + index) * CELL, at.line * CELL)
+      })
+      if (row.ruleAbove) {
+        context.fillStyle = STROKE_COLOR
+        context.fillRect(at.column * CELL, at.line * CELL - LINE_WIDTH / 2, row.boxes * CELL, LINE_WIDTH)
+      }
+    }
+    return sheet.toDataURL('image/png')
+  }
+
+  /** 行ごとに右づめで積む。筆算の答え */
+  const exportLines = (): string => {
     // 同じ行のものは横に並べる(たし算の位、わり算の商は1行に並ぶ)
     // 途中の計算(かけ算の段)は入れない。見せるのは答えだけ
     const lineOf = (row: WriteRow, index: number) => row.line ?? index

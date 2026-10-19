@@ -58,14 +58,18 @@ interface MathQuestion {
    *
    * わり算は形が違う(割る数 │ 割られる数 で囲い、商を上に書く)ので 'division'。
    */
-  promptLayout?: 'column' | 'division'
+  promptLayout?: 'column' | 'division' | 'fraction'
   answer: string
+  /** 正解と同じに扱う書き方(仮分数の答えに対する帯分数など) */
+  acceptableAnswers?: string[]
+  /** 解き方の途中式(分数だけ)。結果画面のおてほんで、答えまでの道すじとして見せる */
+  work?: string
   level: Level
   /**
    * 計算の種類。出題の前に選んだ種類で絞り込む(src/types の MathTopic と同じ値)。
    * ここは src への依存を作らないよう文字列リテラルで持つ。
    */
-  topic: 'add' | 'sub' | 'mul' | 'div'
+  topic: 'add' | 'sub' | 'mul' | 'div' | 'fracAdd' | 'fracMul'
   hintSource: string[]
 }
 
@@ -374,6 +378,133 @@ function subtractThreeDigits(): MathQuestion | null {
   }
 }
 
+const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b))
+
+/**
+ * 分数の答えを書く形にする。
+ *
+ * 約分した仮分数(7/4)を正解にし、1より大きければ帯分数(1 3/4)も同じに扱う。
+ * 教科書でもどちらの形も使うので、どちらかにしぼらない。割り切れたら整数(2)。
+ * 判定は値と約分を見る(src/features/judge)ので、ここは結果画面で見せる形を決めるだけ。
+ */
+function fractionAnswer(numerator: number, denominator: number) {
+  const common = gcd(numerator, denominator)
+  const [top, bottom] = [numerator / common, denominator / common]
+  if (bottom === 1) return { answer: String(top), top, bottom }
+  return {
+    answer: `${top}/${bottom}`,
+    acceptableAnswers: top > bottom ? [`${Math.floor(top / bottom)} ${top % bottom}/${bottom}`] : undefined,
+    top,
+    bottom,
+  }
+}
+
+/**
+ * 途中式の終わり。計算した分数(約分する前)から、約分した答え、帯分数までをつなぐ。
+ * 「= 4/6 = 2/3」「= 29/21 = 1 8/21」。約分も帯分数も要らなければ、計算した分数だけ。
+ */
+function workTail(numerator: number, denominator: number): string {
+  const result = fractionAnswer(numerator, denominator)
+  const steps = [`${numerator}/${denominator}`]
+  if (result.answer !== steps[0]) steps.push(result.answer)
+  steps.push(...(result.acceptableAnswers ?? []))
+  return steps.join(' = ')
+}
+
+/** 約分してある真分数(分子が分母より小さい)を1つ選ぶ */
+function properFraction(maxDenominator: number): [number, number] | null {
+  const denominator = pick(2, maxDenominator)
+  const numerator = pick(1, denominator - 1)
+  return gcd(numerator, denominator) === 1 ? [numerator, denominator] : null
+}
+
+/**
+ * 分母のちがう分数のたし算・ひき算(小5)。通分してから計算する。
+ *
+ * 通分した分母は 36 まで。それより大きいと、分母をそろえる計算そのものが重くなり、
+ * 小5の教科書の範囲から外れる。答えの分子・分母は2けたに収まる(手書きのマスの数)。
+ */
+function addFractions(): MathQuestion | null {
+  const first = properFraction(12)
+  const second = properFraction(12)
+  if (!first || !second) return null
+  const [[a, b], [c, d]] = [first, second]
+  if (b === d) return null
+
+  const common = (b * d) / gcd(b, d)
+  if (common > 36) return null
+
+  const isAdd = random() < 0.5
+  const [left, right] = [a * (common / b), c * (common / d)]
+  const total = isAdd ? left + right : left - right
+  if (total <= 0) return null
+  const result = fractionAnswer(total, common)
+  if (result.top > 99 || result.bottom > 99) return null
+
+  const operator = isAdd ? '+' : '−'
+  // 通分した形は、分母がもう そろっている側は書かない(「2/12 = 2/12」は手がかりにならない)
+  const converted = [
+    [a, b, left],
+    [c, d, right],
+  ]
+    .filter(([, denominator]) => denominator !== common)
+    .map(([numerator, denominator, scaled]) => `${numerator}/${denominator} = ${scaled}/${common}`)
+
+  return {
+    id: `ma-fa-${a}_${b}${isAdd ? 'p' : 'm'}${c}_${d}`,
+    genreId: 'math',
+    prompt: `${a}/${b} ${operator} ${c}/${d}`,
+    promptLayout: 'fraction',
+    answer: result.answer,
+    acceptableAnswers: result.acceptableAnswers,
+    work: `${a}/${b} ${operator} ${c}/${d} = ${left}/${common} ${operator} ${right}/${common} = ${workTail(total, common)}`,
+    level: 'g56',
+    topic: 'fracAdd',
+    hintSource: [
+      `分母を ${common} に そろえる`,
+      converted.join('、'),
+      `分子を ${isAdd ? 'たして' : 'ひいて'}、約分できるか みる`,
+    ],
+  }
+}
+
+/**
+ * 分数のかけ算・わり算(小6)。
+ * わり算は、わる数の分子と分母を入れかえて(逆数にして)かける。
+ */
+function multiplyFractions(): MathQuestion | null {
+  const first = properFraction(9)
+  const second = properFraction(9)
+  if (!first || !second) return null
+  const [[a, b], [c, d]] = [first, second]
+
+  const isMultiply = random() < 0.5
+  const result = isMultiply ? fractionAnswer(a * c, b * d) : fractionAnswer(a * d, b * c)
+  if (result.top > 99 || result.bottom > 99 || result.top / result.bottom >= 10) return null
+
+  return {
+    id: `ma-fm-${a}_${b}${isMultiply ? 'x' : 'd'}${c}_${d}`,
+    genreId: 'math',
+    prompt: `${a}/${b} ${isMultiply ? '×' : '÷'} ${c}/${d}`,
+    promptLayout: 'fraction',
+    answer: result.answer,
+    acceptableAnswers: result.acceptableAnswers,
+    work: isMultiply
+      ? `${a}/${b} × ${c}/${d} = ${workTail(a * c, b * d)}`
+      : `${a}/${b} ÷ ${c}/${d} = ${a}/${b} × ${d}/${c} = ${workTail(a * d, b * c)}`,
+    level: 'g56',
+    topic: 'fracMul',
+    hintSource: isMultiply
+      ? [`分子は ${a} × ${c}、分母は ${b} × ${d}`, 'かける前に 約分できるところを さがす', 'さいごに 約分できるか みる']
+      : [
+          // iPhone SE の幅(1行 19字ほど)で折り返さない長さにする。折り返すと3段がヒント枠に入らない
+          'わる数を ひっくり返して かける',
+          `${a}/${b} × ${d}/${c}`,
+          '分子どうし、分母どうしを かける',
+        ],
+  }
+}
+
 const KINDS: { name: string; make: () => MathQuestion | null }[] = [
   { name: 'くり上がりのたし算(小1・2)', make: addCarry },
   { name: 'くり下がりのひき算(小1・2)', make: subtractBorrow },
@@ -387,6 +518,8 @@ const KINDS: { name: string; make: () => MathQuestion | null }[] = [
   // 小5・6。今ある問題が入れ替わらないよう、種類は必ず後ろに足す(同じ種の乱数を順に引くため)
   { name: '3桁×2桁(小5・6)', make: multiply3x2 },
   { name: '2桁でわるわり算(小5・6)', make: divideBy2Digits },
+  { name: '分数のたし算・ひき算(小5)', make: addFractions },
+  { name: '分数のかけ算・わり算(小6)', make: multiplyFractions },
 ]
 
 function main(): void {

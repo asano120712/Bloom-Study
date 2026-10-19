@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { BloomMark } from '@/components/BloomMark'
+import { MathText } from '@/components/MathText'
 import { ModelAnswer } from '@/components/ModelAnswer'
 import { findGenre } from '@/data/genres'
 import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
@@ -21,6 +22,8 @@ export interface ResultState {
   prompt: string
   /** 出題語の読み(漢字ジャンルの熟語など、読みが無いと語が決まらないもの) */
   promptReading?: string
+  /** 解き方の途中式(分数の計算だけ)。おてほんの下に、答えまでの道すじとして見せる */
+  work?: string
   genreId: GenreId
   /** 「つぎの問題へ」で同じこたえかたを引き継ぐ */
   inputMode: InputMode
@@ -88,7 +91,7 @@ export function ResultPage() {
 
   if (!state) return <Navigate to="/genres" replace />
 
-  const { result, prompt, promptReading, submission, hasNext, currentStreak } = state
+  const { result, prompt, promptReading, work, submission, hasNext, currentStreak } = state
   const canReadAloud = Boolean(speechLang) && canSpeak()
 
   return (
@@ -111,13 +114,28 @@ export function ResultPage() {
 
         <div className="w-full rounded-3xl bg-bloom-50 px-5 py-6">
           <p className="text-sm text-ink-400">
-            {prompt}
+            {/* 分数の式は、分子を上・分母を下に積んで見せる */}
+            <MathText text={prompt} />
             {promptReading && <span className="ml-1">{promptReading}</span>}
           </p>
 
           <div className="mt-4">
             <ModelAnswer answer={result.answer} guide={genre?.answerGuide ?? 'baseline'} />
           </div>
+
+          {/*
+            分数は、答えだけでなく途中式も見せる。通分やひっくり返す手順のどこで
+            つまずいたかは、答えだけ見比べても分からない。
+            式が長いので、記号の前後で折り返してよい。
+          */}
+          {work && (
+            <div className="mt-4">
+              <p className="text-sm text-ink-400">{copy.result.work}</p>
+              <p className="mt-2 text-xl leading-loose font-bold text-ink-900 tabular-nums">
+                <MathText text={work} />
+              </p>
+            </div>
+          )}
 
           {canReadAloud && (
             <button
@@ -199,7 +217,7 @@ function SubmissionView({
     <div className="w-full">
       <p className="text-sm text-ink-400">{labels.text}</p>
       <p className="mt-2 text-2xl font-bold tracking-wide text-ink-900">
-        {submission.text || '—'}
+        {submission.text ? <MathText text={submission.text} /> : '—'}
       </p>
     </div>
   )
