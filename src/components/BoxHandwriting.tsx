@@ -79,10 +79,12 @@ const FIT_MAX = 128
 /**
  * マスを、書く場所に入る最大の大きさにする。
  *
- * 筆算の高さと幅は、マスの大きさにほぼ比例する(字の大きさもマスに合わせてあるため)。
- * 残りは線やすきまのような決まった大きさなので、**2つの大きさで実際に置いて測り**、
- * 「大きさ = 傾き × マス + 決まった分」を出してから、書く場所に収まる最大のマスを逆算する。
+ * **その大きさで実際に置いて測り**、書く場所に収まる最大のマスを探す。
  * 式の行数・途中の段の数・画面の大きさで答えが変わるので、決め打ちの上限より無駄が出ない。
+ *
+ * 2つの大きさで測って比例で逆算していたが、筆算の高さはマスにまっすぐ比例しない
+ * (小さいうちは下限で止まる部分がある)。小さい側で測った傾きで大きい側を見積もると
+ * 低く出て、iPad などでマスの下が十数 px 切れていた。
  *
  * 書く場所の大きさが変わったら(画面を回したとき、ブラウザのバーが出入りしたとき)測り直す。
  */
@@ -96,23 +98,22 @@ function useFitCell(area: RefObject<HTMLDivElement | null>) {
       const widest = box.querySelector('[data-fit-width]')
       if (!(content instanceof HTMLElement) || !(widest instanceof HTMLElement)) return
 
-      const at = (size: number) => {
+      const fits = (size: number) => {
         box.style.setProperty('--fit-cell', `${size}px`)
-        return {
-          height: content.getBoundingClientRect().height,
-          width: widest.getBoundingClientRect().width,
-        }
+        return (
+          content.getBoundingClientRect().height <= box.clientHeight &&
+          widest.getBoundingClientRect().width <= box.clientWidth
+        )
       }
-      const [small, large] = [40, 80]
-      const a = at(small)
-      const b = at(large)
-      const slope = { height: (b.height - a.height) / (large - small), width: (b.width - a.width) / (large - small) }
-      const fixed = { height: a.height - slope.height * small, width: a.width - slope.width * small }
-
-      const byHeight = (box.clientHeight - fixed.height) / slope.height
-      const byWidth = (box.clientWidth - fixed.width) / slope.width
-      const size = Math.floor(Math.min(byHeight, byWidth, FIT_MAX))
-      box.style.setProperty('--fit-cell', `${Math.max(FIT_MIN, size)}px`)
+      // 収まる最大の大きさを二分探索で探す(7回ほど置いて測る)
+      let size = FIT_MIN
+      let over = FIT_MAX + 1
+      while (over - size > 1) {
+        const middle = Math.floor((size + over) / 2)
+        if (fits(middle)) size = middle
+        else over = middle
+      }
+      box.style.setProperty('--fit-cell', `${size}px`)
     }
 
     fit()
