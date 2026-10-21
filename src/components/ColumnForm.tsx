@@ -32,7 +32,12 @@ type CellTone = 'typing' | 'done' | 'wrong'
  *
  * 手書きのときだけ広い(指で1字書ける大きさ)。式のほうもそれに合わせて広げる。
  */
-const CELL = '1.15em'
+const CELL = 'var(--fit-cell, 1.15em)'
+/**
+ * 打つときの字の大きさ。置く場所に入る大きさ(--fit-cell)が測ってあれば、マスに合わせる。
+ * 測っていなければ(--fit-cell が無いと、この指定は効かずに)まわりの字の大きさのまま。
+ */
+const TYPE_FONT = 'calc(var(--fit-cell) / 1.15)'
 /*
   手書きのマスは、**書く場所に入る最大の大きさ**にする。
   大きさは BoxHandwriting が書く場所の高さと幅を測って `--fit-cell` で渡す
@@ -90,11 +95,11 @@ export function ColumnForm({
       // 読み上げには1行の式を渡す。縦に積んだ数字だけでは式として読まれない
       aria-label={expression}
       className="inline-grid grid-cols-[auto_auto] gap-x-3 text-right font-bold tabular-nums"
-      data-fit-width={writing || undefined}
+      data-fit-width
       style={
         {
           '--cell': writing ? WRITE_CELL : CELL,
-          fontSize: writing ? WRITE_FONT : undefined,
+          fontSize: writing ? WRITE_FONT : TYPE_FONT,
         } as CSSProperties
       }
     >
@@ -299,12 +304,12 @@ export function DivisionForm({
     <span
       // 読み上げには1行の式を渡す。囲いと数字の位置だけでは式として読まれない
       aria-label={expression}
-      data-fit-width={writing || undefined}
+      data-fit-width
       className={`inline-grid text-right font-bold tabular-nums ${writing ? 'gap-0.5' : 'gap-1'}`}
       style={
         {
           '--cell': writing ? WRITE_CELL : CELL,
-          fontSize: writing ? WRITE_FONT : undefined,
+          fontSize: writing ? WRITE_FONT : TYPE_FONT,
           gridTemplateColumns: `auto repeat(${dividend.length}, var(--cell))`,
         } as CSSProperties
       }

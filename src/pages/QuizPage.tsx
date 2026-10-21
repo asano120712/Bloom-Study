@@ -684,6 +684,7 @@ export function QuizPage() {
                 display={(value, focus, select) => (
                   <PromptBlock
                     question={question}
+                    fitted
                     layout={layout}
                     caption={promptCaption}
                     // 値は合っているのに約分していないとき。記録はせず、直してもらう
@@ -718,6 +719,7 @@ export function QuizPage() {
                     ? (typed) => (
                         <PromptBlock
                           question={question}
+                          fitted
                           layout={layout}
                           // 打っている場所の名前を出す(「一のくらい」「かける 7 × 8」)
                           caption={step?.caption ?? promptCaption}
@@ -828,6 +830,7 @@ function PromptBlock({
   fraction,
   note,
   writing,
+  fitted,
 }: {
   question: Question
   /** 筆算・分数の形で出すか。渡さなければ1行の式のまま出す */
@@ -847,6 +850,8 @@ function PromptBlock({
   }
   /** 手書きで書くとき。マスが指で書ける大きさになる */
   writing?: boolean
+  /** 数字キーボードの上に置くとき。置く場所に入る大きさまで広げる・縮める(useFitCell) */
+  fitted?: boolean
 }) {
   const copy = useCopy()
   /*
@@ -857,8 +862,11 @@ function PromptBlock({
   const shifted = parsed ? shiftedDivision(parsed) : null
 
   return (
-    // 手書きのマスに書くときは上の余白を取らない。その分もマスを大きくするのに回す
-    <section className={`shrink-0 text-center select-none ${writing ? '' : 'mt-4'}`}>
+    /*
+      手書きのマスに書くときと、数字キーボードの上に置くときは、上の余白を取らない。
+      置く場所に入る大きさを測るときに余白は数えられないので、付けるとそのぶんはみ出す。
+    */
+    <section className={`shrink-0 text-center select-none ${writing || fitted ? '' : 'mt-4'}`}>
       {caption && <p className="text-xs text-ink-400">{caption}</p>}
       {note && (
         <p aria-live="assertive" className="text-xs font-bold text-warm-600">

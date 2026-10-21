@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { fractionText } from '@/features/math'
 import { useCopy } from '@/hooks/useAudienceMode'
+import { useFitCell } from '@/hooks/useFitCell'
 import { NumberPad } from './NumberPad'
 
 /**
@@ -33,6 +34,9 @@ interface FractionInputProps {
   onChange?: () => void
   disabled?: boolean
 }
+
+/** マスの大きさの下限と上限(px)。数字キーボードの筆算と同じ */
+const FIT = { min: 20, max: 48 }
 
 /** 1つのマスに打てる桁数。小学校の分数は2けたまでで足りる(途中式で3けたになることがある) */
 const MAX_DIGITS = 3
@@ -70,6 +74,9 @@ function isComplete(entry: FractionEntry): boolean {
 export function FractionInput({ parts, onSubmit, display, onChange, disabled = false }: FractionInputProps) {
   const copy = useCopy()
   const [entry, setEntry] = useState<FractionEntry>({})
+  /** 式と答えのマスを置く場所。キーボードの残りに入る大きさまで、全体を広げる・縮める */
+  const area = useRef<HTMLDivElement>(null)
+  useFitCell(area, FIT)
   const [focus, setFocus] = useState<FractionPart>(parts[0])
 
   const update = useCallback(
@@ -129,9 +136,10 @@ export function FractionInput({ parts, onSubmit, display, onChange, disabled = f
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
       <div
+        ref={area}
         aria-live="polite"
         aria-label={copy.number.inputLabel}
-        className="flex min-h-0 shrink flex-col justify-end overflow-y-auto"
+        className="flex min-h-0 flex-1 flex-col justify-end overflow-hidden"
       >
         {display(entry, focus, setFocus)}
       </div>
