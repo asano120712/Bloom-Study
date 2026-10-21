@@ -75,7 +75,7 @@ export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
     <div className={`flex flex-col gap-3 ${showKeyboard ? 'min-h-0 flex-1' : 'shrink-0'}`}>
       <div
         aria-live="polite"
-        aria-label="入力中のこたえ"
+        aria-label={copy.typing.inputLabel}
         className="flex min-h-14 w-full shrink-0 items-center justify-center rounded-2xl border-2 border-bloom-200 bg-white px-4"
       >
         {value ? (
@@ -93,6 +93,7 @@ export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
           onBackspace={backspace}
           onSubmit={submit}
           canSubmit={value.length > 0}
+          submitLabel={copy.typing.submit}
           disabled={disabled}
         />
       ) : (
@@ -103,7 +104,7 @@ export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
             onClick={submit}
             className="min-h-14 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
           >
-            こたえあわせ
+            {copy.typing.submit}
           </button>
           <button
             type="button"
