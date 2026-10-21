@@ -7,6 +7,7 @@ import {
   type RefObject,
 } from 'react'
 import { useCopy } from '@/hooks/useAudienceMode'
+import { EraserIcon, HandwritingTools } from '@/components/HandwritingTools'
 
 /** 書く場所1つぶん。筆算の位・商・こたえにそのまま対応する */
 export interface WriteRow {
@@ -153,10 +154,13 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
   /** 行の名前 → その行のマス。打ち終わった行の字も、ここに残って見えている */
   const canvases = useRef(new Map<string, (HTMLCanvasElement | null)[]>())
   const drawingRef = useRef(false)
-  /** 何か書いてあるマス。1マスずつ消せるので、どこが空になったかまで持つ */
-  const written = useRef(new Set<HTMLCanvasElement>())
+  /**
+   * 何か書いてあるマス(`行の名前:何マスめ`)。1マスずつ消せるので、どこが空になったかまで持つ。
+   * 消しゴムを持ったとき、消せるマスにだけ印を出すので state にしてある。
+   */
+  const [written, setWritten] = useState<ReadonlySet<string>>(new Set())
   /** 何か書いたか。書く前に「かけた」を押させない */
-  const [hasStroke, setHasStroke] = useState(false)
+  const hasStroke = written.size > 0
   /**
    * 消すモード。このあいだはマスをタップすると、そのマスだけが空になる。
    *
@@ -180,14 +184,14 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     }
   }
 
-  const startStroke = (event: ReactPointerEvent<HTMLCanvasElement>) => {
+  const startStroke = (event: ReactPointerEvent<HTMLCanvasElement>, cell: string) => {
     if (disabled) return
     const context = event.currentTarget.getContext('2d')
     if (!context) return
     event.preventDefault()
     window.getSelection()?.removeAllRanges()
     if (erasing) {
-      eraseCell(event.currentTarget)
+      eraseCell(event.currentTarget, cell)
       return
     }
     event.currentTarget.setPointerCapture(event.pointerId)
@@ -197,7 +201,7 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     context.moveTo(x, y)
   }
 
-  const extendStroke = (event: ReactPointerEvent<HTMLCanvasElement>) => {
+  const extendStroke = (event: ReactPointerEvent<HTMLCanvasElement>, cell: string) => {
     if (!drawingRef.current) return
     const context = event.currentTarget.getContext('2d')
     if (!context) return
@@ -206,8 +210,7 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     context.lineTo(x, y)
     context.stroke()
     // 書いたと数えるのは線を引いたとき。触れただけ(タップ)では何も残らないので数えない
-    written.current.add(event.currentTarget)
-    setHasStroke(true)
+    if (!written.has(cell)) setWritten((current) => new Set(current).add(cell))
   }
 
   const endStroke = () => {
@@ -215,13 +218,12 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
   }
 
   /** タップしたマスだけを空にする。消すものが無くなったら書くモードへ戻す */
-  const eraseCell = (canvas: HTMLCanvasElement) => {
+  const eraseCell = (canvas: HTMLCanvasElement, cell: string) => {
     canvas.getContext('2d')?.clearRect(0, 0, CELL, CELL)
-    written.current.delete(canvas)
-    if (written.current.size === 0) {
-      setHasStroke(false)
-      setErasing(false)
-    }
+    const rest = new Set(written)
+    rest.delete(cell)
+    setWritten(rest)
+    if (rest.size === 0) setErasing(false)
   }
 
   /** 行ごとのマスの絵。読み取りに渡す(1マス1字なので、切り出しが要らない) */
@@ -309,42 +311,50 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     const row = rows.find((entry) => entry.key === key)
     if (!row) return null
 
-    const canvasAt = (index: number) => (
-      <canvas
-        key={index}
-        ref={(element) => {
-          const list = canvases.current.get(key) ?? []
-          list[index] = element
-          canvases.current.set(key, list)
-          if (element && element.width !== CELL) {
-            element.width = CELL
-            element.height = CELL
-            const context = element.getContext('2d')
-            if (context) {
-              context.lineCap = 'round'
-              context.lineJoin = 'round'
-              context.lineWidth = LINE_WIDTH
-              context.strokeStyle = STROKE_COLOR
-            }
-          }
-        }}
-        onPointerDown={startStroke}
-        onPointerMove={extendStroke}
-        onPointerUp={endStroke}
-        onPointerCancel={endStroke}
-        onMouseDown={(event) => event.preventDefault()}
-        draggable={false}
-        aria-label={copy.handwriting.boxLabel(index + 1)}
-        /*
-          大きさは筆算側(ColumnForm)が決める --cell に合わせる。
-          指で1字書ける大きさが要るが、画面からはみ出さないよう上限もそこで掛けている。
-        */
-        className={`size-[var(--cell)] touch-none rounded-md border-2 bg-white select-none ${
-          // 消すモードのあいだは枠を赤くして、タップすると消えることを見せる
-          erasing ? 'border-warm-500' : 'border-dashed border-bloom-200'
-        }`}
-      />
-    )
+    const canvasAt = (index: number) => {
+      const cell = `${key}:${index}`
+      const erasable = erasing && written.has(cell)
+      return (
+        <span key={index} className="relative flex">
+          <canvas
+            ref={(element) => {
+              const list = canvases.current.get(key) ?? []
+              list[index] = element
+              canvases.current.set(key, list)
+              if (element && element.width !== CELL) {
+                element.width = CELL
+                element.height = CELL
+                const context = element.getContext('2d')
+                if (context) {
+                  context.lineCap = 'round'
+                  context.lineJoin = 'round'
+                  context.lineWidth = LINE_WIDTH
+                  context.strokeStyle = STROKE_COLOR
+                }
+              }
+            }}
+            onPointerDown={(event) => startStroke(event, cell)}
+            onPointerMove={(event) => extendStroke(event, cell)}
+            onPointerUp={endStroke}
+            onPointerCancel={endStroke}
+            onMouseDown={(event) => event.preventDefault()}
+            draggable={false}
+            aria-label={copy.handwriting.boxLabel(index + 1)}
+            /*
+              大きさは筆算側(ColumnForm)が決める --cell に合わせる。
+              指で1字書ける大きさが要るが、画面からはみ出さないよう上限もそこで掛けている。
+            */
+            className={`size-[var(--cell)] touch-none rounded-md border-2 select-none ${
+              // 消しゴムのあいだは枠を赤くする。書いてあるマスは色も付けて、タップすると消えることを見せる
+              erasing ? 'border-warm-500' : 'border-dashed border-bloom-200'
+            } ${erasable ? 'cursor-pointer bg-warm-100' : 'bg-white'}`}
+          />
+          {erasable && (
+            <EraserIcon className="pointer-events-none absolute top-[calc(var(--cell)*0.06)] right-[calc(var(--cell)*0.06)] size-[calc(var(--cell)*0.34)] text-warm-600" />
+          )}
+        </span>
+      )
+    }
 
     if (!row.decimalPoint) return Array.from({ length: row.boxes }, (_, index) => canvasAt(index))
 
@@ -395,23 +405,13 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
       </div>
 
       <div className="flex shrink-0 gap-3 text-base">
-        <button
-          type="button"
-          onClick={() => setErasing((current) => !current)}
-          disabled={disabled || !hasStroke}
-          aria-pressed={erasing}
-          className={`min-h-14 flex-1 rounded-full border-2 px-6 font-bold disabled:text-ink-400 ${
-            erasing ? 'border-warm-500 bg-warm-500 text-white' : 'border-bloom-200 text-ink-600'
-          }`}
-        >
-          {erasing ? copy.handwriting.stopErasing : copy.handwriting.clear}
-        </button>
+        <HandwritingTools erasing={erasing} onChange={setErasing} canErase={hasStroke} disabled={disabled} />
         <button
           type="button"
           onClick={() => onSubmit(exportImage(), cellImages())}
           // 消している途中で出すと、消し残しに気づかないまま答えになる
           disabled={disabled || !hasStroke || erasing}
-          className="min-h-14 flex-2 rounded-full bg-bloom-700 px-6 font-bold text-white disabled:bg-bloom-200"
+          className="min-h-14 flex-1 rounded-full bg-bloom-700 px-6 font-bold text-white disabled:bg-bloom-200"
         >
           {copy.handwriting.done}
         </button>

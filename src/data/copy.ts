@@ -94,9 +94,11 @@ export interface Copy {
     submit: string
   }
   handwriting: {
-    clear: string
-    /** 消すモードのあいだの「けす」ボタン。押すと書くモードへ戻る(SE の幅で折り返さない短さに) */
-    stopErasing: string
+    /** 道具(えんぴつ・消しゴム)の並びの読み上げ名 */
+    tools: string
+    /** 道具のボタンの字。絵の下に小さく添えるので、2〜3字に収める */
+    pen: string
+    eraser: string
     done: string
     boxLabel: (place: number) => string
   }
@@ -315,8 +317,9 @@ const ADULT: Copy = {
     submit: 'こたえあわせ',
   },
   handwriting: {
-    clear: 'けす',
-    stopErasing: 'かく',
+    tools: '書く道具',
+    pen: 'かく',
+    eraser: 'けす',
     done: 'かけた',
     boxLabel: (place) => `こたえの ${place} マスめ`,
   },
@@ -518,8 +521,9 @@ const KIDS: Copy = {
     submit: 'こたえあわせ',
   },
   handwriting: {
-    clear: 'けす',
-    stopErasing: 'かく',
+    tools: 'どうぐ',
+    pen: 'かく',
+    eraser: 'けす',
     done: 'かけた',
     boxLabel: (place) => `こたえの ${place} マスめ`,
   },
