@@ -53,7 +53,11 @@ export function AppShell({ children, fitViewport = false, exitTo }: AppShellProp
           className={`flex flex-1 flex-col px-5 pt-5 pb-6 ${
             // 端末が小さくて収まりきらない場合に操作不能にならないよう、逃げ道だけ用意する。
             // 通常は下の flex 配分で収まるのでスクロールバーは出ない。
-            fitViewport ? 'min-h-0 overflow-y-auto overscroll-contain' : ''
+            // 1画面に収める画面(出題)は、背の低い端末(iPhone SE など)で上下の余白を詰める。
+            // 数字キーボードと筆算を同じ画面に入れると、余白の 20px が足りなくなる
+            fitViewport
+              ? 'min-h-0 overflow-y-auto overscroll-contain [@media(max-height:700px)]:pt-3 [@media(max-height:700px)]:pb-3'
+              : ''
           }`}
         >
           {children}

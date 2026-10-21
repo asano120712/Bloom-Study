@@ -142,6 +142,11 @@ export function QuizPage() {
     image: string
     /** 読み取れた数。読み取りに回さなかった(漢字・英単語の)ときは無い */
     read?: string
+    /**
+     * 読めた数が正解と同じだった(読み取りの自信が足りずに確かめてもらうとき)。
+     * 言い方を変えて、なぜ確かめるのかを伝える
+     */
+    readMatches?: boolean
   } | null>(null)
   /**
    * 筆算の途中の段(部分積)のうち、打ち終わったもの。
@@ -434,7 +439,7 @@ export function QuizPage() {
       return
     }
 
-    setSelfReport({ hintsUsed, image, read: answered })
+    setSelfReport({ hintsUsed, image, read: answered, readMatches: judged.isCorrect })
   }
 
   /** 筆算のマスを読む。答えになる手(位ごとの数・商・こたえ)だけで、途中の段は点数に入れない */
@@ -446,7 +451,10 @@ export function QuizPage() {
     )
     // マスは画面と同じ左から右に並べ直してあるので、読んだ字をそのままつなげば答えになる。
     // answerFromSteps は打つ順(一のくらいから)を前提に並べ替えるため、ここでは使わない
-    const answered = parts.map((part) => part.text).join('')
+    // 商が小数になるわり算は、一の位の商のあとに小数点をはさむ(位置は決まっているので書かせない)
+    const answered = parts
+      .map((part, index) => (writeScript[index].decimalAfter ? `${part.text}.` : part.text))
+      .join('')
     const confidence = parts
       .filter((_, index) => writeScript[index].counts)
       .reduce((lowest, part) => Math.min(lowest, part.confidence), 1)
@@ -628,7 +636,13 @@ export function QuizPage() {
               {/* 何と読めたのかを見せる。書き直すときの手がかりになる */}
               {selfReport.read && (
                 <p className="mt-3 text-sm text-ink-600">
-                  <MathText text={copy.quiz.readAs(selfReport.read)} />
+                  <MathText
+                    text={
+                      selfReport.readMatches
+                        ? copy.quiz.readAsUnsure(selfReport.read)
+                        : copy.quiz.readAs(selfReport.read)
+                    }
+                  />
                 </p>
               )}
             </div>
@@ -681,6 +695,7 @@ export function QuizPage() {
                 display={(value, focus, select) => (
                   <PromptBlock
                     question={question}
+                    fitted
                     layout={layout}
                     caption={promptCaption}
                     // 値は合っているのに約分していないとき。記録はせず、直してもらう
@@ -715,6 +730,7 @@ export function QuizPage() {
                     ? (typed) => (
                         <PromptBlock
                           question={question}
+                          fitted
                           layout={layout}
                           // 打っている場所の名前を出す(「一のくらい」「かける 7 × 8」)
                           caption={step?.caption ?? promptCaption}
@@ -825,6 +841,7 @@ function PromptBlock({
   fraction,
   note,
   writing,
+  fitted,
 }: {
   question: Question
   /** 筆算・分数の形で出すか。渡さなければ1行の式のまま出す */
@@ -844,6 +861,8 @@ function PromptBlock({
   }
   /** 手書きで書くとき。マスが指で書ける大きさになる */
   writing?: boolean
+  /** 数字キーボードの上に置くとき。置く場所に入る大きさまで広げる・縮める(useFitCell) */
+  fitted?: boolean
 }) {
   const copy = useCopy()
   /*
@@ -854,8 +873,11 @@ function PromptBlock({
   const shifted = parsed ? shiftedDivision(parsed) : null
 
   return (
-    // 手書きのマスに書くときは上の余白を取らない。その分もマスを大きくするのに回す
-    <section className={`shrink-0 text-center select-none ${writing ? '' : 'mt-4'}`}>
+    /*
+      手書きのマスに書くときと、数字キーボードの上に置くときは、上の余白を取らない。
+      置く場所に入る大きさを測るときに余白は数えられないので、付けるとそのぶんはみ出す。
+    */
+    <section className={`shrink-0 text-center select-none ${writing || fitted ? '' : 'mt-4'}`}>
       {caption && <p className="text-xs text-ink-400">{caption}</p>}
       {note && (
         <p aria-live="assertive" className="text-xs font-bold text-warm-600">

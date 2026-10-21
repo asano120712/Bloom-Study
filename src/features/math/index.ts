@@ -5,7 +5,14 @@ export {
   withoutPoint,
   type Expression,
 } from './expression'
-export { columnScript, answerFromSteps, type ColumnStep, type ColumnSlot } from './script'
+export {
+  answerFromSteps,
+  columnScript,
+  longDivisionOf,
+  type ColumnSlot,
+  type ColumnStep,
+  type LongDivision,
+} from './script'
 export {
   FRACTION_IN_TEXT,
   fractionText,

@@ -35,7 +35,12 @@ export interface FractionWork {
 }
 
 /** 打つときのマス。字の大きさに合わせる(筆算の数のマスと同じ) */
-const CELL = '1.15em'
+const CELL = 'var(--fit-cell, 1.15em)'
+/**
+ * 打つときの字の大きさ。置く場所に入る大きさ(--fit-cell)が測ってあれば、マスに合わせる。
+ * 測っていなければ(--fit-cell が無いと、この指定は効かずに)まわりの字の大きさのまま。
+ */
+const TYPE_FONT = 'calc(var(--fit-cell) / 1.15)'
 /** 手書きのときのマス。書く場所に入る最大の大きさ(BoxHandwriting が測って渡す) */
 const WRITE_CELL = 'var(--fit-cell, min(3rem, 7svh))'
 /** 手書きのときの字。マスに合わせて大きくする(筆算と同じ 0.625 倍) */
@@ -48,7 +53,8 @@ const WRITE_FONT = 'calc(var(--cell) * 0.625)'
  * 途中式は紙と同じく、式と答えのあいだに「= 途中式」として置く。判定は答えだけで見る。
  *
  * 手書きのときは、書くマスを大きく取れるよう「式」「= 途中式」「= 答え」を3行に分ける。
- * 数字キーボードのときは、キーボードと同じ画面に入れるため「= 途中式 = 答え」を1行にする。
+ * 数字キーボードのときは、キーボードと同じ画面に入れるため「= 途中式 = 答え」を1行にする
+ * (幅が足りなければ、置く場所に入る大きさまで全体を縮める)。
  */
 export function FractionForm({
   expression,
@@ -88,13 +94,13 @@ export function FractionForm({
   return (
     <span
       aria-label={expression}
-      data-fit-width={writing || undefined}
-      // 手書きは幅を中身のまま(w-max)にする。画面の幅で縮められると、マスの大きさを決めるための幅が測れない
-      className={`inline-flex flex-col items-center gap-2 font-bold tabular-nums ${writing ? 'w-max' : ''}`}
+      data-fit-width
+      // 幅は中身のまま(w-max)。画面の幅で縮められると、マスの大きさを決めるための幅が測れない
+      className="inline-flex w-max flex-col items-center gap-2 font-bold tabular-nums"
       style={
         {
           '--cell': writing ? WRITE_CELL : CELL,
-          fontSize: writing ? WRITE_FONT : undefined,
+          fontSize: writing ? WRITE_FONT : TYPE_FONT,
         } as CSSProperties
       }
     >
@@ -107,8 +113,8 @@ export function FractionForm({
           {answerRow}
         </>
       ) : (
-        // 幅が足りないときだけ、答えを次の行へ折り返す(字の大きい端末で、画面の幅を超えないように)
-        <span className="inline-flex flex-wrap items-center justify-center gap-x-[0.3em] gap-y-2">
+        // 1行に並べる。幅が足りない端末では、折り返すのではなく全体を縮めて入れる(useFitCell)
+        <span className="inline-flex items-center gap-[0.3em]">
           {workRow}
           {answerRow}
         </span>

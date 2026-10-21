@@ -576,6 +576,62 @@ function divideDecimals(): MathQuestion | null {
   }
 }
 
+/**
+ * 小数 ÷ 小数で、商が小数になるもの(小5)。7.2 ÷ 1.6 = 4.5、0.6 ÷ 0.8 = 0.75。
+ *
+ * わる数は小数第1位まで、商は小数第2位まで。小数点を動かしたあとのわられる数は
+ * 小数第1位まで(2.56 ÷ 0.8 → 25.6 ÷ 8)。わりきれないところは 0 を付けたしてわり進む。
+ * 筆算の横幅が今の問題と同じくらいに収まるよう、わり進んだあとの数字は5けたまでにする。
+ *
+ * 商は、一の位の 0 を除いて2けたまで(4.5、0.75、3.2)。3けた(4.45)になると途中の段が6つになり、
+ * iPhone SE では手書きのマスが 33px まで小さくなって、指で書けなくなる。
+ */
+function divideDecimalQuotient(): MathQuestion | null {
+  const divisor = tenths(2, 99)
+  // 商を100倍した整数。整数の商(100の倍数)は、商が整数のわり算のほうで出している
+  const quotient = pick(5, 999)
+  if (divisor === null || quotient % 100 === 0) return null
+  // 商のけた数(一の位の 0 と、末尾の 0 を除く)。4.5 → 45、0.75 → 75
+  if (String(quotient).replace(/0+$/, '').length > 2) return null
+
+  // わられる数を1000倍した整数(わる数の10倍 × 商の100倍)
+  const scaled = divisor * quotient
+  // 小数点を動かしたあとのわられる数(わられる数 × 10)が、小数第1位までで書けるもの
+  if (scaled % 10 !== 0) return null
+  const dividend = decimalText(scaled, 3)
+  const by = decimalText(divisor, 1)
+  // 割られる数が 0.0x のように小さすぎると、筆算の形が教科書から外れる
+  if (Number(dividend) < 0.1) return null
+
+  // わり進んだあとの数字の数(小数点を動かした数 + 付けたす 0)
+  const shifted = decimalText(scaled, 2)
+  const answer = decimalText(quotient, 2)
+  const digits = shifted.replace('.', '').replace(/^0+/, '').length + Math.max(0, decimalPlaces(answer) - decimalPlaces(shifted))
+  if (digits > 5) return null
+
+  return {
+    id: `ma-dq-${dividend}d${by}`,
+    genreId: 'math',
+    prompt: `${dividend} ÷ ${by}`,
+    promptLayout: 'division',
+    answer,
+    level: 'g56',
+    topic: 'decimal',
+    // iPhone SE の幅(1行 19字ほど)で折り返さない長さにする
+    hintSource: [
+      'わる数の 小数点を 1けた 右に うつす',
+      '商の 小数点は 真上に うつ',
+      'わりきれなければ 0を つけて わり進む',
+    ],
+  }
+}
+
+/** 小数点より下のけた数(「4.5」なら 1) */
+function decimalPlaces(number: string): number {
+  const point = number.indexOf('.')
+  return point === -1 ? 0 : number.length - point - 1
+}
+
 const KINDS: { name: string; make: () => MathQuestion | null }[] = [
   { name: 'くり上がりのたし算(小1・2)', make: addCarry },
   { name: 'くり下がりのひき算(小1・2)', make: subtractBorrow },
@@ -593,6 +649,7 @@ const KINDS: { name: string; make: () => MathQuestion | null }[] = [
   { name: '分数のかけ算・わり算(小6)', make: multiplyFractions },
   { name: '小数のかけ算(小5)', make: multiplyDecimals },
   { name: '小数のわり算(小5)', make: divideDecimals },
+  { name: '小数のわり算・商が小数(小5)', make: divideDecimalQuotient },
 ]
 
 function main(): void {

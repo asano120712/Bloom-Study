@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { useCopy } from '@/hooks/useAudienceMode'
+import { useFitCell } from '@/hooks/useFitCell'
 import { NumberPad } from './NumberPad'
 
 interface NumberInputProps {
@@ -19,6 +20,12 @@ interface NumberInputProps {
   allowDecimal?: boolean
   disabled?: boolean
 }
+
+/**
+ * 筆算のマスの大きさの下限と上限(px)。上限は、今までの大きさ(字 2.25rem のマス)より少し大きいくらい。
+ * 打つだけなので、手書きほど大きくなくてよい。
+ */
+const FIT = { min: 20, max: 48 }
 
 /** 答えの桁数の上限。小学校の範囲ではこれで足りる */
 const MAX_LENGTH = 6
@@ -40,6 +47,9 @@ export function NumberInput({
 }: NumberInputProps) {
   const copy = useCopy()
   const [value, setValue] = useState('')
+  /** 筆算を置く場所。キーボードの残りの高さに入る大きさまで、筆算を広げる・縮める */
+  const area = useRef<HTMLDivElement>(null)
+  useFitCell(area, FIT)
 
   const append = useCallback((digit: string) => {
     setValue((current) => {
@@ -96,12 +106,13 @@ export function NumberInput({
     <div className="flex min-h-0 flex-1 flex-col gap-3">
       {/*
         筆算が縦に長くなっても(わり算は引く段で6段になる)、数字キーボードは
-        画面から押し出さない。入りきらないぶんはここだけが流れる。
+        画面から押し出さない。筆算は、ここに入る大きさまで縮める(useFitCell)。
       */}
       <div
+        ref={area}
         aria-live="polite"
         aria-label={copy.number.inputLabel}
-        className="flex min-h-0 shrink flex-col justify-end overflow-y-auto"
+        className="flex min-h-0 flex-1 flex-col justify-end overflow-hidden"
       >
         {display ? (
           display(value)

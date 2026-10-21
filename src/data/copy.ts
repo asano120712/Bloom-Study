@@ -24,7 +24,7 @@ export interface Copy {
   genrePrompt: Partial<Record<GenreId, string>>
   /** こたえかた。クイズの入力方法と、小1・小2のあそび(なぞり・くみたて) */
   answerModes: Record<AnswerChoiceId, { label: string; note: string }>
-  difficulties: Record<Difficulty, { label: string; note: string }>
+  difficulties: Record<Difficulty, { label: string }>
   /**
    * 結果画面の判定の見出し。
    * 絵文字は使わず、言葉そのもので正誤が分かるようにする(色だけに頼らない)。
@@ -81,6 +81,11 @@ export interface Copy {
     passAria: string
     /** 書いた字が何に読めたか。読み取れなかったときに見せる */
     readAs: (text: string) => string
+    /**
+     * 読めた数は正解と同じだが、読み取りの自信が足りなかったとき。
+     * 「同じなのになぜ聞くの」とならないよう、確かめてほしい理由を言う
+     */
+    readAsUnsure: (text: string) => string
     answerLabel: string
     wrong: string
     right: string
@@ -102,7 +107,7 @@ export interface Copy {
     done: string
     boxLabel: (place: number) => string
   }
-  typing: { placeholderTap: string; placeholderKey: string }
+  typing: { placeholderTap: string; placeholderKey: string; inputLabel: string; submit: string }
   /** あそび(なぞりがき・おなじものさがし)で共通の言葉 */
   play: { allDone: string; again: string; other: string }
   /** 数で答えるとき */
@@ -163,11 +168,11 @@ const ADULT: Copy = {
     english: { label: '英単語', description: '日本語の出題語を見て、英単語を思い出す' },
     kanji: { label: '漢字', description: '熟語の ◯ に入る漢字を書いて思い出す' },
     math: { label: '計算', description: 'かけ算・わり算を、ヒントを見ながら解く' },
-    'trace-shape': { label: 'なぞりがき(かたち)', description: 'まるやさんかくを指でなぞる' },
-    'trace-hiragana': { label: 'なぞりがき(ひらがな)', description: 'ひらがなを書き順どおりになぞる' },
-    'trace-kanji': { label: 'なぞりがき(漢字)', description: '小1・小2の漢字を書き順どおりになぞる' },
-    'build-kanji': { label: 'かんじの くみたて', description: 'お手本を覚えてから、部品で漢字を組む' },
-    match: { label: 'ちがい さがし', description: 'すこしだけ形が違う4つから、お手本と同じものを選ぶ' },
+    'trace-shape': { label: 'なぞり書き(形)', description: '丸や三角を指でなぞる' },
+    'trace-hiragana': { label: 'なぞり書き(ひらがな)', description: 'ひらがなを書き順どおりになぞる' },
+    'trace-kanji': { label: 'なぞり書き(漢字)', description: '小1・小2の漢字を書き順どおりになぞる' },
+    'build-kanji': { label: '漢字の組み立て', description: 'お手本を覚えてから、部品で漢字を組む' },
+    match: { label: '違い探し', description: '少しだけ形が違う4つから、お手本と同じものを選ぶ' },
   },
   genrePrompt: {
     english: 'この言葉を思い出そう',
@@ -177,60 +182,60 @@ const ADULT: Copy = {
     handwriting: { label: '手書き', note: '指でなぞって書く' },
     typing: { label: 'タイピング', note: 'キーボードで入力する' },
     assemble: { label: 'パーツを組む', note: 'パーツをスライドしてマスに組む' },
-    trace: { label: 'なぞりがき', note: 'お手本を書き順どおりになぞる' },
-    build: { label: 'くみたて', note: 'お手本を覚えてから、部品で組む' },
+    trace: { label: 'なぞり書き', note: 'お手本を書き順どおりになぞる' },
+    build: { label: '組み立て', note: 'お手本を覚えてから、部品で組む' },
     number: { label: '数字で答える', note: '数字キーボードで打つ' },
   },
   /*
-   * なんいどの説明は、ジャンルによらない言い方にしてある。
+   * 難易度の説明は、ジャンルによらない言い方にしてある。
    * 計算も入ったので、字数(「配当漢字402字」)のような漢字だけの話は書けない。
    */
   difficulties: {
-    g12: { label: '小学1・2年', note: 'ならいはじめのところ' },
-    g34: { label: '小学3・4年', note: '小学3・4年で習うところ' },
-    g56: { label: '小学5・6年', note: '小学5・6年で習うところ' },
-    junior: { label: '中学生', note: '中学生で習うところ' },
-    senior: { label: '高校生', note: '高校生で習うところ' },
-    working: { label: '社会人', note: 'そこから先のむずかしいところ' },
+    g12: { label: '小学1・2年' },
+    g34: { label: '小学3・4年' },
+    g56: { label: '小学5・6年' },
+    junior: { label: '中学生' },
+    senior: { label: '高校生' },
+    working: { label: '社会人' },
   },
   verdicts: {
-    correct: 'せいかい',
-    near: 'おしい! せいかいあつかい',
-    incorrect: 'ざんねん',
+    correct: '正解',
+    near: '惜しい! 正解扱い',
+    incorrect: '残念',
     'self-correct': 'できた',
-    'self-incorrect': 'ちがった',
+    'self-incorrect': '違った',
     passed: 'パスした',
   },
   top: {
     lead: [
       '答えはすぐに出しません。',
-      'ヒントがひとつずつ浮かびあがるあいだに、',
+      'ヒントが1つずつ浮かび上がる間に、',
       '思い出す力を育てます。',
     ],
-    start: 'はじめる',
+    start: '始める',
     record: 'これまでの記録を見る',
   },
   genreSelect: {
-    title: 'ジャンルをえらぶ',
-    note: 'ジャンルごとにヒントの出かたが変わります。',
-    back: 'トップにもどる',
+    title: 'ジャンルを選ぶ',
+    note: 'ジャンルごとにヒントの出方が変わります。',
+    back: 'トップに戻る',
   },
   howTo: {
-    open: (activity) => `${activity}のあそびかた`,
-    title: 'あそびかた',
-    next: 'つぎへ',
-    back: 'もどる',
-    close: 'とじる',
+    open: (activity) => `${activity}の遊び方`,
+    title: '遊び方',
+    next: '次へ',
+    back: '戻る',
+    close: '閉じる',
     steps: {
       english: [
         '日本語の出題語が出ます。英単語を思い出して答えます。',
-        'こたえかたは、手書きとタイピングから選べます。',
+        '答え方は、手書きとタイピングから選べます。',
         'ヒントは時間がたつと1つずつ増えます。待つほどやさしくなります。',
         '手書きは字を読み取りません。書けたら、自分で合っていたかを選びます。',
       ],
       kanji: [
         '熟語の ◯ に入る漢字を1字答えます。読みも一緒に出ます。',
-        '小1・2は、なぞりがきと、パーツを組むあそびから選べます。',
+        '小1・2は、なぞり書きと、パーツを組む遊びから選べます。',
         'パーツを組むときは、へんとつくりの枠へスライドして入れます。',
       ],
       math: [
@@ -245,7 +250,7 @@ const ADULT: Copy = {
       ],
       'trace-hiragana': [
         '光っている ● から、書き順どおりに指でなぞります。',
-        '1画なぞると、つぎの画の ● が光ります。',
+        '1画なぞると、次の画の ● が光ります。',
       ],
       'trace-kanji': [
         '光っている ● から、書き順どおりに指でなぞります。',
@@ -263,15 +268,15 @@ const ADULT: Copy = {
     },
   },
   sheet: {
-    start: 'はじめる',
-    chooseDifficulty: 'なんいどをえらぶ',
-    chooseMode: 'こたえかたをえらぶ',
+    start: '始める',
+    chooseDifficulty: '難易度を選ぶ',
+    chooseMode: '答え方を選ぶ',
     chooseForm: 'どの形で解く?',
     forms: {
       column: { label: '筆算で解く', note: '位をそろえて、段ごとに打つ' },
       plain: { label: '1行の式で解く', note: '式を見て、答えだけ打つ' },
     },
-    levelIs: (level) => `なんいど：${level}`,
+    levelIs: (level) => `難易度：${level}`,
     chooseTopic: 'どの計算をする?',
     topics: {
       add: 'たし算',
@@ -282,102 +287,108 @@ const ADULT: Copy = {
       fracMul: '分数のかけ算・わり算',
       decimal: '小数のかけ算・わり算',
     },
-    mixedTopic: { label: 'ランダム', note: 'ぜんぶの種類をまぜて出す' },
-    topicExample: (expression) => `れい ${expression}`,
-    backToTopic: '計算の種類にもどる',
-    backToMode: 'こたえかたにもどる',
-    backToDifficulty: 'なんいどにもどる',
-    close: 'もどる',
+    mixedTopic: { label: 'ランダム', note: '全部の種類を混ぜて出す' },
+    topicExample: (expression) => `例 ${expression}`,
+    backToTopic: '計算の種類に戻る',
+    backToMode: '答え方に戻る',
+    backToDifficulty: '難易度に戻る',
+    close: '戻る',
   },
   quiz: {
-    progress: (streak, index) => `${streak} れんぞく / ${index} 問め`,
+    progress: (streak, index) => `${streak} 連続 / ${index} 問目`,
     pass: 'パス',
     passAria: 'この問題をパスする',
     readAs: (text) => `書いた字は「${text}」に見えました`,
-    answerLabel: 'こたえ',
-    wrong: 'ちがった',
+    readAsUnsure: (text) => `「${text}」に見えましたが、自信がありません。合っていたら「できた」を押してください`,
+    answerLabel: '答え',
+    wrong: '違った',
     right: 'できた',
   },
   hints: {
     waiting: 'まもなくヒントが出ます',
-    next: (seconds) => `つぎのヒントまで ${seconds} 秒`,
+    next: (seconds) => `次のヒントまで ${seconds} 秒`,
     done: 'ヒントはここまで',
   },
   parts: {
-    recall: ['あたまの中で書いてみよう。', '思い出せたら部品を組み立てます。'],
+    recall: ['頭の中で書いてみよう。', '思い出せたら部品を組み立てます。'],
     recalled: '思い出した',
     heading: {
-      horizontal: 'へん(左)と つくり(右)を 組もう',
-      vertical: 'うえと したを 組もう',
+      horizontal: 'へん(左)とつくり(右)を組もう',
+      vertical: '上と下を組もう',
     },
     slot: {
       horizontal: { first: 'へん', second: 'つくり' },
-      vertical: { first: 'うえ', second: 'した' },
+      vertical: { first: '上', second: '下' },
     },
-    submit: 'こたえあわせ',
+    submit: '答え合わせ',
   },
   handwriting: {
     tools: '書く道具',
-    pen: 'かく',
-    eraser: 'けす',
-    done: 'かけた',
-    boxLabel: (place) => `こたえの ${place} マスめ`,
+    pen: '書く',
+    eraser: '消す',
+    done: '書けた',
+    boxLabel: (place) => `答えの ${place} マス目`,
   },
-  typing: { placeholderTap: 'こたえをタップして入力', placeholderKey: 'キーボードで入力' },
-  play: { allDone: 'ぜんぶ できた!', again: 'もういちど', other: 'ほかのあそび' },
+  typing: {
+    placeholderTap: '答えをタップして入力',
+    placeholderKey: 'キーボードで入力',
+    inputLabel: '入力中の答え',
+    submit: '答え合わせ',
+  },
+  play: { allDone: '全部できた!', again: 'もう一度', other: '他の遊び' },
   number: {
-    inputLabel: '入力中のこたえ',
+    inputLabel: '入力中の答え',
     placeholder: '数字で答えよう',
-    submit: 'こたえあわせ',
-    nextRow: 'つぎの段へ',
-    nextPlace: 'つぎのくらいへ',
-    nextStep: 'つぎへ',
-    retry: 'もういちど打ってみよう',
-    reducible: 'あっています! 約分できるので、約分してから答えよう',
+    submit: '答え合わせ',
+    nextRow: '次の段へ',
+    nextPlace: '次の位へ',
+    nextStep: '次へ',
+    retry: 'もう一度打ってみよう',
+    reducible: '合っています! 約分できるので、約分してから答えよう',
     fractionParts: { whole: '整数', numerator: '分子', denominator: '分母' },
-    shiftPoint: (places) => `小数点を ${places}けた 右に うつして わる`,
+    shiftPoint: (places) => `小数点を ${places}桁右に移して割る`,
     decimalPoint: 'ここに小数点を打つ',
   },
   trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
-  build: { look: 'この漢字をよく見て、覚えよう', answerIs: 'こたえは これ' },
+  build: { look: 'この漢字をよく見て、覚えよう', answerIs: '答えはこれ' },
   match: {
-    question: 'よく見て。どれと おなじ?',
-    correct: 'あたり!',
-    hint: 'ひかっているのが こたえだよ',
+    question: 'よく見て。どれと同じ?',
+    correct: '当たり!',
+    hint: '光っているのが答えだよ',
   },
   result: {
-    model: 'おてほん',
-    work: 'とちゅうの式',
+    model: 'お手本',
+    work: '途中の式',
     listen: '読み方を聞く',
     mine: {
-      text: 'じぶんが うった こたえ',
-      parts: 'じぶんが 組んだ パーツ',
-      handwriting: 'じぶんが かいた こたえ',
+      text: '自分が打った答え',
+      parts: '自分が組んだパーツ',
+      handwriting: '自分が書いた答え',
     },
-    streak: (streak) => `${streak} 問れんぞく正解中`,
-    next: 'つぎの問題へ',
-    chooseGenre: 'ジャンルをえらぶ',
+    streak: (streak) => `${streak} 問連続正解中`,
+    next: '次の問題へ',
+    chooseGenre: 'ジャンルを選ぶ',
     record: '記録を見る',
     enterHint: 'Enter でも進めます',
   },
   myPage: {
     title: 'これまでの記録',
-    loading: '記録をよみこみ中',
+    loading: '記録を読み込み中',
     correct: '正解数',
-    currentStreak: 'いま連続',
+    currentStreak: '今の連続',
     bestStreak: '最高連続',
-    trialLeft: (left) => `無料でとける残り: ${left} 問`,
+    trialLeft: (left) => `無料で解ける残り: ${left} 問`,
     history: '解答履歴',
     empty: 'まだ記録がありません。',
     hintsUsed: (count) => `ヒント${count}`,
-    solve: '問題をとく',
+    solve: '問題を解く',
     reset: '記録をリセットする(開発用)',
   },
   exit: {
     label: '← やめる',
-    title: 'とちゅうで やめる?',
-    note: 'いまの問題は とばされます。',
-    stay: 'つづける',
+    title: '途中でやめる?',
+    note: '今の問題は飛ばされます。',
+    stay: '続ける',
     leave: 'やめる',
   },
 }
@@ -406,12 +417,12 @@ const KIDS: Copy = {
     number: { label: 'すうじで こたえる', note: 'すうじの キーボードで うつ' },
   },
   difficulties: {
-    g12: { label: '1・2ねんせい', note: 'ならいはじめの ところ' },
-    g34: { label: '3・4ねんせい', note: '3・4ねんせいで ならう ところ' },
-    g56: { label: '5・6ねんせい', note: '5・6ねんせいで ならう ところ' },
-    junior: { label: 'ちゅうがくせい', note: 'ちゅうがくで ならう ところ' },
-    senior: { label: 'こうこうせい', note: 'こうこうで ならう ところ' },
-    working: { label: 'おとな', note: 'そこから さきの むずかしい ところ' },
+    g12: { label: '1・2ねんせい' },
+    g34: { label: '3・4ねんせい' },
+    g56: { label: '5・6ねんせい' },
+    junior: { label: 'ちゅうがくせい' },
+    senior: { label: 'こうこうせい' },
+    working: { label: 'おとな' },
   },
   verdicts: {
     correct: 'せいかい！',
@@ -498,6 +509,7 @@ const KIDS: Copy = {
     pass: 'パス',
     passAria: 'この もんだいを パスする',
     readAs: (text) => `かいた じは「${text}」に みえたよ`,
+    readAsUnsure: (text) => `「${text}」に みえたけど、すこし じしんが ないよ。あってたら「できた」を おしてね`,
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',
@@ -527,7 +539,12 @@ const KIDS: Copy = {
     done: 'かけた',
     boxLabel: (place) => `こたえの ${place} マスめ`,
   },
-  typing: { placeholderTap: 'こたえを タップして うとう', placeholderKey: 'キーボードで うとう' },
+  typing: {
+    placeholderTap: 'こたえを タップして うとう',
+    placeholderKey: 'キーボードで うとう',
+    inputLabel: '入力中のこたえ',
+    submit: 'こたえあわせ',
+  },
   play: { allDone: 'ぜんぶ できた！', again: 'もういちど', other: 'ほかの あそび' },
   number: {
     inputLabel: 'いま うっている こたえ',
