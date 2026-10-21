@@ -142,6 +142,11 @@ export function QuizPage() {
     image: string
     /** 読み取れた数。読み取りに回さなかった(漢字・英単語の)ときは無い */
     read?: string
+    /**
+     * 読めた数が正解と同じだった(読み取りの自信が足りずに確かめてもらうとき)。
+     * 言い方を変えて、なぜ確かめるのかを伝える
+     */
+    readMatches?: boolean
   } | null>(null)
   /**
    * 筆算の途中の段(部分積)のうち、打ち終わったもの。
@@ -434,7 +439,7 @@ export function QuizPage() {
       return
     }
 
-    setSelfReport({ hintsUsed, image, read: answered })
+    setSelfReport({ hintsUsed, image, read: answered, readMatches: judged.isCorrect })
   }
 
   /** 筆算のマスを読む。答えになる手(位ごとの数・商・こたえ)だけで、途中の段は点数に入れない */
@@ -631,7 +636,13 @@ export function QuizPage() {
               {/* 何と読めたのかを見せる。書き直すときの手がかりになる */}
               {selfReport.read && (
                 <p className="mt-3 text-sm text-ink-600">
-                  <MathText text={copy.quiz.readAs(selfReport.read)} />
+                  <MathText
+                    text={
+                      selfReport.readMatches
+                        ? copy.quiz.readAsUnsure(selfReport.read)
+                        : copy.quiz.readAs(selfReport.read)
+                    }
+                  />
                 </p>
               )}
             </div>
