@@ -217,7 +217,6 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
                   className="flex min-h-16 shrink-0 flex-col justify-center rounded-2xl border-2 border-bloom-200 px-5 text-left text-ink-900"
                 >
                   <span className="text-lg font-bold">{copy.difficulties[level].label}</span>
-                  <span className="text-sm text-ink-600">{copy.difficulties[level].note}</span>
                 </button>
               ))}
             </div>
