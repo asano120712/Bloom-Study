@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
-import { BoxHandwriting, type WriteRow } from '@/components/BoxHandwriting'
+import { BoxHandwriting, type WriteRow, type WrittenRow } from '@/components/BoxHandwriting'
 import { ColumnForm, DivisionForm, type ColumnCell } from '@/components/ColumnForm'
 import { FractionForm, type FractionSlot, type FractionWork } from '@/components/FractionForm'
 import { FractionInput, type FractionPart } from '@/components/FractionInput'
@@ -14,7 +14,14 @@ import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { answerChoicesOf, findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
-import { answerFromSteps, columnScript, fractionText, type ColumnStep } from '@/features/math'
+import {
+  answerFromSteps,
+  columnScript,
+  fractionText,
+  parseExpression,
+  shiftedDivision,
+  type ColumnStep,
+} from '@/features/math'
 import { readCells } from '@/features/recognize'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeNumber, judgeParts, judgeTyping } from '@/features/judge'
@@ -397,6 +404,8 @@ export function QuizPage() {
         line: isScratch(entry) ? index + 1 : 0,
         // 途中の計算。確認や結果の画面に出す画像には入れず、答えだけを見せる
         scratch: isScratch(entry),
+        // 小数のかけ算の答え。マスの間をタップして小数点を打つ
+        decimalPoint: Boolean(entry.decimals),
       }))
 
   /**
@@ -411,7 +420,7 @@ export function QuizPage() {
    */
   const judgeWritten = async (
     image: string,
-    rows: { key: string; cells: ImageData[] }[],
+    rows: WrittenRow[],
   ): Promise<void> => {
     const hintsUsed = revealedCount
 
@@ -429,10 +438,10 @@ export function QuizPage() {
   }
 
   /** 筆算のマスを読む。答えになる手(位ごとの数・商・こたえ)だけで、途中の段は点数に入れない */
-  const readColumn = async (rows: { key: string; cells: ImageData[] }[]) => {
+  const readColumn = async (rows: WrittenRow[]) => {
     const parts = await Promise.all(
       writeScript.map(async (entry, index) =>
-        entry.counts ? await readCells(rows[index]?.cells ?? []) : { text: '', confidence: 1 },
+        entry.counts ? await readWithPoint(rows[index]) : { text: '', confidence: 1 },
       ),
     )
     // マスは画面と同じ左から右に並べ直してあるので、読んだ字をそのままつなげば答えになる。
@@ -444,8 +453,25 @@ export function QuizPage() {
     return { answered, confidence }
   }
 
+  /**
+   * 1つの書く場所を読む。小数点を打ってあれば、その場所で左右に分けて読み、点でつなぐ。
+   * 空のマスは読み飛ばすので、点の場所はマスの番号で分けてから読む(右に寄せて書いても読める)。
+   */
+  const readWithPoint = async (row: WrittenRow | undefined) => {
+    const cells = row?.cells ?? []
+    if (row?.point === null || row?.point === undefined) return readCells(cells)
+    const [whole, fraction] = await Promise.all([
+      readCells(cells.slice(0, row.point + 1)),
+      readCells(cells.slice(row.point + 1)),
+    ])
+    return {
+      text: `${whole.text || '0'}.${fraction.text}`,
+      confidence: Math.min(whole.confidence, fraction.confidence),
+    }
+  }
+
   /** 分数のマス(整数・分子・分母)を読んで、「1 3/4」の形にする */
-  const readFraction = async (rows: { key: string; cells: ImageData[] }[]) => {
+  const readFraction = async (rows: WrittenRow[]) => {
     const [whole, numerator, denominator] = await Promise.all(
       FRACTION_PARTS.map((part) =>
         readCells(rows.find((row) => row.key === `${question.id}-${part}`)?.cells ?? []),
@@ -682,6 +708,8 @@ export function QuizPage() {
                 key={`number-${question.id}-${stepIndex}-${missed ?? ''}`}
                 // 筆算は、そこに入りうる桁数より多くは打てない(マスからはみ出す)
                 maxLength={step?.width}
+                // 小数点は、小数の答えのところでだけ打てる(段は整数で計算するので出さない)
+                allowDecimal={step ? Boolean(step.decimals) : question.prompt.includes('.')}
                 display={
                   showsPromptInInput
                     ? (typed) => (
@@ -702,8 +730,12 @@ export function QuizPage() {
                     commitStep(value, step)
                     return
                   }
-                  // 最後の手。ここも合うまで進まない
-                  if (step && value !== step.expected) {
+                  // 最後の手。ここも合うまで進まない。
+                  // 小数の答えは数として比べる(8.40 も 8.4 も同じ。紙でも最後の 0 は消してよい)
+                  const isRight = step?.decimals
+                    ? Number(value) === Number(step.expected)
+                    : value === step?.expected
+                  if (step && !isRight) {
                     setMissed(value)
                     if (step.counts) setMissedAnswer(true)
                     return
@@ -813,6 +845,14 @@ function PromptBlock({
   /** 手書きで書くとき。マスが指で書ける大きさになる */
   writing?: boolean
 }) {
+  const copy = useCopy()
+  /*
+    小数のわり算は、小数点を動かした式(84 ÷ 12)で筆算する。もとの式と、
+    何けた動かしたのかを筆算の上に添える。式が変わった理由が見えないと、別の問題に見える。
+  */
+  const parsed = layout === 'division' ? parseExpression(question.prompt) : null
+  const shifted = parsed ? shiftedDivision(parsed) : null
+
   return (
     // 手書きのマスに書くときは上の余白を取らない。その分もマスを大きくするのに回す
     <section className={`shrink-0 text-center select-none ${writing ? '' : 'mt-4'}`}>
@@ -820,6 +860,11 @@ function PromptBlock({
       {note && (
         <p aria-live="assertive" className="text-xs font-bold text-warm-600">
           {note}
+        </p>
+      )}
+      {shifted && shifted.shift > 0 && (
+        <p className="text-xs text-ink-600">
+          {question.prompt} → {shifted.left} ÷ {shifted.right}({copy.number.shiftPoint(shifted.shift)})
         </p>
       )}
       {/*

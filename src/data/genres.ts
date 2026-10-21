@@ -47,7 +47,7 @@ const DIFFICULTIES: Record<GenreId, Difficulty[]> = {
 const MATH_TOPICS: Partial<Record<Difficulty, MathTopic[]>> = {
   g12: ['add', 'sub'],
   g34: ['add', 'sub', 'mul', 'div'],
-  g56: ['mul', 'div', 'fracAdd', 'fracMul'],
+  g56: ['mul', 'div', 'decimal', 'fracAdd', 'fracMul'],
 }
 
 export function mathTopicsOf(genreId: GenreId, difficulty: Difficulty): MathTopic[] {
@@ -67,6 +67,7 @@ const MATH_TOPIC_EXAMPLES: Partial<Record<Difficulty, Partial<Record<MathTopic, 
     div: '936 ÷ 24',
     fracAdd: '2/3 + 1/4',
     fracMul: '3/4 ÷ 2/5',
+    decimal: '2.4 × 3.5',
   },
 }
 

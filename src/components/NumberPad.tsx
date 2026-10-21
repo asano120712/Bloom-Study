@@ -4,6 +4,8 @@ interface NumberPadProps {
   onSubmit: () => void
   canSubmit: boolean
   submitLabel: string
+  /** 小数点のキーを出す(小数の答えを打つときだけ。整数の問題で出すと、押し間違えの元になる) */
+  allowDecimal?: boolean
   disabled?: boolean
 }
 
@@ -24,6 +26,7 @@ export function NumberPad({
   onSubmit,
   canSubmit,
   submitLabel,
+  allowDecimal = false,
   disabled = false,
 }: NumberPadProps) {
   return (
@@ -46,17 +49,21 @@ export function NumberPad({
           disabled={disabled}
           onClick={onBackspace}
           aria-label="1文字消す"
-          className="h-full flex-1 rounded-xl border-2 border-bloom-200 text-xl font-bold text-ink-600 disabled:text-ink-400"
+          // 小数点のキーがあるときは、消すキーと小数点を細くして「こたえあわせ」が折り返さない幅を残す
+          className={`h-full ${allowDecimal ? 'flex-[0.8]' : 'flex-1'} rounded-xl border-2 border-bloom-200 text-xl font-bold text-ink-600 disabled:text-ink-400`}
         >
           ⌫
         </button>
         <NumberKey digit="0" onKey={onKey} disabled={disabled} />
+        {allowDecimal && (
+          <NumberKey digit="." label="小数点" onKey={onKey} disabled={disabled} className="flex-[0.8]" />
+        )}
         <button
           type="button"
           disabled={disabled || !canSubmit}
           onClick={onSubmit}
           // キーの幅は画面幅で決まるので、文字も幅に合わせて頭打ちにする
-          className="h-full flex-1 rounded-xl bg-bloom-700 text-[min(1rem,4vw)] font-bold text-white disabled:bg-bloom-200"
+          className={`h-full ${allowDecimal ? 'flex-[1.6]' : 'flex-1'} rounded-xl bg-bloom-700 text-[min(1rem,4vw)] font-bold text-white disabled:bg-bloom-200`}
         >
           {submitLabel}
         </button>
@@ -67,10 +74,16 @@ export function NumberPad({
 
 function NumberKey({
   digit,
+  label,
   onKey,
   disabled,
+  className = 'flex-1',
 }: {
   digit: string
+  /** 読み上げの名前。「.」だけでは何のキーか伝わらない */
+  label?: string
+  /** 幅の取り方(既定は他のキーと同じ幅) */
+  className?: string
   onKey: (digit: string) => void
   disabled: boolean
 }) {
@@ -78,8 +91,9 @@ function NumberKey({
     <button
       type="button"
       disabled={disabled}
+      aria-label={label}
       onClick={() => onKey(digit)}
-      className="h-full flex-1 rounded-xl bg-white text-3xl font-bold text-ink-900 shadow-sm active:bg-bloom-100 disabled:text-ink-400"
+      className={`h-full ${className} rounded-xl bg-white text-3xl font-bold text-ink-900 shadow-sm active:bg-bloom-100 disabled:text-ink-400`}
     >
       {digit}
     </button>

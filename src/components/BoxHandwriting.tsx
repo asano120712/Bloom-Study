@@ -34,6 +34,19 @@ export interface WriteRow {
   at?: { column: number; line: number }
   /** まとめた画像で、このマスの上に線を引く(分数の線) */
   ruleAbove?: boolean
+  /**
+   * 小数点を打てるようにする(小数の答えのマス)。マスとマスの間の右下をタップすると点が入る。
+   * 小さな点は字の読み取りでは拾えないので、書くのではなく場所を選んでもらう。
+   */
+  decimalPoint?: boolean
+}
+
+/** 書き終えたときに渡す、書く場所ごとのマスの絵 */
+export interface WrittenRow {
+  key: string
+  cells: ImageData[]
+  /** 小数点を打った場所。何マスめ(0始まり)の右か。打っていなければ null */
+  point: number | null
 }
 
 interface BoxHandwritingProps {
@@ -45,7 +58,7 @@ interface BoxHandwritingProps {
    * 書き終えたとき。
    * 全体を1枚にした画像(結果画面で見せる)と、行ごとのマスの絵(読み取りに使う)を渡す。
    */
-  onSubmit: (imageDataUrl: string, rows: { key: string; cells: ImageData[] }[]) => void
+  onSubmit: (imageDataUrl: string, rows: WrittenRow[]) => void
   disabled?: boolean
 }
 
@@ -152,6 +165,8 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
    * モードを分けた。
    */
   const [erasing, setErasing] = useState(false)
+  /** 書く場所ごとの、小数点を打った場所(何マスめの右か) */
+  const [points, setPoints] = useState<Record<string, number | null>>({})
   /** 筆算を置く場所。ここに入る最大の大きさにマスを広げる */
   const area = useRef<HTMLDivElement>(null)
   useFitCell(area)
@@ -210,13 +225,14 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
   }
 
   /** 行ごとのマスの絵。読み取りに渡す(1マス1字なので、切り出しが要らない) */
-  const cellImages = () =>
+  const cellImages = (): WrittenRow[] =>
     rows.map((row) => ({
       key: row.key,
       cells: (canvases.current.get(row.key) ?? []).flatMap((canvas) => {
         const context = canvas?.getContext('2d')
         return context ? [context.getImageData(0, 0, CELL, CELL)] : []
       }),
+      point: points[row.key] ?? null,
     }))
 
   /** 書いた字を1枚にまとめる。結果画面で見せるのは全体の1枚でよい */
@@ -275,6 +291,14 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
           const canvas = cells[index]
           if (canvas) context.drawImage(canvas, left + index * CELL, top * CELL)
         }
+        // 打った小数点も、マスの間の右下に描く
+        const point = points[row.key]
+        if (row.decimalPoint && point !== null && point !== undefined) {
+          context.fillStyle = STROKE_COLOR
+          context.beginPath()
+          context.arc(left + (point + 1) * CELL, (top + 0.85) * CELL, LINE_WIDTH * 1.3, 0, Math.PI * 2)
+          context.fill()
+        }
         left += row.boxes * CELL
       }
     })
@@ -285,7 +309,7 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     const row = rows.find((entry) => entry.key === key)
     if (!row) return null
 
-    return Array.from({ length: row.boxes }, (_, index) => (
+    const canvasAt = (index: number) => (
       <canvas
         key={index}
         ref={(element) => {
@@ -320,6 +344,41 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
           erasing ? 'border-warm-500' : 'border-dashed border-bloom-200'
         }`}
       />
+    )
+
+    if (!row.decimalPoint) return Array.from({ length: row.boxes }, (_, index) => canvasAt(index))
+
+    // 小数点を打つ場所は、マスとマスの間の右下(紙で小数点を打つ場所)。いちばん右のマスの後ろには打たない
+    const point = points[key] ?? null
+    return Array.from({ length: row.boxes }, (_, index) => (
+      <span key={index} className="relative flex">
+        {canvasAt(index)}
+        {index < row.boxes - 1 && (
+          <button
+            type="button"
+            aria-label={copy.number.decimalPoint}
+            aria-pressed={point === index}
+            disabled={disabled}
+            onClick={() =>
+              setPoints((current) => ({ ...current, [key]: current[key] === index ? null : index }))
+            }
+            /*
+              マスとマスの間の下の角(紙で小数点を打つ場所)に重ねる。マスの高さの内側に収める。
+              下へはみ出すと、書く場所の外として切れて見えなくなるうえ、マスの大きさを測るときにも数えられない。
+            */
+            className="absolute -right-[calc(var(--cell)*0.2)] bottom-0 z-10 flex size-[calc(var(--cell)*0.4)] items-end justify-center pb-[calc(var(--cell)*0.04)]"
+          >
+            <span
+              aria-hidden="true"
+              className={`rounded-full ${
+                point === index
+                  ? 'size-[calc(var(--cell)*0.16)] bg-ink-900'
+                  : 'size-[calc(var(--cell)*0.16)] border-2 border-bloom-400 bg-white'
+              }`}
+            />
+          </button>
+        )}
+      </span>
     ))
   }
 

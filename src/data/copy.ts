@@ -120,6 +120,10 @@ export interface Copy {
     reducible: string
     /** 分数の答えのマス。読み上げと、どこに打っているかの見出し */
     fractionParts: { whole: string; numerator: string; denominator: string }
+    /** 小数のわり算で、小数点を動かした式に添える一言 */
+    shiftPoint: (places: number) => string
+    /** 手書きの答えのマスで、小数点を打つ場所(読み上げ) */
+    decimalPoint: string
   }
   trace: { guide: string; done: string }
   build: { look: string; answerIs: string }
@@ -274,6 +278,7 @@ const ADULT: Copy = {
       div: 'わり算',
       fracAdd: '分数のたし算・ひき算',
       fracMul: '分数のかけ算・わり算',
+      decimal: '小数のかけ算・わり算',
     },
     mixedTopic: { label: 'ランダム', note: 'ぜんぶの種類をまぜて出す' },
     topicExample: (expression) => `れい ${expression}`,
@@ -327,6 +332,8 @@ const ADULT: Copy = {
     retry: 'もういちど打ってみよう',
     reducible: 'あっています! 約分できるので、約分してから答えよう',
     fractionParts: { whole: '整数', numerator: '分子', denominator: '分母' },
+    shiftPoint: (places) => `小数点を ${places}けた 右に うつして わる`,
+    decimalPoint: 'ここに小数点を打つ',
   },
   trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
   build: { look: 'この漢字をよく見て、覚えよう', answerIs: 'こたえは これ' },
@@ -474,6 +481,7 @@ const KIDS: Copy = {
       div: 'わりざん',
       fracAdd: 'ぶんすうの たしざん・ひきざん',
       fracMul: 'ぶんすうの かけざん・わりざん',
+      decimal: 'しょうすうの かけざん・わりざん',
     },
     mixedTopic: { label: 'おまかせ', note: 'いろいろな けいさんが でるよ' },
     topicExample: (expression) => `れい ${expression}`,
@@ -527,6 +535,8 @@ const KIDS: Copy = {
     retry: 'もういちど うってみよう',
     reducible: 'あってるよ! やくぶん できるから、やくぶんして こたえよう',
     fractionParts: { whole: 'せいすう', numerator: 'ぶんし', denominator: 'ぶんぼ' },
+    shiftPoint: (places) => `しょうすうてんを ${places}けた みぎに うつして わる`,
+    decimalPoint: 'ここに しょうすうてんを うつ',
   },
   trace: { guide: 'ひかってる ● から ゆびで なぞってね', done: 'できた！' },
   build: { look: 'この かんじを よく みてね', answerIs: 'こたえは これ' },

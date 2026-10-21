@@ -43,9 +43,17 @@ export function isDifficulty(value: string | null | undefined): value is Difficu
  * 苦手な計算だけを続けて練習できるよう、出題の前に選ばせる。
  * 何も選ばない(ランダム)ときは種類で絞らず、その学年の問題をまぜて出す。
  */
-export type MathTopic = 'add' | 'sub' | 'mul' | 'div' | 'fracAdd' | 'fracMul'
+export type MathTopic = 'add' | 'sub' | 'mul' | 'div' | 'fracAdd' | 'fracMul' | 'decimal'
 
-const MATH_TOPICS: readonly MathTopic[] = ['add', 'sub', 'mul', 'div', 'fracAdd', 'fracMul']
+const MATH_TOPICS: readonly MathTopic[] = [
+  'add',
+  'sub',
+  'mul',
+  'div',
+  'fracAdd',
+  'fracMul',
+  'decimal',
+]
 
 export function isMathTopic(value: string | null | undefined): value is MathTopic {
   return MATH_TOPICS.includes(value as MathTopic)

@@ -69,7 +69,7 @@ interface MathQuestion {
    * 計算の種類。出題の前に選んだ種類で絞り込む(src/types の MathTopic と同じ値)。
    * ここは src への依存を作らないよう文字列リテラルで持つ。
    */
-  topic: 'add' | 'sub' | 'mul' | 'div' | 'fracAdd' | 'fracMul'
+  topic: 'add' | 'sub' | 'mul' | 'div' | 'fracAdd' | 'fracMul' | 'decimal'
   hintSource: string[]
 }
 
@@ -505,6 +505,77 @@ function multiplyFractions(): MathQuestion | null {
   }
 }
 
+/** 小数第1位までの数を、10倍した整数で選ぶ(末尾が 0 の 2.0 や 3.0 は選ばない) */
+function tenths(min: number, max: number): number | null {
+  const value = pick(min, max)
+  return value % 10 === 0 ? null : value
+}
+
+/** 10倍・100倍した整数を、小数の文字にする(末尾の 0 は消す。840, 2 → 8.4) */
+function decimalText(scaled: number, places: number): string {
+  return String(Number((scaled / 10 ** places).toFixed(places)))
+}
+
+/**
+ * 小数 × 小数(小5)。小数第1位までの数どうし。
+ *
+ * 筆算は、小数点を無いものとして整数で計算し、答えに小数点を打つ
+ * (src/features/math の columnScript)。答えは末尾の 0 を消した形で持つ(8.40 → 8.4)。
+ * 判定は数で比べるので、8.40 と書いても正解になる。
+ */
+function multiplyDecimals(): MathQuestion | null {
+  const a = tenths(11, 99)
+  const b = tenths(2, 99)
+  if (a === null || b === null) return null
+
+  const [left, right] = [decimalText(a, 1), decimalText(b, 1)]
+  return {
+    id: `ma-dm-${left}x${right}`,
+    genreId: 'math',
+    prompt: `${left} × ${right}`,
+    promptLayout: 'column',
+    answer: decimalText(a * b, 2),
+    level: 'g56',
+    topic: 'decimal',
+    // iPhone SE の幅(1行 19字ほど)で折り返さない長さにする。折り返すと3段がヒント枠に入らない
+    hintSource: [
+      `${a} × ${b} を 整数で 計算する`,
+      '小数点より下の けたは あわせて 2けた',
+      '右から 2けたの ところに 小数点を うつ',
+    ],
+  }
+}
+
+/**
+ * 小数 ÷ 小数(小5)。わる数が整数になるよう、小数点を1けた右に動かしてからわる。
+ * 8.4 ÷ 1.2 → 84 ÷ 12。この段階では、商が整数になる(わりきれる)ものだけにする。
+ */
+function divideDecimals(): MathQuestion | null {
+  const divisor = tenths(2, 99)
+  const quotient = pick(2, 99)
+  if (divisor === null || quotient % 10 === 0) return null
+
+  // 小数点を動かしたあとのわられる数(整数)。もとの式では10で割った小数になる
+  const shifted = divisor * quotient
+  if (shifted % 10 === 0) return null
+  const [dividend, by] = [decimalText(shifted, 1), decimalText(divisor, 1)]
+
+  return {
+    id: `ma-dd-${dividend}d${by}`,
+    genreId: 'math',
+    prompt: `${dividend} ÷ ${by}`,
+    promptLayout: 'division',
+    answer: String(quotient),
+    level: 'g56',
+    topic: 'decimal',
+    hintSource: [
+      'わる数の 小数点を 1けた 右に うつす',
+      'わられる数の 小数点も 同じだけ うつす',
+      `${shifted} ÷ ${divisor} を 計算する`,
+    ],
+  }
+}
+
 const KINDS: { name: string; make: () => MathQuestion | null }[] = [
   { name: 'くり上がりのたし算(小1・2)', make: addCarry },
   { name: 'くり下がりのひき算(小1・2)', make: subtractBorrow },
@@ -520,6 +591,8 @@ const KINDS: { name: string; make: () => MathQuestion | null }[] = [
   { name: '2桁でわるわり算(小5・6)', make: divideBy2Digits },
   { name: '分数のたし算・ひき算(小5)', make: addFractions },
   { name: '分数のかけ算・わり算(小6)', make: multiplyFractions },
+  { name: '小数のかけ算(小5)', make: multiplyDecimals },
+  { name: '小数のわり算(小5)', make: divideDecimals },
 ]
 
 function main(): void {

@@ -1,4 +1,4 @@
-import { parseExpression } from './expression'
+import { decimalPlaces, parseExpression, shiftedDivision, withoutPoint } from './expression'
 
 /**
  * 筆算の、打つ場所。
@@ -40,6 +40,11 @@ export interface ColumnStep {
    * (紙の筆算でも、途中の書き間違いは消して直すだけ)。
    */
   counts: boolean
+  /**
+   * 答えに打つ小数点の位置(小数のかけ算の答えだけ)。右から何けたのところに打つか。
+   * 「2.4 × 3.5」なら 2(8.40)。手書きで小数点を打つ場所を出すのと、打った数の比べ方に使う。
+   */
+  decimals?: number
 }
 
 const PLACE_NAMES = ['一', '十', '百', '千']
@@ -61,9 +66,40 @@ export function columnScript(expression: string): ColumnStep[] {
   if (!parsed) return []
 
   const { left, operator, right } = parsed
-  if (operator === '×') return multiplySteps(left, right)
-  if (operator === '÷') return divideSteps(left, right)
+  if (operator === '×') return multiplyDecimalSteps(left, right)
+  if (operator === '÷') {
+    // 小数のわり算は、わる数が整数になるよう小数点を動かしてから筆算する
+    const shifted = shiftedDivision(parsed)
+    return divideSteps(shifted.left, shifted.right)
+  }
   return addSteps(left, right, operator === '+' ? '+' : '−')
+}
+
+/**
+ * 小数のかけ算。教科書の手順どおり、**小数点を無いものとして整数で**段を計算し、
+ * 答えにだけ小数点を打つ(かける数とかけられる数の、小数点より下のけた数を足した位置)。
+ * 2.4 × 3.5 なら 24 × 35 の段(120 と 72)を計算して、840 の右から2けたに打って 8.40。
+ * 整数のかけ算は、そのまま整数の段になる。
+ */
+function multiplyDecimalSteps(left: string, right: string): ColumnStep[] {
+  const decimals = decimalPlaces(left) + decimalPlaces(right)
+  if (decimals === 0) return multiplySteps(left, right)
+
+  const steps = multiplySteps(withoutPoint(left), withoutPoint(right))
+  const answer = steps[steps.length - 1]
+  const digits = answer.expected.padStart(decimals + 1, '0')
+  return [
+    ...steps.slice(0, -1),
+    {
+      ...answer,
+      // 小数点を打った形。末尾の 0 は消さない(8.40)。比べるときは数として見るので 8.4 でもよい
+      expected: `${digits.slice(0, -decimals)}.${digits.slice(-decimals)}`,
+      // 0.6 × 0.3 = 0.18 のように、小数点の前に 0 を書くぶんのマスも要る
+      width: Math.max(answer.width, digits.length),
+      caption: 'こたえ(小数点を わすれずに)',
+      decimals,
+    },
+  ]
 }
 
 /**
