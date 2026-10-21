@@ -1,3 +1,4 @@
+import { MathText } from './MathText'
 import { useCopy } from '@/hooks/useAudienceMode'
 import type { AnswerGuide } from '@/types'
 
@@ -72,7 +73,8 @@ function PlainSheet({ answer }: { answer: string }) {
   return (
     <div className="flex items-center justify-center rounded-2xl border-2 border-bloom-200 bg-white px-4 py-6">
       <span className="font-display text-6xl leading-none tracking-wide text-ink-900">
-        {answer}
+        {/* 分数の答えは、分子を上・分母を下に積んで見せる */}
+        <MathText text={answer} />
       </span>
     </div>
   )

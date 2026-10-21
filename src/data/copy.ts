@@ -1,7 +1,7 @@
 import type { ActivityId } from '@/data/activities'
 import type { AnswerChoiceId } from '@/data/genres'
 import type { AssembleLayout } from '@/features/assemble'
-import type { AudienceMode, Difficulty, GenreId, JudgeVerdict, PromptForm } from '@/types'
+import type { AudienceMode, Difficulty, GenreId, JudgeVerdict, MathTopic, PromptForm } from '@/types'
 
 /**
  * 画面に出す言葉を、モード(おとな / こども)ごとにここへ集める。
@@ -56,6 +56,15 @@ export interface Copy {
     /** 筆算か1行の式かを選ぶ見出し(計算だけ) */
     chooseForm: string
     forms: Record<PromptForm, { label: string; note: string }>
+    /** 計算の種類を選ぶ見出し(計算だけ) */
+    chooseTopic: string
+    topics: Record<MathTopic, string>
+    /** 種類で絞らず、その学年の問題をまぜて出す */
+    mixedTopic: { label: string; note: string }
+    /** 種類の下に添える式の例 */
+    topicExample: (expression: string) => string
+    /** 解く形から、計算の種類へ戻る */
+    backToTopic: string
     /** 解く形から、こたえかたへ戻る */
     backToMode: string
     /** こたえかたを選ぶ画面に出す「いま選んでいるなんいど」 */
@@ -70,6 +79,8 @@ export interface Copy {
     pass: string
     /** 読み上げ用。「パス」だけでは何をパスするのか分からない */
     passAria: string
+    /** 書いた字が何に読めたか。読み取れなかったときに見せる */
+    readAs: (text: string) => string
     answerLabel: string
     wrong: string
     right: string
@@ -82,7 +93,15 @@ export interface Copy {
     slot: Record<AssembleLayout, { first: string; second: string }>
     submit: string
   }
-  handwriting: { clear: string; done: string; boxLabel: (place: number) => string }
+  handwriting: {
+    /** 道具(えんぴつ・消しゴム)の並びの読み上げ名 */
+    tools: string
+    /** 道具のボタンの字。絵の下に小さく添えるので、2〜3字に収める */
+    pen: string
+    eraser: string
+    done: string
+    boxLabel: (place: number) => string
+  }
   typing: { placeholderTap: string; placeholderKey: string }
   /** あそび(なぞりがき・おなじものさがし)で共通の言葉 */
   play: { allDone: string; again: string; other: string }
@@ -99,12 +118,22 @@ export interface Copy {
     nextStep: string
     /** 間違えて、同じところを打ち直してもらうとき */
     retry: string
+    /** 分数の答えが、値は合っているのに約分していないとき */
+    reducible: string
+    /** 分数の答えのマス。読み上げと、どこに打っているかの見出し */
+    fractionParts: { whole: string; numerator: string; denominator: string }
+    /** 小数のわり算で、小数点を動かした式に添える一言 */
+    shiftPoint: (places: number) => string
+    /** 手書きの答えのマスで、小数点を打つ場所(読み上げ) */
+    decimalPoint: string
   }
   trace: { guide: string; done: string }
   build: { look: string; answerIs: string }
   match: { question: string; correct: string; hint: string }
   result: {
     model: string
+    /** おてほんの下に出す途中式の見出し(分数だけ) */
+    work: string
     listen: string
     mine: { text: string; parts: string; handwriting: string }
     streak: (streak: number) => string
@@ -243,6 +272,19 @@ const ADULT: Copy = {
       plain: { label: '1行の式で解く', note: '式を見て、答えだけ打つ' },
     },
     levelIs: (level) => `なんいど：${level}`,
+    chooseTopic: 'どの計算をする?',
+    topics: {
+      add: 'たし算',
+      sub: 'ひき算',
+      mul: 'かけ算',
+      div: 'わり算',
+      fracAdd: '分数のたし算・ひき算',
+      fracMul: '分数のかけ算・わり算',
+      decimal: '小数のかけ算・わり算',
+    },
+    mixedTopic: { label: 'ランダム', note: 'ぜんぶの種類をまぜて出す' },
+    topicExample: (expression) => `れい ${expression}`,
+    backToTopic: '計算の種類にもどる',
     backToMode: 'こたえかたにもどる',
     backToDifficulty: 'なんいどにもどる',
     close: 'もどる',
@@ -251,6 +293,7 @@ const ADULT: Copy = {
     progress: (streak, index) => `${streak} れんぞく / ${index} 問め`,
     pass: 'パス',
     passAria: 'この問題をパスする',
+    readAs: (text) => `書いた字は「${text}」に見えました`,
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',
@@ -273,7 +316,13 @@ const ADULT: Copy = {
     },
     submit: 'こたえあわせ',
   },
-  handwriting: { clear: 'けす', done: 'かけた', boxLabel: (place) => `こたえの ${place} マスめ` },
+  handwriting: {
+    tools: '書く道具',
+    pen: 'かく',
+    eraser: 'けす',
+    done: 'かけた',
+    boxLabel: (place) => `こたえの ${place} マスめ`,
+  },
   typing: { placeholderTap: 'こたえをタップして入力', placeholderKey: 'キーボードで入力' },
   play: { allDone: 'ぜんぶ できた!', again: 'もういちど', other: 'ほかのあそび' },
   number: {
@@ -284,6 +333,10 @@ const ADULT: Copy = {
     nextPlace: 'つぎのくらいへ',
     nextStep: 'つぎへ',
     retry: 'もういちど打ってみよう',
+    reducible: 'あっています! 約分できるので、約分してから答えよう',
+    fractionParts: { whole: '整数', numerator: '分子', denominator: '分母' },
+    shiftPoint: (places) => `小数点を ${places}けた 右に うつして わる`,
+    decimalPoint: 'ここに小数点を打つ',
   },
   trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
   build: { look: 'この漢字をよく見て、覚えよう', answerIs: 'こたえは これ' },
@@ -294,6 +347,7 @@ const ADULT: Copy = {
   },
   result: {
     model: 'おてほん',
+    work: 'とちゅうの式',
     listen: '読み方を聞く',
     mine: {
       text: 'じぶんが うった こたえ',
@@ -422,6 +476,19 @@ const KIDS: Copy = {
       plain: { label: '1ぎょうの しきで とく', note: 'しきを みて、こたえだけ' },
     },
     levelIs: (level) => `むずかしさ：${level}`,
+    chooseTopic: 'どの けいさんを する？',
+    topics: {
+      add: 'たしざん',
+      sub: 'ひきざん',
+      mul: 'かけざん',
+      div: 'わりざん',
+      fracAdd: 'ぶんすうの たしざん・ひきざん',
+      fracMul: 'ぶんすうの かけざん・わりざん',
+      decimal: 'しょうすうの かけざん・わりざん',
+    },
+    mixedTopic: { label: 'おまかせ', note: 'いろいろな けいさんが でるよ' },
+    topicExample: (expression) => `れい ${expression}`,
+    backToTopic: 'けいさんの しゅるいに もどる',
     backToMode: 'こたえかたに もどる',
     backToDifficulty: 'むずかしさに もどる',
     close: 'もどる',
@@ -430,6 +497,7 @@ const KIDS: Copy = {
     progress: (streak, index) => `${streak} れんぞく / ${index} もんめ`,
     pass: 'パス',
     passAria: 'この もんだいを パスする',
+    readAs: (text) => `かいた じは「${text}」に みえたよ`,
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',
@@ -452,7 +520,13 @@ const KIDS: Copy = {
     },
     submit: 'こたえあわせ',
   },
-  handwriting: { clear: 'けす', done: 'かけた', boxLabel: (place) => `こたえの ${place} マスめ` },
+  handwriting: {
+    tools: 'どうぐ',
+    pen: 'かく',
+    eraser: 'けす',
+    done: 'かけた',
+    boxLabel: (place) => `こたえの ${place} マスめ`,
+  },
   typing: { placeholderTap: 'こたえを タップして うとう', placeholderKey: 'キーボードで うとう' },
   play: { allDone: 'ぜんぶ できた！', again: 'もういちど', other: 'ほかの あそび' },
   number: {
@@ -463,6 +537,10 @@ const KIDS: Copy = {
     nextPlace: 'つぎの くらいへ',
     nextStep: 'つぎへ',
     retry: 'もういちど うってみよう',
+    reducible: 'あってるよ! やくぶん できるから、やくぶんして こたえよう',
+    fractionParts: { whole: 'せいすう', numerator: 'ぶんし', denominator: 'ぶんぼ' },
+    shiftPoint: (places) => `しょうすうてんを ${places}けた みぎに うつして わる`,
+    decimalPoint: 'ここに しょうすうてんを うつ',
   },
   trace: { guide: 'ひかってる ● から ゆびで なぞってね', done: 'できた！' },
   build: { look: 'この かんじを よく みてね', answerIs: 'こたえは これ' },
@@ -473,6 +551,7 @@ const KIDS: Copy = {
   },
   result: {
     model: 'おてほん',
+    work: 'とちゅうの しき',
     listen: 'よみかたを きく',
     mine: {
       text: 'じぶんが うった こたえ',

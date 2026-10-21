@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
-import { parseExpression, type ColumnSlot } from '@/features/math'
+import { parseExpression, shiftedDivision, type ColumnSlot } from '@/features/math'
 
 /** 筆算のマス1つぶん。打ち終わったもの・いま打っているものを、場所つきで表す */
 export interface ColumnCell {
@@ -34,16 +34,17 @@ type CellTone = 'typing' | 'done' | 'wrong'
  */
 const CELL = '1.15em'
 /*
-  手書きのマスは字の大きさの2倍ほしいが、**上限も要る**。
-  字に比例させたままだと、背の低い端末で画面からはみ出し、
-  書いている最中に画面が引っ張られる。
-
-  2.75rem(44px)は、指で押す・書くときの下限として他の場所でも使っている大きさ。
-  それでも入らない背の低い画面のために、画面の高さにも頭打ちを掛ける。
-  svh(ブラウザのバーが出ている状態の高さ)で測るのは、バーのぶんを見込むため。
-  書く場所は答えの1行だけなので、頭打ちは段のあった頃ほどきつくなくてよい。
+  手書きのマスは、**書く場所に入る最大の大きさ**にする。
+  大きさは BoxHandwriting が書く場所の高さと幅を測って `--fit-cell` で渡す
+  (式の行数・途中の段の数・画面の大きさで、入る大きさが毎回変わるため)。
+  測る前の1回目の描画だけ、画面の高さから見た控えめな大きさを使う。
 */
-const WRITE_CELL = 'min(2em, 2.75rem, 10svh)'
+const WRITE_CELL = 'var(--fit-cell, min(3rem, 7svh))'
+/**
+ * 手書きのときの字の大きさ。マスに合わせて大きくする(マスの 0.625 倍)。
+ * マスだけ大きくなって数字が小さいままだと、式とマスの位がそろって見えない。
+ */
+const WRITE_FONT = 'calc(var(--cell) * 0.625)'
 
 /**
  * 筆算(たし算・ひき算・かけ算)。式を縦に積んで、桁をそろえて見せる。
@@ -89,7 +90,13 @@ export function ColumnForm({
       // 読み上げには1行の式を渡す。縦に積んだ数字だけでは式として読まれない
       aria-label={expression}
       className="inline-grid grid-cols-[auto_auto] gap-x-3 text-right font-bold tabular-nums"
-      style={{ '--cell': writing ? WRITE_CELL : CELL } as CSSProperties}
+      data-fit-width={writing || undefined}
+      style={
+        {
+          '--cell': writing ? WRITE_CELL : CELL,
+          fontSize: writing ? WRITE_FONT : undefined,
+        } as CSSProperties
+      }
     >
       <span aria-hidden="true" />
       <PlainDigits digits={left} />
@@ -135,13 +142,36 @@ export function ColumnForm({
  * こうしないと、上の数字と下のマスで位が縦にそろわない。
  */
 function PlainDigits({ digits }: { digits: string }) {
+  const { chars, pointAfter } = splitPoint(digits)
   return (
     <span aria-hidden="true" className="flex justify-end gap-1">
-      {[...digits].map((digit, index) => (
-        <span key={index} className="flex size-[var(--cell)] items-center justify-center">
+      {chars.map((digit, index) => (
+        <span key={index} className="relative flex size-[var(--cell)] items-center justify-center">
           {digit}
+          {index === pointAfter && <DecimalPoint />}
         </span>
       ))}
+    </span>
+  )
+}
+
+/**
+ * 数を、数字と小数点の位置に分ける(「2.4」→ 2, 4 と「1つめの数字のあと」)。
+ *
+ * 小数点には**マスを使わない**。紙の筆算と同じく数字の右下に添える。
+ * 点にマスを1つ使うと、小数点の位置が違う数どうし(12.5 と 0.8)で位が縦にそろわなくなる。
+ */
+function splitPoint(text: string): { chars: string[]; pointAfter: number } {
+  const point = text.indexOf('.')
+  if (point === -1) return { chars: [...text], pointAfter: -1 }
+  return { chars: [...text.replace('.', '')], pointAfter: point - 1 }
+}
+
+/** 数字の右下に添える小数点。マスのすきまに置く */
+function DecimalPoint() {
+  return (
+    <span aria-hidden="true" className="absolute -right-[0.2em] bottom-[0.05em] leading-none">
+      .
     </span>
   )
 }
@@ -175,7 +205,8 @@ function Cell({ cell }: { cell: ColumnCell }) {
  */
 function Digits({ digits, width, tone }: { digits: string; width?: number; tone: CellTone }) {
   // 足りないぶんは空のマス。width が無いときは、打った数のぶんだけ(空なら1つ)
-  const cells = [...digits]
+  // 打った小数点はマスを使わず、その前の数字の右下に添える
+  const { chars: cells, pointAfter } = splitPoint(digits)
   while (cells.length < Math.max(width ?? 1, 1)) cells.push('')
 
   return (
@@ -183,7 +214,7 @@ function Digits({ digits, width, tone }: { digits: string; width?: number; tone:
       {cells.map((digit, index) => (
         <span
           key={index}
-          className={`flex size-[var(--cell)] shrink-0 items-center justify-center rounded-md border-2 leading-none ${
+          className={`relative flex size-[var(--cell)] shrink-0 items-center justify-center rounded-md border-2 leading-none ${
             tone === 'wrong'
               ? 'border-warm-500 text-warm-600'
               : digit
@@ -192,6 +223,7 @@ function Digits({ digits, width, tone }: { digits: string; width?: number; tone:
           }`}
         >
           {digit}
+          {index === pointAfter && <DecimalPoint />}
         </span>
       ))}
     </>
@@ -217,7 +249,9 @@ export function DivisionForm({
   const parsed = parseExpression(expression)
   if (!parsed || parsed.operator !== '÷') return <span>{expression}</span>
 
-  const [dividend, divisor] = [parsed.left, parsed.right]
+  // 小数のわり算は、わる数が整数になるよう小数点を動かした式で筆算する(8.4 ÷ 1.2 → 84 ÷ 12)
+  const shifted = shiftedDivision(parsed)
+  const [dividend, divisor] = [shifted.left, shifted.right]
   const quotient = cells.filter((cell) => cell.slot.kind === 'quotient')
   const lines = cells.filter((cell) => cell.slot.kind === 'product' || cell.slot.kind === 'rest')
 
@@ -253,10 +287,12 @@ export function DivisionForm({
     <span
       // 読み上げには1行の式を渡す。囲いと数字の位置だけでは式として読まれない
       aria-label={expression}
+      data-fit-width={writing || undefined}
       className={`inline-grid text-right font-bold tabular-nums ${writing ? 'gap-0.5' : 'gap-1'}`}
       style={
         {
           '--cell': writing ? WRITE_CELL : CELL,
+          fontSize: writing ? WRITE_FONT : undefined,
           gridTemplateColumns: `auto repeat(${dividend.length}, var(--cell))`,
         } as CSSProperties
       }
@@ -305,7 +341,8 @@ export function DivisionForm({
           )}
           <span
             aria-hidden="true"
-            className="flex justify-end gap-1"
+            // マスのすきまは表のすきまと同じにする。違うと、何マスか並ぶうちに桁の位置がずれる
+            className={`flex justify-end ${writing ? 'gap-0.5' : 'gap-1'}`}
             style={{ gridRow: row, gridColumn: `${start} / span ${span}` }}
           >
             <Cell cell={cell} />

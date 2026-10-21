@@ -13,8 +13,10 @@ interface NumberInputProps {
   display?: (typed: string) => ReactNode
   /** 決定キーの文字。筆算の途中の段では「つぎの段へ」になる */
   submitLabel?: string
-  /** 打てる桁数。筆算では、そのマスに入りうるぶんだけ */
+  /** 打てる桁数。筆算では、そのマスに入りうるぶんだけ(小数点は数えない) */
   maxLength?: number
+  /** 小数点を打てるようにする(小数の答えだけ) */
+  allowDecimal?: boolean
   disabled?: boolean
 }
 
@@ -33,6 +35,7 @@ export function NumberInput({
   display,
   submitLabel,
   maxLength = MAX_LENGTH,
+  allowDecimal = false,
   disabled = false,
 }: NumberInputProps) {
   const copy = useCopy()
@@ -40,12 +43,18 @@ export function NumberInput({
 
   const append = useCallback((digit: string) => {
     setValue((current) => {
-      if (current.length >= maxLength) return current
+      if (digit === '.') {
+        // 小数点は1つだけ。最初に打ったら「0.」にする(「.5」は 0.5 のこと)
+        if (!allowDecimal || current.includes('.')) return current
+        return current ? `${current}.` : '0.'
+      }
+      // 小数点は桁に数えない(マスを使わず、数字の右下に添えるため)
+      if (current.replace('.', '').length >= maxLength) return current
       // 先頭の 0 は積まない(「007」のような入力にしない)
       if (current === '0') return digit
       return current + digit
     })
-  }, [maxLength])
+  }, [maxLength, allowDecimal])
 
   const backspace = useCallback(() => {
     setValue((current) => current.slice(0, -1))
@@ -73,7 +82,7 @@ export function NumberInput({
       } else if (event.key === 'Enter') {
         event.preventDefault()
         submit()
-      } else if (/^[0-9]$/.test(event.key)) {
+      } else if (/^[0-9.]$/.test(event.key)) {
         event.preventDefault()
         append(event.key)
       }
@@ -113,6 +122,7 @@ export function NumberInput({
         onSubmit={submit}
         canSubmit={value.length > 0}
         submitLabel={submitLabel ?? copy.number.submit}
+        allowDecimal={allowDecimal}
         disabled={disabled}
       />
     </div>

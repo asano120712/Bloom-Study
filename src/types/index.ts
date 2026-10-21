@@ -38,6 +38,28 @@ export function isDifficulty(value: string | null | undefined): value is Difficu
 }
 
 /**
+ * 計算の種類。計算ジャンルの問題だけが持つ。
+ *
+ * 苦手な計算だけを続けて練習できるよう、出題の前に選ばせる。
+ * 何も選ばない(ランダム)ときは種類で絞らず、その学年の問題をまぜて出す。
+ */
+export type MathTopic = 'add' | 'sub' | 'mul' | 'div' | 'fracAdd' | 'fracMul' | 'decimal'
+
+const MATH_TOPICS: readonly MathTopic[] = [
+  'add',
+  'sub',
+  'mul',
+  'div',
+  'fracAdd',
+  'fracMul',
+  'decimal',
+]
+
+export function isMathTopic(value: string | null | undefined): value is MathTopic {
+  return MATH_TOPICS.includes(value as MathTopic)
+}
+
+/**
  * 答えの入力方法。
  * assemble は2つの部品を1つのマス(左右または上下に割れる)へ組んで漢字を作る方式。
  * 部品は思い出したと申告するまで見せない
@@ -89,9 +111,10 @@ export interface Question {
    *
    * 2桁以上のかけ算を1行で出すと暗算に近くなり、小3・4には難しい。
    * 筆算はこの学年で習う形なので、縦に積むほうが解きやすく、位をそろえる練習にもなる。
+   * 'fraction' は分数の式。分子を上・分母を下に積んで見せ、答えも分数の形のマスで受ける。
    * 指定が無ければそのまま1行で出す。
    */
-  promptLayout?: 'column' | 'division'
+  promptLayout?: 'column' | 'division' | 'fraction'
   /** 正解文字列 */
   answer: string
   /**
@@ -99,8 +122,15 @@ export interface Question {
    * 出題側(quizSource)は未設定を「ふつう」として扱う。
    */
   level?: Difficulty
+  /** 計算の種類(計算ジャンルだけ)。出題の前に選んだ種類で絞り込む */
+  topic?: MathTopic
   /** 正解と同等に扱う表記ゆれ(送りがな違い、別綴りなど) */
   acceptableAnswers?: string[]
+  /**
+   * 解き方の途中式(分数の計算だけ)。「2/3 + 1/4 = 8/12 + 3/12 = 11/12」。
+   * 結果画面のおてほんで、答えまでの道すじとして見せる。
+   */
+  work?: string
   /**
    * KRADFILE 由来の部品。assemble モードはこのうち2部品に割れる字だけを出す。
    * KRADFILE には配置(左右・上下)が無いので、割れる向きと先にくる部品は
@@ -182,6 +212,11 @@ export interface JudgeResult {
   answer: string
   /** レベル2判定で用いた編集距離。タイピング判定時のみ */
   distance?: number
+  /**
+   * 値は合っているが、まだ約分できる(分数の答えだけ)。
+   * 不正解として記録せず、約分してから答え直してもらうために使う。
+   */
+  reducible?: boolean
 }
 
 export interface AnswerRecord {

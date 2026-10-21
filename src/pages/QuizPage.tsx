@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
-import { BoxHandwriting } from '@/components/BoxHandwriting'
+import { BoxHandwriting, type WriteRow, type WrittenRow } from '@/components/BoxHandwriting'
 import { ColumnForm, DivisionForm, type ColumnCell } from '@/components/ColumnForm'
+import { FractionForm, type FractionSlot, type FractionWork } from '@/components/FractionForm'
+import { FractionInput, type FractionPart } from '@/components/FractionInput'
+import { MathText } from '@/components/MathText'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
 import { HintList } from '@/components/HintList'
 import { NumberInput } from '@/components/NumberInput'
@@ -11,7 +14,15 @@ import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { answerChoicesOf, findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
-import { answerFromSteps, columnScript, type ColumnStep } from '@/features/math'
+import {
+  answerFromSteps,
+  columnScript,
+  fractionText,
+  parseExpression,
+  shiftedDivision,
+  type ColumnStep,
+} from '@/features/math'
+import { readCells } from '@/features/recognize'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeNumber, judgeParts, judgeTyping } from '@/features/judge'
 import { useCopy } from '@/hooks/useAudienceMode'
@@ -20,6 +31,7 @@ import { useQuizSession } from '@/hooks/useQuizSession'
 import { useStats } from '@/hooks/useStats'
 import {
   isDifficulty,
+  isMathTopic,
   isPromptForm,
   type AnswerRecord,
   type Difficulty,
@@ -30,6 +42,56 @@ import {
 } from '@/types'
 import { shuffleWithSeed } from '@/utils/shuffle'
 import type { ResultState, ResultSubmission } from './ResultPage'
+
+/**
+ * 自動で「せいかい」にしてよい自信の下限。
+ *
+ * ここを下回ったら、読み取った数を見せて本人に決めてもらう。
+ * 実機で測ったところ、きれいに書けていれば 0.9 を超える。
+ */
+const READ_CONFIDENCE = 0.9
+
+/** 分数の答えのマス。読み取るときも、この順で読む */
+const FRACTION_PARTS: FractionPart[] = ['whole', 'numerator', 'denominator']
+
+/**
+ * 分数の途中式の形。式の記号で決まる。
+ *
+ * たし算・ひき算は通分した形(□/□ + □/□)、かけ算は分子どうし・分母どうしをかけた形(□/□)、
+ * わり算は わる数を ひっくり返した形(□/□ × □/□)。紙で書く途中式と同じ。
+ */
+function fractionWorkOf(prompt: string): { operator?: string } {
+  const operator = /[+−×÷]/.exec(prompt)?.[0]
+  if (operator === '×') return {}
+  return { operator: operator === '÷' ? '×' : operator }
+}
+
+/** この問題で出す分数のマス。途中式 → 答え の順(打つ順・Tab で移る順) */
+function fractionPartsOf(prompt: string): FractionPart[] {
+  const work: FractionPart[] = ['work1Numerator', 'work1Denominator']
+  if (fractionWorkOf(prompt).operator) work.push('work2Numerator', 'work2Denominator')
+  return [...work, ...FRACTION_PARTS]
+}
+
+/**
+ * 分数を手書きするマス。整数は1マス、分子と分母は2マスずつ。
+ * 途中式は書く場所だけ出し、読み取らず、まとめた画像にも入れない(scratch)。
+ * 答えは、まとめた画像でも分数の形(整数を左、分子を上・分母を下)に置く。
+ */
+function fractionRows(questionId: string, prompt: string): WriteRow[] {
+  const work = fractionPartsOf(prompt).filter((part) => !FRACTION_PARTS.includes(part))
+  return [
+    ...work.map((part) => ({ key: `${questionId}-${part}`, boxes: 2, scratch: true })),
+    { key: `${questionId}-whole`, boxes: 1, at: { column: 0, line: 0.5 } },
+    { key: `${questionId}-numerator`, boxes: 2, at: { column: 1, line: 0 } },
+    { key: `${questionId}-denominator`, boxes: 2, at: { column: 1, line: 1 }, ruleAbove: true },
+  ]
+}
+
+/** 手書きで出す途中の計算のマス(かけ算の段、わり算の「かける」「ひく」) */
+function isScratch(step: ColumnStep): boolean {
+  return step.slot.kind === 'row' || step.slot.kind === 'product' || step.slot.kind === 'rest'
+}
 
 export function QuizPage() {
   const { genreId } = useParams<{ genreId: string }>()
@@ -53,6 +115,10 @@ export function QuizPage() {
   const formParam = searchParams.get('form')
   const promptForm: PromptForm = isPromptForm(formParam) ? formParam : 'column'
 
+  /** 計算の種類(`topic=mul` など)。無ければランダムで、種類で絞らない */
+  const topicParam = searchParams.get('topic')
+  const topic = isMathTopic(topicParam) ? topicParam : undefined
+
   const modeParam = searchParams.get('mode')
   const inputMode: InputMode =
     modeParam === 'typing' || modeParam === 'handwriting' || modeParam === 'assemble'
@@ -64,13 +130,19 @@ export function QuizPage() {
     genre?.id,
     inputMode,
     difficulty,
+    topic,
   )
   const question = questions[cursor]
   /**
    * 手書きモードで「かけた」を押した後、自己申告を待っている状態。
    * 書いた字は結果画面で見せるため、キャンバスの画像も一緒に抱えておく。
    */
-  const [selfReport, setSelfReport] = useState<{ hintsUsed: number; image: string } | null>(null)
+  const [selfReport, setSelfReport] = useState<{
+    hintsUsed: number
+    image: string
+    /** 読み取れた数。読み取りに回さなかった(漢字・英単語の)ときは無い */
+    read?: string
+  } | null>(null)
   /**
    * 筆算の途中の段(部分積)のうち、打ち終わったもの。
    * 間違えた段は正しい数に直して残す。そのまま進ませると、最後の答えまで必ず合わなくなる。
@@ -89,6 +161,8 @@ export function QuizPage() {
    * 途中の書き間違いで「ざんねん」にすると、答えが合っているのに間違い扱いになる。
    */
   const [missedAnswer, setMissedAnswer] = useState(false)
+  /** 分数の答えが、値は合っているのに約分していなかった。直して答え直してもらう */
+  const [reducible, setReducible] = useState(false)
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
 
@@ -113,6 +187,27 @@ export function QuizPage() {
   })
 
   const isPreparing = isStatsLoading || isSessionLoading
+
+  /*
+    手書きで答えるあいだは、画面全体で長押しのメニューと文字の選択を止める。
+
+    書いている途中で指が止まると、Chrome はそれを長押しと受け取り、近くの字を選んで
+    「コピー・リンクをコピー・共有」のメニュー(今のページの URL つき)を上に出す。
+    出ると書いている線もそこで止まる。マスやボタンだけ止めても、長押しがどの要素に
+    当たったとされるかはブラウザ次第なので、出題画面ごと止める。
+    結果画面など他の画面では、これまでどおり長押しできる。
+  */
+  useEffect(() => {
+    if (inputMode !== 'handwriting') return
+    const root = document.documentElement
+    const stopMenu = (event: Event) => event.preventDefault()
+    root.classList.add('no-press-menu')
+    document.addEventListener('contextmenu', stopMenu)
+    return () => {
+      root.classList.remove('no-press-menu')
+      document.removeEventListener('contextmenu', stopMenu)
+    }
+  }, [inputMode])
 
   // 出題セットが空 = もう出せる問題が無い。
   // いまは回数制限が無いので実質到達しないが、出題数に上限を入れたときの行き先。
@@ -158,10 +253,12 @@ export function QuizPage() {
       result,
       prompt: question.prompt,
       promptReading: question.promptReading,
+      work: question.work,
       genreId: genre.id,
       inputMode,
       difficulty,
       promptForm,
+      topic,
       // 自分が書いた・打ったこたえを結果画面で見せる
       submission,
       // この出題セットに次の問題が残っているときだけ「つぎへ」を出す
@@ -186,10 +283,12 @@ export function QuizPage() {
       result: { verdict: 'passed', isCorrect: false, answer: question.answer },
       prompt: question.prompt,
       promptReading: question.promptReading,
+      work: question.work,
       genreId: genre.id,
       inputMode,
       difficulty,
       promptForm,
+      topic,
       hasNext: cursor + 1 < questions.length,
       currentStreak: stats.currentStreak,
     }
@@ -202,9 +301,20 @@ export function QuizPage() {
    * 筆算の手順。打つのは数字のときだけ(手書きはノートに書くのと同じで、
    * 書いたものを読み取らないため途中を追えない)。
    */
-  /** この問題を筆算で出すか。1行の式を選んだときは、答えだけ打つ形にする */
-  const layout = promptForm === 'plain' ? undefined : question.promptLayout
-  const script = inputMode === 'number' && layout ? columnScript(question.prompt) : []
+  /**
+   * この問題を筆算で出すか。1行の式を選んだときは、答えだけ打つ形にする。
+   * 分数は筆算が無いので、どちらを選んでいても分数の形(分子を上・分母を下)で出す。
+   */
+  const layout =
+    question.promptLayout === 'fraction'
+      ? 'fraction'
+      : promptForm === 'plain'
+        ? undefined
+        : question.promptLayout
+  const isFraction = layout === 'fraction'
+  /** 筆算(縦に積む式)か。分数の式は筆算の手順を持たない */
+  const isColumn = layout === 'column' || layout === 'division'
+  const script = inputMode === 'number' && isColumn ? columnScript(question.prompt) : []
   const stepIndex = filledSteps.length
   const step = script[stepIndex]
   const isLastStep = stepIndex >= script.length - 1
@@ -267,16 +377,17 @@ export function QuizPage() {
   /**
    * 手書きで書くマス。
    *
-   * **答えのところだけ**(たし算・ひき算は位ごと、わり算は商、かけ算はこたえ)。
-   * 部分積や引く段までマスにすると、答えを書く場所が埋もれるうえ、マスが縦に
-   * 3段・4段と積もって背の低い端末ではみ出す。途中の計算は紙の余白と同じで、
-   * 書く場所をこちらで決めない(読み取りもしないので、見る相手もいない)。
+   * 答えのところ(たし算・ひき算は位ごと、わり算は商、かけ算はこたえ)に加えて、
+   * **かけ算とわり算は途中の計算のマスも出す。** かけ算は2つの段(部分積)、
+   * わり算は「かける」「ひく(おろす)」の段。答えだけで書かせると暗算に近くなって難しい。
+   * 紙の筆算と同じく、途中を書きながら答えまでたどる形にする。
    *
-   * 手書きは字を読み取らないので、合っているかはここでは見ない(自己申告のまま)。
+   * 書いた字は最後にまとめて読み取って判定する(judgeWritten)。
+   * 読んで点数にするのは答えのマスだけで、途中の計算は紙と同じく見ない。
    */
   const answerSteps =
-    inputMode === 'handwriting' && layout
-      ? columnScript(question.prompt).filter((entry) => entry.counts)
+    inputMode === 'handwriting' && isColumn
+      ? columnScript(question.prompt).filter((entry) => entry.counts || isScratch(entry))
       : []
   /*
     並べる順は**画面と同じ左から右**。たし算・ひき算の位は一のくらいから作られるので
@@ -284,16 +395,136 @@ export function QuizPage() {
   */
   const writeScript =
     answerSteps[0]?.slot.kind === 'place' ? [...answerSteps].reverse() : answerSteps
-  const writeRows = writeScript.map((entry, index) => ({
-    key: `${question.id}-${index}`,
-    boxes: entry.width,
-    // 答えは横に1行。わり算の商も、位ごとの答えも同じ行に並ぶ
-    line: 0,
-  }))
+  const writeRows: WriteRow[] = isFraction
+    ? fractionRows(question.id, question.prompt)
+    : writeScript.map((entry, index) => ({
+        key: `${question.id}-${index}`,
+        boxes: entry.width,
+        // 答えは横に1行(わり算の商も、位ごとの答えも)。途中の計算は画像に入れないので行は問わない
+        line: isScratch(entry) ? index + 1 : 0,
+        // 途中の計算。確認や結果の画面に出す画像には入れず、答えだけを見せる
+        scratch: isScratch(entry),
+        // 小数のかけ算の答え。マスの間をタップして小数点を打つ
+        decimalPoint: Boolean(entry.decimals),
+      }))
+
+  /**
+   * 書いた数を読み取って判定する(計算の筆算だけ)。
+   *
+   * **合っているときだけ自動で決める。** 読み取りは完全ではないので、
+   * 違って見えたときに「ちがった」と決めつけると、正しく書けたのに
+   * 間違い扱いになる。そのときは読み取った数を見せて、本人に決めてもらう
+   * (これまでの自己申告と同じ画面)。
+   *
+   * 自信(いちばん怪しいマスの値)が足りないときも、同じく本人に預ける。
+   */
+  const judgeWritten = async (
+    image: string,
+    rows: WrittenRow[],
+  ): Promise<void> => {
+    const hintsUsed = revealedCount
+
+    const { answered, confidence } = isFraction
+      ? await readFraction(rows)
+      : await readColumn(rows)
+
+    const judged = judgeNumber(question, answered)
+    if (judged.isCorrect && confidence >= READ_CONFIDENCE) {
+      finish(judged, hintsUsed, { kind: 'handwriting', imageDataUrl: image })
+      return
+    }
+
+    setSelfReport({ hintsUsed, image, read: answered })
+  }
+
+  /** 筆算のマスを読む。答えになる手(位ごとの数・商・こたえ)だけで、途中の段は点数に入れない */
+  const readColumn = async (rows: WrittenRow[]) => {
+    const parts = await Promise.all(
+      writeScript.map(async (entry, index) =>
+        entry.counts ? await readWithPoint(rows[index]) : { text: '', confidence: 1 },
+      ),
+    )
+    // マスは画面と同じ左から右に並べ直してあるので、読んだ字をそのままつなげば答えになる。
+    // answerFromSteps は打つ順(一のくらいから)を前提に並べ替えるため、ここでは使わない
+    const answered = parts.map((part) => part.text).join('')
+    const confidence = parts
+      .filter((_, index) => writeScript[index].counts)
+      .reduce((lowest, part) => Math.min(lowest, part.confidence), 1)
+    return { answered, confidence }
+  }
+
+  /**
+   * 1つの書く場所を読む。小数点を打ってあれば、その場所で左右に分けて読み、点でつなぐ。
+   * 空のマスは読み飛ばすので、点の場所はマスの番号で分けてから読む(右に寄せて書いても読める)。
+   */
+  const readWithPoint = async (row: WrittenRow | undefined) => {
+    const cells = row?.cells ?? []
+    if (row?.point === null || row?.point === undefined) return readCells(cells)
+    const [whole, fraction] = await Promise.all([
+      readCells(cells.slice(0, row.point + 1)),
+      readCells(cells.slice(row.point + 1)),
+    ])
+    return {
+      text: `${whole.text || '0'}.${fraction.text}`,
+      confidence: Math.min(whole.confidence, fraction.confidence),
+    }
+  }
+
+  /** 分数のマス(整数・分子・分母)を読んで、「1 3/4」の形にする */
+  const readFraction = async (rows: WrittenRow[]) => {
+    const [whole, numerator, denominator] = await Promise.all(
+      FRACTION_PARTS.map((part) =>
+        readCells(rows.find((row) => row.key === `${question.id}-${part}`)?.cells ?? []),
+      ),
+    )
+    return {
+      answered: fractionText({
+        whole: whole.text,
+        numerator: numerator.text,
+        denominator: denominator.text,
+      }),
+      confidence: Math.min(whole.confidence, numerator.confidence, denominator.confidence),
+    }
+  }
+
+  /**
+   * 分数のマス(途中式と答え)。見出しの言葉はここで付け、中身(打った数・手書きのマス)は呼ぶ側が渡す。
+   */
+  const fractionSlots = (fill: (part: FractionPart) => Partial<FractionSlot>) => {
+    const { numerator, denominator, whole } = copy.number.fractionParts
+    const slot = (part: FractionPart, label: string): FractionSlot => ({
+      label,
+      // 途中式のマスは、読み上げで答えのマスと区別できるようにする
+      spokenLabel: part.startsWith('work') ? `${copy.result.work}の${label}` : undefined,
+      ...fill(part),
+    })
+    const { operator } = fractionWorkOf(question.prompt)
+    const work: FractionWork = {
+      first: {
+        numerator: slot('work1Numerator', numerator),
+        denominator: slot('work1Denominator', denominator),
+      },
+      second: operator
+        ? {
+            operator,
+            pair: {
+              numerator: slot('work2Numerator', numerator),
+              denominator: slot('work2Denominator', denominator),
+            },
+          }
+        : undefined,
+    }
+    return {
+      work,
+      whole: slot('whole', whole),
+      numerator: slot('numerator', numerator),
+      denominator: slot('denominator', denominator),
+    }
+  }
 
   /** 計算は「ヒント → 式 → 答え」の順に置く */
   const showsPromptBelow = genre.id === 'math'
-  /** 筆算のときは、式と答えのマスをひと続きに見せたいので入力側が出す */
+  /** 筆算と分数のときは、式と答えのマスをひと続きに見せたいので入力側が出す */
   const showsPromptInInput = showsPromptBelow && layout !== undefined
   /** 手書きも、筆算なら大きなキャンバスではなくマスに1字ずつ書く */
   const writesInBoxes = showsPromptInInput && inputMode === 'handwriting'
@@ -336,11 +567,20 @@ export function QuizPage() {
         上限が 44(176px)だと、計算の3段のどれかが2行になったとき最後の段が切れる。
         52(208px)なら2行ぶん増えても収まる。
       */}
-      <section className="mt-4 flex max-h-52 min-h-0 flex-1 flex-col">
+      {/*
+        筆算のときはヒントの枠を詰めて、高さを固定する(伸ばさない)。
+        筆算は式・途中の段・答えのマスで縦に長く、背の低い端末(iPhone SE)では
+        書くマスや数字キーボードが押し出される。ヒントの枠に回していた高さをマスへ回す。
+      */}
+      <section
+        className={`flex min-h-0 flex-col ${showsPromptInInput ? 'mt-2 shrink-0' : 'mt-4 max-h-52 flex-1'}`}
+      >
         <HintList
           hints={revealedHints(hints, revealedCount)}
           layout={hintLayoutOf(genre.id)}
           secondsToNext={secondsToNext}
+          compact={showsPromptInInput}
+          fractions={isFraction}
         />
 
       </section>
@@ -355,15 +595,42 @@ export function QuizPage() {
         マスに書くときは真ん中に寄せる。キーボードと違って縦に短く、
         下に寄せるとヒント枠との間が大きく空いて、つながりが見えなくなる。
       */}
+      {/*
+        マスに書くときは、ヒントの下の高さを全部使う(マスはそこに入る最大の大きさまで広がる)。
+        確認の画面に変わったら、今までどおり真ん中に寄せる。
+      */}
       <section
-        className={`mt-auto flex min-h-0 flex-2 flex-col pt-4 ${writesInBoxes ? 'justify-center' : 'justify-end'}`}
+        className={`flex min-h-0 flex-col ${
+          writesInBoxes && !selfReport
+            ? 'flex-1 pt-2'
+            : `mt-auto flex-2 pt-4 ${writesInBoxes ? 'justify-center' : 'justify-end'}`
+        }`}
       >
         {selfReport ? (
-          // 手書きは自動判定しない。正解を提示したうえで自己申告してもらう
+          // 読み取れなかった・違って見えたときは、正解を見せて自己申告してもらう
           <div className="flex flex-col gap-4 select-none">
-            <div className="rounded-3xl bg-bloom-50 px-5 py-6 text-center">
+            <div className="rounded-3xl bg-bloom-50 px-5 py-4 text-center">
               <p className="text-sm text-ink-400">{copy.quiz.answerLabel}</p>
-              <p className="mt-2 text-3xl font-bold text-bloom-700">{question.answer}</p>
+              <p className="mt-1 text-3xl font-bold text-bloom-700">
+                <MathText text={question.answer} />
+              </p>
+              {/*
+                自分が書いたものを、こたえと並べて見せる。書いたマスはこの画面では消えるので、
+                見せないと何を書いたかを思い出して比べるしかない。
+                画像の分だけ枠が縦に長くなるので、背の低い端末でヒントの枠に重ならないよう余白を詰めてある。
+              */}
+              <p className="mt-3 text-sm text-ink-400">{copy.result.mine.handwriting}</p>
+              <img
+                src={selfReport.image}
+                alt={copy.result.mine.handwriting}
+                className="mx-auto mt-1 max-h-20 max-w-full rounded-xl border-2 border-bloom-200 bg-white"
+              />
+              {/* 何と読めたのかを見せる。書き直すときの手がかりになる */}
+              {selfReport.read && (
+                <p className="mt-3 text-sm text-ink-600">
+                  <MathText text={copy.quiz.readAs(selfReport.read)} />
+                </p>
+              )}
             </div>
             <div className="flex gap-3">
               <button
@@ -405,12 +672,44 @@ export function QuizPage() {
                 }
               />
             )}
-            {inputMode === 'number' && (
+            {inputMode === 'number' && isFraction && (
+              <FractionInput
+                key={`fraction-${question.id}`}
+                parts={fractionPartsOf(question.prompt)}
+                // 打ち直しはじめたら、約分の注意は消す
+                onChange={() => setReducible(false)}
+                display={(value, focus, select) => (
+                  <PromptBlock
+                    question={question}
+                    layout={layout}
+                    caption={promptCaption}
+                    // 値は合っているのに約分していないとき。記録はせず、直してもらう
+                    note={reducible ? copy.number.reducible : undefined}
+                    fraction={fractionSlots((part) => ({
+                      digits: value[part],
+                      focused: focus === part,
+                      onSelect: () => select(part),
+                    }))}
+                  />
+                )}
+                onSubmit={(value) => {
+                  const judged = judgeNumber(question, value)
+                  if (judged.reducible) {
+                    setReducible(true)
+                    return
+                  }
+                  finish(judged, revealedCount, { kind: 'text', text: value })
+                }}
+              />
+            )}
+            {inputMode === 'number' && !isFraction && (
               <NumberInput
                 // 打ち直しのたびに作り直して、打った数を空に戻す
                 key={`number-${question.id}-${stepIndex}-${missed ?? ''}`}
                 // 筆算は、そこに入りうる桁数より多くは打てない(マスからはみ出す)
                 maxLength={step?.width}
+                // 小数点は、小数の答えのところでだけ打てる(段は整数で計算するので出さない)
+                allowDecimal={step ? Boolean(step.decimals) : question.prompt.includes('.')}
                 display={
                   showsPromptInInput
                     ? (typed) => (
@@ -431,8 +730,12 @@ export function QuizPage() {
                     commitStep(value, step)
                     return
                   }
-                  // 最後の手。ここも合うまで進まない
-                  if (step && value !== step.expected) {
+                  // 最後の手。ここも合うまで進まない。
+                  // 小数の答えは数として比べる(8.40 も 8.4 も同じ。紙でも最後の 0 は消してよい)
+                  const isRight = step?.decimals
+                    ? Number(value) === Number(step.expected)
+                    : value === step?.expected
+                  if (step && !isRight) {
                     setMissed(value)
                     if (step.counts) setMissedAnswer(true)
                     return
@@ -461,7 +764,12 @@ export function QuizPage() {
                     layout={layout}
                     caption={promptCaption}
                     writing
-                    cells={writeRows.map((row, index) => ({
+                    fraction={
+                      isFraction
+                        ? fractionSlots((part) => ({ content: cellsOf(`${question.id}-${part}`) }))
+                        : undefined
+                    }
+                    cells={(isFraction ? [] : writeRows).map((row, index) => ({
                       slot: writeScript[index].slot,
                       digits: '',
                       width: row.boxes,
@@ -470,7 +778,7 @@ export function QuizPage() {
                     }))}
                   />
                 )}
-                onSubmit={(image) => setSelfReport({ hintsUsed: revealedCount, image })}
+                onSubmit={(image, rows) => void judgeWritten(image, rows)}
               />
             )}
             {inputMode === 'handwriting' && !writesInBoxes && (
@@ -514,46 +822,76 @@ function PromptBlock({
   layout,
   caption,
   cells,
+  fraction,
   note,
   writing,
 }: {
   question: Question
-  /** 筆算で出すか。渡さなければ1行の式のまま出す */
-  layout?: 'column' | 'division'
+  /** 筆算・分数の形で出すか。渡さなければ1行の式のまま出す */
+  layout?: 'column' | 'division' | 'fraction'
   /** 出題語の上の一言。無いジャンル(計算)もある */
   caption?: string
   /** 打ち直してもらうときの一言。式の上、見出しのすぐ下に出す */
   note?: string
   /** 筆算のマス(打ち終わったところと、いま打っているところ) */
   cells?: ColumnCell[]
+  /** 分数の答えのマス(整数・分子・分母) */
+  fraction?: {
+    work?: FractionWork
+    whole: FractionSlot
+    numerator: FractionSlot
+    denominator: FractionSlot
+  }
   /** 手書きで書くとき。マスが指で書ける大きさになる */
   writing?: boolean
 }) {
+  const copy = useCopy()
+  /*
+    小数のわり算は、小数点を動かした式(84 ÷ 12)で筆算する。もとの式と、
+    何けた動かしたのかを筆算の上に添える。式が変わった理由が見えないと、別の問題に見える。
+  */
+  const parsed = layout === 'division' ? parseExpression(question.prompt) : null
+  const shifted = parsed ? shiftedDivision(parsed) : null
+
   return (
-    <section className="mt-4 shrink-0 text-center select-none">
+    // 手書きのマスに書くときは上の余白を取らない。その分もマスを大きくするのに回す
+    <section className={`shrink-0 text-center select-none ${writing ? '' : 'mt-4'}`}>
       {caption && <p className="text-xs text-ink-400">{caption}</p>}
       {note && (
         <p aria-live="assertive" className="text-xs font-bold text-warm-600">
           {note}
         </p>
       )}
+      {shifted && shifted.shift > 0 && (
+        <p className="text-xs text-ink-600">
+          {question.prompt} → {shifted.left} ÷ {shifted.right}({copy.number.shiftPoint(shifted.shift)})
+        </p>
+      )}
       {/*
+        字の大きさは画面の高さでも頭打ちにする。数字キーボードと同じ画面に入れるため、
+        背の低い端末(iPhone SE)では今までの大きさより小さくはせず、背の高い端末でだけ大きくなる。
         わり算の筆算だけ字を小さくする。商・引く段・ひいた数で6段になり、
         他と同じ大きさだと数字キーボードまで入らない。
+        手書きはキーボードが無く、書くのも答えの1行だけなので、わり算も含めて大きく出す。
       */}
       <p
         className={`mt-1 font-bold tracking-wide ${
-          layout === 'division'
-            ? 'text-[min(1.5rem,6.5vw)] leading-7'
-            : 'text-[min(1.875rem,8vw)] leading-9'
+          writing
+            ? 'text-[min(2.5rem,10vw)] leading-[1.2]'
+            : layout === 'division'
+              ? 'text-[min(1.875rem,7.5vw,max(1.5rem,3.2svh))] leading-[1.15]'
+              : 'text-[min(2.25rem,9vw,max(1.875rem,4svh))] leading-[1.2]'
         }`}
       >
         {layout === 'column' ? (
           <ColumnForm expression={question.prompt} cells={cells} writing={writing} />
         ) : layout === 'division' ? (
           <DivisionForm expression={question.prompt} cells={cells} writing={writing} />
+        ) : layout === 'fraction' && fraction ? (
+          <FractionForm expression={question.prompt} {...fraction} writing={writing} />
         ) : (
-          question.prompt
+          // 分数を含む式は、分子を上・分母を下に積んで見せる(含まなければそのまま)
+          <MathText text={question.prompt} />
         )}
       </p>
       {/* 読みは出題語より小さく。主役はあくまで伏せた語のほう */}

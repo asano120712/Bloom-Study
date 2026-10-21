@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useCopy } from '@/hooks/useAudienceMode'
+import { EraserArt, HandwritingTools } from '@/components/HandwritingTools'
 
 interface HandwritingCanvasProps {
   /**
@@ -12,6 +13,13 @@ interface HandwritingCanvasProps {
 
 const LINE_WIDTH = 8
 const STROKE_COLOR = '#23292B'
+/**
+ * 消しゴムの太さ(書く線の何倍か)。指でこすって消すので、書く線よりかなり太くする。
+ * 細いと、1画を消すのに何度もなぞることになる。
+ */
+const ERASER_SCALE = 4
+/** 指先に出す消しゴムの絵の大きさ(px) */
+const ERASER_ART = 44
 /** LINE_WIDTH を決めたときの root font-size。index.css の clamp 下限と同じ値 */
 const BASE_ROOT_FONT_SIZE = 16
 
@@ -36,6 +44,18 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const drawingRef = useRef(false)
   const [hasStroke, setHasStroke] = useState(false)
+  /**
+   * 消しゴムのモード。このあいだは、指でこすったところだけが消える。
+   *
+   * 全部まとめて消すと、合っていた画まで書き直しになる。紙と同じく消しゴムで
+   * 間違えたところだけ消せるようにする。書くのと同じ指の動きで消すので、モードを分けた。
+   */
+  const [erasing, setErasing] = useState(false)
+  /**
+   * 消しているあいだ指先についていく消しゴム。
+   * 動くたびに描き直さないよう、state ではなく要素の位置を直接動かす。
+   */
+  const eraserRef = useRef<HTMLDivElement>(null)
 
   /**
    * 表示サイズに合わせて描画バッファを取り直す(高解像度ディスプレイ対応)。
@@ -92,8 +112,39 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
     return { x: event.clientX - rect.left, y: event.clientY - rect.top }
   }
 
+  /** 消しゴムを置く場所(キャンバスの中の座標)。消える丸の真ん中がここに来る */
+  const placeEraser = (x: number, y: number) => {
+    const eraser = eraserRef.current
+    if (eraser) eraser.style.transform = `translate(${x}px, ${y}px)`
+  }
+
+  /**
+   * 指先の消しゴムを動かす。
+   * どこが消えるのかを、指を動かす前から見せるため。消える丸の大きさも消しゴムの太さと同じにしてある。
+   */
+  const moveEraser = (event: React.PointerEvent<HTMLCanvasElement>) => {
+    const { x, y } = positionOf(event)
+    placeEraser(x, y)
+  }
+
+  /**
+   * 「けす」を押したら、まず消しゴムをキャンバスの左下に置いて見せる。
+   * 指を当てるまで何も出ないと、消しゴムに持ち替わったことに気づきにくいため。
+   * 左下なのは、字の書かれやすい真ん中を隠さないため。
+   * 指を離しても消しゴムはしまわず、紙の上と同じくその場に残す。
+   */
+  useLayoutEffect(() => {
+    if (!erasing) return
+    const height = canvasRef.current?.getBoundingClientRect().height
+    if (!height) return
+    // 丸の真ん中を、丸の半径と少しの余白ぶん内側に。消しゴムの絵は丸の右上に出るので、はみ出さない
+    const inset = (scaledLineWidth() * ERASER_SCALE) / 2 + 16
+    placeEraser(inset, height - inset)
+  }, [erasing])
+
   const startStroke = (event: React.PointerEvent<HTMLCanvasElement>) => {
     if (disabled) return
+    if (erasing) moveEraser(event)
     const context = canvasRef.current?.getContext('2d')
     if (!context) return
     // タッチの互換マウスイベントを止める
@@ -103,13 +154,22 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
     window.getSelection()?.removeAllRanges()
     event.currentTarget.setPointerCapture(event.pointerId)
     drawingRef.current = true
+    // 消しゴムは「描いたところを透明に戻す」線として引く
+    context.globalCompositeOperation = erasing ? 'destination-out' : 'source-over'
+    context.lineWidth = scaledLineWidth() * (erasing ? ERASER_SCALE : 1)
     const { x, y } = positionOf(event)
     context.beginPath()
     context.moveTo(x, y)
-    setHasStroke(true)
+    if (erasing) {
+      // 触れただけでも、その場所は消す(長さ0の線は丸い先端だけが描かれる)
+      context.lineTo(x, y)
+      context.stroke()
+    }
   }
 
   const extendStroke = (event: React.PointerEvent<HTMLCanvasElement>) => {
+    // マウスは押していなくても、乗せているあいだは消しゴムがついてくる
+    if (erasing && !disabled) moveEraser(event)
     if (!drawingRef.current) return
     const context = canvasRef.current?.getContext('2d')
     if (!context) return
@@ -117,10 +177,28 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
     const { x, y } = positionOf(event)
     context.lineTo(x, y)
     context.stroke()
+    // 書いたと数えるのは線を引いたとき。触れただけ(タップ)では何も残らないので数えない
+    if (!erasing) setHasStroke(true)
   }
 
   const endStroke = () => {
+    if (!drawingRef.current) return
     drawingRef.current = false
+    // 消しゴムで全部消えたら、書くモードへ戻す(消すものが無いので)
+    if (erasing && isBlank()) {
+      setHasStroke(false)
+      setErasing(false)
+    }
+  }
+
+  /** 何も書かれていないか。消しゴムで消し切ったかを見るため */
+  const isBlank = (): boolean => {
+    const canvas = canvasRef.current
+    const context = canvas?.getContext('2d')
+    if (!canvas || !context || !canvas.width || !canvas.height) return true
+    const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data
+    for (let i = 3; i < pixels.length; i += 4) if (pixels[i] !== 0) return false
+    return true
   }
 
   /**
@@ -152,13 +230,8 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
     return flattened.toDataURL('image/png')
   }
 
-  const clear = () => {
-    const canvas = canvasRef.current
-    const context = canvas?.getContext('2d')
-    if (!canvas || !context) return
-    context.clearRect(0, 0, canvas.width, canvas.height)
-    setHasStroke(false)
-  }
+  /** 消える丸の直径。消しゴムで引く線の太さと同じ */
+  const eraserWidth = scaledLineWidth() * ERASER_SCALE
 
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3 select-none">
@@ -167,32 +240,50 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
         flex の min-height:auto がそれを下限にするため、付けないとボタンを画面外へ押し出す。
         高さの余りはこのキャンバスで吸収し、ボタンは shrink-0 で必ず残す。
       */}
-      <canvas
-        ref={canvasRef}
-        onPointerDown={startStroke}
-        onPointerMove={extendStroke}
-        onPointerUp={endStroke}
-        onPointerCancel={endStroke}
-        onMouseDown={preventSelection}
-        draggable={false}
-        aria-label="手書き入力エリア"
-        // select-none: なぞったときに周りが範囲選択される(青い枠)のを防ぐ
-        className="w-full min-h-0 flex-1 touch-none select-none rounded-2xl border-2 border-bloom-200 bg-white"
-      />
+      <div className="relative flex min-h-0 flex-1 flex-col">
+        <canvas
+          ref={canvasRef}
+          onPointerDown={startStroke}
+          onPointerMove={extendStroke}
+          onPointerUp={endStroke}
+          onPointerCancel={endStroke}
+          onMouseDown={preventSelection}
+          draggable={false}
+          aria-label="手書き入力エリア"
+          // select-none: なぞったときに周りが範囲選択される(青い枠)のを防ぐ
+          className={`w-full min-h-0 flex-1 touch-none select-none rounded-2xl border-2 bg-white ${
+            // 消しゴムのあいだは枠を赤くする。マウスの矢印は、指先の消しゴムと重なるので消す
+            erasing ? 'cursor-none border-warm-500' : 'border-bloom-200'
+          }`}
+        />
+        {/* 指の当たったところが原点。消える丸を中心に置き、消しゴムはその右上に持たせる */}
+        {erasing && (
+          <div ref={eraserRef} aria-hidden="true" className="pointer-events-none absolute top-0 left-0">
+            <span
+              className="absolute -translate-1/2 rounded-full border-2 border-dashed border-warm-500 bg-warm-100/50"
+              style={{ width: eraserWidth, height: eraserWidth }}
+            />
+            <EraserArt
+              className="absolute"
+              // 絵の左下の角(消しゴムの先)を、丸のふちの右上に当てる
+              style={{
+                width: ERASER_ART,
+                height: ERASER_ART,
+                left: eraserWidth * 0.35 - ERASER_ART * 0.2,
+                top: -eraserWidth * 0.35 - ERASER_ART * 0.78,
+              }}
+            />
+          </div>
+        )}
+      </div>
       <div className="flex shrink-0 gap-3">
-        <button
-          type="button"
-          onClick={clear}
-          disabled={disabled || !hasStroke}
-          className="min-h-14 flex-1 rounded-full border-2 border-bloom-200 px-6 text-lg font-bold text-ink-600 disabled:text-ink-400"
-        >
-          {copy.handwriting.clear}
-        </button>
+        <HandwritingTools erasing={erasing} onChange={setErasing} canErase={hasStroke} disabled={disabled} />
         <button
           type="button"
           onClick={() => onSubmit(exportImage())}
-          disabled={disabled || !hasStroke}
-          className="min-h-14 flex-2 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
+          // 消している途中で出すと、消し残しに気づかないまま答えになる
+          disabled={disabled || !hasStroke || erasing}
+          className="min-h-14 flex-1 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
         >
           {copy.handwriting.done}
         </button>
