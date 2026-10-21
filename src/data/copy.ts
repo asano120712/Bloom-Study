@@ -81,6 +81,11 @@ export interface Copy {
     passAria: string
     /** 書いた字が何に読めたか。読み取れなかったときに見せる */
     readAs: (text: string) => string
+    /**
+     * 読めた数は正解と同じだが、読み取りの自信が足りなかったとき。
+     * 「同じなのになぜ聞くの」とならないよう、確かめてほしい理由を言う
+     */
+    readAsUnsure: (text: string) => string
     answerLabel: string
     wrong: string
     right: string
@@ -294,6 +299,7 @@ const ADULT: Copy = {
     pass: 'パス',
     passAria: 'この問題をパスする',
     readAs: (text) => `書いた字は「${text}」に見えました`,
+    readAsUnsure: (text) => `「${text}」に見えましたが、自信がありません。合っていたら「できた」を押してください`,
     answerLabel: '答え',
     wrong: '違った',
     right: 'できた',
@@ -503,6 +509,7 @@ const KIDS: Copy = {
     pass: 'パス',
     passAria: 'この もんだいを パスする',
     readAs: (text) => `かいた じは「${text}」に みえたよ`,
+    readAsUnsure: (text) => `「${text}」に みえたけど、すこし じしんが ないよ。あってたら「できた」を おしてね`,
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',

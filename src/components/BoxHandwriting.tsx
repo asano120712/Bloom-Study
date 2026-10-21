@@ -1,11 +1,5 @@
-import {
-  useLayoutEffect,
-  useRef,
-  useState,
-  type PointerEvent as ReactPointerEvent,
-  type ReactNode,
-  type RefObject,
-} from 'react'
+import { useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { useFitCell } from '@/hooks/useFitCell'
 import { useCopy } from '@/hooks/useAudienceMode'
 import { EraserIcon, HandwritingTools } from '@/components/HandwritingTools'
 
@@ -72,68 +66,7 @@ const CELL = 120
  * マスの大きさの下限と上限(px)。
  * 下限は指で1字書ける最小。上限は、タブレットのような広い画面でマスだけ大きくなりすぎないため。
  */
-const FIT_MIN = 32
-const FIT_MAX = 128
-
-/**
- * マスを、書く場所に入る最大の大きさにする。
- *
- * 筆算の高さと幅は、マスの大きさにほぼ比例する(字の大きさもマスに合わせてあるため)。
- * 残りは線やすきまのような決まった大きさなので、**2つの大きさで実際に置いて測り**、
- * 「大きさ = 傾き × マス + 決まった分」を出してから、書く場所に収まる最大のマスを逆算する。
- * 式の行数・途中の段の数・画面の大きさで答えが変わるので、決め打ちの上限より無駄が出ない。
- *
- * 書く場所の大きさが変わったら(画面を回したとき、ブラウザのバーが出入りしたとき)測り直す。
- */
-function useFitCell(area: RefObject<HTMLDivElement | null>) {
-  useLayoutEffect(() => {
-    const box = area.current
-    if (!box) return
-
-    const fit = () => {
-      const content = box.firstElementChild
-      const widest = box.querySelector('[data-fit-width]')
-      if (!(content instanceof HTMLElement) || !(widest instanceof HTMLElement)) return
-
-      const at = (size: number) => {
-        box.style.setProperty('--fit-cell', `${size}px`)
-        return {
-          height: content.getBoundingClientRect().height,
-          width: widest.getBoundingClientRect().width,
-        }
-      }
-      const [small, large] = [40, 80]
-      const a = at(small)
-      const b = at(large)
-      const slope = { height: (b.height - a.height) / (large - small), width: (b.width - a.width) / (large - small) }
-      const fixed = { height: a.height - slope.height * small, width: a.width - slope.width * small }
-
-      const byHeight = (box.clientHeight - fixed.height) / slope.height
-      const byWidth = (box.clientWidth - fixed.width) / slope.width
-      const size = Math.floor(Math.min(byHeight, byWidth, FIT_MAX))
-      box.style.setProperty('--fit-cell', `${Math.max(FIT_MIN, size)}px`)
-    }
-
-    fit()
-    const observer = new ResizeObserver(fit)
-    observer.observe(box)
-    /*
-      ウェブフォントの読み込みが終わると、字の幅(「=」や式の数字)が変わる。
-      書く場所の大きさは変わらないので ResizeObserver では気づけず、読み込み前の字幅で
-      決めたマスのまま、筆算が書く場所からはみ出していた。読み込みが済んだら測り直す。
-    */
-    let active = true
-    void document.fonts?.ready.then(() => {
-      if (active) fit()
-    })
-    document.fonts?.addEventListener('loadingdone', fit)
-    return () => {
-      active = false
-      observer.disconnect()
-      document.fonts?.removeEventListener('loadingdone', fit)
-    }
-  }, [area])
-}
+const FIT = { min: 32, max: 128 }
 
 /**
  * マスに1字ずつ書く手書き入力。
@@ -173,7 +106,7 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
   const [points, setPoints] = useState<Record<string, number | null>>({})
   /** 筆算を置く場所。ここに入る最大の大きさにマスを広げる */
   const area = useRef<HTMLDivElement>(null)
-  useFitCell(area)
+  useFitCell(area, FIT)
 
   /** 画面の座標を、そのマスの描画バッファの座標へ */
   const positionOf = (event: ReactPointerEvent<HTMLCanvasElement>) => {
