@@ -1,4 +1,10 @@
-import { decimalPlaces, parseExpression, shiftedDivision, withoutPoint } from './expression'
+import {
+  decimalPlaces,
+  parseExpression,
+  shiftedDivision,
+  withoutPoint,
+  type Expression,
+} from './expression'
 
 /**
  * 筆算の、打つ場所。
@@ -45,11 +51,60 @@ export interface ColumnStep {
    * 「2.4 × 3.5」なら 2(8.40)。手書きで小数点を打つ場所を出すのと、打った数の比べ方に使う。
    */
   decimals?: number
+  /**
+   * この商のあとに小数点が来る(商が小数になるわり算の、一の位の商)。
+   * 商の小数点は、わられる数の小数点の真上にそろえて打つので、位置は決まっている。
+   * 商のマスを左からつないで答えにするとき、ここで小数点をはさむ。
+   */
+  decimalAfter?: boolean
+}
+
+/**
+ * わり算の筆算で、わられる数として並べる数字。
+ *
+ * 小数のわり算は、小数点を動かした式(8.4 ÷ 1.2 → 84 ÷ 12)で筆算する。
+ * わりきれないときは、わられる数の後ろに 0 を付けたしてわり進む(72 ÷ 16 → 72.0 として 4.5)。
+ * 並べる数字・小数点の位置・付けたした 0 の数を、筆算の手順と見た目の両方がここから取る。
+ */
+export interface LongDivision {
+  divisor: string
+  /** 並べる数字(小数点は抜き、付けたした 0 も含む) */
+  digits: string
+  /** 小数点が何けためのあとか(0始まり)。小数点が無ければ -1 */
+  pointAfter: number
+  /** わり進むために付けたした 0 の数。見た目で、もとの数字と分けて出す */
+  appended: number
+}
+
+/** 付けたす 0 の上限。小学校の問題は、小数第2位までわり進めばわりきれる */
+const MAX_APPENDED = 3
+
+export function longDivisionOf(expression: Expression): LongDivision {
+  const shifted = shiftedDivision(expression)
+  const [whole, fraction = ''] = shifted.left.split('.')
+  const by = Number(shifted.right)
+  const base = whole + fraction
+
+  // わりきれるまで 0 を付けたす(付けたしても わりきれない問題は出さない)
+  let appended = 0
+  while (appended < MAX_APPENDED && Number(base + '0'.repeat(appended)) % by !== 0) appended += 1
+  if (Number(base + '0'.repeat(appended)) % by !== 0) appended = 0
+
+  return {
+    divisor: shifted.right,
+    digits: base + '0'.repeat(appended),
+    pointAfter: fraction || appended > 0 ? whole.length - 1 : -1,
+    appended,
+  }
 }
 
 const PLACE_NAMES = ['一', '十', '百', '千']
 
+const DECIMAL_PLACE_NAMES = ['一', '二', '三']
+
+/** 位の名前。0 が一の位、マイナスは小数点より下(-1 が小数第一位) */
 function placeName(place: number): string {
+  if (place < 0) return `小数第${DECIMAL_PLACE_NAMES[-place - 1] ?? String(-place)}位`
   return `${PLACE_NAMES[place] ?? String(place + 1)}のくらい`
 }
 
@@ -68,9 +123,9 @@ export function columnScript(expression: string): ColumnStep[] {
   const { left, operator, right } = parsed
   if (operator === '×') return multiplyDecimalSteps(left, right)
   if (operator === '÷') {
-    // 小数のわり算は、わる数が整数になるよう小数点を動かしてから筆算する
-    const shifted = shiftedDivision(parsed)
-    return divideSteps(shifted.left, shifted.right)
+    // 小数のわり算は、わる数が整数になるよう小数点を動かしてから筆算する(わり進むときは 0 を付けたす)
+    const layout = longDivisionOf(parsed)
+    return divideSteps(layout.digits, layout.divisor, layout.pointAfter)
   }
   return addSteps(left, right, operator === '+' ? '+' : '−')
 }
@@ -218,7 +273,7 @@ function addSteps(left: string, right: string, operator: '+' | '−'): ColumnSte
  * (588 ÷ 7 で 58 − 56 = 2 のあと 8 をおろして 28)。紙でも、おろした数は
  * ひいた数の右に並べて書き、そのまま次のわり算の相手になる。
  */
-function divideSteps(dividend: string, divisor: string): ColumnStep[] {
+function divideSteps(dividend: string, divisor: string, pointAfter = -1): ColumnStep[] {
   const by = Number(divisor)
   const steps: ColumnStep[] = []
   let partial = 0
@@ -227,8 +282,26 @@ function divideSteps(dividend: string, divisor: string): ColumnStep[] {
   for (let column = 0; column < dividend.length; column += 1) {
     partial = partial * 10 + Number(dividend[column])
     const quotient = Math.floor(partial / by)
+    // 印は、小数点が実際に来るときだけ付ける(整数のわり算の手順は今までと同じ形のまま)
+    const decimalAfter = column === pointAfter && pointAfter < dividend.length - 1 ? true : undefined
     // 先頭のうち、まだ商が立たない桁は飛ばす(588 ÷ 7 の 5 の上には書かない)
-    if (quotient === 0 && !started) continue
+    if (quotient === 0 && !started && (pointAfter < 0 || column < pointAfter)) continue
+    /*
+      ただし小数点より上で商が立たないまま一の位まで来たら、一の位に 0 を書く(0.6 ÷ 0.8 = 0.75 の 0)。
+      教科書と同じく、0 を立てた位の「かける・ひく」は書かずに、そのまま次の位をおろす。
+    */
+    if (quotient === 0 && !started) {
+      started = true
+      steps.push({
+        expected: '0',
+        width: 1,
+        caption: `たてる ${placeName(pointAfter - column)}`,
+        slot: { kind: 'quotient', column },
+        counts: true,
+        decimalAfter,
+      })
+      continue
+    }
     started = true
 
     const product = quotient * by
@@ -240,9 +313,10 @@ function divideSteps(dividend: string, divisor: string): ColumnStep[] {
       width: 1,
       // 小4で習う「たてる・かける・ひく・おろす」の言い方に合わせる。
       // どの手をしているのかが見出しだけで分かるようにする
-      caption: `たてる ${placeName(dividend.length - 1 - column)}`,
+      caption: `たてる ${placeName(pointAfter >= 0 ? pointAfter - column : dividend.length - 1 - column)}`,
       slot: { kind: 'quotient', column },
       counts: true,
+      decimalAfter,
     })
     steps.push({
       expected: String(product),
@@ -283,6 +357,6 @@ export function answerFromSteps(script: ColumnStep[], typed: string[]): string {
   }
   // かけ算は最後の1つが答えそのもの
   if (parts.length === 1) return parts[0].value
-  // わり算は商を上の位から並べる
-  return parts.map(({ value }) => value).join('')
+  // わり算は商を上の位から並べる。商が小数になるときは、一の位の商のあとに小数点をはさむ
+  return parts.map(({ step, value }) => (step.decimalAfter ? `${value}.` : value)).join('')
 }

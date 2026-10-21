@@ -446,7 +446,10 @@ export function QuizPage() {
     )
     // マスは画面と同じ左から右に並べ直してあるので、読んだ字をそのままつなげば答えになる。
     // answerFromSteps は打つ順(一のくらいから)を前提に並べ替えるため、ここでは使わない
-    const answered = parts.map((part) => part.text).join('')
+    // 商が小数になるわり算は、一の位の商のあとに小数点をはさむ(位置は決まっているので書かせない)
+    const answered = parts
+      .map((part, index) => (writeScript[index].decimalAfter ? `${part.text}.` : part.text))
+      .join('')
     const confidence = parts
       .filter((_, index) => writeScript[index].counts)
       .reduce((lowest, part) => Math.min(lowest, part.confidence), 1)

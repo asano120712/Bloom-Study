@@ -1,7 +1,7 @@
 {
   "_source": {
     "note": "自動生成。編集しても npm run questions:math で上書きされる",
-    "generatedAt": "2026-10-19T11:12:51.531Z",
+    "generatedAt": "2026-10-21T05:08:30.238Z",
     "note2": "辞書は使わない。種を決めた乱数で作るので、同じ種からは同じ問題集ができる"
   },
   "questions": [
@@ -71891,6 +71891,5606 @@
         "わる数の 小数点を 1けた 右に うつす",
         "わられる数の 小数点も 同じだけ うつす",
         "416 ÷ 8 を 計算する"
+      ]
+    },
+    {
+      "id": "ma-dq-9.45d2.1",
+      "genreId": "math",
+      "prompt": "9.45 ÷ 2.1",
+      "promptLayout": "division",
+      "answer": "4.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-20.3d3.5",
+      "genreId": "math",
+      "prompt": "20.3 ÷ 3.5",
+      "promptLayout": "division",
+      "answer": "5.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-47.53d9.7",
+      "genreId": "math",
+      "prompt": "47.53 ÷ 9.7",
+      "promptLayout": "division",
+      "answer": "4.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.87d3.5",
+      "genreId": "math",
+      "prompt": "2.87 ÷ 3.5",
+      "promptLayout": "division",
+      "answer": "0.82",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.18d1.8",
+      "genreId": "math",
+      "prompt": "0.18 ÷ 1.8",
+      "promptLayout": "division",
+      "answer": "0.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-32.01d3.3",
+      "genreId": "math",
+      "prompt": "32.01 ÷ 3.3",
+      "promptLayout": "division",
+      "answer": "9.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-75.53d9.1",
+      "genreId": "math",
+      "prompt": "75.53 ÷ 9.1",
+      "promptLayout": "division",
+      "answer": "8.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-14.84d5.3",
+      "genreId": "math",
+      "prompt": "14.84 ÷ 5.3",
+      "promptLayout": "division",
+      "answer": "2.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-9d7.5",
+      "genreId": "math",
+      "prompt": "9 ÷ 7.5",
+      "promptLayout": "division",
+      "answer": "1.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-10.92d5.2",
+      "genreId": "math",
+      "prompt": "10.92 ÷ 5.2",
+      "promptLayout": "division",
+      "answer": "2.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.64d1.2",
+      "genreId": "math",
+      "prompt": "2.64 ÷ 1.2",
+      "promptLayout": "division",
+      "answer": "2.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.55d3.3",
+      "genreId": "math",
+      "prompt": "11.55 ÷ 3.3",
+      "promptLayout": "division",
+      "answer": "3.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.72d6.5",
+      "genreId": "math",
+      "prompt": "5.72 ÷ 6.5",
+      "promptLayout": "division",
+      "answer": "0.88",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-14.25d1.5",
+      "genreId": "math",
+      "prompt": "14.25 ÷ 1.5",
+      "promptLayout": "division",
+      "answer": "9.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-27.44d4.9",
+      "genreId": "math",
+      "prompt": "27.44 ÷ 4.9",
+      "promptLayout": "division",
+      "answer": "5.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.13d0.3",
+      "genreId": "math",
+      "prompt": "2.13 ÷ 0.3",
+      "promptLayout": "division",
+      "answer": "7.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.15d5.5",
+      "genreId": "math",
+      "prompt": "7.15 ÷ 5.5",
+      "promptLayout": "division",
+      "answer": "1.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.64d0.2",
+      "genreId": "math",
+      "prompt": "1.64 ÷ 0.2",
+      "promptLayout": "division",
+      "answer": "8.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-9.36d5.2",
+      "genreId": "math",
+      "prompt": "9.36 ÷ 5.2",
+      "promptLayout": "division",
+      "answer": "1.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-69.72d8.3",
+      "genreId": "math",
+      "prompt": "69.72 ÷ 8.3",
+      "promptLayout": "division",
+      "answer": "8.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.86d1.4",
+      "genreId": "math",
+      "prompt": "6.86 ÷ 1.4",
+      "promptLayout": "division",
+      "answer": "4.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-80.19d9.9",
+      "genreId": "math",
+      "prompt": "80.19 ÷ 9.9",
+      "promptLayout": "division",
+      "answer": "8.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-35.51d5.3",
+      "genreId": "math",
+      "prompt": "35.51 ÷ 5.3",
+      "promptLayout": "division",
+      "answer": "6.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-10.54d3.1",
+      "genreId": "math",
+      "prompt": "10.54 ÷ 3.1",
+      "promptLayout": "division",
+      "answer": "3.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.2d8.8",
+      "genreId": "math",
+      "prompt": "2.2 ÷ 8.8",
+      "promptLayout": "division",
+      "answer": "0.25",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.25d1.5",
+      "genreId": "math",
+      "prompt": "5.25 ÷ 1.5",
+      "promptLayout": "division",
+      "answer": "3.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-75.65d8.5",
+      "genreId": "math",
+      "prompt": "75.65 ÷ 8.5",
+      "promptLayout": "division",
+      "answer": "8.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.89d5.4",
+      "genreId": "math",
+      "prompt": "1.89 ÷ 5.4",
+      "promptLayout": "division",
+      "answer": "0.35",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-25.35d6.5",
+      "genreId": "math",
+      "prompt": "25.35 ÷ 6.5",
+      "promptLayout": "division",
+      "answer": "3.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-16.56d3.6",
+      "genreId": "math",
+      "prompt": "16.56 ÷ 3.6",
+      "promptLayout": "division",
+      "answer": "4.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-40.48d9.2",
+      "genreId": "math",
+      "prompt": "40.48 ÷ 9.2",
+      "promptLayout": "division",
+      "answer": "4.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-3.04d7.6",
+      "genreId": "math",
+      "prompt": "3.04 ÷ 7.6",
+      "promptLayout": "division",
+      "answer": "0.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-41.61d7.3",
+      "genreId": "math",
+      "prompt": "41.61 ÷ 7.3",
+      "promptLayout": "division",
+      "answer": "5.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-19.71d2.7",
+      "genreId": "math",
+      "prompt": "19.71 ÷ 2.7",
+      "promptLayout": "division",
+      "answer": "7.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-56.84d9.8",
+      "genreId": "math",
+      "prompt": "56.84 ÷ 9.8",
+      "promptLayout": "division",
+      "answer": "5.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-25.96d5.9",
+      "genreId": "math",
+      "prompt": "25.96 ÷ 5.9",
+      "promptLayout": "division",
+      "answer": "4.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-18.63d8.1",
+      "genreId": "math",
+      "prompt": "18.63 ÷ 8.1",
+      "promptLayout": "division",
+      "answer": "2.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-18d7.5",
+      "genreId": "math",
+      "prompt": "18 ÷ 7.5",
+      "promptLayout": "division",
+      "answer": "2.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.44d7.4",
+      "genreId": "math",
+      "prompt": "4.44 ÷ 7.4",
+      "promptLayout": "division",
+      "answer": "0.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.16d9.3",
+      "genreId": "math",
+      "prompt": "11.16 ÷ 9.3",
+      "promptLayout": "division",
+      "answer": "1.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.88d3.3",
+      "genreId": "math",
+      "prompt": "11.88 ÷ 3.3",
+      "promptLayout": "division",
+      "answer": "3.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-47.43d9.3",
+      "genreId": "math",
+      "prompt": "47.43 ÷ 9.3",
+      "promptLayout": "division",
+      "answer": "5.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.29d3.9",
+      "genreId": "math",
+      "prompt": "4.29 ÷ 3.9",
+      "promptLayout": "division",
+      "answer": "1.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.27d3.3",
+      "genreId": "math",
+      "prompt": "6.27 ÷ 3.3",
+      "promptLayout": "division",
+      "answer": "1.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.25d2.1",
+      "genreId": "math",
+      "prompt": "5.25 ÷ 2.1",
+      "promptLayout": "division",
+      "answer": "2.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-69.58d7.1",
+      "genreId": "math",
+      "prompt": "69.58 ÷ 7.1",
+      "promptLayout": "division",
+      "answer": "9.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-68.25d9.1",
+      "genreId": "math",
+      "prompt": "68.25 ÷ 9.1",
+      "promptLayout": "division",
+      "answer": "7.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-47.57d7.1",
+      "genreId": "math",
+      "prompt": "47.57 ÷ 7.1",
+      "promptLayout": "division",
+      "answer": "6.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.61d8.5",
+      "genreId": "math",
+      "prompt": "5.61 ÷ 8.5",
+      "promptLayout": "division",
+      "answer": "0.66",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-34.45d6.5",
+      "genreId": "math",
+      "prompt": "34.45 ÷ 6.5",
+      "promptLayout": "division",
+      "answer": "5.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-24.08d5.6",
+      "genreId": "math",
+      "prompt": "24.08 ÷ 5.6",
+      "promptLayout": "division",
+      "answer": "4.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.95d5.3",
+      "genreId": "math",
+      "prompt": "7.95 ÷ 5.3",
+      "promptLayout": "division",
+      "answer": "1.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.43d5.5",
+      "genreId": "math",
+      "prompt": "1.43 ÷ 5.5",
+      "promptLayout": "division",
+      "answer": "0.26",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-35.26d8.6",
+      "genreId": "math",
+      "prompt": "35.26 ÷ 8.6",
+      "promptLayout": "division",
+      "answer": "4.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-3.05d6.1",
+      "genreId": "math",
+      "prompt": "3.05 ÷ 6.1",
+      "promptLayout": "division",
+      "answer": "0.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-44.22d6.6",
+      "genreId": "math",
+      "prompt": "44.22 ÷ 6.6",
+      "promptLayout": "division",
+      "answer": "6.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-69.12d9.6",
+      "genreId": "math",
+      "prompt": "69.12 ÷ 9.6",
+      "promptLayout": "division",
+      "answer": "7.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-59.34d8.6",
+      "genreId": "math",
+      "prompt": "59.34 ÷ 8.6",
+      "promptLayout": "division",
+      "answer": "6.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-55.51d9.1",
+      "genreId": "math",
+      "prompt": "55.51 ÷ 9.1",
+      "promptLayout": "division",
+      "answer": "6.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-45.08d4.6",
+      "genreId": "math",
+      "prompt": "45.08 ÷ 4.6",
+      "promptLayout": "division",
+      "answer": "9.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-13d2.5",
+      "genreId": "math",
+      "prompt": "13 ÷ 2.5",
+      "promptLayout": "division",
+      "answer": "5.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-22.42d3.8",
+      "genreId": "math",
+      "prompt": "22.42 ÷ 3.8",
+      "promptLayout": "division",
+      "answer": "5.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-49.28d8.8",
+      "genreId": "math",
+      "prompt": "49.28 ÷ 8.8",
+      "promptLayout": "division",
+      "answer": "5.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-3.06d0.9",
+      "genreId": "math",
+      "prompt": "3.06 ÷ 0.9",
+      "promptLayout": "division",
+      "answer": "3.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-22.33d7.7",
+      "genreId": "math",
+      "prompt": "22.33 ÷ 7.7",
+      "promptLayout": "division",
+      "answer": "2.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-46.06d4.7",
+      "genreId": "math",
+      "prompt": "46.06 ÷ 4.7",
+      "promptLayout": "division",
+      "answer": "9.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-35.34d6.2",
+      "genreId": "math",
+      "prompt": "35.34 ÷ 6.2",
+      "promptLayout": "division",
+      "answer": "5.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.76d1.3",
+      "genreId": "math",
+      "prompt": "6.76 ÷ 1.3",
+      "promptLayout": "division",
+      "answer": "5.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-48.45d5.1",
+      "genreId": "math",
+      "prompt": "48.45 ÷ 5.1",
+      "promptLayout": "division",
+      "answer": "9.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.61d0.3",
+      "genreId": "math",
+      "prompt": "2.61 ÷ 0.3",
+      "promptLayout": "division",
+      "answer": "8.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-28.48d8.9",
+      "genreId": "math",
+      "prompt": "28.48 ÷ 8.9",
+      "promptLayout": "division",
+      "answer": "3.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.08d1.2",
+      "genreId": "math",
+      "prompt": "4.08 ÷ 1.2",
+      "promptLayout": "division",
+      "answer": "3.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.22d3.3",
+      "genreId": "math",
+      "prompt": "11.22 ÷ 3.3",
+      "promptLayout": "division",
+      "answer": "3.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.16d1.8",
+      "genreId": "math",
+      "prompt": "11.16 ÷ 1.8",
+      "promptLayout": "division",
+      "answer": "6.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.38d8.5",
+      "genreId": "math",
+      "prompt": "2.38 ÷ 8.5",
+      "promptLayout": "division",
+      "answer": "0.28",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11d4.4",
+      "genreId": "math",
+      "prompt": "11 ÷ 4.4",
+      "promptLayout": "division",
+      "answer": "2.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-18.9d3.5",
+      "genreId": "math",
+      "prompt": "18.9 ÷ 3.5",
+      "promptLayout": "division",
+      "answer": "5.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-9.01d5.3",
+      "genreId": "math",
+      "prompt": "9.01 ÷ 5.3",
+      "promptLayout": "division",
+      "answer": "1.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-12.24d5.1",
+      "genreId": "math",
+      "prompt": "12.24 ÷ 5.1",
+      "promptLayout": "division",
+      "answer": "2.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-31.08d7.4",
+      "genreId": "math",
+      "prompt": "31.08 ÷ 7.4",
+      "promptLayout": "division",
+      "answer": "4.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.75d2.5",
+      "genreId": "math",
+      "prompt": "5.75 ÷ 2.5",
+      "promptLayout": "division",
+      "answer": "2.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-20.46d6.2",
+      "genreId": "math",
+      "prompt": "20.46 ÷ 6.2",
+      "promptLayout": "division",
+      "answer": "3.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-12.46d8.9",
+      "genreId": "math",
+      "prompt": "12.46 ÷ 8.9",
+      "promptLayout": "division",
+      "answer": "1.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-35.55d7.9",
+      "genreId": "math",
+      "prompt": "35.55 ÷ 7.9",
+      "promptLayout": "division",
+      "answer": "4.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-13.72d1.4",
+      "genreId": "math",
+      "prompt": "13.72 ÷ 1.4",
+      "promptLayout": "division",
+      "answer": "9.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-55.44d9.9",
+      "genreId": "math",
+      "prompt": "55.44 ÷ 9.9",
+      "promptLayout": "division",
+      "answer": "5.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.51d9.3",
+      "genreId": "math",
+      "prompt": "6.51 ÷ 9.3",
+      "promptLayout": "division",
+      "answer": "0.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-33.32d3.4",
+      "genreId": "math",
+      "prompt": "33.32 ÷ 3.4",
+      "promptLayout": "division",
+      "answer": "9.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.76d2.6",
+      "genreId": "math",
+      "prompt": "6.76 ÷ 2.6",
+      "promptLayout": "division",
+      "answer": "2.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.74d5.8",
+      "genreId": "math",
+      "prompt": "1.74 ÷ 5.8",
+      "promptLayout": "division",
+      "answer": "0.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.03d6.2",
+      "genreId": "math",
+      "prompt": "4.03 ÷ 6.2",
+      "promptLayout": "division",
+      "answer": "0.65",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-51.41d5.3",
+      "genreId": "math",
+      "prompt": "51.41 ÷ 5.3",
+      "promptLayout": "division",
+      "answer": "9.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-31.45d8.5",
+      "genreId": "math",
+      "prompt": "31.45 ÷ 8.5",
+      "promptLayout": "division",
+      "answer": "3.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.31d8.5",
+      "genreId": "math",
+      "prompt": "7.31 ÷ 8.5",
+      "promptLayout": "division",
+      "answer": "0.86",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-36.12d4.3",
+      "genreId": "math",
+      "prompt": "36.12 ÷ 4.3",
+      "promptLayout": "division",
+      "answer": "8.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-86.13d9.9",
+      "genreId": "math",
+      "prompt": "86.13 ÷ 9.9",
+      "promptLayout": "division",
+      "answer": "8.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-35.2d6.4",
+      "genreId": "math",
+      "prompt": "35.2 ÷ 6.4",
+      "promptLayout": "division",
+      "answer": "5.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-21.12d3.2",
+      "genreId": "math",
+      "prompt": "21.12 ÷ 3.2",
+      "promptLayout": "division",
+      "answer": "6.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-24.3d5.4",
+      "genreId": "math",
+      "prompt": "24.3 ÷ 5.4",
+      "promptLayout": "division",
+      "answer": "4.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.71d4.5",
+      "genreId": "math",
+      "prompt": "1.71 ÷ 4.5",
+      "promptLayout": "division",
+      "answer": "0.38",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-34.79d4.9",
+      "genreId": "math",
+      "prompt": "34.79 ÷ 4.9",
+      "promptLayout": "division",
+      "answer": "7.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-34.44d4.1",
+      "genreId": "math",
+      "prompt": "34.44 ÷ 4.1",
+      "promptLayout": "division",
+      "answer": "8.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.27d2.7",
+      "genreId": "math",
+      "prompt": "0.27 ÷ 2.7",
+      "promptLayout": "division",
+      "answer": "0.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.2d1.5",
+      "genreId": "math",
+      "prompt": "1.2 ÷ 1.5",
+      "promptLayout": "division",
+      "answer": "0.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-59.94d7.4",
+      "genreId": "math",
+      "prompt": "59.94 ÷ 7.4",
+      "promptLayout": "division",
+      "answer": "8.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-25.92d7.2",
+      "genreId": "math",
+      "prompt": "25.92 ÷ 7.2",
+      "promptLayout": "division",
+      "answer": "3.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-14.52d6.6",
+      "genreId": "math",
+      "prompt": "14.52 ÷ 6.6",
+      "promptLayout": "division",
+      "answer": "2.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-14.58d1.8",
+      "genreId": "math",
+      "prompt": "14.58 ÷ 1.8",
+      "promptLayout": "division",
+      "answer": "8.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.36d0.8",
+      "genreId": "math",
+      "prompt": "7.36 ÷ 0.8",
+      "promptLayout": "division",
+      "answer": "9.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-32.94d6.1",
+      "genreId": "math",
+      "prompt": "32.94 ÷ 6.1",
+      "promptLayout": "division",
+      "answer": "5.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-23.76d2.7",
+      "genreId": "math",
+      "prompt": "23.76 ÷ 2.7",
+      "promptLayout": "division",
+      "answer": "8.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-95.04d9.6",
+      "genreId": "math",
+      "prompt": "95.04 ÷ 9.6",
+      "promptLayout": "division",
+      "answer": "9.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.09d2.9",
+      "genreId": "math",
+      "prompt": "6.09 ÷ 2.9",
+      "promptLayout": "division",
+      "answer": "2.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-52.38d9.7",
+      "genreId": "math",
+      "prompt": "52.38 ÷ 9.7",
+      "promptLayout": "division",
+      "answer": "5.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-9.31d1.9",
+      "genreId": "math",
+      "prompt": "9.31 ÷ 1.9",
+      "promptLayout": "division",
+      "answer": "4.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.95d3.9",
+      "genreId": "math",
+      "prompt": "1.95 ÷ 3.9",
+      "promptLayout": "division",
+      "answer": "0.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.03d3.7",
+      "genreId": "math",
+      "prompt": "7.03 ÷ 3.7",
+      "promptLayout": "division",
+      "answer": "1.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-29.04d8.8",
+      "genreId": "math",
+      "prompt": "29.04 ÷ 8.8",
+      "promptLayout": "division",
+      "answer": "3.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.73d2.3",
+      "genreId": "math",
+      "prompt": "11.73 ÷ 2.3",
+      "promptLayout": "division",
+      "answer": "5.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.49d1.1",
+      "genreId": "math",
+      "prompt": "6.49 ÷ 1.1",
+      "promptLayout": "division",
+      "answer": "5.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-10.37d6.1",
+      "genreId": "math",
+      "prompt": "10.37 ÷ 6.1",
+      "promptLayout": "division",
+      "answer": "1.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-23.56d7.6",
+      "genreId": "math",
+      "prompt": "23.56 ÷ 7.6",
+      "promptLayout": "division",
+      "answer": "3.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.88d0.8",
+      "genreId": "math",
+      "prompt": "4.88 ÷ 0.8",
+      "promptLayout": "division",
+      "answer": "6.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-66.24d9.6",
+      "genreId": "math",
+      "prompt": "66.24 ÷ 9.6",
+      "promptLayout": "division",
+      "answer": "6.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-52.38d5.4",
+      "genreId": "math",
+      "prompt": "52.38 ÷ 5.4",
+      "promptLayout": "division",
+      "answer": "9.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-33.84d4.7",
+      "genreId": "math",
+      "prompt": "33.84 ÷ 4.7",
+      "promptLayout": "division",
+      "answer": "7.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.98d2.6",
+      "genreId": "math",
+      "prompt": "5.98 ÷ 2.6",
+      "promptLayout": "division",
+      "answer": "2.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-10.66d2.6",
+      "genreId": "math",
+      "prompt": "10.66 ÷ 2.6",
+      "promptLayout": "division",
+      "answer": "4.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-81.48d9.7",
+      "genreId": "math",
+      "prompt": "81.48 ÷ 9.7",
+      "promptLayout": "division",
+      "answer": "8.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-13.68d1.8",
+      "genreId": "math",
+      "prompt": "13.68 ÷ 1.8",
+      "promptLayout": "division",
+      "answer": "7.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-70.47d8.7",
+      "genreId": "math",
+      "prompt": "70.47 ÷ 8.7",
+      "promptLayout": "division",
+      "answer": "8.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-41.08d5.2",
+      "genreId": "math",
+      "prompt": "41.08 ÷ 5.2",
+      "promptLayout": "division",
+      "answer": "7.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-19.71d7.3",
+      "genreId": "math",
+      "prompt": "19.71 ÷ 7.3",
+      "promptLayout": "division",
+      "answer": "2.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-28.29d4.1",
+      "genreId": "math",
+      "prompt": "28.29 ÷ 4.1",
+      "promptLayout": "division",
+      "answer": "6.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.9d3.6",
+      "genreId": "math",
+      "prompt": "0.9 ÷ 3.6",
+      "promptLayout": "division",
+      "answer": "0.25",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-3.24d1.8",
+      "genreId": "math",
+      "prompt": "3.24 ÷ 1.8",
+      "promptLayout": "division",
+      "answer": "1.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-9.87d2.1",
+      "genreId": "math",
+      "prompt": "9.87 ÷ 2.1",
+      "promptLayout": "division",
+      "answer": "4.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-9.45d6.3",
+      "genreId": "math",
+      "prompt": "9.45 ÷ 6.3",
+      "promptLayout": "division",
+      "answer": "1.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-9.43d2.3",
+      "genreId": "math",
+      "prompt": "9.43 ÷ 2.3",
+      "promptLayout": "division",
+      "answer": "4.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.99d1.7",
+      "genreId": "math",
+      "prompt": "7.99 ÷ 1.7",
+      "promptLayout": "division",
+      "answer": "4.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-61.88d9.1",
+      "genreId": "math",
+      "prompt": "61.88 ÷ 9.1",
+      "promptLayout": "division",
+      "answer": "6.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-41.58d6.6",
+      "genreId": "math",
+      "prompt": "41.58 ÷ 6.6",
+      "promptLayout": "division",
+      "answer": "6.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-22.8d9.5",
+      "genreId": "math",
+      "prompt": "22.8 ÷ 9.5",
+      "promptLayout": "division",
+      "answer": "2.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.08d2.6",
+      "genreId": "math",
+      "prompt": "2.08 ÷ 2.6",
+      "promptLayout": "division",
+      "answer": "0.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-21.87d2.7",
+      "genreId": "math",
+      "prompt": "21.87 ÷ 2.7",
+      "promptLayout": "division",
+      "answer": "8.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-15.2d1.6",
+      "genreId": "math",
+      "prompt": "15.2 ÷ 1.6",
+      "promptLayout": "division",
+      "answer": "9.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.85d3.7",
+      "genreId": "math",
+      "prompt": "1.85 ÷ 3.7",
+      "promptLayout": "division",
+      "answer": "0.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.02d0.9",
+      "genreId": "math",
+      "prompt": "7.02 ÷ 0.9",
+      "promptLayout": "division",
+      "answer": "7.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-40.81d5.3",
+      "genreId": "math",
+      "prompt": "40.81 ÷ 5.3",
+      "promptLayout": "division",
+      "answer": "7.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-47.04d8.4",
+      "genreId": "math",
+      "prompt": "47.04 ÷ 8.4",
+      "promptLayout": "division",
+      "answer": "5.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-60.76d6.2",
+      "genreId": "math",
+      "prompt": "60.76 ÷ 6.2",
+      "promptLayout": "division",
+      "answer": "9.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.68d1.7",
+      "genreId": "math",
+      "prompt": "0.68 ÷ 1.7",
+      "promptLayout": "division",
+      "answer": "0.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-38.48d7.4",
+      "genreId": "math",
+      "prompt": "38.48 ÷ 7.4",
+      "promptLayout": "division",
+      "answer": "5.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.24d5.6",
+      "genreId": "math",
+      "prompt": "2.24 ÷ 5.6",
+      "promptLayout": "division",
+      "answer": "0.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-61.32d8.4",
+      "genreId": "math",
+      "prompt": "61.32 ÷ 8.4",
+      "promptLayout": "division",
+      "answer": "7.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-61.32d7.3",
+      "genreId": "math",
+      "prompt": "61.32 ÷ 7.3",
+      "promptLayout": "division",
+      "answer": "8.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-77.42d7.9",
+      "genreId": "math",
+      "prompt": "77.42 ÷ 7.9",
+      "promptLayout": "division",
+      "answer": "9.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.14d3.8",
+      "genreId": "math",
+      "prompt": "1.14 ÷ 3.8",
+      "promptLayout": "division",
+      "answer": "0.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.41d4.1",
+      "genreId": "math",
+      "prompt": "0.41 ÷ 4.1",
+      "promptLayout": "division",
+      "answer": "0.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.83d2.1",
+      "genreId": "math",
+      "prompt": "4.83 ÷ 2.1",
+      "promptLayout": "division",
+      "answer": "2.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-8.16d1.7",
+      "genreId": "math",
+      "prompt": "8.16 ÷ 1.7",
+      "promptLayout": "division",
+      "answer": "4.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-12.75d1.5",
+      "genreId": "math",
+      "prompt": "12.75 ÷ 1.5",
+      "promptLayout": "division",
+      "answer": "8.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-61.38d6.6",
+      "genreId": "math",
+      "prompt": "61.38 ÷ 6.6",
+      "promptLayout": "division",
+      "answer": "9.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-17.15d4.9",
+      "genreId": "math",
+      "prompt": "17.15 ÷ 4.9",
+      "promptLayout": "division",
+      "answer": "3.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-20.58d9.8",
+      "genreId": "math",
+      "prompt": "20.58 ÷ 9.8",
+      "promptLayout": "division",
+      "answer": "2.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.21d5.9",
+      "genreId": "math",
+      "prompt": "11.21 ÷ 5.9",
+      "promptLayout": "division",
+      "answer": "1.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-15.52d1.6",
+      "genreId": "math",
+      "prompt": "15.52 ÷ 1.6",
+      "promptLayout": "division",
+      "answer": "9.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-27.28d8.8",
+      "genreId": "math",
+      "prompt": "27.28 ÷ 8.8",
+      "promptLayout": "division",
+      "answer": "3.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.8d1.2",
+      "genreId": "math",
+      "prompt": "7.8 ÷ 1.2",
+      "promptLayout": "division",
+      "answer": "6.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.22d6.6",
+      "genreId": "math",
+      "prompt": "11.22 ÷ 6.6",
+      "promptLayout": "division",
+      "answer": "1.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-12.16d1.6",
+      "genreId": "math",
+      "prompt": "12.16 ÷ 1.6",
+      "promptLayout": "division",
+      "answer": "7.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-16.56d4.6",
+      "genreId": "math",
+      "prompt": "16.56 ÷ 4.6",
+      "promptLayout": "division",
+      "answer": "3.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-29.4d8.4",
+      "genreId": "math",
+      "prompt": "29.4 ÷ 8.4",
+      "promptLayout": "division",
+      "answer": "3.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.18d2.6",
+      "genreId": "math",
+      "prompt": "11.18 ÷ 2.6",
+      "promptLayout": "division",
+      "answer": "4.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.54d2.7",
+      "genreId": "math",
+      "prompt": "0.54 ÷ 2.7",
+      "promptLayout": "division",
+      "answer": "0.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.44d0.8",
+      "genreId": "math",
+      "prompt": "5.44 ÷ 0.8",
+      "promptLayout": "division",
+      "answer": "6.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-14d5.6",
+      "genreId": "math",
+      "prompt": "14 ÷ 5.6",
+      "promptLayout": "division",
+      "answer": "2.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-65.57d8.3",
+      "genreId": "math",
+      "prompt": "65.57 ÷ 8.3",
+      "promptLayout": "division",
+      "answer": "7.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-22.62d7.8",
+      "genreId": "math",
+      "prompt": "22.62 ÷ 7.8",
+      "promptLayout": "division",
+      "answer": "2.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-10.88d3.2",
+      "genreId": "math",
+      "prompt": "10.88 ÷ 3.2",
+      "promptLayout": "division",
+      "answer": "3.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.41d4.7",
+      "genreId": "math",
+      "prompt": "1.41 ÷ 4.7",
+      "promptLayout": "division",
+      "answer": "0.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-41.28d4.3",
+      "genreId": "math",
+      "prompt": "41.28 ÷ 4.3",
+      "promptLayout": "division",
+      "answer": "9.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.44d2.4",
+      "genreId": "math",
+      "prompt": "7.44 ÷ 2.4",
+      "promptLayout": "division",
+      "answer": "3.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.76d1.2",
+      "genreId": "math",
+      "prompt": "11.76 ÷ 1.2",
+      "promptLayout": "division",
+      "answer": "9.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-13.16d2.8",
+      "genreId": "math",
+      "prompt": "13.16 ÷ 2.8",
+      "promptLayout": "division",
+      "answer": "4.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-13.02d4.2",
+      "genreId": "math",
+      "prompt": "13.02 ÷ 4.2",
+      "promptLayout": "division",
+      "answer": "3.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.92d1.1",
+      "genreId": "math",
+      "prompt": "7.92 ÷ 1.1",
+      "promptLayout": "division",
+      "answer": "7.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-15.93d5.9",
+      "genreId": "math",
+      "prompt": "15.93 ÷ 5.9",
+      "promptLayout": "division",
+      "answer": "2.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-23.04d3.2",
+      "genreId": "math",
+      "prompt": "23.04 ÷ 3.2",
+      "promptLayout": "division",
+      "answer": "7.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.05d1.5",
+      "genreId": "math",
+      "prompt": "4.05 ÷ 1.5",
+      "promptLayout": "division",
+      "answer": "2.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-28.16d4.4",
+      "genreId": "math",
+      "prompt": "28.16 ÷ 4.4",
+      "promptLayout": "division",
+      "answer": "6.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.18d4.3",
+      "genreId": "math",
+      "prompt": "11.18 ÷ 4.3",
+      "promptLayout": "division",
+      "answer": "2.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-20.35d5.5",
+      "genreId": "math",
+      "prompt": "20.35 ÷ 5.5",
+      "promptLayout": "division",
+      "answer": "3.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-48.45d9.5",
+      "genreId": "math",
+      "prompt": "48.45 ÷ 9.5",
+      "promptLayout": "division",
+      "answer": "5.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-52.14d6.6",
+      "genreId": "math",
+      "prompt": "52.14 ÷ 6.6",
+      "promptLayout": "division",
+      "answer": "7.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-18.04d8.2",
+      "genreId": "math",
+      "prompt": "18.04 ÷ 8.2",
+      "promptLayout": "division",
+      "answer": "2.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-20.01d2.3",
+      "genreId": "math",
+      "prompt": "20.01 ÷ 2.3",
+      "promptLayout": "division",
+      "answer": "8.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-13.75d2.5",
+      "genreId": "math",
+      "prompt": "13.75 ÷ 2.5",
+      "promptLayout": "division",
+      "answer": "5.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-36.72d5.1",
+      "genreId": "math",
+      "prompt": "36.72 ÷ 5.1",
+      "promptLayout": "division",
+      "answer": "7.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-45.82d5.8",
+      "genreId": "math",
+      "prompt": "45.82 ÷ 5.8",
+      "promptLayout": "division",
+      "answer": "7.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-51.04d5.8",
+      "genreId": "math",
+      "prompt": "51.04 ÷ 5.8",
+      "promptLayout": "division",
+      "answer": "8.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-33.39d5.3",
+      "genreId": "math",
+      "prompt": "33.39 ÷ 5.3",
+      "promptLayout": "division",
+      "answer": "6.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-13.58d1.4",
+      "genreId": "math",
+      "prompt": "13.58 ÷ 1.4",
+      "promptLayout": "division",
+      "answer": "9.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.16d2.9",
+      "genreId": "math",
+      "prompt": "1.16 ÷ 2.9",
+      "promptLayout": "division",
+      "answer": "0.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.35d4.7",
+      "genreId": "math",
+      "prompt": "2.35 ÷ 4.7",
+      "promptLayout": "division",
+      "answer": "0.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.72d4.8",
+      "genreId": "math",
+      "prompt": "6.72 ÷ 4.8",
+      "promptLayout": "division",
+      "answer": "1.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-56.07d8.9",
+      "genreId": "math",
+      "prompt": "56.07 ÷ 8.9",
+      "promptLayout": "division",
+      "answer": "6.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.98d0.9",
+      "genreId": "math",
+      "prompt": "1.98 ÷ 0.9",
+      "promptLayout": "division",
+      "answer": "2.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.16d1.1",
+      "genreId": "math",
+      "prompt": "6.16 ÷ 1.1",
+      "promptLayout": "division",
+      "answer": "5.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2d2.5",
+      "genreId": "math",
+      "prompt": "2 ÷ 2.5",
+      "promptLayout": "division",
+      "answer": "0.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.83d1.1",
+      "genreId": "math",
+      "prompt": "5.83 ÷ 1.1",
+      "promptLayout": "division",
+      "answer": "5.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-41.76d7.2",
+      "genreId": "math",
+      "prompt": "41.76 ÷ 7.2",
+      "promptLayout": "division",
+      "answer": "5.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-8.64d0.9",
+      "genreId": "math",
+      "prompt": "8.64 ÷ 0.9",
+      "promptLayout": "division",
+      "answer": "9.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-74.82d8.7",
+      "genreId": "math",
+      "prompt": "74.82 ÷ 8.7",
+      "promptLayout": "division",
+      "answer": "8.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-30.16d5.2",
+      "genreId": "math",
+      "prompt": "30.16 ÷ 5.2",
+      "promptLayout": "division",
+      "answer": "5.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.03d1.3",
+      "genreId": "math",
+      "prompt": "4.03 ÷ 1.3",
+      "promptLayout": "division",
+      "answer": "3.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.75d2.7",
+      "genreId": "math",
+      "prompt": "6.75 ÷ 2.7",
+      "promptLayout": "division",
+      "answer": "2.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-53.96d7.1",
+      "genreId": "math",
+      "prompt": "53.96 ÷ 7.1",
+      "promptLayout": "division",
+      "answer": "7.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-41.61d5.7",
+      "genreId": "math",
+      "prompt": "41.61 ÷ 5.7",
+      "promptLayout": "division",
+      "answer": "7.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-50.73d5.7",
+      "genreId": "math",
+      "prompt": "50.73 ÷ 5.7",
+      "promptLayout": "division",
+      "answer": "8.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-14.08d3.2",
+      "genreId": "math",
+      "prompt": "14.08 ÷ 3.2",
+      "promptLayout": "division",
+      "answer": "4.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-32.19d3.7",
+      "genreId": "math",
+      "prompt": "32.19 ÷ 3.7",
+      "promptLayout": "division",
+      "answer": "8.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-46.15d7.1",
+      "genreId": "math",
+      "prompt": "46.15 ÷ 7.1",
+      "promptLayout": "division",
+      "answer": "6.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.04d2.4",
+      "genreId": "math",
+      "prompt": "2.04 ÷ 2.4",
+      "promptLayout": "division",
+      "answer": "0.85",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.55d8.5",
+      "genreId": "math",
+      "prompt": "2.55 ÷ 8.5",
+      "promptLayout": "division",
+      "answer": "0.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.47d0.9",
+      "genreId": "math",
+      "prompt": "7.47 ÷ 0.9",
+      "promptLayout": "division",
+      "answer": "8.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-48.16d8.6",
+      "genreId": "math",
+      "prompt": "48.16 ÷ 8.6",
+      "promptLayout": "division",
+      "answer": "5.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-3.96d8.8",
+      "genreId": "math",
+      "prompt": "3.96 ÷ 8.8",
+      "promptLayout": "division",
+      "answer": "0.45",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-36.48d9.6",
+      "genreId": "math",
+      "prompt": "36.48 ÷ 9.6",
+      "promptLayout": "division",
+      "answer": "3.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-47.6d5.6",
+      "genreId": "math",
+      "prompt": "47.6 ÷ 5.6",
+      "promptLayout": "division",
+      "answer": "8.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.05d1.4",
+      "genreId": "math",
+      "prompt": "1.05 ÷ 1.4",
+      "promptLayout": "division",
+      "answer": "0.75",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-41.6d6.4",
+      "genreId": "math",
+      "prompt": "41.6 ÷ 6.4",
+      "promptLayout": "division",
+      "answer": "6.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-38.28d8.7",
+      "genreId": "math",
+      "prompt": "38.28 ÷ 8.7",
+      "promptLayout": "division",
+      "answer": "4.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.32d4.8",
+      "genreId": "math",
+      "prompt": "4.32 ÷ 4.8",
+      "promptLayout": "division",
+      "answer": "0.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-23.46d5.1",
+      "genreId": "math",
+      "prompt": "23.46 ÷ 5.1",
+      "promptLayout": "division",
+      "answer": "4.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.48d3.2",
+      "genreId": "math",
+      "prompt": "4.48 ÷ 3.2",
+      "promptLayout": "division",
+      "answer": "1.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-52.93d7.9",
+      "genreId": "math",
+      "prompt": "52.93 ÷ 7.9",
+      "promptLayout": "division",
+      "answer": "6.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-13.86d9.9",
+      "genreId": "math",
+      "prompt": "13.86 ÷ 9.9",
+      "promptLayout": "division",
+      "answer": "1.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-30.87d6.3",
+      "genreId": "math",
+      "prompt": "30.87 ÷ 6.3",
+      "promptLayout": "division",
+      "answer": "4.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-53.04d6.8",
+      "genreId": "math",
+      "prompt": "53.04 ÷ 6.8",
+      "promptLayout": "division",
+      "answer": "7.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-13.11d6.9",
+      "genreId": "math",
+      "prompt": "13.11 ÷ 6.9",
+      "promptLayout": "division",
+      "answer": "1.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.15d1.5",
+      "genreId": "math",
+      "prompt": "0.15 ÷ 1.5",
+      "promptLayout": "division",
+      "answer": "0.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-25.56d3.6",
+      "genreId": "math",
+      "prompt": "25.56 ÷ 3.6",
+      "promptLayout": "division",
+      "answer": "7.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-3.76d0.4",
+      "genreId": "math",
+      "prompt": "3.76 ÷ 0.4",
+      "promptLayout": "division",
+      "answer": "9.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.57d3.8",
+      "genreId": "math",
+      "prompt": "0.57 ÷ 3.8",
+      "promptLayout": "division",
+      "answer": "0.15",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-40.32d5.6",
+      "genreId": "math",
+      "prompt": "40.32 ÷ 5.6",
+      "promptLayout": "division",
+      "answer": "7.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-21.06d7.8",
+      "genreId": "math",
+      "prompt": "21.06 ÷ 7.8",
+      "promptLayout": "division",
+      "answer": "2.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.07d7.4",
+      "genreId": "math",
+      "prompt": "4.07 ÷ 7.4",
+      "promptLayout": "division",
+      "answer": "0.55",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-8.5d3.4",
+      "genreId": "math",
+      "prompt": "8.5 ÷ 3.4",
+      "promptLayout": "division",
+      "answer": "2.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-54.94d8.2",
+      "genreId": "math",
+      "prompt": "54.94 ÷ 8.2",
+      "promptLayout": "division",
+      "answer": "6.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-20.24d4.4",
+      "genreId": "math",
+      "prompt": "20.24 ÷ 4.4",
+      "promptLayout": "division",
+      "answer": "4.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.4d9.6",
+      "genreId": "math",
+      "prompt": "2.4 ÷ 9.6",
+      "promptLayout": "division",
+      "answer": "0.25",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-10.75d2.5",
+      "genreId": "math",
+      "prompt": "10.75 ÷ 2.5",
+      "promptLayout": "division",
+      "answer": "4.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-9.9d2.2",
+      "genreId": "math",
+      "prompt": "9.9 ÷ 2.2",
+      "promptLayout": "division",
+      "answer": "4.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-42.9d6.6",
+      "genreId": "math",
+      "prompt": "42.9 ÷ 6.6",
+      "promptLayout": "division",
+      "answer": "6.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.32d9.5",
+      "genreId": "math",
+      "prompt": "5.32 ÷ 9.5",
+      "promptLayout": "division",
+      "answer": "0.56",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-29.92d3.4",
+      "genreId": "math",
+      "prompt": "29.92 ÷ 3.4",
+      "promptLayout": "division",
+      "answer": "8.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-45.12d9.6",
+      "genreId": "math",
+      "prompt": "45.12 ÷ 9.6",
+      "promptLayout": "division",
+      "answer": "4.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.16d3.6",
+      "genreId": "math",
+      "prompt": "2.16 ÷ 3.6",
+      "promptLayout": "division",
+      "answer": "0.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-20.9d2.2",
+      "genreId": "math",
+      "prompt": "20.9 ÷ 2.2",
+      "promptLayout": "division",
+      "answer": "9.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.02d3.9",
+      "genreId": "math",
+      "prompt": "7.02 ÷ 3.9",
+      "promptLayout": "division",
+      "answer": "1.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.21d0.9",
+      "genreId": "math",
+      "prompt": "6.21 ÷ 0.9",
+      "promptLayout": "division",
+      "answer": "6.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.31d0.9",
+      "genreId": "math",
+      "prompt": "5.31 ÷ 0.9",
+      "promptLayout": "division",
+      "answer": "5.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.63d0.9",
+      "genreId": "math",
+      "prompt": "0.63 ÷ 0.9",
+      "promptLayout": "division",
+      "answer": "0.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-3.64d1.4",
+      "genreId": "math",
+      "prompt": "3.64 ÷ 1.4",
+      "promptLayout": "division",
+      "answer": "2.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-16.08d6.7",
+      "genreId": "math",
+      "prompt": "16.08 ÷ 6.7",
+      "promptLayout": "division",
+      "answer": "2.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-33.93d8.7",
+      "genreId": "math",
+      "prompt": "33.93 ÷ 8.7",
+      "promptLayout": "division",
+      "answer": "3.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.65d0.5",
+      "genreId": "math",
+      "prompt": "1.65 ÷ 0.5",
+      "promptLayout": "division",
+      "answer": "3.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-10.29d4.9",
+      "genreId": "math",
+      "prompt": "10.29 ÷ 4.9",
+      "promptLayout": "division",
+      "answer": "2.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.03d7.4",
+      "genreId": "math",
+      "prompt": "7.03 ÷ 7.4",
+      "promptLayout": "division",
+      "answer": "0.95",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-53.32d8.6",
+      "genreId": "math",
+      "prompt": "53.32 ÷ 8.6",
+      "promptLayout": "division",
+      "answer": "6.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.25d2.5",
+      "genreId": "math",
+      "prompt": "1.25 ÷ 2.5",
+      "promptLayout": "division",
+      "answer": "0.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.84d1.9",
+      "genreId": "math",
+      "prompt": "6.84 ÷ 1.9",
+      "promptLayout": "division",
+      "answer": "3.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-56.09d7.1",
+      "genreId": "math",
+      "prompt": "56.09 ÷ 7.1",
+      "promptLayout": "division",
+      "answer": "7.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-65.52d9.1",
+      "genreId": "math",
+      "prompt": "65.52 ÷ 9.1",
+      "promptLayout": "division",
+      "answer": "7.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.11d7.9",
+      "genreId": "math",
+      "prompt": "7.11 ÷ 7.9",
+      "promptLayout": "division",
+      "answer": "0.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-9.52d1.4",
+      "genreId": "math",
+      "prompt": "9.52 ÷ 1.4",
+      "promptLayout": "division",
+      "answer": "6.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-48.24d6.7",
+      "genreId": "math",
+      "prompt": "48.24 ÷ 6.7",
+      "promptLayout": "division",
+      "answer": "7.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.33d1.4",
+      "genreId": "math",
+      "prompt": "1.33 ÷ 1.4",
+      "promptLayout": "division",
+      "answer": "0.95",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-32.83d6.7",
+      "genreId": "math",
+      "prompt": "32.83 ÷ 6.7",
+      "promptLayout": "division",
+      "answer": "4.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-16.32d9.6",
+      "genreId": "math",
+      "prompt": "16.32 ÷ 9.6",
+      "promptLayout": "division",
+      "answer": "1.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-22.36d8.6",
+      "genreId": "math",
+      "prompt": "22.36 ÷ 8.6",
+      "promptLayout": "division",
+      "answer": "2.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-14.7d1.5",
+      "genreId": "math",
+      "prompt": "14.7 ÷ 1.5",
+      "promptLayout": "division",
+      "answer": "9.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.47d1.5",
+      "genreId": "math",
+      "prompt": "1.47 ÷ 1.5",
+      "promptLayout": "division",
+      "answer": "0.98",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.39d0.3",
+      "genreId": "math",
+      "prompt": "0.39 ÷ 0.3",
+      "promptLayout": "division",
+      "answer": "1.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.2d7.5",
+      "genreId": "math",
+      "prompt": "1.2 ÷ 7.5",
+      "promptLayout": "division",
+      "answer": "0.16",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-64.02d6.6",
+      "genreId": "math",
+      "prompt": "64.02 ÷ 6.6",
+      "promptLayout": "division",
+      "answer": "9.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.42d0.5",
+      "genreId": "math",
+      "prompt": "0.42 ÷ 0.5",
+      "promptLayout": "division",
+      "answer": "0.84",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.81d0.3",
+      "genreId": "math",
+      "prompt": "0.81 ÷ 0.3",
+      "promptLayout": "division",
+      "answer": "2.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-12.87d9.9",
+      "genreId": "math",
+      "prompt": "12.87 ÷ 9.9",
+      "promptLayout": "division",
+      "answer": "1.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-19.75d2.5",
+      "genreId": "math",
+      "prompt": "19.75 ÷ 2.5",
+      "promptLayout": "division",
+      "answer": "7.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-52.54d7.1",
+      "genreId": "math",
+      "prompt": "52.54 ÷ 7.1",
+      "promptLayout": "division",
+      "answer": "7.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-33.04d5.9",
+      "genreId": "math",
+      "prompt": "33.04 ÷ 5.9",
+      "promptLayout": "division",
+      "answer": "5.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-23.8d3.5",
+      "genreId": "math",
+      "prompt": "23.8 ÷ 3.5",
+      "promptLayout": "division",
+      "answer": "6.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.16d3.1",
+      "genreId": "math",
+      "prompt": "11.16 ÷ 3.1",
+      "promptLayout": "division",
+      "answer": "3.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-24.75d7.5",
+      "genreId": "math",
+      "prompt": "24.75 ÷ 7.5",
+      "promptLayout": "division",
+      "answer": "3.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.95d0.7",
+      "genreId": "math",
+      "prompt": "5.95 ÷ 0.7",
+      "promptLayout": "division",
+      "answer": "8.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-3.7d7.4",
+      "genreId": "math",
+      "prompt": "3.7 ÷ 7.4",
+      "promptLayout": "division",
+      "answer": "0.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.35d4.5",
+      "genreId": "math",
+      "prompt": "1.35 ÷ 4.5",
+      "promptLayout": "division",
+      "answer": "0.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.56d2.4",
+      "genreId": "math",
+      "prompt": "1.56 ÷ 2.4",
+      "promptLayout": "division",
+      "answer": "0.65",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-40.15d5.5",
+      "genreId": "math",
+      "prompt": "40.15 ÷ 5.5",
+      "promptLayout": "division",
+      "answer": "7.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.68d7.2",
+      "genreId": "math",
+      "prompt": "4.68 ÷ 7.2",
+      "promptLayout": "division",
+      "answer": "0.65",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-24.09d7.3",
+      "genreId": "math",
+      "prompt": "24.09 ÷ 7.3",
+      "promptLayout": "division",
+      "answer": "3.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-12.19d2.3",
+      "genreId": "math",
+      "prompt": "12.19 ÷ 2.3",
+      "promptLayout": "division",
+      "answer": "5.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-8.28d2.3",
+      "genreId": "math",
+      "prompt": "8.28 ÷ 2.3",
+      "promptLayout": "division",
+      "answer": "3.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-48.02d9.8",
+      "genreId": "math",
+      "prompt": "48.02 ÷ 9.8",
+      "promptLayout": "division",
+      "answer": "4.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.16d4.8",
+      "genreId": "math",
+      "prompt": "2.16 ÷ 4.8",
+      "promptLayout": "division",
+      "answer": "0.45",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-3.51d1.3",
+      "genreId": "math",
+      "prompt": "3.51 ÷ 1.3",
+      "promptLayout": "division",
+      "answer": "2.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-25.52d8.8",
+      "genreId": "math",
+      "prompt": "25.52 ÷ 8.8",
+      "promptLayout": "division",
+      "answer": "2.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-46.86d6.6",
+      "genreId": "math",
+      "prompt": "46.86 ÷ 6.6",
+      "promptLayout": "division",
+      "answer": "7.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.55d1.1",
+      "genreId": "math",
+      "prompt": "0.55 ÷ 1.1",
+      "promptLayout": "division",
+      "answer": "0.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-60.68d7.4",
+      "genreId": "math",
+      "prompt": "60.68 ÷ 7.4",
+      "promptLayout": "division",
+      "answer": "8.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.96d1.6",
+      "genreId": "math",
+      "prompt": "4.96 ÷ 1.6",
+      "promptLayout": "division",
+      "answer": "3.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-17.28d3.6",
+      "genreId": "math",
+      "prompt": "17.28 ÷ 3.6",
+      "promptLayout": "division",
+      "answer": "4.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.44d1.3",
+      "genreId": "math",
+      "prompt": "11.44 ÷ 1.3",
+      "promptLayout": "division",
+      "answer": "8.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.88d1.4",
+      "genreId": "math",
+      "prompt": "5.88 ÷ 1.4",
+      "promptLayout": "division",
+      "answer": "4.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.5d2.5",
+      "genreId": "math",
+      "prompt": "4.5 ÷ 2.5",
+      "promptLayout": "division",
+      "answer": "1.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-30.4d9.5",
+      "genreId": "math",
+      "prompt": "30.4 ÷ 9.5",
+      "promptLayout": "division",
+      "answer": "3.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-40.74d4.2",
+      "genreId": "math",
+      "prompt": "40.74 ÷ 4.2",
+      "promptLayout": "division",
+      "answer": "9.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.29d1.3",
+      "genreId": "math",
+      "prompt": "4.29 ÷ 1.3",
+      "promptLayout": "division",
+      "answer": "3.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.55d0.5",
+      "genreId": "math",
+      "prompt": "1.55 ÷ 0.5",
+      "promptLayout": "division",
+      "answer": "3.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-51.83d7.1",
+      "genreId": "math",
+      "prompt": "51.83 ÷ 7.1",
+      "promptLayout": "division",
+      "answer": "7.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-22.31d9.7",
+      "genreId": "math",
+      "prompt": "22.31 ÷ 9.7",
+      "promptLayout": "division",
+      "answer": "2.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.12d0.7",
+      "genreId": "math",
+      "prompt": "1.12 ÷ 0.7",
+      "promptLayout": "division",
+      "answer": "1.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-15.75d7.5",
+      "genreId": "math",
+      "prompt": "15.75 ÷ 7.5",
+      "promptLayout": "division",
+      "answer": "2.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.44d9.2",
+      "genreId": "math",
+      "prompt": "6.44 ÷ 9.2",
+      "promptLayout": "division",
+      "answer": "0.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-51.68d7.6",
+      "genreId": "math",
+      "prompt": "51.68 ÷ 7.6",
+      "promptLayout": "division",
+      "answer": "6.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-59.78d6.1",
+      "genreId": "math",
+      "prompt": "59.78 ÷ 6.1",
+      "promptLayout": "division",
+      "answer": "9.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-17.28d1.8",
+      "genreId": "math",
+      "prompt": "17.28 ÷ 1.8",
+      "promptLayout": "division",
+      "answer": "9.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-23.52d4.2",
+      "genreId": "math",
+      "prompt": "23.52 ÷ 4.2",
+      "promptLayout": "division",
+      "answer": "5.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-34.98d5.3",
+      "genreId": "math",
+      "prompt": "34.98 ÷ 5.3",
+      "promptLayout": "division",
+      "answer": "6.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.26d1.1",
+      "genreId": "math",
+      "prompt": "7.26 ÷ 1.1",
+      "promptLayout": "division",
+      "answer": "6.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-34.83d8.1",
+      "genreId": "math",
+      "prompt": "34.83 ÷ 8.1",
+      "promptLayout": "division",
+      "answer": "4.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-15.6d6.5",
+      "genreId": "math",
+      "prompt": "15.6 ÷ 6.5",
+      "promptLayout": "division",
+      "answer": "2.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-75.69d8.7",
+      "genreId": "math",
+      "prompt": "75.69 ÷ 8.7",
+      "promptLayout": "division",
+      "answer": "8.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.37d1.3",
+      "genreId": "math",
+      "prompt": "6.37 ÷ 1.3",
+      "promptLayout": "division",
+      "answer": "4.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-55.9d6.5",
+      "genreId": "math",
+      "prompt": "55.9 ÷ 6.5",
+      "promptLayout": "division",
+      "answer": "8.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-73.95d8.7",
+      "genreId": "math",
+      "prompt": "73.95 ÷ 8.7",
+      "promptLayout": "division",
+      "answer": "8.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.76d3.4",
+      "genreId": "math",
+      "prompt": "4.76 ÷ 3.4",
+      "promptLayout": "division",
+      "answer": "1.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-20.46d3.3",
+      "genreId": "math",
+      "prompt": "20.46 ÷ 3.3",
+      "promptLayout": "division",
+      "answer": "6.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.02d7.8",
+      "genreId": "math",
+      "prompt": "7.02 ÷ 7.8",
+      "promptLayout": "division",
+      "answer": "0.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.08d0.8",
+      "genreId": "math",
+      "prompt": "2.08 ÷ 0.8",
+      "promptLayout": "division",
+      "answer": "2.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.1d1.5",
+      "genreId": "math",
+      "prompt": "2.1 ÷ 1.5",
+      "promptLayout": "division",
+      "answer": "1.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-8.68d1.4",
+      "genreId": "math",
+      "prompt": "8.68 ÷ 1.4",
+      "promptLayout": "division",
+      "answer": "6.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-20.16d8.4",
+      "genreId": "math",
+      "prompt": "20.16 ÷ 8.4",
+      "promptLayout": "division",
+      "answer": "2.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.11d7.4",
+      "genreId": "math",
+      "prompt": "1.11 ÷ 7.4",
+      "promptLayout": "division",
+      "answer": "0.15",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-17.75d2.5",
+      "genreId": "math",
+      "prompt": "17.75 ÷ 2.5",
+      "promptLayout": "division",
+      "answer": "7.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-30.72d9.6",
+      "genreId": "math",
+      "prompt": "30.72 ÷ 9.6",
+      "promptLayout": "division",
+      "answer": "3.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-17.16d4.4",
+      "genreId": "math",
+      "prompt": "17.16 ÷ 4.4",
+      "promptLayout": "division",
+      "answer": "3.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-36.4d5.6",
+      "genreId": "math",
+      "prompt": "36.4 ÷ 5.6",
+      "promptLayout": "division",
+      "answer": "6.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-13.87d1.9",
+      "genreId": "math",
+      "prompt": "13.87 ÷ 1.9",
+      "promptLayout": "division",
+      "answer": "7.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-80.51d8.3",
+      "genreId": "math",
+      "prompt": "80.51 ÷ 8.3",
+      "promptLayout": "division",
+      "answer": "9.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.94d4.7",
+      "genreId": "math",
+      "prompt": "0.94 ÷ 4.7",
+      "promptLayout": "division",
+      "answer": "0.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-22.95d2.7",
+      "genreId": "math",
+      "prompt": "22.95 ÷ 2.7",
+      "promptLayout": "division",
+      "answer": "8.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-18.24d1.9",
+      "genreId": "math",
+      "prompt": "18.24 ÷ 1.9",
+      "promptLayout": "division",
+      "answer": "9.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-20.88d2.4",
+      "genreId": "math",
+      "prompt": "20.88 ÷ 2.4",
+      "promptLayout": "division",
+      "answer": "8.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-8.28d1.8",
+      "genreId": "math",
+      "prompt": "8.28 ÷ 1.8",
+      "promptLayout": "division",
+      "answer": "4.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-71.4d8.4",
+      "genreId": "math",
+      "prompt": "71.4 ÷ 8.4",
+      "promptLayout": "division",
+      "answer": "8.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-8.96d3.2",
+      "genreId": "math",
+      "prompt": "8.96 ÷ 3.2",
+      "promptLayout": "division",
+      "answer": "2.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-9.9d5.5",
+      "genreId": "math",
+      "prompt": "9.9 ÷ 5.5",
+      "promptLayout": "division",
+      "answer": "1.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-62.32d7.6",
+      "genreId": "math",
+      "prompt": "62.32 ÷ 7.6",
+      "promptLayout": "division",
+      "answer": "8.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-71.89d9.1",
+      "genreId": "math",
+      "prompt": "71.89 ÷ 9.1",
+      "promptLayout": "division",
+      "answer": "7.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-4.48d0.8",
+      "genreId": "math",
+      "prompt": "4.48 ÷ 0.8",
+      "promptLayout": "division",
+      "answer": "5.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-69.16d9.1",
+      "genreId": "math",
+      "prompt": "69.16 ÷ 9.1",
+      "promptLayout": "division",
+      "answer": "7.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-18.81d9.9",
+      "genreId": "math",
+      "prompt": "18.81 ÷ 9.9",
+      "promptLayout": "division",
+      "answer": "1.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-90.24d9.6",
+      "genreId": "math",
+      "prompt": "90.24 ÷ 9.6",
+      "promptLayout": "division",
+      "answer": "9.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.64d6.6",
+      "genreId": "math",
+      "prompt": "2.64 ÷ 6.6",
+      "promptLayout": "division",
+      "answer": "0.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-19.53d6.3",
+      "genreId": "math",
+      "prompt": "19.53 ÷ 6.3",
+      "promptLayout": "division",
+      "answer": "3.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-3.92d9.8",
+      "genreId": "math",
+      "prompt": "3.92 ÷ 9.8",
+      "promptLayout": "division",
+      "answer": "0.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-11.22d3.4",
+      "genreId": "math",
+      "prompt": "11.22 ÷ 3.4",
+      "promptLayout": "division",
+      "answer": "3.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-14.24d1.6",
+      "genreId": "math",
+      "prompt": "14.24 ÷ 1.6",
+      "promptLayout": "division",
+      "answer": "8.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-3.18d0.6",
+      "genreId": "math",
+      "prompt": "3.18 ÷ 0.6",
+      "promptLayout": "division",
+      "answer": "5.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-36.4d6.5",
+      "genreId": "math",
+      "prompt": "36.4 ÷ 6.5",
+      "promptLayout": "division",
+      "answer": "5.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-62.16d7.4",
+      "genreId": "math",
+      "prompt": "62.16 ÷ 7.4",
+      "promptLayout": "division",
+      "answer": "8.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.21d1.3",
+      "genreId": "math",
+      "prompt": "2.21 ÷ 1.3",
+      "promptLayout": "division",
+      "answer": "1.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-50.35d5.3",
+      "genreId": "math",
+      "prompt": "50.35 ÷ 5.3",
+      "promptLayout": "division",
+      "answer": "9.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.75d0.5",
+      "genreId": "math",
+      "prompt": "1.75 ÷ 0.5",
+      "promptLayout": "division",
+      "answer": "3.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-27.74d7.3",
+      "genreId": "math",
+      "prompt": "27.74 ÷ 7.3",
+      "promptLayout": "division",
+      "answer": "3.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-53.69d5.9",
+      "genreId": "math",
+      "prompt": "53.69 ÷ 5.9",
+      "promptLayout": "division",
+      "answer": "9.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.74d3.7",
+      "genreId": "math",
+      "prompt": "0.74 ÷ 3.7",
+      "promptLayout": "division",
+      "answer": "0.2",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.3d0.2",
+      "genreId": "math",
+      "prompt": "0.3 ÷ 0.2",
+      "promptLayout": "division",
+      "answer": "1.5",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.28d0.3",
+      "genreId": "math",
+      "prompt": "2.28 ÷ 0.3",
+      "promptLayout": "division",
+      "answer": "7.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-23.94d4.2",
+      "genreId": "math",
+      "prompt": "23.94 ÷ 4.2",
+      "promptLayout": "division",
+      "answer": "5.7",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.16d7.2",
+      "genreId": "math",
+      "prompt": "2.16 ÷ 7.2",
+      "promptLayout": "division",
+      "answer": "0.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-6.12d8.5",
+      "genreId": "math",
+      "prompt": "6.12 ÷ 8.5",
+      "promptLayout": "division",
+      "answer": "0.72",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.12d3.5",
+      "genreId": "math",
+      "prompt": "1.12 ÷ 3.5",
+      "promptLayout": "division",
+      "answer": "0.32",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-1.36d8.5",
+      "genreId": "math",
+      "prompt": "1.36 ÷ 8.5",
+      "promptLayout": "division",
+      "answer": "0.16",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-7.41d9.5",
+      "genreId": "math",
+      "prompt": "7.41 ÷ 9.5",
+      "promptLayout": "division",
+      "answer": "0.78",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-2.46d8.2",
+      "genreId": "math",
+      "prompt": "2.46 ÷ 8.2",
+      "promptLayout": "division",
+      "answer": "0.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-39.56d4.6",
+      "genreId": "math",
+      "prompt": "39.56 ÷ 4.6",
+      "promptLayout": "division",
+      "answer": "8.6",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-3.43d3.5",
+      "genreId": "math",
+      "prompt": "3.43 ÷ 3.5",
+      "promptLayout": "division",
+      "answer": "0.98",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-12.74d2.6",
+      "genreId": "math",
+      "prompt": "12.74 ÷ 2.6",
+      "promptLayout": "division",
+      "answer": "4.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.39d9.8",
+      "genreId": "math",
+      "prompt": "5.39 ÷ 9.8",
+      "promptLayout": "division",
+      "answer": "0.55",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-10.44d3.6",
+      "genreId": "math",
+      "prompt": "10.44 ÷ 3.6",
+      "promptLayout": "division",
+      "answer": "2.9",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-82.72d8.8",
+      "genreId": "math",
+      "prompt": "82.72 ÷ 8.8",
+      "promptLayout": "division",
+      "answer": "9.4",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-5.22d2.9",
+      "genreId": "math",
+      "prompt": "5.22 ÷ 2.9",
+      "promptLayout": "division",
+      "answer": "1.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-17.1d9.5",
+      "genreId": "math",
+      "prompt": "17.1 ÷ 9.5",
+      "promptLayout": "division",
+      "answer": "1.8",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-0.55d0.5",
+      "genreId": "math",
+      "prompt": "0.55 ÷ 0.5",
+      "promptLayout": "division",
+      "answer": "1.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-46.64d8.8",
+      "genreId": "math",
+      "prompt": "46.64 ÷ 8.8",
+      "promptLayout": "division",
+      "answer": "5.3",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
+      ]
+    },
+    {
+      "id": "ma-dq-68.85d8.5",
+      "genreId": "math",
+      "prompt": "68.85 ÷ 8.5",
+      "promptLayout": "division",
+      "answer": "8.1",
+      "level": "g56",
+      "topic": "decimal",
+      "hintSource": [
+        "わる数の 小数点を 1けた 右に うつす",
+        "商の 小数点は 真上に うつ",
+        "わりきれなければ 0を つけて わり進む"
       ]
     }
   ]
