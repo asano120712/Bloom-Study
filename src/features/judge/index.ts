@@ -1,6 +1,7 @@
 import levenshtein from 'fast-levenshtein'
 import { levenshteinTolerance } from '@/config'
 import { assemblyOf } from '@/features/assemble'
+import { isSimplest, readWrittenNumber, sameValue } from '@/features/math'
 import type { JudgeResult, Question } from '@/types'
 
 /**
@@ -58,10 +59,13 @@ export function judgeTyping(question: Question, input: string): JudgeResult {
  * 区切りのカンマ、前後の空白は、どれも同じ数を指しているのに文字としては別物になる。
  * 正規化(NFKC + 記号の除去)してから数に直して比べる。
  *
- * 小数や分数はまだ出題していない。出すときは、ここに
+ * 分数の答え(「7/4」「1 3/4」)は、値が同じで**約分してある**ときだけ正解にする
+ * (judgeFraction)。小数はまだ出題していない。出すときは、ここに
  * 「0.5 と 1/2 と .5 を同じとみなすか」の判断を足すこと。
  */
 export function judgeNumber(question: Question, input: string): JudgeResult {
+  if (question.promptLayout === 'fraction') return judgeFraction(question, input)
+
   const toNumber = (value: string) => {
     const normalized = value.normalize('NFKC').replace(/[\s,]/g, '')
     return /^-?\d+(\.\d+)?$/.test(normalized) ? Number(normalized) : null
@@ -75,6 +79,28 @@ export function judgeNumber(question: Question, input: string): JudgeResult {
     verdict: isCorrect ? 'correct' : 'incorrect',
     isCorrect,
     answer: question.answer,
+  }
+}
+
+/**
+ * 分数の答えの判定。
+ *
+ * 仮分数(7/4)でも帯分数(1 3/4)でも、値が同じで約分してあれば正解にする。
+ * 値は合っているのに約分していない(4/6)ときは、不正解にせず `reducible` を立てる。
+ * 約分は小5で習う手順そのものなので答えに含めるが、計算そのものは合っている。
+ * 呼ぶ側は、記録せずに「約分できるよ」と伝えて答え直してもらう。
+ */
+function judgeFraction(question: Question, input: string): JudgeResult {
+  const answered = readWrittenNumber(input)
+  const correct = readWrittenNumber(question.answer)
+  const isSame = answered !== null && correct !== null && sameValue(answered, correct)
+  const isCorrect = isSame && isSimplest(answered)
+
+  return {
+    verdict: isCorrect ? 'correct' : 'incorrect',
+    isCorrect,
+    answer: question.answer,
+    reducible: isSame && !isCorrect ? true : undefined,
   }
 }
 

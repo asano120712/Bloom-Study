@@ -116,12 +116,22 @@ export interface Copy {
     nextStep: string
     /** 間違えて、同じところを打ち直してもらうとき */
     retry: string
+    /** 分数の答えが、値は合っているのに約分していないとき */
+    reducible: string
+    /** 分数の答えのマス。読み上げと、どこに打っているかの見出し */
+    fractionParts: { whole: string; numerator: string; denominator: string }
+    /** 小数のわり算で、小数点を動かした式に添える一言 */
+    shiftPoint: (places: number) => string
+    /** 手書きの答えのマスで、小数点を打つ場所(読み上げ) */
+    decimalPoint: string
   }
   trace: { guide: string; done: string }
   build: { look: string; answerIs: string }
   match: { question: string; correct: string; hint: string }
   result: {
     model: string
+    /** おてほんの下に出す途中式の見出し(分数だけ) */
+    work: string
     listen: string
     mine: { text: string; parts: string; handwriting: string }
     streak: (streak: number) => string
@@ -261,7 +271,15 @@ const ADULT: Copy = {
     },
     levelIs: (level) => `なんいど：${level}`,
     chooseTopic: 'どの計算をする?',
-    topics: { add: 'たし算', sub: 'ひき算', mul: 'かけ算', div: 'わり算' },
+    topics: {
+      add: 'たし算',
+      sub: 'ひき算',
+      mul: 'かけ算',
+      div: 'わり算',
+      fracAdd: '分数のたし算・ひき算',
+      fracMul: '分数のかけ算・わり算',
+      decimal: '小数のかけ算・わり算',
+    },
     mixedTopic: { label: 'ランダム', note: 'ぜんぶの種類をまぜて出す' },
     topicExample: (expression) => `れい ${expression}`,
     backToTopic: '計算の種類にもどる',
@@ -312,6 +330,10 @@ const ADULT: Copy = {
     nextPlace: 'つぎのくらいへ',
     nextStep: 'つぎへ',
     retry: 'もういちど打ってみよう',
+    reducible: 'あっています! 約分できるので、約分してから答えよう',
+    fractionParts: { whole: '整数', numerator: '分子', denominator: '分母' },
+    shiftPoint: (places) => `小数点を ${places}けた 右に うつして わる`,
+    decimalPoint: 'ここに小数点を打つ',
   },
   trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
   build: { look: 'この漢字をよく見て、覚えよう', answerIs: 'こたえは これ' },
@@ -322,6 +344,7 @@ const ADULT: Copy = {
   },
   result: {
     model: 'おてほん',
+    work: 'とちゅうの式',
     listen: '読み方を聞く',
     mine: {
       text: 'じぶんが うった こたえ',
@@ -451,7 +474,15 @@ const KIDS: Copy = {
     },
     levelIs: (level) => `むずかしさ：${level}`,
     chooseTopic: 'どの けいさんを する？',
-    topics: { add: 'たしざん', sub: 'ひきざん', mul: 'かけざん', div: 'わりざん' },
+    topics: {
+      add: 'たしざん',
+      sub: 'ひきざん',
+      mul: 'かけざん',
+      div: 'わりざん',
+      fracAdd: 'ぶんすうの たしざん・ひきざん',
+      fracMul: 'ぶんすうの かけざん・わりざん',
+      decimal: 'しょうすうの かけざん・わりざん',
+    },
     mixedTopic: { label: 'おまかせ', note: 'いろいろな けいさんが でるよ' },
     topicExample: (expression) => `れい ${expression}`,
     backToTopic: 'けいさんの しゅるいに もどる',
@@ -502,6 +533,10 @@ const KIDS: Copy = {
     nextPlace: 'つぎの くらいへ',
     nextStep: 'つぎへ',
     retry: 'もういちど うってみよう',
+    reducible: 'あってるよ! やくぶん できるから、やくぶんして こたえよう',
+    fractionParts: { whole: 'せいすう', numerator: 'ぶんし', denominator: 'ぶんぼ' },
+    shiftPoint: (places) => `しょうすうてんを ${places}けた みぎに うつして わる`,
+    decimalPoint: 'ここに しょうすうてんを うつ',
   },
   trace: { guide: 'ひかってる ● から ゆびで なぞってね', done: 'できた！' },
   build: { look: 'この かんじを よく みてね', answerIs: 'こたえは これ' },
@@ -512,6 +547,7 @@ const KIDS: Copy = {
   },
   result: {
     model: 'おてほん',
+    work: 'とちゅうの しき',
     listen: 'よみかたを きく',
     mine: {
       text: 'じぶんが うった こたえ',

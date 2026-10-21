@@ -26,6 +26,27 @@ export interface WriteRow {
    * 確認や結果の画面で見比べたいのは答えだけで、段まで並ぶと答えが小さく埋もれる。
    */
   scratch?: boolean
+  /**
+   * まとめた画像の中で置く位置(マス単位)。指定があると、行の右づめではなくここに置く。
+   * 分数のように、整数を左・分子を上・分母を下に置く形は、行だけでは表せないため。
+   * line は半分の位置(0.5)も取れる(帯分数の整数を、分子と分母の間の高さに置く)。
+   */
+  at?: { column: number; line: number }
+  /** まとめた画像で、このマスの上に線を引く(分数の線) */
+  ruleAbove?: boolean
+  /**
+   * 小数点を打てるようにする(小数の答えのマス)。マスとマスの間の右下をタップすると点が入る。
+   * 小さな点は字の読み取りでは拾えないので、書くのではなく場所を選んでもらう。
+   */
+  decimalPoint?: boolean
+}
+
+/** 書き終えたときに渡す、書く場所ごとのマスの絵 */
+export interface WrittenRow {
+  key: string
+  cells: ImageData[]
+  /** 小数点を打った場所。何マスめ(0始まり)の右か。打っていなければ null */
+  point: number | null
 }
 
 interface BoxHandwritingProps {
@@ -37,7 +58,7 @@ interface BoxHandwritingProps {
    * 書き終えたとき。
    * 全体を1枚にした画像(結果画面で見せる)と、行ごとのマスの絵(読み取りに使う)を渡す。
    */
-  onSubmit: (imageDataUrl: string, rows: { key: string; cells: ImageData[] }[]) => void
+  onSubmit: (imageDataUrl: string, rows: WrittenRow[]) => void
   disabled?: boolean
 }
 
@@ -95,7 +116,21 @@ function useFitCell(area: RefObject<HTMLDivElement | null>) {
     fit()
     const observer = new ResizeObserver(fit)
     observer.observe(box)
-    return () => observer.disconnect()
+    /*
+      ウェブフォントの読み込みが終わると、字の幅(「=」や式の数字)が変わる。
+      書く場所の大きさは変わらないので ResizeObserver では気づけず、読み込み前の字幅で
+      決めたマスのまま、筆算が書く場所からはみ出していた。読み込みが済んだら測り直す。
+    */
+    let active = true
+    void document.fonts?.ready.then(() => {
+      if (active) fit()
+    })
+    document.fonts?.addEventListener('loadingdone', fit)
+    return () => {
+      active = false
+      observer.disconnect()
+      document.fonts?.removeEventListener('loadingdone', fit)
+    }
   }, [area])
 }
 
@@ -130,6 +165,8 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
    * モードを分けた。
    */
   const [erasing, setErasing] = useState(false)
+  /** 書く場所ごとの、小数点を打った場所(何マスめの右か) */
+  const [points, setPoints] = useState<Record<string, number | null>>({})
   /** 筆算を置く場所。ここに入る最大の大きさにマスを広げる */
   const area = useRef<HTMLDivElement>(null)
   useFitCell(area)
@@ -188,17 +225,46 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
   }
 
   /** 行ごとのマスの絵。読み取りに渡す(1マス1字なので、切り出しが要らない) */
-  const cellImages = () =>
+  const cellImages = (): WrittenRow[] =>
     rows.map((row) => ({
       key: row.key,
       cells: (canvases.current.get(row.key) ?? []).flatMap((canvas) => {
         const context = canvas?.getContext('2d')
         return context ? [context.getImageData(0, 0, CELL, CELL)] : []
       }),
+      point: points[row.key] ?? null,
     }))
 
   /** 書いた字を1枚にまとめる。結果画面で見せるのは全体の1枚でよい */
-  const exportImage = (): string => {
+  const exportImage = (): string =>
+    rows.some((row) => row.at) ? exportPlaced() : exportLines()
+
+  /** 位置の指定(at)どおりに置く。分数の答え */
+  const exportPlaced = (): string => {
+    const placed = rows.flatMap((row) => (row.at && !row.scratch ? [{ row, at: row.at }] : []))
+    const sheet = document.createElement('canvas')
+    sheet.width = Math.max(...placed.map(({ row, at }) => at.column + row.boxes)) * CELL
+    sheet.height = Math.ceil(Math.max(...placed.map(({ at }) => at.line + 1))) * CELL
+    const context = sheet.getContext('2d')
+    if (!context) return ''
+    context.fillStyle = '#ffffff'
+    context.fillRect(0, 0, sheet.width, sheet.height)
+
+    for (const { row, at } of placed) {
+      const cells = canvases.current.get(row.key) ?? []
+      cells.slice(0, row.boxes).forEach((canvas, index) => {
+        if (canvas) context.drawImage(canvas, (at.column + index) * CELL, at.line * CELL)
+      })
+      if (row.ruleAbove) {
+        context.fillStyle = STROKE_COLOR
+        context.fillRect(at.column * CELL, at.line * CELL - LINE_WIDTH / 2, row.boxes * CELL, LINE_WIDTH)
+      }
+    }
+    return sheet.toDataURL('image/png')
+  }
+
+  /** 行ごとに右づめで積む。筆算の答え */
+  const exportLines = (): string => {
     // 同じ行のものは横に並べる(たし算の位、わり算の商は1行に並ぶ)
     // 途中の計算(かけ算の段)は入れない。見せるのは答えだけ
     const lineOf = (row: WriteRow, index: number) => row.line ?? index
@@ -225,6 +291,14 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
           const canvas = cells[index]
           if (canvas) context.drawImage(canvas, left + index * CELL, top * CELL)
         }
+        // 打った小数点も、マスの間の右下に描く
+        const point = points[row.key]
+        if (row.decimalPoint && point !== null && point !== undefined) {
+          context.fillStyle = STROKE_COLOR
+          context.beginPath()
+          context.arc(left + (point + 1) * CELL, (top + 0.85) * CELL, LINE_WIDTH * 1.3, 0, Math.PI * 2)
+          context.fill()
+        }
         left += row.boxes * CELL
       }
     })
@@ -235,7 +309,7 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     const row = rows.find((entry) => entry.key === key)
     if (!row) return null
 
-    return Array.from({ length: row.boxes }, (_, index) => (
+    const canvasAt = (index: number) => (
       <canvas
         key={index}
         ref={(element) => {
@@ -270,6 +344,41 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
           erasing ? 'border-warm-500' : 'border-dashed border-bloom-200'
         }`}
       />
+    )
+
+    if (!row.decimalPoint) return Array.from({ length: row.boxes }, (_, index) => canvasAt(index))
+
+    // 小数点を打つ場所は、マスとマスの間の右下(紙で小数点を打つ場所)。いちばん右のマスの後ろには打たない
+    const point = points[key] ?? null
+    return Array.from({ length: row.boxes }, (_, index) => (
+      <span key={index} className="relative flex">
+        {canvasAt(index)}
+        {index < row.boxes - 1 && (
+          <button
+            type="button"
+            aria-label={copy.number.decimalPoint}
+            aria-pressed={point === index}
+            disabled={disabled}
+            onClick={() =>
+              setPoints((current) => ({ ...current, [key]: current[key] === index ? null : index }))
+            }
+            /*
+              マスとマスの間の下の角(紙で小数点を打つ場所)に重ねる。マスの高さの内側に収める。
+              下へはみ出すと、書く場所の外として切れて見えなくなるうえ、マスの大きさを測るときにも数えられない。
+            */
+            className="absolute -right-[calc(var(--cell)*0.2)] bottom-0 z-10 flex size-[calc(var(--cell)*0.4)] items-end justify-center pb-[calc(var(--cell)*0.04)]"
+          >
+            <span
+              aria-hidden="true"
+              className={`rounded-full ${
+                point === index
+                  ? 'size-[calc(var(--cell)*0.16)] bg-ink-900'
+                  : 'size-[calc(var(--cell)*0.16)] border-2 border-bloom-400 bg-white'
+              }`}
+            />
+          </button>
+        )}
+      </span>
     ))
   }
 
