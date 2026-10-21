@@ -3,6 +3,8 @@ interface OnScreenKeyboardProps {
   onBackspace: () => void
   onSubmit: () => void
   canSubmit: boolean
+  /** 決定キーの文字。一般向けとこども向けで表記が違う */
+  submitLabel: string
   disabled?: boolean
 }
 
@@ -27,6 +29,7 @@ export function OnScreenKeyboard({
   onBackspace,
   onSubmit,
   canSubmit,
+  submitLabel,
   disabled = false,
 }: OnScreenKeyboardProps) {
   return (
@@ -67,7 +70,7 @@ export function OnScreenKeyboard({
           onClick={onSubmit}
           className="min-h-12 flex-2 rounded-lg bg-bloom-700 text-lg font-bold text-white disabled:bg-bloom-200"
         >
-          こたえあわせ
+          {submitLabel}
         </button>
       </div>
     </div>
