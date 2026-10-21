@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
-import { parseExpression, shiftedDivision, type ColumnSlot } from '@/features/math'
+import { longDivisionOf, parseExpression, type ColumnSlot } from '@/features/math'
 
 /** 筆算のマス1つぶん。打ち終わったもの・いま打っているものを、場所つきで表す */
 export interface ColumnCell {
@@ -167,10 +167,16 @@ function splitPoint(text: string): { chars: string[]; pointAfter: number } {
   return { chars: [...text.replace('.', '')], pointAfter: point - 1 }
 }
 
-/** 数字の右下に添える小数点。マスのすきまに置く */
+/**
+ * 数字の右下に添える小数点。マスのすきまに置く。
+ * 隣の手書きのマスにかかることがあるので、タッチは下へ通す(書くのを邪魔しない)。
+ */
 function DecimalPoint() {
   return (
-    <span aria-hidden="true" className="absolute -right-[0.2em] bottom-[0.05em] leading-none">
+    <span
+      aria-hidden="true"
+      className="pointer-events-none absolute -right-[0.2em] bottom-[0.05em] leading-none"
+    >
       .
     </span>
   )
@@ -250,8 +256,14 @@ export function DivisionForm({
   if (!parsed || parsed.operator !== '÷') return <span>{expression}</span>
 
   // 小数のわり算は、わる数が整数になるよう小数点を動かした式で筆算する(8.4 ÷ 1.2 → 84 ÷ 12)
-  const shifted = shiftedDivision(parsed)
-  const [dividend, divisor] = [shifted.left, shifted.right]
+  /*
+    小数のわり算は、小数点を動かした式で筆算する(8.4 ÷ 1.2 → 84 ÷ 12)。
+    わりきれないときは、わられる数の後ろに 0 を付けたしてわり進む(72 ÷ 16 → 72.0)。
+  */
+  const layout = longDivisionOf(parsed)
+  const [dividend, divisor] = [layout.digits, layout.divisor]
+  /** 付けたした 0 が始まる桁。もとの数字と見分けられるよう薄く出す */
+  const appendedFrom = dividend.length - layout.appended
   const quotient = cells.filter((cell) => cell.slot.kind === 'quotient')
   const lines = cells.filter((cell) => cell.slot.kind === 'product' || cell.slot.kind === 'rest')
 
@@ -312,6 +324,23 @@ export function DivisionForm({
         </span>
       ))}
 
+      {/*
+        商の小数点。わられる数の小数点の真上にそろえて打つ(位置は決まっているので、先に出しておく)
+      */}
+      {layout.pointAfter >= 0 && (
+        <span
+          aria-hidden="true"
+          /*
+            商のマスと同じ場所に重ねて置くので、タッチは下のマスへ通す(pointer-events-none)。
+            通さないと、小数点の左の商のマスに手書きで書けなくなる。
+          */
+          className="pointer-events-none relative"
+          style={{ gridRow: 1, gridColumn: columnOf(layout.pointAfter) }}
+        >
+          <DecimalPoint />
+        </span>
+      )}
+
       {/* 割る数 │ 割られる数 */}
       <span aria-hidden="true" className="self-center pr-1" style={{ gridRow: 2, gridColumn: 1 }}>
         {divisor}
@@ -320,12 +349,13 @@ export function DivisionForm({
         <span
           key={index}
           aria-hidden="true"
-          className={`border-t-2 border-ink-900 pt-1 text-center ${
+          className={`relative border-t-2 border-ink-900 pt-1 text-center ${
             index === 0 ? 'rounded-tl-md border-l-2 pl-1' : ''
-          }`}
+          } ${index >= appendedFrom ? 'text-ink-400' : ''}`}
           style={{ gridRow: 2, gridColumn: columnOf(index) }}
         >
           {digit}
+          {index === layout.pointAfter && <DecimalPoint />}
         </span>
       ))}
 

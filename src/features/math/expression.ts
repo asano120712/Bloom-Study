@@ -32,19 +32,28 @@ export function withoutPoint(number: string): string {
  * 小数のわり算を、わる数が整数になるように小数点を動かした式にする。
  *
  * 8.4 ÷ 1.2 は、わる数とわられる数の小数点を同じだけ(1けた)右へ動かして 84 ÷ 12 にしてから
- * 筆算する(小5の教科書の手順)。わられる数に小数点が残る問題はまだ出さない(商が小数になる)。
- * 整数のわり算や、小数でない式はそのまま返す。
+ * 筆算する(小5の教科書の手順)。わられる数には小数点が残ることがある(2.56 ÷ 0.8 → 25.6 ÷ 8)。
+ * 整数のわり算や、わる数が整数の式はそのまま返す。
  */
 export function shiftedDivision(expression: Expression): Expression & { shift: number } {
   const shift = decimalPlaces(expression.right)
-  if (expression.operator !== '÷' || (shift === 0 && decimalPlaces(expression.left) === 0)) {
-    return { ...expression, shift: 0 }
-  }
-  const scale = 10 ** shift
+  if (expression.operator !== '÷' || shift === 0) return { ...expression, shift: 0 }
   return {
-    left: String(Math.round(Number(expression.left) * scale)),
+    left: movePoint(expression.left, shift),
     operator: '÷',
-    right: String(Math.round(Number(expression.right) * scale)),
+    right: movePoint(expression.right, shift),
     shift,
   }
+}
+
+/**
+ * 小数点を右へ動かす。数に直してから掛けると 2.56 × 10 が 25.600000000000001 のようにずれるので、
+ * 文字のまま動かす(足りないけたは 0 で埋める。0.8 を1けた → 8)。
+ */
+function movePoint(number: string, places: number): string {
+  const [whole, fraction = ''] = number.split('.')
+  const padded = fraction.padEnd(places, '0')
+  const moved = String(Number(whole + padded.slice(0, places)))
+  const rest = padded.slice(places)
+  return rest ? `${moved}.${rest}` : moved
 }
