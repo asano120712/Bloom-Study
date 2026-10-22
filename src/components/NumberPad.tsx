@@ -31,7 +31,13 @@ export function NumberPad({
 }: NumberPadProps) {
   return (
     <div
-      className="flex max-h-72 min-h-0 flex-1 flex-col gap-2"
+      /*
+        高さは先に確保する(最低 11rem = 4段が指で押せる高さ、最大 18rem)。
+        余った高さをもらう作りにすると、筆算の段が増えたときに押し出されて、
+        背の低い端末(iPhone SE)で一番下の段(消す・0・こたえあわせ)が画面から切れていた。
+      */
+      // 背の低い端末では筆算の置き場所も要るので、画面の高さの 30% までにとどめる
+      className="flex h-[clamp(11rem,30svh,18rem)] shrink-0 flex-col gap-2"
       role="group"
       aria-label="数字キーボード"
     >
