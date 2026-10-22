@@ -43,7 +43,16 @@ export function isDifficulty(value: string | null | undefined): value is Difficu
  * 苦手な計算だけを続けて練習できるよう、出題の前に選ばせる。
  * 何も選ばない(ランダム)ときは種類で絞らず、その学年の問題をまぜて出す。
  */
-export type MathTopic = 'add' | 'sub' | 'mul' | 'div' | 'fracAdd' | 'fracMul' | 'decimal'
+export type MathTopic =
+  | 'add'
+  | 'sub'
+  | 'mul'
+  | 'div'
+  | 'fracAdd'
+  | 'fracMul'
+  | 'decimal'
+  | 'ratio'
+  | 'speed'
 
 const MATH_TOPICS: readonly MathTopic[] = [
   'add',
@@ -53,6 +62,8 @@ const MATH_TOPICS: readonly MathTopic[] = [
   'fracAdd',
   'fracMul',
   'decimal',
+  'ratio',
+  'speed',
 ]
 
 export function isMathTopic(value: string | null | undefined): value is MathTopic {
@@ -112,9 +123,10 @@ export interface Question {
    * 2桁以上のかけ算を1行で出すと暗算に近くなり、小3・4には難しい。
    * 筆算はこの学年で習う形なので、縦に積むほうが解きやすく、位をそろえる練習にもなる。
    * 'fraction' は分数の式。分子を上・分母を下に積んで見せ、答えも分数の形のマスで受ける。
+   * 'word' は文章題。文を読んで、式と答え(単位つき)を書く。
    * 指定が無ければそのまま1行で出す。
    */
-  promptLayout?: 'column' | 'division' | 'fraction'
+  promptLayout?: 'column' | 'division' | 'fraction' | 'word'
   /** 正解文字列 */
   answer: string
   /**
@@ -131,6 +143,12 @@ export interface Question {
    * 結果画面のおてほんで、答えまでの道すじとして見せる。
    */
   work?: string
+  /**
+   * 答えのマスの前と後ろに添える言葉(文章題だけ)。「時速 □ km」「□ %」「□ 割」。
+   * 単位まで書かせると、数が合っていても単位の書き方で外れてしまうので、こちらで出しておく。
+   */
+  answerPrefix?: string
+  answerUnit?: string
   /**
    * KRADFILE 由来の部品。assemble モードはこのうち2部品に割れる字だけを出す。
    * KRADFILE には配置(左右・上下)が無いので、割れる向きと先にくる部品は

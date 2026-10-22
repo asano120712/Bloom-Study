@@ -47,7 +47,7 @@ const DIFFICULTIES: Record<GenreId, Difficulty[]> = {
 const MATH_TOPICS: Partial<Record<Difficulty, MathTopic[]>> = {
   g12: ['add', 'sub'],
   g34: ['add', 'sub', 'mul', 'div'],
-  g56: ['mul', 'div', 'decimal', 'fracAdd', 'fracMul'],
+  g56: ['mul', 'div', 'decimal', 'fracAdd', 'fracMul', 'ratio', 'speed'],
 }
 
 export function mathTopicsOf(genreId: GenreId, difficulty: Difficulty): MathTopic[] {
@@ -68,6 +68,8 @@ const MATH_TOPIC_EXAMPLES: Partial<Record<Difficulty, Partial<Record<MathTopic, 
     fracAdd: '2/3 + 1/4',
     fracMul: '3/4 ÷ 2/5',
     decimal: '2.4 × 3.5',
+    ratio: '40人の 75%は 何人?',
+    speed: '120km を 2時間で 走る 時速は?',
   },
 }
 
@@ -89,7 +91,8 @@ export function difficultiesOf(genreId: GenreId): Difficulty[] {
 const COLUMN_LEVELS: Difficulty[] = ['g34', 'g56', 'junior', 'senior', 'working']
 
 /** 分数の種類。筆算が無いので、解く形(筆算か1行か)を聞かない */
-const FRACTION_TOPICS: MathTopic[] = ['fracAdd', 'fracMul']
+/** 筆算が無い種類(分数・文章題)。解く形(筆算か1行か)を聞かない */
+const FRACTION_TOPICS: MathTopic[] = ['fracAdd', 'fracMul', 'ratio', 'speed']
 
 export function hasColumnForm(genreId: GenreId, difficulty: Difficulty, topic?: MathTopic): boolean {
   if (topic && FRACTION_TOPICS.includes(topic)) return false
