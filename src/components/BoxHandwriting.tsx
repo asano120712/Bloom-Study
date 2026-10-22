@@ -1,6 +1,7 @@
 import { useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 import { useFitCell } from '@/hooks/useFitCell'
 import { useCopy } from '@/hooks/useAudienceMode'
+import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
 import { EraserIcon, HandwritingTools } from '@/components/HandwritingTools'
 
 /** 書く場所1つぶん。筆算の位・商・こたえにそのまま対応する */
@@ -107,6 +108,8 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
   /** 筆算を置く場所。ここに入る最大の大きさにマスを広げる */
   const area = useRef<HTMLDivElement>(null)
   useFitCell(area, FIT)
+  // マスは筆算の形の中に散らばるので、まとめて外の枠で止める
+  useNoTouchGesture(area, 'canvas')
 
   /** 画面の座標を、そのマスの描画バッファの座標へ */
   const positionOf = (event: ReactPointerEvent<HTMLCanvasElement>) => {

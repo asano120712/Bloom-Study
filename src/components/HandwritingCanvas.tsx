@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useCopy } from '@/hooks/useAudienceMode'
+import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
 import { EraserArt, HandwritingTools } from '@/components/HandwritingTools'
 
 interface HandwritingCanvasProps {
@@ -42,6 +43,7 @@ function scaledLineWidth(): number {
 export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCanvasProps) {
   const copy = useCopy()
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  useNoTouchGesture(canvasRef)
   const drawingRef = useRef(false)
   const [hasStroke, setHasStroke] = useState(false)
   /**
