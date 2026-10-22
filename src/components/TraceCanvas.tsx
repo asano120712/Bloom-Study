@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { VIEW_BOX, type TraceItem } from '@/features/trace'
+import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
 
 interface TraceCanvasProps {
   item: TraceItem
@@ -60,6 +61,7 @@ const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y)
  */
 export function TraceCanvas({ item, onComplete, frozen = false }: TraceCanvasProps) {
   const svgRef = useRef<SVGSVGElement>(null)
+  useNoTouchGesture(svgRef)
   const guideRefs = useRef<(SVGPathElement | null)[]>([])
   const [samples, setSamples] = useState<StrokeSample[]>([])
 
