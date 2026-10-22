@@ -5,7 +5,10 @@ import { BoxHandwriting, type WriteRow, type WrittenRow } from '@/components/Box
 import { ColumnForm, DivisionForm, type ColumnCell } from '@/components/ColumnForm'
 import { FractionForm, type FractionSlot, type FractionWork } from '@/components/FractionForm'
 import { FractionInput, type FractionPart } from '@/components/FractionInput'
+import { AnswerRowForm } from '@/components/AnswerRowForm'
 import { MathText } from '@/components/MathText'
+import { WordForm, type WordSlot } from '@/components/WordForm'
+import { WordInput, type WordPart } from '@/components/WordInput'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
 import { HintList } from '@/components/HintList'
 import { NumberInput } from '@/components/NumberInput'
@@ -19,6 +22,7 @@ import {
   columnScript,
   fractionText,
   parseExpression,
+  withoutPoint,
   shiftedDivision,
   type ColumnStep,
 } from '@/features/math'
@@ -85,6 +89,37 @@ function fractionRows(questionId: string, prompt: string): WriteRow[] {
     { key: `${questionId}-whole`, boxes: 1, at: { column: 0, line: 0.5 } },
     { key: `${questionId}-numerator`, boxes: 2, at: { column: 1, line: 0 } },
     { key: `${questionId}-denominator`, boxes: 2, at: { column: 1, line: 1 }, ruleAbove: true },
+  ]
+}
+
+/**
+ * 1行の式を手書きで答えるときの、答えのマスの数。
+ *
+ * **答えになりうる最大のけた数**にする(答えのけた数そのものを見せると、見当をつける手間が減る)。
+ * たし算は大きいほうの数のけた数 + 1(くり上がり)、ひき算は大きいほうのけた数、
+ * かけ算は2つの数のけた数の和、わり算はわられる数のけた数 + 1(わり進む 0)。
+ * 小数は小数点を数えず、0.18 のように頭に 0 が付くぶんを1つ足す。
+ */
+function plainAnswerBoxes(prompt: string): number {
+  const parsed = parseExpression(prompt)
+  if (!parsed) return 3
+  const [left, right] = [withoutPoint(parsed.left).length, withoutPoint(parsed.right).length]
+  const decimal = prompt.includes('.') ? 1 : 0
+  if (parsed.operator === '+') return Math.max(left, right) + 1 + decimal
+  if (parsed.operator === '×') return left + right + decimal
+  if (parsed.operator === '÷') return left + 1 + decimal
+  return Math.max(left, right) + decimal
+}
+
+/**
+ * 文章題を手書きするマス。式を書く場所(途中の計算と同じく読み取らない)と、答え。
+ * 割合は 0.75 のような小数の答えがあるので、答えには小数点を打てるようにする。
+ */
+function wordRows(questionId: string): WriteRow[] {
+  return [
+    // 式は横長の1つの書く場所に、記号まで自由に書く(読み取らないので、マスに分けない)
+    { key: `${questionId}-expression`, boxes: 1, span: 5, line: 1, scratch: true },
+    { key: `${questionId}-answer`, boxes: 4, line: 0, decimalPoint: true },
   ]
 }
 
@@ -259,6 +294,8 @@ export function QuizPage() {
       prompt: question.prompt,
       promptReading: question.promptReading,
       work: question.work,
+      // 文章題は、おてほんに単位を添える(「75%」「時速 60km」)
+      answerText: question.answerUnit ? answerText(question.answer) : undefined,
       genreId: genre.id,
       inputMode,
       difficulty,
@@ -289,6 +326,8 @@ export function QuizPage() {
       prompt: question.prompt,
       promptReading: question.promptReading,
       work: question.work,
+      // 文章題は、おてほんに単位を添える(「75%」「時速 60km」)
+      answerText: question.answerUnit ? answerText(question.answer) : undefined,
       genreId: genre.id,
       inputMode,
       difficulty,
@@ -308,15 +347,17 @@ export function QuizPage() {
    */
   /**
    * この問題を筆算で出すか。1行の式を選んだときは、答えだけ打つ形にする。
-   * 分数は筆算が無いので、どちらを選んでいても分数の形(分子を上・分母を下)で出す。
+   * 分数と文章題は筆算が無いので、どちらを選んでいても、その形(分数・文章題)で出す。
    */
   const layout =
-    question.promptLayout === 'fraction'
-      ? 'fraction'
+    question.promptLayout === 'fraction' || question.promptLayout === 'word'
+      ? question.promptLayout
       : promptForm === 'plain'
         ? undefined
         : question.promptLayout
   const isFraction = layout === 'fraction'
+  /** 文章題か。文は上に出し、入力の欄には式と答えのマスだけを置く */
+  const isWord = layout === 'word'
   /** 筆算(縦に積む式)か。分数の式は筆算の手順を持たない */
   const isColumn = layout === 'column' || layout === 'division'
   const script = inputMode === 'number' && isColumn ? columnScript(question.prompt) : []
@@ -400,9 +441,22 @@ export function QuizPage() {
   */
   const writeScript =
     answerSteps[0]?.slot.kind === 'place' ? [...answerSteps].reverse() : answerSteps
+  /** 1行の式(筆算にしない計算)を手書きするか。答えのマスに書いて、読み取って判定する */
+  const isPlainMath = genre.id === 'math' && layout === undefined
   const writeRows: WriteRow[] = isFraction
     ? fractionRows(question.id, question.prompt)
-    : writeScript.map((entry, index) => ({
+    : isWord
+      ? wordRows(question.id)
+      : isPlainMath
+        ? [
+            {
+              key: `${question.id}-answer`,
+              boxes: plainAnswerBoxes(question.prompt),
+              // 小数の答えは、マスの間をタップして小数点を打つ
+              decimalPoint: question.prompt.includes('.'),
+            },
+          ]
+        : writeScript.map((entry, index) => ({
         key: `${question.id}-${index}`,
         boxes: entry.width,
         // 答えは横に1行(わり算の商も、位ごとの答えも)。途中の計算は画像に入れないので行は問わない
@@ -431,7 +485,11 @@ export function QuizPage() {
 
     const { answered, confidence } = isFraction
       ? await readFraction(rows)
-      : await readColumn(rows)
+      : isWord || isPlainMath
+        ? await readWithPoint(rows.find((row) => row.key === `${question.id}-answer`)).then(
+            (read) => ({ answered: read.text, confidence: read.confidence }),
+          )
+        : await readColumn(rows)
 
     const judged = judgeNumber(question, answered)
     if (judged.isCorrect && confidence >= READ_CONFIDENCE) {
@@ -532,10 +590,31 @@ export function QuizPage() {
 
   /** 計算は「ヒント → 式 → 答え」の順に置く */
   const showsPromptBelow = genre.id === 'math'
-  /** 筆算と分数のときは、式と答えのマスをひと続きに見せたいので入力側が出す */
-  const showsPromptInInput = showsPromptBelow && layout !== undefined
-  /** 手書きも、筆算なら大きなキャンバスではなくマスに1字ずつ書く */
-  const writesInBoxes = showsPromptInInput && inputMode === 'handwriting'
+  /**
+   * 筆算と分数のときは、式と答えのマスをひと続きに見せたいので入力側が出す。
+   * 文章題は、長い文を上に出し、入力の欄には式と答えのマスだけを置く
+   * (文は折り返すので、マスの大きさを測る場所に入れると測り方がずれる)。
+   */
+  const showsPromptInInput = showsPromptBelow && layout !== undefined && !isWord
+  /**
+   * 計算の手書きは、どの形(筆算・分数・文章題・1行の式)でも、大きなキャンバスではなくマスに1字ずつ書く。
+   * マスごとに字を読み取って、自動で判定するため(大きなキャンバスでは、どこに何けた書いたか分からない)。
+   */
+  const writesInBoxes = genre.id === 'math' && inputMode === 'handwriting'
+  /** 答えに単位を添えて見せる(文章題の「時速 60km」「75%」)。確認・結果の画面で使う */
+  const answerText = (value: string) =>
+    `${question.answerPrefix ? `${question.answerPrefix} ` : ''}${value}${question.answerUnit ?? ''}`
+  /** 文章題の式と答えのマス。見出しの言葉はここで付け、中身は呼ぶ側が渡す */
+  const wordSlots = (fill: (part: WordPart) => Partial<WordSlot>) => {
+    const { number, answer } = copy.number.wordParts
+    return {
+      left: { label: number, spokenLabel: `${copy.number.wordParts.expression}の${number}`, ...fill('left') },
+      right: { label: number, spokenLabel: `${copy.number.wordParts.expression}の${number}`, ...fill('right') },
+      answer: { label: answer, ...fill('answer') },
+      prefix: question.answerPrefix,
+      unit: question.answerUnit,
+    }
+  }
 
   return (
     <AppShell fitViewport exitTo="/genres">
@@ -581,13 +660,13 @@ export function QuizPage() {
         書くマスや数字キーボードが押し出される。ヒントの枠に回していた高さをマスへ回す。
       */}
       <section
-        className={`flex min-h-0 flex-col ${showsPromptInInput ? 'mt-2 shrink-0' : 'mt-4 max-h-52 flex-1'}`}
+        className={`flex min-h-0 flex-col ${showsPromptInInput || isWord ? 'mt-2 shrink-0' : 'mt-4 max-h-52 flex-1'}`}
       >
         <HintList
           hints={revealedHints(hints, revealedCount)}
           layout={hintLayoutOf(genre.id)}
           secondsToNext={secondsToNext}
-          compact={showsPromptInInput}
+          compact={showsPromptInInput || isWord}
           fractions={isFraction}
         />
 
@@ -620,7 +699,7 @@ export function QuizPage() {
             <div className="rounded-3xl bg-bloom-50 px-5 py-4 text-center">
               <p className="text-sm text-ink-400">{copy.quiz.answerLabel}</p>
               <p className="mt-1 text-3xl font-bold text-bloom-700">
-                <MathText text={question.answer} />
+                <MathText text={answerText(question.answer)} />
               </p>
               {/*
                 自分が書いたものを、こたえと並べて見せる。書いたマスはこの画面では消えるので、
@@ -639,8 +718,8 @@ export function QuizPage() {
                   <MathText
                     text={
                       selfReport.readMatches
-                        ? copy.quiz.readAsUnsure(selfReport.read)
-                        : copy.quiz.readAs(selfReport.read)
+                        ? copy.quiz.readAsUnsure(answerText(selfReport.read))
+                        : copy.quiz.readAs(answerText(selfReport.read))
                     }
                   />
                 </p>
@@ -717,7 +796,27 @@ export function QuizPage() {
                 }}
               />
             )}
-            {inputMode === 'number' && !isFraction && (
+            {inputMode === 'number' && isWord && (
+              <WordInput
+                key={`word-${question.id}`}
+                display={(entry, focus, select) => (
+                  <WordForm
+                    {...wordSlots((part) => ({
+                      digits: entry[part],
+                      focused: focus === part,
+                      onSelect: () => select(part),
+                    }))}
+                  />
+                )}
+                onSubmit={(value) =>
+                  finish(judgeNumber(question, value), revealedCount, {
+                    kind: 'text',
+                    text: answerText(value),
+                  })
+                }
+              />
+            )}
+            {inputMode === 'number' && !isFraction && !isWord && (
               <NumberInput
                 // 打ち直しのたびに作り直して、打った数を空に戻す
                 key={`number-${question.id}-${stepIndex}-${missed ?? ''}`}
@@ -774,7 +873,18 @@ export function QuizPage() {
                 key={`boxes-${question.id}`}
                 rows={writeRows}
                 // マスは筆算のその場所に置く。式と離すと、どこに書くのか分からなくなる
-                form={(cellsOf) => (
+                form={(cellsOf) =>
+                  isPlainMath ? (
+                    <AnswerRowForm cells={cellsOf(`${question.id}-answer`)} />
+                  ) : isWord ? (
+                    <WordForm
+                      writing
+                      {...wordSlots((part) => ({ content: cellsOf(`${question.id}-${part}`) }))}
+                      left={undefined}
+                      right={undefined}
+                      expression={cellsOf(`${question.id}-expression`)}
+                    />
+                  ) : (
                   <PromptBlock
                     question={question}
                     layout={layout}
@@ -793,7 +903,8 @@ export function QuizPage() {
                       content: cellsOf(row.key),
                     }))}
                   />
-                )}
+                  )
+                }
                 onSubmit={(image, rows) => void judgeWritten(image, rows)}
               />
             )}
@@ -845,7 +956,7 @@ function PromptBlock({
 }: {
   question: Question
   /** 筆算・分数の形で出すか。渡さなければ1行の式のまま出す */
-  layout?: 'column' | 'division' | 'fraction'
+  layout?: 'column' | 'division' | 'fraction' | 'word'
   /** 出題語の上の一言。無いジャンル(計算)もある */
   caption?: string
   /** 打ち直してもらうときの一言。式の上、見出しのすぐ下に出す */
@@ -898,7 +1009,10 @@ function PromptBlock({
       */}
       <p
         className={`mt-1 font-bold tracking-wide ${
-          writing
+          layout === 'word'
+            ? // 文章題の文は長いので、式より小さく、左寄せで、行の間を空けて読みやすくする
+              'text-left text-[min(1.125rem,4.6vw)] leading-relaxed tracking-normal'
+            : writing
             ? 'text-[min(2.5rem,10vw)] leading-[1.2]'
             : layout === 'division'
               ? 'text-[min(1.875rem,7.5vw,max(1.5rem,3.2svh))] leading-[1.15]'

@@ -35,6 +35,11 @@ export interface WriteRow {
    * 小さな点は字の読み取りでは拾えないので、書くのではなく場所を選んでもらう。
    */
   decimalPoint?: boolean
+  /**
+   * 1つの書く場所を、何マスぶんの横幅にするか(既定は 1 = 正方形のマス)。
+   * 文章題の式のように、記号まで含めて自由に書く場所に使う(読み取らないので、マスに分けなくてよい)。
+   */
+  span?: number
 }
 
 /** 書き終えたときに渡す、書く場所ごとのマスの絵 */
@@ -111,12 +116,13 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
   // マスは筆算の形の中に散らばるので、まとめて外の枠で止める
   useNoTouchGesture(area, 'canvas')
 
-  /** 画面の座標を、そのマスの描画バッファの座標へ */
+  /** 画面の座標を、そのマスの描画バッファの座標へ(横長の書く場所は、横の描画バッファも長い) */
   const positionOf = (event: ReactPointerEvent<HTMLCanvasElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect()
+    const canvas = event.currentTarget
+    const rect = canvas.getBoundingClientRect()
     return {
-      x: ((event.clientX - rect.left) / rect.width) * CELL,
-      y: ((event.clientY - rect.top) / rect.height) * CELL,
+      x: ((event.clientX - rect.left) / rect.width) * canvas.width,
+      y: ((event.clientY - rect.top) / rect.height) * canvas.height,
     }
   }
 
@@ -155,7 +161,7 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
 
   /** タップしたマスだけを空にする。消すものが無くなったら書くモードへ戻す */
   const eraseCell = (canvas: HTMLCanvasElement, cell: string) => {
-    canvas.getContext('2d')?.clearRect(0, 0, CELL, CELL)
+    canvas.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height)
     const rest = new Set(written)
     rest.delete(cell)
     setWritten(rest)
@@ -168,7 +174,7 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
       key: row.key,
       cells: (canvases.current.get(row.key) ?? []).flatMap((canvas) => {
         const context = canvas?.getContext('2d')
-        return context ? [context.getImageData(0, 0, CELL, CELL)] : []
+        return context && canvas ? [context.getImageData(0, 0, canvas.width, canvas.height)] : []
       }),
       point: points[row.key] ?? null,
     }))
@@ -247,6 +253,7 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
     const row = rows.find((entry) => entry.key === key)
     if (!row) return null
 
+    const span = row.span ?? 1
     const canvasAt = (index: number) => {
       const cell = `${key}:${index}`
       const erasable = erasing && written.has(cell)
@@ -257,8 +264,8 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
               const list = canvases.current.get(key) ?? []
               list[index] = element
               canvases.current.set(key, list)
-              if (element && element.width !== CELL) {
-                element.width = CELL
+              if (element && element.width !== CELL * span) {
+                element.width = CELL * span
                 element.height = CELL
                 const context = element.getContext('2d')
                 if (context) {
@@ -280,7 +287,9 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
               大きさは筆算側(ColumnForm)が決める --cell に合わせる。
               指で1字書ける大きさが要るが、画面からはみ出さないよう上限もそこで掛けている。
             */
-            className={`size-[var(--cell)] touch-none rounded-md border-2 select-none ${
+            // 横長の書く場所は、高さは1マス、横は span マスぶん
+            style={span > 1 ? { width: `calc(var(--cell) * ${span})` } : undefined}
+            className={`h-[var(--cell)] w-[var(--cell)] touch-none rounded-md border-2 select-none ${
               // 消しゴムのあいだは枠を赤くする。書いてあるマスは色も付けて、タップすると消えることを見せる
               erasing ? 'border-warm-500' : 'border-dashed border-bloom-200'
             } ${erasable ? 'cursor-pointer bg-warm-100' : 'bg-white'}`}

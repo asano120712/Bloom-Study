@@ -58,18 +58,21 @@ interface MathQuestion {
    *
    * わり算は形が違う(割る数 │ 割られる数 で囲い、商を上に書く)ので 'division'。
    */
-  promptLayout?: 'column' | 'division' | 'fraction'
+  promptLayout?: 'column' | 'division' | 'fraction' | 'word'
   answer: string
   /** 正解と同じに扱う書き方(仮分数の答えに対する帯分数など) */
   acceptableAnswers?: string[]
   /** 解き方の途中式(分数だけ)。結果画面のおてほんで、答えまでの道すじとして見せる */
   work?: string
+  /** 答えのマスの前と後ろに添える言葉(文章題だけ。「時速 □ km」「□ %」) */
+  answerPrefix?: string
+  answerUnit?: string
   level: Level
   /**
    * 計算の種類。出題の前に選んだ種類で絞り込む(src/types の MathTopic と同じ値)。
    * ここは src への依存を作らないよう文字列リテラルで持つ。
    */
-  topic: 'add' | 'sub' | 'mul' | 'div' | 'fracAdd' | 'fracMul' | 'decimal'
+  topic: 'add' | 'sub' | 'mul' | 'div' | 'fracAdd' | 'fracMul' | 'decimal' | 'ratio' | 'speed'
   hintSource: string[]
 }
 
@@ -632,6 +635,218 @@ function decimalPlaces(number: string): number {
   return point === -1 ? 0 : number.length - point - 1
 }
 
+/*
+ * ここから文章題(割合・速さ)。決まった文の型に数を当てはめて作る。
+ *
+ * 文は、その学年までに習う漢字で書く(割合は小5、速さは小6)。
+ * ヒントは「使う式 → 問題の数の当てはめ方 → 答えにする前のひと手間」の3段で、答えそのものは言わない。
+ * iPhone SE の幅(1行 19字ほど)で折り返さない長さにする(折り返すと3段がヒント枠に入らない)。
+ */
+
+/** 割合の聞き方。割合そのものを答える問題で、何倍・何%・何割のどれで聞くか */
+type RatioForm = 'times' | 'percent' | 'tenth'
+
+/** 割合を、聞き方に合わせた言葉にする(0.75 → 0.75倍 / 75% / 7割) */
+function ratioWords(percent: number, form: RatioForm): string {
+  if (form === 'percent') return `${percent}%`
+  if (form === 'tenth') return `${percent / 10}割`
+  return `${decimalText(percent, 2)}倍`
+}
+
+/** 割合の場面。もとにする量・くらべる量の言い方と、文の型 */
+interface RatioScene {
+  id: string
+  unit: string
+  /** もとにする量の候補 */
+  bases: number[]
+  /** 割合を求める(くらべる量 ÷ もとにする量)。ask は「何%」など */
+  ratio: (base: number, compare: number, ask: string) => string
+  /** くらべる量を求める(もとにする量 × 割合) */
+  compare: (base: number, ratio: string) => string
+  /** もとにする量を求める(くらべる量 ÷ 割合) */
+  base: (compare: number, ratio: string) => string
+}
+
+const RATIO_SCENES: RatioScene[] = [
+  {
+    id: 'bus',
+    unit: '人',
+    bases: [20, 25, 30, 40, 50, 60, 80],
+    ratio: (b, c, ask) => `定員 ${b}人の バスに ${c}人 乗っています。乗っている人は 定員の ${ask}ですか。`,
+    compare: (b, r) => `定員 ${b}人の バスに、定員の ${r}の 人が 乗っています。乗っているのは 何人ですか。`,
+    base: (c, r) => `バスに ${c}人 乗っています。これは 定員の ${r}です。定員は 何人ですか。`,
+  },
+  {
+    id: 'test',
+    unit: '問',
+    bases: [20, 25, 40, 50],
+    ratio: (b, c, ask) => `${b}問の テストで ${c}問 正かいしました。正かいした 問題は 全体の ${ask}ですか。`,
+    compare: (b, r) => `${b}問の テストで、全体の ${r}を 正かいしました。正かいしたのは 何問ですか。`,
+    base: (c, r) => `テストで ${c}問 正かいしました。これは 全体の ${r}です。問題は 全部で 何問ですか。`,
+  },
+  {
+    id: 'book',
+    unit: 'ページ',
+    bases: [40, 60, 80, 100, 120, 160, 200],
+    ratio: (b, c, ask) => `${b}ページの 本のうち ${c}ページを 読みました。読んだのは 全体の ${ask}ですか。`,
+    compare: (b, r) => `${b}ページの 本の ${r}を 読みました。読んだのは 何ページですか。`,
+    base: (c, r) => `本を ${c}ページ 読みました。これは 全体の ${r}です。本は 全部で 何ページですか。`,
+  },
+  {
+    id: 'saving',
+    unit: '円',
+    bases: [200, 400, 500, 600, 800, 1000, 2000],
+    ratio: (b, c, ask) => `${b}円 ためる 目ひょうで、${c}円 たまりました。たまったのは 目ひょうの ${ask}ですか。`,
+    compare: (b, r) => `${b}円 ためる 目ひょうの ${r}が たまりました。たまったのは 何円ですか。`,
+    base: (c, r) => `${c}円 たまりました。これは 目ひょうの ${r}です。目ひょうは 何円ですか。`,
+  },
+  {
+    id: 'field',
+    unit: 'm²',
+    bases: [40, 50, 80, 100, 200, 300],
+    ratio: (b, c, ask) => `${b}m²の 畑のうち ${c}m²に トマトを 植えました。トマトの 畑は 全体の ${ask}ですか。`,
+    compare: (b, r) => `${b}m²の 畑の ${r}に トマトを 植えました。トマトの 畑は 何m²ですか。`,
+    base: (c, r) => `トマトを ${c}m²に 植えました。これは 畑 全体の ${r}です。畑は 何m²ですか。`,
+  },
+]
+
+/** 文章題の割合の種類。割合・くらべる量・もとにする量のどれを求めるか */
+const RATIO_ASKS = ['ratio', 'compare', 'base'] as const
+const RATIO_FORMS: RatioForm[] = ['times', 'percent', 'tenth']
+
+/** 割合の文章題(小5) */
+function ratioWordProblem(): MathQuestion | null {
+  const scene = RATIO_SCENES[pick(0, RATIO_SCENES.length - 1)]
+  const ask = RATIO_ASKS[pick(0, RATIO_ASKS.length - 1)]
+  const form = RATIO_FORMS[pick(0, RATIO_FORMS.length - 1)]
+  const base = scene.bases[pick(0, scene.bases.length - 1)]
+  // 割合は 5% きざみ(何割で聞くときは 10% きざみ)。くらべる量が整数になるものだけ
+  const percent = pick(1, 19) * 5
+  if (form === 'tenth' && percent % 10 !== 0) return null
+  if ((base * percent) % 100 !== 0) return null
+  const compare = (base * percent) / 100
+  // 「1人 乗っています。これは 定員の 5%」のような、場面として不自然に小さい数は出さない
+  if (compare < 2) return null
+  const ratio = decimalText(percent, 2)
+  const words = ratioWords(percent, form)
+  // くらべる量・もとにする量を求めるとき、割合を小数に直すひと手間(何倍で聞くときは もう小数なので要らない)
+  const toDecimal = form === 'times' ? '割合は そのまま 使う' : `${words}を 小数で 表す`
+  const unit = scene.unit
+
+  const asked =
+    ask === 'ratio'
+      ? {
+          prompt: scene.ratio(base, compare, form === 'percent' ? '何%' : form === 'tenth' ? '何割' : '何倍'),
+          answer: form === 'percent' ? String(percent) : form === 'tenth' ? String(percent / 10) : ratio,
+          answerUnit: form === 'percent' ? '%' : form === 'tenth' ? '割' : '倍',
+          work: `${compare} ÷ ${base} = ${ratio}` + (form === 'times' ? '' : ` → ${words}`),
+          hints: [
+            '割合 = くらべる量 ÷ もとにする量',
+            `もとにする量は ${base}${unit}`,
+            form === 'percent' ? '%は 割合を 100倍 した数' : form === 'tenth' ? '割は 割合を 10倍 した数' : '何倍かが 割合',
+          ],
+        }
+      : ask === 'compare'
+        ? {
+            prompt: scene.compare(base, words),
+            answer: String(compare),
+            answerUnit: unit,
+            work: `${base} × ${ratio} = ${compare}`,
+            hints: ['くらべる量 = もとにする量 × 割合', `もとにする量は ${base}${unit}`, toDecimal],
+          }
+        : {
+            prompt: scene.base(compare, words),
+            answer: String(base),
+            answerUnit: unit,
+            work: `${compare} ÷ ${ratio} = ${base}`,
+            hints: ['もとにする量 = くらべる量 ÷ 割合', `くらべる量は ${compare}${unit}`, toDecimal],
+          }
+
+  return {
+    id: `ma-wr-${scene.id}-${ask}-${form}-${base}-${percent}`,
+    genreId: 'math',
+    prompt: asked.prompt,
+    promptLayout: 'word',
+    answer: asked.answer,
+    answerUnit: asked.answerUnit,
+    work: asked.work,
+    level: 'g56',
+    topic: 'ratio',
+    hintSource: asked.hints,
+  }
+}
+
+/** 速さの場面。何が進むか、速さの種類(時速・分速・秒速)と単位 */
+interface SpeedScene {
+  id: string
+  who: string
+  kind: '時速' | '分速' | '秒速'
+  distance: string
+  time: string
+  speeds: number[]
+  times: number[]
+}
+
+const SPEED_SCENES: SpeedScene[] = [
+  { id: 'car', who: '車', kind: '時速', distance: 'km', time: '時間', speeds: [30, 40, 45, 50, 60, 70, 80], times: [2, 3, 4, 5] },
+  { id: 'bike', who: '自転車', kind: '時速', distance: 'km', time: '時間', speeds: [10, 12, 15, 16, 18, 20], times: [2, 3, 4] },
+  { id: 'train', who: '電車', kind: '時速', distance: 'km', time: '時間', speeds: [60, 75, 80, 90, 100, 120], times: [2, 3, 4] },
+  { id: 'walk', who: '人', kind: '分速', distance: 'm', time: '分', speeds: [50, 60, 70, 75, 80], times: [5, 8, 10, 12, 15, 20] },
+  { id: 'drone', who: 'ドローン', kind: '秒速', distance: 'm', time: '秒', speeds: [4, 5, 6, 8, 10, 12], times: [10, 15, 20, 25, 30] },
+]
+
+/** 速さの文章題(小6)。速さ・道のり・時間のどれかを求める */
+function speedWordProblem(): MathQuestion | null {
+  const scene = SPEED_SCENES[pick(0, SPEED_SCENES.length - 1)]
+  const ask = (['speed', 'distance', 'time'] as const)[pick(0, 2)]
+  const speed = scene.speeds[pick(0, scene.speeds.length - 1)]
+  const time = scene.times[pick(0, scene.times.length - 1)]
+  const distance = speed * time
+  const { who, kind, distance: d, time: t } = scene
+
+  const asked =
+    ask === 'speed'
+      ? {
+          prompt: `${distance}${d}の 道のりを ${time}${t}で 進む ${who}の ${kind}は 何${d}ですか。`,
+          answer: String(speed),
+          answerPrefix: kind,
+          answerUnit: d,
+          work: `${distance} ÷ ${time} = ${speed}`,
+          hints: ['速さ = 道のり ÷ 時間', `道のりは ${distance}${d}`, `時間は ${time}${t}`],
+        }
+      : ask === 'distance'
+        ? {
+            prompt: `${kind} ${speed}${d}で 進む ${who}が、${time}${t}で 進む 道のりは 何${d}ですか。`,
+            answer: String(distance),
+            answerPrefix: undefined,
+            answerUnit: d,
+            work: `${speed} × ${time} = ${distance}`,
+            hints: ['道のり = 速さ × 時間', `速さは ${kind} ${speed}${d}`, `時間は ${time}${t}`],
+          }
+        : {
+            prompt: `${kind} ${speed}${d}で 進む ${who}が、${distance}${d} 進むのに かかる 時間は 何${t}ですか。`,
+            answer: String(time),
+            answerPrefix: undefined,
+            answerUnit: t,
+            work: `${distance} ÷ ${speed} = ${time}`,
+            hints: ['時間 = 道のり ÷ 速さ', `道のりは ${distance}${d}`, `速さは ${kind} ${speed}${d}`],
+          }
+
+  return {
+    id: `ma-ws-${scene.id}-${ask}-${speed}-${time}`,
+    genreId: 'math',
+    prompt: asked.prompt,
+    promptLayout: 'word',
+    answer: asked.answer,
+    answerPrefix: asked.answerPrefix,
+    answerUnit: asked.answerUnit,
+    work: asked.work,
+    level: 'g56',
+    topic: 'speed',
+    hintSource: asked.hints,
+  }
+}
+
 const KINDS: { name: string; make: () => MathQuestion | null }[] = [
   { name: 'くり上がりのたし算(小1・2)', make: addCarry },
   { name: 'くり下がりのひき算(小1・2)', make: subtractBorrow },
@@ -650,6 +865,8 @@ const KINDS: { name: string; make: () => MathQuestion | null }[] = [
   { name: '小数のかけ算(小5)', make: multiplyDecimals },
   { name: '小数のわり算(小5)', make: divideDecimals },
   { name: '小数のわり算・商が小数(小5)', make: divideDecimalQuotient },
+  { name: '割合の文章題(小5)', make: ratioWordProblem },
+  { name: '速さの文章題(小6)', make: speedWordProblem },
 ]
 
 function main(): void {

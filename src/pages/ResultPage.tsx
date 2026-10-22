@@ -24,6 +24,8 @@ export interface ResultState {
   promptReading?: string
   /** 解き方の途中式(分数の計算だけ)。おてほんの下に、答えまでの道すじとして見せる */
   work?: string
+  /** おてほんに出す答え(文章題は単位つき)。無ければ判定の答えのまま */
+  answerText?: string
   genreId: GenreId
   /** 「つぎの問題へ」で同じこたえかたを引き継ぐ */
   inputMode: InputMode
@@ -91,7 +93,7 @@ export function ResultPage() {
 
   if (!state) return <Navigate to="/genres" replace />
 
-  const { result, prompt, promptReading, work, submission, hasNext, currentStreak } = state
+  const { result, prompt, promptReading, work, answerText, submission, hasNext, currentStreak } = state
   const canReadAloud = Boolean(speechLang) && canSpeak()
 
   return (
@@ -120,7 +122,7 @@ export function ResultPage() {
           </p>
 
           <div className="mt-4">
-            <ModelAnswer answer={result.answer} guide={genre?.answerGuide ?? 'baseline'} />
+            <ModelAnswer answer={answerText ?? result.answer} guide={genre?.answerGuide ?? 'baseline'} />
           </div>
 
           {/*

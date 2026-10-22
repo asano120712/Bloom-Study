@@ -72,7 +72,12 @@ function GridSheet({ answer }: { answer: string }) {
 function PlainSheet({ answer }: { answer: string }) {
   return (
     <div className="flex items-center justify-center rounded-2xl border-2 border-bloom-200 bg-white px-4 py-6">
-      <span className="font-display text-6xl leading-none tracking-wide text-ink-900">
+      <span
+        // 単位の付いた長い答え(文章題の「時速 20km」)は、字を一回り小さくして1行に収める
+        className={`font-display leading-none tracking-wide whitespace-nowrap text-ink-900 ${
+          answer.length > 5 ? 'text-5xl' : 'text-6xl'
+        }`}
+      >
         {/* 分数の答えは、分子を上・分母を下に積んで見せる */}
         <MathText text={answer} />
       </span>
