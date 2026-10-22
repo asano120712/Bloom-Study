@@ -5,6 +5,7 @@ import { BoxHandwriting, type WriteRow, type WrittenRow } from '@/components/Box
 import { ColumnForm, DivisionForm, type ColumnCell } from '@/components/ColumnForm'
 import { FractionForm, type FractionSlot, type FractionWork } from '@/components/FractionForm'
 import { FractionInput, type FractionPart } from '@/components/FractionInput'
+import { AnswerRowForm } from '@/components/AnswerRowForm'
 import { MathText } from '@/components/MathText'
 import { WordForm, type WordSlot } from '@/components/WordForm'
 import { WordInput, type WordPart } from '@/components/WordInput'
@@ -21,6 +22,7 @@ import {
   columnScript,
   fractionText,
   parseExpression,
+  withoutPoint,
   shiftedDivision,
   type ColumnStep,
 } from '@/features/math'
@@ -88,6 +90,25 @@ function fractionRows(questionId: string, prompt: string): WriteRow[] {
     { key: `${questionId}-numerator`, boxes: 2, at: { column: 1, line: 0 } },
     { key: `${questionId}-denominator`, boxes: 2, at: { column: 1, line: 1 }, ruleAbove: true },
   ]
+}
+
+/**
+ * 1行の式を手書きで答えるときの、答えのマスの数。
+ *
+ * **答えになりうる最大のけた数**にする(答えのけた数そのものを見せると、見当をつける手間が減る)。
+ * たし算は大きいほうの数のけた数 + 1(くり上がり)、ひき算は大きいほうのけた数、
+ * かけ算は2つの数のけた数の和、わり算はわられる数のけた数 + 1(わり進む 0)。
+ * 小数は小数点を数えず、0.18 のように頭に 0 が付くぶんを1つ足す。
+ */
+function plainAnswerBoxes(prompt: string): number {
+  const parsed = parseExpression(prompt)
+  if (!parsed) return 3
+  const [left, right] = [withoutPoint(parsed.left).length, withoutPoint(parsed.right).length]
+  const decimal = prompt.includes('.') ? 1 : 0
+  if (parsed.operator === '+') return Math.max(left, right) + 1 + decimal
+  if (parsed.operator === '×') return left + right + decimal
+  if (parsed.operator === '÷') return left + 1 + decimal
+  return Math.max(left, right) + decimal
 }
 
 /**
@@ -420,11 +441,22 @@ export function QuizPage() {
   */
   const writeScript =
     answerSteps[0]?.slot.kind === 'place' ? [...answerSteps].reverse() : answerSteps
+  /** 1行の式(筆算にしない計算)を手書きするか。答えのマスに書いて、読み取って判定する */
+  const isPlainMath = genre.id === 'math' && layout === undefined
   const writeRows: WriteRow[] = isFraction
     ? fractionRows(question.id, question.prompt)
     : isWord
       ? wordRows(question.id)
-      : writeScript.map((entry, index) => ({
+      : isPlainMath
+        ? [
+            {
+              key: `${question.id}-answer`,
+              boxes: plainAnswerBoxes(question.prompt),
+              // 小数の答えは、マスの間をタップして小数点を打つ
+              decimalPoint: question.prompt.includes('.'),
+            },
+          ]
+        : writeScript.map((entry, index) => ({
         key: `${question.id}-${index}`,
         boxes: entry.width,
         // 答えは横に1行(わり算の商も、位ごとの答えも)。途中の計算は画像に入れないので行は問わない
@@ -453,7 +485,7 @@ export function QuizPage() {
 
     const { answered, confidence } = isFraction
       ? await readFraction(rows)
-      : isWord
+      : isWord || isPlainMath
         ? await readWithPoint(rows.find((row) => row.key === `${question.id}-answer`)).then(
             (read) => ({ answered: read.text, confidence: read.confidence }),
           )
@@ -564,8 +596,11 @@ export function QuizPage() {
    * (文は折り返すので、マスの大きさを測る場所に入れると測り方がずれる)。
    */
   const showsPromptInInput = showsPromptBelow && layout !== undefined && !isWord
-  /** 手書きも、筆算・分数・文章題なら大きなキャンバスではなくマスに1字ずつ書く */
-  const writesInBoxes = (showsPromptInInput || isWord) && inputMode === 'handwriting'
+  /**
+   * 計算の手書きは、どの形(筆算・分数・文章題・1行の式)でも、大きなキャンバスではなくマスに1字ずつ書く。
+   * マスごとに字を読み取って、自動で判定するため(大きなキャンバスでは、どこに何けた書いたか分からない)。
+   */
+  const writesInBoxes = genre.id === 'math' && inputMode === 'handwriting'
   /** 答えに単位を添えて見せる(文章題の「時速 60km」「75%」)。確認・結果の画面で使う */
   const answerText = (value: string) =>
     `${question.answerPrefix ? `${question.answerPrefix} ` : ''}${value}${question.answerUnit ?? ''}`
@@ -839,7 +874,9 @@ export function QuizPage() {
                 rows={writeRows}
                 // マスは筆算のその場所に置く。式と離すと、どこに書くのか分からなくなる
                 form={(cellsOf) =>
-                  isWord ? (
+                  isPlainMath ? (
+                    <AnswerRowForm cells={cellsOf(`${question.id}-answer`)} />
+                  ) : isWord ? (
                     <WordForm
                       writing
                       {...wordSlots((part) => ({ content: cellsOf(`${question.id}-${part}`) }))}
