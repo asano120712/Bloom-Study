@@ -27,6 +27,8 @@ import {
   type ColumnStep,
 } from '@/features/math'
 import { readCells } from '@/features/recognize'
+import { lettersModel } from '@/features/recognize/model'
+import { judgeWord, type Stroke } from '@/features/recognize/word'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeNumber, judgeParts, judgeTyping } from '@/features/judge'
 import { useCopy } from '@/hooks/useAudienceMode'
@@ -46,6 +48,7 @@ import {
 } from '@/types'
 import { shuffleWithSeed } from '@/utils/shuffle'
 import type { ResultState, ResultSubmission } from './ResultPage'
+import { AUTO_JUDGE_ENGLISH } from '@/config'
 
 /**
  * 自動で「せいかい」にしてよい自信の下限。
@@ -175,10 +178,10 @@ export function QuizPage() {
   const [selfReport, setSelfReport] = useState<{
     hintsUsed: number
     image: string
-    /** 読み取れた数。読み取りに回さなかった(漢字・英単語の)ときは無い */
+    /** 読み取れた数(計算)か単語(英単語)。読み取りに回さなかった(漢字の)ときは無い */
     read?: string
     /**
-     * 読めた数が正解と同じだった(読み取りの自信が足りずに確かめてもらうとき)。
+     * 読めたものが正解と同じだった(読み取りの自信が足りずに確かめてもらうとき)。
      * 言い方を変えて、なぜ確かめるのかを伝える
      */
     readMatches?: boolean
@@ -227,6 +230,15 @@ export function QuizPage() {
   })
 
   const isPreparing = isStatsLoading || isSessionLoading
+
+  /** 英単語を手書きで答えて、書いた線から自動で判定するか */
+  const readsWords = AUTO_JUDGE_ENGLISH && genre?.id === 'english' && inputMode === 'handwriting'
+  /** 書いた英単語を読み取っているあいだ。「かけた」を二度押させない */
+  const [readingWord, setReadingWord] = useState(false)
+  // 英字のモデル(104KB)を先に読んでおく。1問めの「かけた」で待たせないため
+  useEffect(() => {
+    if (readsWords) void lettersModel()
+  }, [readsWords])
 
   /*
     手書きで答えるあいだは、画面全体で長押しのメニューと文字の選択を止める。
@@ -477,6 +489,42 @@ export function QuizPage() {
    *
    * 自信(いちばん怪しいマスの値)が足りないときも、同じく本人に預ける。
    */
+  /**
+   * 手書きの英単語を、書いた線から読み取って判定する(AUTO_JUDGE_ENGLISH のとき)。
+   *
+   * 答え(か別解)だと自信を持って読めたときだけ、そのまま「せいかい」にする。
+   * 読めなかったときは、これまでと同じ自己申告の画面に回す。読み取りだけで「ざんねん」にはしない
+   * (読み取りが外れただけで、正しく書けた字を間違い扱いにしないため)。
+   * 自己申告の画面には、何に見えたかを出す(筆算と同じ言い方)。答えに近く読めたときは
+   * 「〇〇に見えましたが、自信がありません」、そうでないときは「書いた字は〇〇に見えました」。
+   */
+  const judgeWrittenWord = async (image: string, strokes: Stroke[]): Promise<void> => {
+    const hintsUsed = revealedCount
+    if (!readsWords || strokes.length === 0) {
+      setSelfReport({ hintsUsed, image })
+      return
+    }
+    setReadingWord(true)
+    const answers = [question.answer, ...(question.acceptableAnswers ?? [])].filter((answer) =>
+      /^[a-z]+$/.test(answer),
+    )
+    // 読み取りで何か起きても、自己申告に回せば答えられる
+    const judged = await judgeWord(strokes, answers).catch(() => null)
+    setReadingWord(false)
+    if (judged?.accepted) {
+      finish({ verdict: 'correct', isCorrect: true, answer: question.answer }, hintsUsed, {
+        kind: 'handwriting',
+        imageDataUrl: image,
+      })
+      return
+    }
+    setSelfReport(
+      judged?.read
+        ? { hintsUsed, image, read: judged.read, readMatches: judged.likely }
+        : { hintsUsed, image },
+    )
+  }
+
   const judgeWritten = async (
     image: string,
     rows: WrittenRow[],
@@ -911,7 +959,8 @@ export function QuizPage() {
             {inputMode === 'handwriting' && !writesInBoxes && (
               <HandwritingCanvas
                 key={`handwriting-${question.id}`}
-                onSubmit={(image) => setSelfReport({ hintsUsed: revealedCount, image })}
+                onSubmit={(image, strokes) => void judgeWrittenWord(image, strokes)}
+                disabled={readingWord}
               />
             )}
             {inputMode === 'assemble' && assembleLayout && (

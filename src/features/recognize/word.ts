@@ -33,6 +33,15 @@ const LINE_WIDTH = 6
  * 字の中のすき間(k や h の2本目)と字の間のすき間は分布が重なるので、これだけでは決めきれない。
  */
 const JOIN_GAP = 0.1
+/**
+ * 自動で「せいかい」にしてよい、答えの字の確からしさの下限(答えに合わせて分けたとき、いちばん低い字で見る)。
+ *
+ * 試し場で書いた 119 語で測ると、0.3 で 106 語(89%)が自動になり、別の単語を答えにしても
+ * 1語も自動にならなかった。0.5 では 84 語(71%)。1文字だけ違う単語を答えにしたときは、
+ * 0.3 で 2語(a が u に見える字、点の無い i)、0.5 で 1語が自動になった。
+ */
+export const WORD_AUTO_MIN = 0.3
+
 /** 答えに合わせて分けるとき、1字にまとめてよい線の数(k や E でも3本まで) */
 const MAX_STROKES_PER_LETTER = 4
 
@@ -270,4 +279,45 @@ async function alignToAnswer(
     }),
   )
   return { groups, expected }
+}
+
+/**
+ * 自動で「せいかい」にはしないが、答えの単語に近いと見てよい下限(いちばん低い字で見る)。
+ *
+ * このあいだ(WORD_UNSURE_MIN 以上 WORD_AUTO_MIN 未満)は「〇〇に見えましたが、自信がありません」と
+ * 答えの単語を出して確かめてもらう。下回ったときは、答えを使わずに読んだ結果を「〇〇に見えました」と出す。
+ * 試し場で書いた 175 語では、違う単語を答えにして 0.05 以上になったものは無かった。
+ * つづりを間違えた語(impressin、anicipate)は 0.01 以下に落ちるので、書いたとおりに読んだ結果が出る。
+ */
+export const WORD_UNSURE_MIN = 0.05
+
+export interface WordJudgement {
+  /** 答え(か別解)のどれかだと、自信を持って読めた。自動で「せいかい」にしてよい */
+  accepted: boolean
+  /** 何に見えたか。自動でないときに見せる */
+  read: string
+  /** read は答え(か別解)。自信は足りないが、答えに近く読めた */
+  likely: boolean
+}
+
+/**
+ * 書いた線を、答え(か別解)と比べて読む(出題の画面の自動判定)。
+ *
+ * どれか1つで、答えに合わせて分けた字がすべて WORD_AUTO_MIN 以上なら accepted。
+ * 「違う」とは決めない。accepted でないときは、呼ぶ側が read を見せて本人に確かめてもらう。
+ */
+export async function judgeWord(strokes: Stroke[], answers: string[]): Promise<WordJudgement> {
+  let best = { answer: answers[0] ?? '', lowest: -1 }
+  for (const answer of answers) {
+    const aligned = await alignToAnswer(strokes, answer)
+    const lowest = aligned ? Math.min(...aligned.expected.map((entry) => entry.score)) : 0
+    if (lowest > best.lowest) best = { answer, lowest }
+  }
+  if (best.lowest >= WORD_AUTO_MIN) return { accepted: true, read: best.answer, likely: true }
+  if (best.lowest >= WORD_UNSURE_MIN) return { accepted: false, read: best.answer, likely: true }
+
+  // 答えに近くない。答えを使わずに、書いたとおりに読む(どこが違って見えたかの手がかり)
+  let read = ''
+  for (const group of segment(strokes)) read += (await guessLetter(render(group), LETTERS))[0]?.label ?? ''
+  return { accepted: false, read, likely: false }
 }

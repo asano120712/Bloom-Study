@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
-import { readWord, render, type Stroke, type WordReading } from '@/features/recognize/word'
+import { WORD_AUTO_MIN, readWord, render, type Stroke, type WordReading } from '@/features/recognize/word'
 import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
 
 /**
@@ -14,14 +14,8 @@ import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
  * お題の単語は見せたまま書いてもらう(覚えているかではなく、読めるかを測るため)。
  */
 
-/**
- * 自動で「せいかい」にしてよい、答えの字の確からしさの下限(いちばん低い字で見る)。
- *
- * 試し場で書いた 55 語で測ると、0.3 で 44 語(80%)が自動になり、別の単語を答えにしても
- * 1語も自動にならなかった。0.5 では 33 語(60%)。1文字だけ違う単語を答えにしたときは、
- * どのしきい値でも 1語(a が u に見える字)が自動になった。
- */
-const AUTO_MIN = 0.3
+/** 自動で「せいかい」にしてよい下限。出題の画面と同じ値を使う */
+const AUTO_MIN = WORD_AUTO_MIN
 
 /** 区切った文字を、描き直した絵と読み取りで並べる */
 function Cells({ groups, labels }: { groups: Stroke[][]; labels: { text: string; good?: boolean }[] }) {
