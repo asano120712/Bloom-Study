@@ -1,6 +1,6 @@
 import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { AppShell } from '@/components/AppShell'
-import { guess, guessDigit, type Guess } from '@/features/recognize'
+import { guessDigit, guessLetter, type Guess } from '@/features/recognize'
 import { addSample, clearSamples, packInk, readSamples } from '@/features/recognize/samples'
 import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
 import { RecognizePractice } from './RecognizePractice'
@@ -97,12 +97,9 @@ function TryPanel() {
     const context = contextOf()
     if (!context) return
     const image = context.getImageData(0, 0, CELL, CELL)
-    // 数字は学習したモデル、英字はまだお手本と重ねる方式
-    if (candidates === 'digits') {
-      void guessDigit(image, DIGITS).then((found) => setGuesses(found.slice(0, 5)))
-      return
-    }
-    setGuesses(guess(image, LETTERS).slice(0, 5))
+    // どちらも学習したモデルで読む(英字は EMNIST、数字は MNIST)
+    const read = candidates === 'digits' ? guessDigit(image, DIGITS) : guessLetter(image, LETTERS)
+    void read.then((found) => setGuesses(found.slice(0, 5)))
   }
 
   const clear = () => {

@@ -1,5 +1,5 @@
 import { chamfer, fieldOf } from './distance'
-import { normalize, type Bitmap } from './preprocess'
+import { normalize, normalizeGray, type Bitmap } from './preprocess'
 import { packInk } from './samples'
 
 /**
@@ -37,6 +37,8 @@ export interface PersonalSample {
   label: string
   bitmap: Bitmap
   field: Float32Array
+  /** 学習したモデルに渡す濃淡(MODEL_SIZE 角)。1枚ずつ伏せて測るときに、モデルでも読むため */
+  gray: Float32Array
 }
 
 let opening: Promise<IDBDatabase | null> | null = null
@@ -83,8 +85,10 @@ function unpack(stored: Stored): ImageData {
 }
 
 function prepare(stored: Stored & { id: number }): PersonalSample | null {
-  const bitmap = normalize(unpack(stored))
-  return bitmap ? { id: stored.id, label: stored.label, bitmap, field: fieldOf(bitmap) } : null
+  const image = unpack(stored)
+  const bitmap = normalize(image)
+  const gray = normalizeGray(image)
+  return bitmap && gray ? { id: stored.id, label: stored.label, bitmap, field: fieldOf(bitmap), gray } : null
 }
 
 /** そろえるのは読み込むときに1回だけ。読むたびにそろえ直すと、見本の数だけ遅くなる */

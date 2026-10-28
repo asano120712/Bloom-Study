@@ -15,8 +15,8 @@ import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
  */
 
 const SETS = {
-  letters: { name: '英字 a-z', labels: 'abcdefghijklmnopqrstuvwxyz'.split(''), base: 'template' },
-  digits: { name: '数字 0-9', labels: '0123456789'.split(''), base: 'model' },
+  letters: { name: '英字 a-z', labels: 'abcdefghijklmnopqrstuvwxyz'.split(''), base: 'letters' },
+  digits: { name: '数字 0-9', labels: '0123456789'.split(''), base: 'digits' },
 } as const
 type SetId = keyof typeof SETS
 
@@ -304,7 +304,7 @@ export function RecognizePractice() {
         <button
           type="button"
           onClick={() =>
-            void leaveOneOut([...set.labels]).then(({ total, hits }) =>
+            void leaveOneOut([...set.labels], set.base).then(({ total, hits }) =>
               setChecked(total ? `覚えた見本 ${total}枚を1枚ずつ伏せて読むと ${Math.round((hits / total) * 100)}%(${hits}/${total})` : '見本がまだありません'),
             )
           }
