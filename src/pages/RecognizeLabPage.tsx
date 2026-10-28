@@ -4,6 +4,7 @@ import { guessDigit, guessLetter, type Guess } from '@/features/recognize'
 import { addSample, clearSamples, packInk, readSamples } from '@/features/recognize/samples'
 import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
 import { RecognizePractice } from './RecognizePractice'
+import { RecognizeWords } from './RecognizeWords'
 
 /**
  * 読み取りの試し場(開発時だけ)。
@@ -20,8 +21,8 @@ const CELL = 120
 const LINE_WIDTH = 6
 
 export function RecognizeLabPage() {
-  /** practice = お題を書いて自分の字を覚える、try = 自由に書いて読み・外れた字を集める */
-  const [tab, setTab] = useState<'practice' | 'try'>('practice')
+  /** practice = お題を書いて自分の字を覚える、words = 英単語を1枚に書いて読む、try = 自由に書いて読み・外れた字を集める */
+  const [tab, setTab] = useState<'practice' | 'words' | 'try'>('practice')
 
   return (
     <AppShell>
@@ -32,7 +33,8 @@ export function RecognizeLabPage() {
         {(
           [
             ['practice', '練習して覚える'],
-            ['try', '試す・外れた字を集める'],
+            ['words', '英単語'],
+            ['try', '試す・集める'],
           ] as const
         ).map(([id, name]) => (
           <button
@@ -48,7 +50,7 @@ export function RecognizeLabPage() {
         ))}
       </div>
 
-      {tab === 'practice' ? <RecognizePractice /> : <TryPanel />}
+      {tab === 'practice' ? <RecognizePractice /> : tab === 'words' ? <RecognizeWords /> : <TryPanel />}
     </AppShell>
   )
 }
