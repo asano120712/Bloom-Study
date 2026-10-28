@@ -67,6 +67,8 @@ interface MathQuestion {
   /** 答えのマスの前と後ろに添える言葉(文章題だけ。「時速 □ km」「□ %」) */
   answerPrefix?: string
   answerUnit?: string
+  /** 答えを単位ごとのマスに分ける(「何割何分」の ['割', '分'])。answer は「7割5分」の形 */
+  answerParts?: string[]
   level: Level
   /**
    * 計算の種類。出題の前に選んだ種類で絞り込む(src/types の MathTopic と同じ値)。
@@ -776,6 +778,71 @@ function ratioWordProblem(): MathQuestion | null {
   }
 }
 
+/**
+ * 割合の文章題で、歩合を「何割何分」で聞くもの(小5)。7割5分 = 0.75。
+ *
+ * 今ある割合の問題(ratioWordProblem)とは別の種類にして、生成の最後に足す。
+ * 同じ関数の聞き方に混ぜると、乱数の引き方が変わって今ある問題が入れ替わるため。
+ * 割と分の両方が出るよう、割合は 15% 以上の 5% きざみで、10% の倍数でないもの(1割5分 〜 9割5分)。
+ */
+function ratioWariBuProblem(): MathQuestion | null {
+  const scene = RATIO_SCENES[pick(0, RATIO_SCENES.length - 1)]
+  const ask = RATIO_ASKS[pick(0, RATIO_ASKS.length - 1)]
+  const base = scene.bases[pick(0, scene.bases.length - 1)]
+  const percent = pick(3, 19) * 5
+  if (percent % 10 === 0) return null
+  if ((base * percent) % 100 !== 0) return null
+  const compare = (base * percent) / 100
+  if (compare < 2) return null
+
+  const [wari, bu] = [Math.floor(percent / 10), percent % 10]
+  const words = `${wari}割${bu}分`
+  const ratio = decimalText(percent, 2)
+  const unit = scene.unit
+
+  const asked =
+    ask === 'ratio'
+      ? {
+          prompt: scene.ratio(base, compare, '何割何分'),
+          answer: words,
+          answerParts: ['割', '分'],
+          answerUnit: undefined,
+          work: `${compare} ÷ ${base} = ${ratio} → ${words}`,
+          hints: ['割合 = くらべる量 ÷ もとにする量', `もとにする量は ${base}${unit}`, '0.1が 1割、0.01が 1分'],
+        }
+      : ask === 'compare'
+        ? {
+            prompt: scene.compare(base, words),
+            answer: String(compare),
+            answerParts: undefined,
+            answerUnit: unit,
+            work: `${base} × ${ratio} = ${compare}`,
+            hints: ['くらべる量 = もとにする量 × 割合', `もとにする量は ${base}${unit}`, `${words}を 小数で 表す`],
+          }
+        : {
+            prompt: scene.base(compare, words),
+            answer: String(base),
+            answerParts: undefined,
+            answerUnit: unit,
+            work: `${compare} ÷ ${ratio} = ${base}`,
+            hints: ['もとにする量 = くらべる量 ÷ 割合', `くらべる量は ${compare}${unit}`, `${words}を 小数で 表す`],
+          }
+
+  return {
+    id: `ma-wb-${scene.id}-${ask}-${base}-${percent}`,
+    genreId: 'math',
+    prompt: asked.prompt,
+    promptLayout: 'word',
+    answer: asked.answer,
+    answerParts: asked.answerParts,
+    answerUnit: asked.answerUnit,
+    work: asked.work,
+    level: 'g56',
+    topic: 'ratio',
+    hintSource: asked.hints,
+  }
+}
+
 /** 速さの場面。何が進むか、速さの種類(時速・分速・秒速)と単位 */
 interface SpeedScene {
   id: string
@@ -867,6 +934,7 @@ const KINDS: { name: string; make: () => MathQuestion | null }[] = [
   { name: '小数のわり算・商が小数(小5)', make: divideDecimalQuotient },
   { name: '割合の文章題(小5)', make: ratioWordProblem },
   { name: '速さの文章題(小6)', make: speedWordProblem },
+  { name: '割合の文章題・何割何分(小5)', make: ratioWariBuProblem },
 ]
 
 function main(): void {

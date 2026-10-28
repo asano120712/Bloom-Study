@@ -65,6 +65,7 @@ export function judgeTyping(question: Question, input: string): JudgeResult {
  */
 export function judgeNumber(question: Question, input: string): JudgeResult {
   if (question.promptLayout === 'fraction') return judgeFraction(question, input)
+  if (question.answerParts) return judgeUnits(question, input)
 
   const toNumber = (value: string) => {
     const normalized = value.normalize('NFKC').replace(/[\s,]/g, '')
@@ -80,6 +81,26 @@ export function judgeNumber(question: Question, input: string): JudgeResult {
     isCorrect,
     answer: question.answer,
   }
+}
+
+/**
+ * 単位ごとのマスに分けて答える問題(「7割5分」)の判定。
+ *
+ * 単位ごとの数を取り出して、数として比べる(「07割5分」と「7割5分」は同じ)。
+ * 単位の並びも答えのとおりでないといけない(5割7分は 7割5分ではない)。
+ */
+function judgeUnits(question: Question, input: string): JudgeResult {
+  const units = question.answerParts ?? []
+  const numbersOf = (text: string) =>
+    units.map((unit, index) => {
+      const before = units.slice(0, index).map((part) => `\\d*${part}`).join('')
+      const found = new RegExp(`^${before}(\\d+)${unit}`).exec(text.normalize('NFKC').replace(/\s/g, ''))
+      return found ? Number(found[1]) : null
+    })
+  const [answered, correct] = [numbersOf(input), numbersOf(question.answer)]
+  const isCorrect = answered.every((value, index) => value !== null && value === correct[index])
+
+  return { verdict: isCorrect ? 'correct' : 'incorrect', isCorrect, answer: question.answer }
 }
 
 /**

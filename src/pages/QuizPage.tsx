@@ -114,13 +114,19 @@ function plainAnswerBoxes(prompt: string): number {
 /**
  * 文章題を手書きするマス。式を書く場所(途中の計算と同じく読み取らない)と、答え。
  * 割合は 0.75 のような小数の答えがあるので、答えには小数点を打てるようにする。
+ * 「何割何分」は、割と分のマスを1つずつ置く(どちらも 1〜9 の1けた)。まとめた画像でも横に並べる。
  */
-function wordRows(questionId: string): WriteRow[] {
-  return [
-    // 式は横長の1つの書く場所に、記号まで自由に書く(読み取らないので、マスに分けない)
-    { key: `${questionId}-expression`, boxes: 1, span: 5, line: 1, scratch: true },
-    { key: `${questionId}-answer`, boxes: 4, line: 0, decimalPoint: true },
-  ]
+function wordRows(questionId: string, answerParts?: string[]): WriteRow[] {
+  // 式は横長の1つの書く場所に、記号まで自由に書く(読み取らないので、マスに分けない)
+  const expression: WriteRow = { key: `${questionId}-expression`, boxes: 1, span: 5, line: 1, scratch: true }
+  if (answerParts) {
+    return [
+      expression,
+      { key: `${questionId}-answer`, boxes: 1, line: 0 },
+      { key: `${questionId}-answer2`, boxes: 1, line: 0 },
+    ]
+  }
+  return [expression, { key: `${questionId}-answer`, boxes: 4, line: 0, decimalPoint: true }]
 }
 
 /** 手書きで出す途中の計算のマス(かけ算の段、わり算の「かける」「ひく」) */
@@ -446,7 +452,7 @@ export function QuizPage() {
   const writeRows: WriteRow[] = isFraction
     ? fractionRows(question.id, question.prompt)
     : isWord
-      ? wordRows(question.id)
+      ? wordRows(question.id, question.answerParts)
       : isPlainMath
         ? [
             {
@@ -485,11 +491,13 @@ export function QuizPage() {
 
     const { answered, confidence } = isFraction
       ? await readFraction(rows)
-      : isWord || isPlainMath
-        ? await readWithPoint(rows.find((row) => row.key === `${question.id}-answer`)).then(
-            (read) => ({ answered: read.text, confidence: read.confidence }),
-          )
-        : await readColumn(rows)
+      : isWord && question.answerParts
+        ? await readUnits(rows, question.answerParts)
+        : isWord || isPlainMath
+          ? await readWithPoint(rows.find((row) => row.key === `${question.id}-answer`)).then(
+              (read) => ({ answered: read.text, confidence: read.confidence }),
+            )
+          : await readColumn(rows)
 
     const judged = judgeNumber(question, answered)
     if (judged.isCorrect && confidence >= READ_CONFIDENCE) {
@@ -533,6 +541,19 @@ export function QuizPage() {
     return {
       text: `${whole.text || '0'}.${fraction.text}`,
       confidence: Math.min(whole.confidence, fraction.confidence),
+    }
+  }
+
+  /** 単位ごとのマス(「何割何分」の割・分)を読んで、単位つきでつなぐ(「7割5分」) */
+  const readUnits = async (rows: WrittenRow[], units: string[]) => {
+    const [first, second] = await Promise.all(
+      ['answer', 'answer2'].map((part) =>
+        readCells(rows.find((row) => row.key === `${question.id}-${part}`)?.cells ?? []),
+      ),
+    )
+    return {
+      answered: `${first.text}${units[0]}${second.text}${units[1]}`,
+      confidence: Math.min(first.confidence, second.confidence),
     }
   }
 
@@ -611,6 +632,11 @@ export function QuizPage() {
       left: { label: number, spokenLabel: `${copy.number.wordParts.expression}の${number}`, ...fill('left') },
       right: { label: number, spokenLabel: `${copy.number.wordParts.expression}の${number}`, ...fill('right') },
       answer: { label: answer, ...fill('answer') },
+      // 「何割何分」は、答えを単位ごとのマスに分ける(□ 割 □ 分)
+      answerParts: question.answerParts?.map((unit, index) => ({
+        slot: { label: unit, ...fill(index === 0 ? 'answer' : 'answer2') },
+        unit,
+      })),
       prefix: question.answerPrefix,
       unit: question.answerUnit,
     }
@@ -799,6 +825,7 @@ export function QuizPage() {
             {inputMode === 'number' && isWord && (
               <WordInput
                 key={`word-${question.id}`}
+                answerParts={question.answerParts}
                 display={(entry, focus, select) => (
                   <WordForm
                     {...wordSlots((part) => ({
