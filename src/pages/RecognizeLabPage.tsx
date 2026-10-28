@@ -2,6 +2,8 @@ import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { AppShell } from '@/components/AppShell'
 import { guess, guessDigit, type Guess } from '@/features/recognize'
 import { addSample, clearSamples, packInk, readSamples } from '@/features/recognize/samples'
+import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
+import { RecognizePractice } from './RecognizePractice'
 
 /**
  * 読み取りの試し場(開発時だけ)。
@@ -18,7 +20,46 @@ const CELL = 120
 const LINE_WIDTH = 6
 
 export function RecognizeLabPage() {
+  /** practice = お題を書いて自分の字を覚える、try = 自由に書いて読み・外れた字を集める */
+  const [tab, setTab] = useState<'practice' | 'try'>('practice')
+
+  return (
+    <AppShell>
+      <h1 className="text-xl font-bold">読み取りの試し場</h1>
+      <p className="mt-1 text-sm text-ink-600">開発用の画面です。書いた字は、この端末の外へは送りません。</p>
+
+      <div className="mt-4 flex gap-1 rounded-full border-2 border-bloom-200 p-1">
+        {(
+          [
+            ['practice', '練習して覚える'],
+            ['try', '試す・外れた字を集める'],
+          ] as const
+        ).map(([id, name]) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => setTab(id)}
+            className={`min-h-10 flex-1 rounded-full text-sm font-bold ${
+              tab === id ? 'bg-bloom-700 text-white' : 'text-ink-600'
+            }`}
+          >
+            {name}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'practice' ? <RecognizePractice /> : <TryPanel />}
+    </AppShell>
+  )
+}
+
+/**
+ * 自由に書いて、何に見えているかを並べる。外れた字は残して、共通のモデルの学習に回す
+ * (こちらは「送る」で開発サーバーへ集める。練習の字とは別に、端末の中に置く)。
+ */
+function TryPanel() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  useNoTouchGesture(canvasRef)
   const drawingRef = useRef(false)
   const [candidates, setCandidates] = useState<'digits' | 'letters'>('digits')
   const [guesses, setGuesses] = useState<Guess[]>([])
@@ -70,10 +111,7 @@ export function RecognizeLabPage() {
   }
 
   return (
-    <AppShell>
-      <h1 className="text-xl font-bold">読み取りの試し場</h1>
-      <p className="mt-1 text-sm text-ink-600">書いて「よむ」。開発用の画面です。</p>
-
+    <>
       <div className="mt-4 flex gap-2">
         {(['digits', 'letters'] as const).map((kind) => (
           <button
@@ -235,6 +273,6 @@ export function RecognizeLabPage() {
           残したものを全部消す
         </button>
       </section>
-    </AppShell>
+    </>
   )
 }

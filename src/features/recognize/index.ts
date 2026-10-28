@@ -1,6 +1,7 @@
 import { chamfer, fieldOf } from './distance'
 import { digitsModel } from './model'
-import { MODEL_SIZE, normalize, normalizeGray } from './preprocess'
+import { nearestPersonal, personalSamples } from './personal'
+import { MODEL_SIZE, normalize, normalizeGray, type Bitmap } from './preprocess'
 import { predict } from './net'
 import { templatesOf } from './templates'
 
@@ -18,6 +19,8 @@ export interface Guess {
   score: number
   /** そろえた字とお手本の平均距離(マス単位)。小さいほど近い */
   distance: number
+  /** どの見本で当たったか。common = みんな共通のお手本・モデル、personal = 自分の字 */
+  source?: 'common' | 'personal'
 }
 
 /**
@@ -91,9 +94,10 @@ const DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 export function guess(image: ImageData, candidates: string[]): Guess[] {
   const bitmap = normalize(image)
   if (!bitmap) return []
+  return guessBitmap({ bitmap, field: fieldOf(bitmap) }, candidates)
+}
 
-  const written = { bitmap, field: fieldOf(bitmap) }
-
+function guessBitmap(written: { bitmap: Bitmap; field: Float32Array }, candidates: string[]): Guess[] {
   return candidates
     .map((label) => {
       const distance = templatesOf(label).reduce(
@@ -104,4 +108,62 @@ export function guess(image: ImageData, candidates: string[]): Guess[] {
     })
     .filter((entry) => Number.isFinite(entry.distance))
     .sort((a, b) => a.distance - b.distance)
+}
+
+/**
+ * 共通の読み方に、自分の字(端末の中で覚えた見本)を混ぜて読む。
+ *
+ * 候補ごとに、共通の答えと「いちばん近い自分の見本」の近さを比べて、高いほうを採る。
+ * 自分の見本は距離を SCALE で 0〜1 に写すので、書体のお手本(guess)とは同じ物差しになる。
+ * 数字のモデルの確からしさとは物差しが違うが、モデルが自信を持って読めた字はそのまま残り、
+ * 自信が無かった字だけ自分の見本で救われる、という形になる。
+ *
+ * base: 'model' は学習したモデル(数字)、'template' は書体のお手本(英字など)。
+ */
+export async function guessWithPersonal(
+  image: ImageData,
+  candidates: string[],
+  base: 'model' | 'template',
+): Promise<Guess[]> {
+  const common = base === 'model' ? await guessDigit(image, candidates) : guess(image, candidates)
+  const bitmap = normalize(image)
+  if (!bitmap) return common
+  const nearest = nearestPersonal({ bitmap, field: fieldOf(bitmap) }, await personalSamples(), candidates)
+  return mergePersonal(common, nearest)
+}
+
+function mergePersonal(common: Guess[], nearest: Map<string, number>): Guess[] {
+  const byLabel = new Map<string, Guess>(common.map((entry) => [entry.label, { ...entry, source: 'common' }]))
+  for (const [label, distance] of nearest) {
+    const score = Math.exp(-distance / SCALE)
+    const current = byLabel.get(label)
+    if (!current || score > current.score) {
+      byLabel.set(label, { label, score, distance, source: 'personal' })
+    }
+  }
+  return [...byLabel.values()].sort((a, b) => b.score - a.score)
+}
+
+/**
+ * 覚えた見本を1枚ずつ伏せて、残りで読めるかを測る(leave-one-out)。
+ *
+ * 「あと何枚書けば当たるようになるか」を、新しく書かなくても確かめられる。
+ * 伏せた見本はそろえ終わった白黒しか持っていないので、共通の側は書体のお手本で比べる
+ * (数字のモデルは濃淡の絵が要るため、ここでは使わない)。
+ */
+export async function leaveOneOut(
+  candidates: string[],
+): Promise<{ total: number; hits: number; byLabel: Map<string, { total: number; hits: number }> }> {
+  const samples = (await personalSamples()).filter((sample) => candidates.includes(sample.label))
+  const byLabel = new Map<string, { total: number; hits: number }>()
+  let hits = 0
+  for (const sample of samples) {
+    const nearest = nearestPersonal(sample, samples, candidates, sample.id)
+    const [best] = mergePersonal(guessBitmap(sample, candidates), nearest)
+    const hit = best?.label === sample.label
+    if (hit) hits += 1
+    const entry = byLabel.get(sample.label) ?? { total: 0, hits: 0 }
+    byLabel.set(sample.label, { total: entry.total + 1, hits: entry.hits + (hit ? 1 : 0) })
+  }
+  return { total: samples.length, hits, byLabel }
 }
