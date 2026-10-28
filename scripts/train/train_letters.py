@@ -30,6 +30,8 @@ LEARNING_RATE = 0.03
 DECAY = 0.75
 F1, F2 = 16, 32
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "src", "data", "model.letters.generated.json")
+# 仕上げ直し(finetune.py --kind letters)の出発点として、EMNIST だけで学習した重みも残す
+BASE = os.path.join(os.path.dirname(__file__), ".cache", "model.letters.base.json")
 SAMPLES = os.path.join(os.path.dirname(__file__), ".cache", "samples.json")
 
 
@@ -113,9 +115,10 @@ def main():
             {"name": name, "shape": list(array.shape), "scale": scale, "values": values.reshape(-1).tolist()}
         )
 
-    with open(OUT, "w", encoding="utf-8") as handle:
-        json.dump(payload, handle, ensure_ascii=False)
-    print(f"書き出し: {os.path.relpath(OUT)} ({os.path.getsize(OUT) / 1024:.0f}KB)")
+    for path in [OUT, BASE]:
+        with open(path, "w", encoding="utf-8") as handle:
+            json.dump(payload, handle, ensure_ascii=False)
+    print(f"書き出し: {os.path.relpath(OUT)} ({os.path.getsize(OUT) / 1024:.0f}KB)、元のモデルとして {os.path.relpath(BASE)}")
 
 
 if __name__ == "__main__":

@@ -6,6 +6,11 @@
 
   --kind letters を付けると英字(EMNIST の小文字 + 集めた英字)。付けなければ数字。
   見本の置き場所(samples.json)は数字と英字で共通なので、その種類のラベルの見本だけを使う。
+  --with-words を付けると、英単語から取り出した1字(words.py が書く word_letters.json)も混ぜる。
+
+英字は、毎回 **EMNIST だけで学習したモデル(.cache/model.letters.base.json)から**仕上げ直す。
+前回仕上げ直したモデルをさらに仕上げ直すと、回を重ねるほどずれが積み重なるため。
+(元のモデルは train_letters.py が書き出すときに一緒に置く。無ければ今のモデルから始める)
 
 合成した水増し(scripts/train/style_seven.py)では、実機で書いた7に届かなかった。
 **実物を混ぜる**のがいちばん近道だが、枚数が少ないので、
@@ -39,6 +44,7 @@ KINDS = {
         "model": os.path.join(DATA, "model.letters.generated.json"),
         "load": emnist.load,
         "dataset": "EMNIST byclass の小文字 + 実機で集めた見本(scripts/train/.cache/samples.json)",
+        "base": os.path.join(os.path.dirname(__file__), ".cache", "model.letters.base.json"),
         # 数字と同じ設定(割合 0.25・学習率 0.01)では、集めた字は 43→47/51 に上がったが、
         # EMNIST の試験が 90.15→88.68% に落ちた(他の人の字を忘れる)。混ぜる割合と学習率を下げ、
         # もとの学習の終わりの学習率(約 0.002)に合わせると 48/51・89.81% で釣り合った
@@ -49,6 +55,9 @@ KINDS = {
 }
 KIND = KINDS["letters" if "--kind" in sys.argv and sys.argv[sys.argv.index("--kind") + 1] == "letters" else "digits"]
 MODEL = KIND["model"]
+# 仕上げ直しの出発点
+START = KIND["base"] if "base" in KIND and os.path.exists(KIND["base"]) else MODEL
+WORD_LETTERS = os.path.join(os.path.dirname(__file__), ".cache", "word_letters.json")
 SAMPLES = os.path.join(os.path.dirname(__file__), ".cache", "samples.json")
 
 STEPS = KIND.get("steps", 400)
@@ -74,6 +83,9 @@ def load_model(path=MODEL):
 def load_samples():
     with open(SAMPLES, encoding="utf-8") as handle:
         raw = json.load(handle)
+    if "--with-words" in sys.argv and os.path.exists(WORD_LETTERS):
+        with open(WORD_LETTERS, encoding="utf-8") as handle:
+            raw += json.load(handle)
     images, labels = [], []
     for sample in raw:
         if sample["label"] not in KIND["labels"]:
@@ -153,7 +165,7 @@ def main():
         hit = total = 0
         for turn, held in enumerate(folds):
             used = np.setdiff1d(order, held)
-            model = finetune(load_model(), train_x, train_y, sample_x[used], sample_y[used], np.random.default_rng(turn))
+            model = finetune(load_model(START), train_x, train_y, sample_x[used], sample_y[used], np.random.default_rng(turn))
             prob = predict(model, sample_x[held])
             top = prob.argmax(axis=1)
             for i, index in enumerate(held):
@@ -174,7 +186,7 @@ def main():
         for i in range(len(sample_x)):
             keep = np.arange(len(sample_x)) != i
             model = finetune(
-                load_model(), train_x, train_y, sample_x[keep], sample_y[keep], np.random.default_rng(100 + i)
+                load_model(START), train_x, train_y, sample_x[keep], sample_y[keep], np.random.default_rng(100 + i)
             )
             prob = predict(model, sample_x[i : i + 1])[0]
             top = int(prob.argmax())
@@ -184,7 +196,8 @@ def main():
         print(f"\n1枚伏せでの正解 {hit} / {len(sample_x)}")
         return
 
-    model = finetune(load_model(), train_x, train_y, sample_x, sample_y, np.random.default_rng(7))
+    print(f"出発点: {os.path.relpath(START)}")
+    model = finetune(load_model(START), train_x, train_y, sample_x, sample_y, np.random.default_rng(7))
     print(f"共通の試験: {float((predict(model, test_x).argmax(axis=1) == test_y).mean()) * 100:.2f}%")
     print(f"集めた見本:   {float((predict(model, sample_x).argmax(axis=1) == sample_y).mean()) * 100:.2f}%")
     export(model, names)
