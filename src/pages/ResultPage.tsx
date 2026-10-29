@@ -115,13 +115,16 @@ export function ResultPage() {
         </p>
 
         <div className="w-full rounded-3xl bg-bloom-50 px-5 py-6">
-          <p className="text-sm text-ink-400">
-            {/* 分数の式は、分子を上・分母を下に積んで見せる */}
-            <MathText text={prompt} />
-            {promptReading && <span className="ml-1">{promptReading}</span>}
-          </p>
+          {/* 出題が無いのは、お手本の字を見せる問題(小1・小2の組み立て)。お手本と同じ字なので出さない */}
+          {prompt && (
+            <p className="mb-4 text-sm text-ink-400">
+              {/* 分数の式は、分子を上・分母を下に積んで見せる */}
+              <MathText text={prompt} />
+              {promptReading && <span className="ml-1">{promptReading}</span>}
+            </p>
+          )}
 
-          <div className="mt-4">
+          <div>
             <ModelAnswer answer={answerText ?? result.answer} guide={genre?.answerGuide ?? 'baseline'} />
           </div>
 

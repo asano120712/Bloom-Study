@@ -1,11 +1,12 @@
+import { buildQuestions } from '@/features/build'
 import type { GenreId, Question } from '@/types'
 
 /**
  * 手で書いた問題。生成物より優先する(同じ answer があれば生成側を捨てる)。
  * 生成に向かない字や、生成の対象学年から外れる字(小1・小2)はここに置く。
  *
- * 小1・小2の漢字は、いまは出題に回らない(この学年は なぞりがき と くみたて に
- * 差し替えてある)。学年を選んでクイズも出したくなったときのために残してある。
+ * 小1・小2の熟語(下の2問)は、いまは出題に回らない(この学年は なぞりがき と
+ * お手本を見て組む組み立て に差し替えてある)。熟語でも出したくなったときのために残してある。
  */
 const MANUAL_QUESTIONS: Question[] = [
   { id: 'en-001', genreId: 'english', prompt: 'いちご', answer: 'strawberry', level: 'junior' },
@@ -71,6 +72,8 @@ export function questionsOf(genreId: GenreId): Promise<Question[]> {
     const manual = MANUAL_QUESTIONS.filter((question) => question.genreId === genreId)
     return [
       ...manual,
+      // 小1・小2の組み立て(お手本を見て組む)。部品のデータから作る
+      ...(genreId === 'kanji' ? buildQuestions : []),
       // 手で書いたものを優先する(同じ答えがあれば生成側を捨てる)
       ...generated.filter((question) => !manualAnswers.has(question.answer)),
     ]

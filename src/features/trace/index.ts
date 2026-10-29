@@ -87,3 +87,19 @@ export function traceSession(setId: TraceSetId): TraceItem[] {
   }
   return shuffled.slice(0, TRACE_SESSION_SIZE)
 }
+
+/**
+ * 漢字のなぞりがきは、やめるまで続ける(小1・小2の漢字を選んだときの練習で、
+ * 小さい子向けのひと区切りより、たくさんなぞれるほうがよい)。
+ * 全部の字を混ぜて渡し、出し切ったら呼ぶ側がまた足す。
+ */
+export const ENDLESS_TRACE_SETS: TraceSetId[] = ['kanji']
+
+export function traceRound(setId: TraceSetId): TraceItem[] {
+  const shuffled = [...SETS[setId]]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  return shuffled
+}
