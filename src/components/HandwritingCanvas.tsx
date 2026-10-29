@@ -8,8 +8,9 @@ interface HandwritingCanvasProps {
   /**
    * 「かけた」を押したとき。
    * 書いた字を結果画面で見せるため、キャンバスを PNG(dataURL)にして渡す。
+   * 書いた線(キャンバスの中の座標)も渡す。英単語は、これを読み取って自動で判定する。
    * メモ(memo)では使わない。*/
-  onSubmit?: (imageDataUrl: string) => void
+  onSubmit?: (imageDataUrl: string, strokes: Stroke[]) => void
   /**
    * 計算のメモとして使う。答えではないので「かけた」の代わりに「全部消す」を出し、
    * 地を透明にする(紙の色と透け具合はメモの枠のほうで付ける)。
@@ -274,6 +275,7 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
   const clearAll = () => {
     const canvas = canvasRef.current
     canvas?.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height)
+    strokesRef.current = []
     setHasStroke(false)
     setErasing(false)
   }
@@ -354,7 +356,8 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
         ) : (
           <button
             type="button"
-            onClick={() => onSubmit?.(exportImage())}
+            // タップしただけの線(点1つ)は絵に何も残らないので、読み取りにも渡さない
+            onClick={() => onSubmit?.(exportImage(), strokesRef.current.filter((stroke) => stroke.length > 1))}
             // 消している途中で出すと、消し残しに気づかないまま答えになる
             disabled={disabled || !hasStroke || erasing}
             className="min-h-14 flex-1 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
