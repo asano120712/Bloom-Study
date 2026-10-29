@@ -115,7 +115,15 @@ export interface Copy {
   }
   typing: { placeholderTap: string; placeholderKey: string; inputLabel: string; submit: string }
   /** あそび(なぞりがき・おなじものさがし)で共通の言葉 */
-  play: { allDone: string; again: string; other: string }
+  play: {
+    allDone: string
+    again: string
+    other: string
+    /** 何問目か(おとなだけ。こどもは花の数で見せる) */
+    progress: (index: number, total: number) => string
+    /** やめるまで続くときの何問目か(全部の数が無い) */
+    count: (index: number) => string
+  }
   /** 数で答えるとき */
   number: {
     inputLabel: string
@@ -141,7 +149,7 @@ export interface Copy {
     wordParts: { expression: string; answer: string; operator: string; number: string }
   }
   trace: { guide: string; done: string }
-  build: { look: string; answerIs: string }
+  build: { look: string }
   match: { question: string; correct: string; hint: string }
   result: {
     model: string
@@ -353,7 +361,13 @@ const ADULT: Copy = {
     inputLabel: '入力中の答え',
     submit: '答え合わせ',
   },
-  play: { allDone: '全部できた!', again: 'もう一度', other: '他の遊び' },
+  play: {
+    allDone: '全部終わった!',
+    again: 'もう一度',
+    other: '他の遊び',
+    progress: (index, total) => `${index} / ${total} 問目`,
+    count: (index) => `${index} 問目`,
+  },
   number: {
     inputLabel: '入力中の答え',
     placeholder: '数字で答えよう',
@@ -368,8 +382,8 @@ const ADULT: Copy = {
     decimalPoint: 'ここに小数点を打つ',
     wordParts: { expression: '式', answer: '答え', operator: '記号を選ぶ(× か ÷)', number: '数' },
   },
-  trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
-  build: { look: 'この漢字をよく見て、覚えよう', answerIs: '答えはこれ' },
+  trace: { guide: '光っている ● から、書き順どおりになぞろう', done: 'なぞれた!' },
+  build: { look: 'この漢字をよく見て、覚えよう' },
   match: {
     question: 'よく見て。どれと同じ?',
     correct: '当たり!',
@@ -583,7 +597,13 @@ const KIDS: Copy = {
     inputLabel: '入力中のこたえ',
     submit: 'こたえあわせ',
   },
-  play: { allDone: 'ぜんぶ できた！', again: 'もういちど', other: 'ほかの あそび' },
+  play: {
+    allDone: 'ぜんぶ できた！',
+    again: 'もういちど',
+    other: 'ほかの あそび',
+    progress: (index, total) => `${index} / ${total}`,
+    count: (index) => `${index} もんめ`,
+  },
   number: {
     inputLabel: 'いま うっている こたえ',
     placeholder: 'すうじで こたえよう',
@@ -599,7 +619,7 @@ const KIDS: Copy = {
     wordParts: { expression: 'しき', answer: 'こたえ', operator: 'きごうを えらぶ(× か ÷)', number: 'かず' },
   },
   trace: { guide: 'ひかってる ● から ゆびで なぞってね', done: 'できた！' },
-  build: { look: 'この かんじを よく みてね', answerIs: 'こたえは これ' },
+  build: { look: 'この かんじを よく みてね' },
   match: {
     question: 'よく みてね。どれと おなじ？',
     correct: 'あたり！',

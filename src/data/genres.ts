@@ -104,7 +104,8 @@ export function hasColumnForm(genreId: GenreId, difficulty: Difficulty, topic?: 
  *
  * クイズのこたえかた(inputMode)と、別画面のあそび(path)が並ぶ。
  * 小1・小2の漢字は熟語の穴うめが成立しない(出題文に出る相手の字が読めない)ので、
- * この学年だけ なぞりがき と くみたて に差し替える。
+ * この学年だけ なぞりがき と くみたて に差し替える。くみたては、お手本を見せてから
+ * パーツを組むクイズ(features/build)で、出題画面は小3以上と同じものを使う。
  */
 export type AnswerChoiceId = InputMode | 'trace' | 'build'
 
@@ -145,10 +146,10 @@ const QUIZ_CHOICES: Record<GenreId, AnswerChoice[]> = {
   ],
 }
 
-/** 小1・小2の漢字。クイズではなく、なぞって覚える・部品から組み立てる */
+/** 小1・小2の漢字。なぞって覚える(別画面のあそび)と、お手本を覚えてから部品で組む */
 const KANJI_LOW_CHOICES: AnswerChoice[] = [
   { id: 'trace', path: '/trace/kanji' },
-  { id: 'build', path: '/build' },
+  { id: 'build', inputMode: 'assemble' },
 ]
 
 export function answerChoicesOf(genreId: GenreId, difficulty: Difficulty): AnswerChoice[] {

@@ -218,6 +218,11 @@ export function QuizPage() {
    * 開いていてもヒントの時間は止めない(メモに書いているあいだも、考えている時間なので)。
    */
   const [memoOpen, setMemoOpen] = useState(false)
+  /**
+   * お手本を見せる問題(小1・小2の組み立て)で、「思い出した」を押したか。
+   * 押したらお手本を引っこめる(見ながら組むと写すだけになる)。問題ごとに画面ごと作り直されるので戻さなくてよい。
+   */
+  const [recalled, setRecalled] = useState(false)
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
 
@@ -291,7 +296,7 @@ export function QuizPage() {
     )
   }
 
-  // 出題セットを出し切った場合は、先頭に戻さずジャンル選択へ返す
+  // 出題セットの外を指しているとき(保存した位置が壊れているなど)。ふだんは出し切ると混ぜ直すので来ない
   if (!question) {
     return <Navigate to="/genres" replace />
   }
@@ -315,7 +320,8 @@ export function QuizPage() {
 
     const state: ResultState = {
       result,
-      prompt: question.prompt,
+      // お手本を見せる問題は、出題がお手本の字そのもの。結果ではお手本と同じ字が二重に並ぶので出さない
+      prompt: question.modelPrompt ? '' : question.prompt,
       promptReading: question.promptReading,
       work: question.work,
       // 文章題は、おてほんに単位を添える(「75%」「時速 60km」)
@@ -327,8 +333,8 @@ export function QuizPage() {
       topic,
       // 自分が書いた・打ったこたえを結果画面で見せる
       submission,
-      // この出題セットに次の問題が残っているときだけ「つぎへ」を出す
-      hasNext: cursor + 1 < questions.length,
+      // やめるまで続ける。出題セットを出し切ったら、次に入ったとき混ぜ直したセットで始まる(useQuizSession)
+      hasNext: true,
       currentStreak: next.currentStreak,
     }
     navigate('/result', { state })
@@ -347,7 +353,8 @@ export function QuizPage() {
 
     const state: ResultState = {
       result: { verdict: 'passed', isCorrect: false, answer: question.answer },
-      prompt: question.prompt,
+      // お手本を見せる問題は、出題がお手本の字そのもの。結果ではお手本と同じ字が二重に並ぶので出さない
+      prompt: question.modelPrompt ? '' : question.prompt,
       promptReading: question.promptReading,
       work: question.work,
       // 文章題は、おてほんに単位を添える(「75%」「時速 60km」)
@@ -357,7 +364,7 @@ export function QuizPage() {
       difficulty,
       promptForm,
       topic,
-      hasNext: cursor + 1 < questions.length,
+      hasNext: true,
       currentStreak: stats.currentStreak,
     }
     navigate('/result', { state })
@@ -747,7 +754,7 @@ export function QuizPage() {
         紙の筆算と同じで、式と答えを書く場所が隣り合っていたほうが解きやすい。
         思い出す系のジャンルは、先に出題語を見て考える流れなので上のまま。
       */}
-      {!showsPromptBelow && (
+      {!showsPromptBelow && !question.modelPrompt && (
         <PromptBlock question={question} layout={layout} caption={promptCaption} />
       )}
 
@@ -761,18 +768,34 @@ export function QuizPage() {
         筆算は式・途中の段・答えのマスで縦に長く、背の低い端末(iPhone SE)では
         書くマスや数字キーボードが押し出される。ヒントの枠に回していた高さをマスへ回す。
       */}
-      <section
-        className={`flex min-h-0 flex-col ${showsPromptInInput || isWord ? 'mt-2 shrink-0' : 'mt-4 max-h-52 flex-1'}`}
-      >
-        <HintList
-          hints={revealedHints(hints, revealedCount)}
-          layout={hintLayoutOf(genre.id)}
-          secondsToNext={secondsToNext}
-          compact={showsPromptInInput || isWord}
-          fractions={isFraction}
-        />
-
-      </section>
+      {/*
+        お手本を見せる問題(小1・小2の組み立て)は、ヒントのかわりにお手本の字を真ん中に大きく出す。
+        熟語が無いので、出せるヒントも無い。
+      */}
+      {question.modelPrompt ? (
+        <section className="flex min-h-0 flex-1 flex-col items-center justify-center text-center select-none">
+          {!recalled && (
+            <>
+              <p className="text-base text-ink-600">{copy.build.look}</p>
+              <p className="animate-bloom-in mt-2 font-display text-7xl leading-none text-bloom-700">
+                {question.prompt}
+              </p>
+            </>
+          )}
+        </section>
+      ) : (
+        <section
+          className={`flex min-h-0 flex-col ${showsPromptInInput || isWord ? 'mt-2 shrink-0' : 'mt-4 max-h-52 flex-1'}`}
+        >
+          <HintList
+            hints={revealedHints(hints, revealedCount)}
+            layout={hintLayoutOf(genre.id)}
+            secondsToNext={secondsToNext}
+            compact={showsPromptInInput || isWord}
+            fractions={isFraction}
+          />
+        </section>
+      )}
 
       {/* 計算は、ヒントのあとに出題を置く。答えを書く場所のすぐ上になる */}
       {showsPromptBelow && !showsPromptInInput && (
@@ -1027,6 +1050,7 @@ export function QuizPage() {
                 assembledOf={(first, second) =>
                   judgeParts(question, first, second).isCorrect ? question.answer : null
                 }
+                onReveal={() => setRecalled(true)}
                 onSubmit={(first, second) =>
                   finish(judgeParts(question, first, second), revealedCount, {
                     kind: 'parts',
