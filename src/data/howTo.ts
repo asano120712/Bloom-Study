@@ -11,9 +11,9 @@ import type { ActivityId } from './activities'
  * 並び順は文と同じ。足りないぶんは、そのあそびの絵(`art`)になる。
  */
 export const HOW_TO_DEMOS: Record<ActivityId, HowToDemoId[]> = {
-  english: ['art', 'choice', 'hint', 'self'],
-  kanji: ['art', 'choice', 'slots'],
-  math: ['art', 'column', 'column', 'column'],
+  english: ['art', 'choice', 'hint', 'read'],
+  kanji: ['art', 'choice', 'read', 'slots'],
+  math: ['art', 'choice', 'column', 'column', 'read', 'memo'],
   'trace-shape': ['art', 'art'],
   'trace-hiragana': ['art', 'art'],
   'trace-kanji': ['art', 'art'],

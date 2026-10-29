@@ -54,7 +54,7 @@ function scaledLineWidth(): number {
 
 /**
  * 手書き入力キャンバス。外部ライブラリを使わず Canvas API のみで実装する。
- * OCR による自動判定は行わない(機能要件書 2.4 の通り自己申告方式)。
+ * ここでは線を描くだけで、字の読み取りはしない。読み取りと判定は、書いた線や絵を受け取った側で行う。
  */
 export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: HandwritingCanvasProps) {
   const copy = useCopy()

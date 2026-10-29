@@ -138,7 +138,7 @@ const QUIZ_CHOICES: Record<GenreId, AnswerChoice[]> = {
     { id: 'handwriting', inputMode: 'handwriting' },
     { id: 'assemble', inputMode: 'assemble' },
   ],
-  // 数は打って答えるほうが自動で正誤を見られる。手書きは自己申告なので後ろに置く
+  // 数は打つほうが速く、読み取りの間違いも起きないので先に置く。手書きも字を読み取って自動で判定する
   math: [
     { id: 'number', inputMode: 'number' },
     { id: 'handwriting', inputMode: 'handwriting' },
