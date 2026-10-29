@@ -29,6 +29,7 @@ export function WordForm({
   right,
   expression,
   answer,
+  answerParts,
   prefix,
   unit,
   writing = false,
@@ -42,6 +43,11 @@ export function WordForm({
    */
   expression?: ReactNode
   answer: WordSlot
+  /**
+   * 答えを単位ごとのマスに分けるとき(「何割何分」)。並んだ順に「□ 割 □ 分」と置く。
+   * あるときは answer・prefix・unit の代わりにこちらを使う。
+   */
+  answerParts?: { slot: WordSlot; unit: string }[]
   /** 答えのマスの前に添える言葉(「時速」) */
   prefix?: string
   /** 答えのマスの後ろに添える単位(「km」「%」) */
@@ -85,9 +91,20 @@ export function WordForm({
 
       <span className="text-[0.6em] whitespace-nowrap text-ink-600">{copy.number.wordParts.answer}</span>
       <span className="flex items-center gap-[0.3em]">
-        {prefix && <span className="text-[0.7em]">{prefix}</span>}
-        <Slot slot={answer} />
-        {unit && <span className="text-[0.7em]">{unit}</span>}
+        {answerParts ? (
+          answerParts.map(({ slot, unit: partUnit }) => (
+            <span key={partUnit} className="contents">
+              <Slot slot={slot} />
+              <span className="text-[0.7em]">{partUnit}</span>
+            </span>
+          ))
+        ) : (
+          <>
+            {prefix && <span className="text-[0.7em]">{prefix}</span>}
+            <Slot slot={answer} />
+            {unit && <span className="text-[0.7em]">{unit}</span>}
+          </>
+        )}
       </span>
     </span>
   )

@@ -73,6 +73,12 @@ export interface Copy {
     close: string
   }
   quiz: {
+    /** 計算のメモ。見出しと、開くボタン(読み上げ)・閉じる・全部消す・下を透かすかの切り替え */
+    memo: string
+    memoOpen: string
+    memoClose: string
+    memoClear: string
+    memoSeeThrough: string
     /** 右上の進み具合。「3 れんぞく / 5 問め」 */
     progress: (streak: number, index: number) => string
     /** 分からない問題を飛ばす。答えは見せるが記録には残さない */
@@ -299,6 +305,11 @@ const ADULT: Copy = {
     close: '戻る',
   },
   quiz: {
+    memo: 'メモ',
+    memoOpen: '計算のメモを開く',
+    memoClose: '閉じる',
+    memoClear: '全部消す',
+    memoSeeThrough: '下を透かす',
     progress: (streak, index) => `${streak} 連続 / ${index} 問目`,
     pass: 'パス',
     passAria: 'この問題をパスする',
@@ -512,6 +523,11 @@ const KIDS: Copy = {
     close: 'もどる',
   },
   quiz: {
+    memo: 'メモ',
+    memoOpen: 'けいさんの メモを ひらく',
+    memoClose: 'とじる',
+    memoClear: 'ぜんぶ けす',
+    memoSeeThrough: 'したを すかす',
     progress: (streak, index) => `${streak} れんぞく / ${index} もんめ`,
     pass: 'パス',
     passAria: 'この もんだいを パスする',

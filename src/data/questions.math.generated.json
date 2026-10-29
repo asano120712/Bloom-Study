@@ -1,7 +1,7 @@
 {
   "_source": {
     "note": "自動生成。編集しても npm run questions:math で上書きされる",
-    "generatedAt": "2026-10-21T07:50:23.704Z",
+    "generatedAt": "2026-10-28T04:05:13.585Z",
     "note2": "辞書は使わない。種を決めた乱数で作るので、同じ種からは同じ問題集ができる"
   },
   "questions": [
@@ -89967,6 +89967,6769 @@
         "道のり = 速さ × 時間",
         "速さは 秒速 5m",
         "時間は 25秒"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-300-25",
+      "genreId": "math",
+      "prompt": "300m²の 畑のうち 75m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "2割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "75 ÷ 300 = 0.25 → 2割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 300m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-40-15",
+      "genreId": "math",
+      "prompt": "40問の テストで、全体の 1割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "6",
+      "answerUnit": "問",
+      "work": "40 × 0.15 = 6",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40問",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-60-55",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに 33人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "5割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "33 ÷ 60 = 0.55 → 5割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 60人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-base-40-15",
+      "genreId": "math",
+      "prompt": "テストで 6問 正かいしました。これは 全体の 1割5分です。問題は 全部で 何問ですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "問",
+      "work": "6 ÷ 0.15 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 6問",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-80-35",
+      "genreId": "math",
+      "prompt": "バスに 28人 乗っています。これは 定員の 3割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "人",
+      "work": "28 ÷ 0.35 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 28人",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-160-45",
+      "genreId": "math",
+      "prompt": "本を 72ページ 読みました。これは 全体の 4割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "160",
+      "answerUnit": "ページ",
+      "work": "72 ÷ 0.45 = 160",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 72ページ",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-ratio-40-75",
+      "genreId": "math",
+      "prompt": "40問の テストで 30問 正かいしました。正かいした 問題は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "7割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "30 ÷ 40 = 0.75 → 7割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40問",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-500-75",
+      "genreId": "math",
+      "prompt": "500円 ためる 目ひょうで、375円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "7割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "375 ÷ 500 = 0.75 → 7割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 500円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-200-75",
+      "genreId": "math",
+      "prompt": "200円 ためる 目ひょうの 7割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "150",
+      "answerUnit": "円",
+      "work": "200 × 0.75 = 150",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200円",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-100-35",
+      "genreId": "math",
+      "prompt": "本を 35ページ 読みました。これは 全体の 3割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "ページ",
+      "work": "35 ÷ 0.35 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 35ページ",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-100-55",
+      "genreId": "math",
+      "prompt": "100m²の 畑の 5割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "55",
+      "answerUnit": "m²",
+      "work": "100 × 0.55 = 55",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 100m²",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-400-15",
+      "genreId": "math",
+      "prompt": "400円 ためる 目ひょうの 1割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "60",
+      "answerUnit": "円",
+      "work": "400 × 0.15 = 60",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 400円",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-300-25",
+      "genreId": "math",
+      "prompt": "300m²の 畑の 2割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "75",
+      "answerUnit": "m²",
+      "work": "300 × 0.25 = 75",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 300m²",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-800-45",
+      "genreId": "math",
+      "prompt": "360円 たまりました。これは 目ひょうの 4割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "800",
+      "answerUnit": "円",
+      "work": "360 ÷ 0.45 = 800",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 360円",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-40-95",
+      "genreId": "math",
+      "prompt": "40問の テストで、全体の 9割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "38",
+      "answerUnit": "問",
+      "work": "40 × 0.95 = 38",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40問",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-80-55",
+      "genreId": "math",
+      "prompt": "本を 44ページ 読みました。これは 全体の 5割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "ページ",
+      "work": "44 ÷ 0.55 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 44ページ",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-20-55",
+      "genreId": "math",
+      "prompt": "定員 20人の バスに、定員の 5割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "11",
+      "answerUnit": "人",
+      "work": "20 × 0.55 = 11",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 20人",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-80-85",
+      "genreId": "math",
+      "prompt": "トマトを 68m²に 植えました。これは 畑 全体の 8割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "m²",
+      "work": "68 ÷ 0.85 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 68m²",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-2000-55",
+      "genreId": "math",
+      "prompt": "1100円 たまりました。これは 目ひょうの 5割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "2000",
+      "answerUnit": "円",
+      "work": "1100 ÷ 0.55 = 2000",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 1100円",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-40-55",
+      "genreId": "math",
+      "prompt": "40ページの 本のうち 22ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "5割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "22 ÷ 40 = 0.55 → 5割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-80-85",
+      "genreId": "math",
+      "prompt": "定員 80人の バスに、定員の 8割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "68",
+      "answerUnit": "人",
+      "work": "80 × 0.85 = 68",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80人",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-100-35",
+      "genreId": "math",
+      "prompt": "トマトを 35m²に 植えました。これは 畑 全体の 3割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "m²",
+      "work": "35 ÷ 0.35 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 35m²",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-base-20-75",
+      "genreId": "math",
+      "prompt": "テストで 15問 正かいしました。これは 全体の 7割5分です。問題は 全部で 何問ですか。",
+      "promptLayout": "word",
+      "answer": "20",
+      "answerUnit": "問",
+      "work": "15 ÷ 0.75 = 20",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 15問",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-60-75",
+      "genreId": "math",
+      "prompt": "60ページの 本の 7割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "45",
+      "answerUnit": "ページ",
+      "work": "60 × 0.75 = 45",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 60ページ",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-20-65",
+      "genreId": "math",
+      "prompt": "定員 20人の バスに、定員の 6割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "13",
+      "answerUnit": "人",
+      "work": "20 × 0.65 = 13",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 20人",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-20-75",
+      "genreId": "math",
+      "prompt": "20問の テストで、全体の 7割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "15",
+      "answerUnit": "問",
+      "work": "20 × 0.75 = 15",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 20問",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-20-55",
+      "genreId": "math",
+      "prompt": "定員 20人の バスに 11人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "5割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "11 ÷ 20 = 0.55 → 5割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 20人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-40-65",
+      "genreId": "math",
+      "prompt": "トマトを 26m²に 植えました。これは 畑 全体の 6割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "m²",
+      "work": "26 ÷ 0.65 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 26m²",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-800-95",
+      "genreId": "math",
+      "prompt": "760円 たまりました。これは 目ひょうの 9割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "800",
+      "answerUnit": "円",
+      "work": "760 ÷ 0.95 = 800",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 760円",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-600-35",
+      "genreId": "math",
+      "prompt": "210円 たまりました。これは 目ひょうの 3割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "600",
+      "answerUnit": "円",
+      "work": "210 ÷ 0.35 = 600",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 210円",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-60-15",
+      "genreId": "math",
+      "prompt": "60ページの 本のうち 9ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "9 ÷ 60 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 60ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-80-55",
+      "genreId": "math",
+      "prompt": "80m²の 畑の 5割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "44",
+      "answerUnit": "m²",
+      "work": "80 × 0.55 = 44",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80m²",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-40-45",
+      "genreId": "math",
+      "prompt": "定員 40人の バスに 18人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "18 ÷ 40 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-base-40-25",
+      "genreId": "math",
+      "prompt": "テストで 10問 正かいしました。これは 全体の 2割5分です。問題は 全部で 何問ですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "問",
+      "work": "10 ÷ 0.25 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 10問",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-200-95",
+      "genreId": "math",
+      "prompt": "200ページの 本のうち 190ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "9割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "190 ÷ 200 = 0.95 → 9割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-100-55",
+      "genreId": "math",
+      "prompt": "トマトを 55m²に 植えました。これは 畑 全体の 5割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "m²",
+      "work": "55 ÷ 0.55 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 55m²",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-80-15",
+      "genreId": "math",
+      "prompt": "80m²の 畑の 1割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "12",
+      "answerUnit": "m²",
+      "work": "80 × 0.15 = 12",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80m²",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-500-85",
+      "genreId": "math",
+      "prompt": "425円 たまりました。これは 目ひょうの 8割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "500",
+      "answerUnit": "円",
+      "work": "425 ÷ 0.85 = 500",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 425円",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-2000-75",
+      "genreId": "math",
+      "prompt": "2000円 ためる 目ひょうの 7割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "1500",
+      "answerUnit": "円",
+      "work": "2000 × 0.75 = 1500",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 2000円",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-100-55",
+      "genreId": "math",
+      "prompt": "100m²の 畑のうち 55m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "5割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "55 ÷ 100 = 0.55 → 5割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 100m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-60-45",
+      "genreId": "math",
+      "prompt": "バスに 27人 乗っています。これは 定員の 4割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "60",
+      "answerUnit": "人",
+      "work": "27 ÷ 0.45 = 60",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 27人",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-600-35",
+      "genreId": "math",
+      "prompt": "600円 ためる 目ひょうの 3割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "210",
+      "answerUnit": "円",
+      "work": "600 × 0.35 = 210",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 600円",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-40-65",
+      "genreId": "math",
+      "prompt": "40ページの 本の 6割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "26",
+      "answerUnit": "ページ",
+      "work": "40 × 0.65 = 26",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40ページ",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-base-20-65",
+      "genreId": "math",
+      "prompt": "テストで 13問 正かいしました。これは 全体の 6割5分です。問題は 全部で 何問ですか。",
+      "promptLayout": "word",
+      "answer": "20",
+      "answerUnit": "問",
+      "work": "13 ÷ 0.65 = 20",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 13問",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-ratio-40-55",
+      "genreId": "math",
+      "prompt": "40問の テストで 22問 正かいしました。正かいした 問題は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "5割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "22 ÷ 40 = 0.55 → 5割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40問",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-60-35",
+      "genreId": "math",
+      "prompt": "本を 21ページ 読みました。これは 全体の 3割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "60",
+      "answerUnit": "ページ",
+      "work": "21 ÷ 0.35 = 60",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 21ページ",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-80-65",
+      "genreId": "math",
+      "prompt": "80m²の 畑の 6割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "52",
+      "answerUnit": "m²",
+      "work": "80 × 0.65 = 52",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80m²",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-1000-65",
+      "genreId": "math",
+      "prompt": "1000円 ためる 目ひょうの 6割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "650",
+      "answerUnit": "円",
+      "work": "1000 × 0.65 = 650",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 1000円",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-200-25",
+      "genreId": "math",
+      "prompt": "200m²の 畑のうち 50m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "2割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "50 ÷ 200 = 0.25 → 2割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-20-55",
+      "genreId": "math",
+      "prompt": "バスに 11人 乗っています。これは 定員の 5割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "20",
+      "answerUnit": "人",
+      "work": "11 ÷ 0.55 = 20",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 11人",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-1000-95",
+      "genreId": "math",
+      "prompt": "1000円 ためる 目ひょうの 9割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "950",
+      "answerUnit": "円",
+      "work": "1000 × 0.95 = 950",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 1000円",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-600-25",
+      "genreId": "math",
+      "prompt": "600円 ためる 目ひょうの 2割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "150",
+      "answerUnit": "円",
+      "work": "600 × 0.25 = 150",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 600円",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-120-85",
+      "genreId": "math",
+      "prompt": "120ページの 本のうち 102ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "8割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "102 ÷ 120 = 0.85 → 8割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 120ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-300-95",
+      "genreId": "math",
+      "prompt": "300m²の 畑のうち 285m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "9割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "285 ÷ 300 = 0.95 → 9割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 300m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-ratio-20-45",
+      "genreId": "math",
+      "prompt": "20問の テストで 9問 正かいしました。正かいした 問題は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "9 ÷ 20 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 20問",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-base-20-55",
+      "genreId": "math",
+      "prompt": "テストで 11問 正かいしました。これは 全体の 5割5分です。問題は 全部で 何問ですか。",
+      "promptLayout": "word",
+      "answer": "20",
+      "answerUnit": "問",
+      "work": "11 ÷ 0.55 = 20",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 11問",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-100-15",
+      "genreId": "math",
+      "prompt": "トマトを 15m²に 植えました。これは 畑 全体の 1割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "m²",
+      "work": "15 ÷ 0.15 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 15m²",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-ratio-20-95",
+      "genreId": "math",
+      "prompt": "20問の テストで 19問 正かいしました。正かいした 問題は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "9割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "19 ÷ 20 = 0.95 → 9割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 20問",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-200-95",
+      "genreId": "math",
+      "prompt": "本を 190ページ 読みました。これは 全体の 9割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "ページ",
+      "work": "190 ÷ 0.95 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 190ページ",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-60-65",
+      "genreId": "math",
+      "prompt": "60ページの 本の 6割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "39",
+      "answerUnit": "ページ",
+      "work": "60 × 0.65 = 39",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 60ページ",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-160-55",
+      "genreId": "math",
+      "prompt": "160ページの 本のうち 88ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "5割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "88 ÷ 160 = 0.55 → 5割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 160ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-60-35",
+      "genreId": "math",
+      "prompt": "60ページの 本の 3割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "21",
+      "answerUnit": "ページ",
+      "work": "60 × 0.35 = 21",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 60ページ",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-400-25",
+      "genreId": "math",
+      "prompt": "400円 ためる 目ひょうで、100円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "2割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "100 ÷ 400 = 0.25 → 2割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 400円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-200-65",
+      "genreId": "math",
+      "prompt": "200円 ためる 目ひょうで、130円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "130 ÷ 200 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-160-65",
+      "genreId": "math",
+      "prompt": "160ページの 本の 6割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "104",
+      "answerUnit": "ページ",
+      "work": "160 × 0.65 = 104",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 160ページ",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-60-15",
+      "genreId": "math",
+      "prompt": "本を 9ページ 読みました。これは 全体の 1割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "60",
+      "answerUnit": "ページ",
+      "work": "9 ÷ 0.15 = 60",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 9ページ",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-40-85",
+      "genreId": "math",
+      "prompt": "バスに 34人 乗っています。これは 定員の 8割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "人",
+      "work": "34 ÷ 0.85 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 34人",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-500-25",
+      "genreId": "math",
+      "prompt": "500円 ためる 目ひょうの 2割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "125",
+      "answerUnit": "円",
+      "work": "500 × 0.25 = 125",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 500円",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-40-35",
+      "genreId": "math",
+      "prompt": "40m²の 畑のうち 14m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "14 ÷ 40 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-40-65",
+      "genreId": "math",
+      "prompt": "40問の テストで、全体の 6割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "26",
+      "answerUnit": "問",
+      "work": "40 × 0.65 = 26",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40問",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-200-45",
+      "genreId": "math",
+      "prompt": "本を 90ページ 読みました。これは 全体の 4割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "ページ",
+      "work": "90 ÷ 0.45 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 90ページ",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-40-25",
+      "genreId": "math",
+      "prompt": "本を 10ページ 読みました。これは 全体の 2割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "ページ",
+      "work": "10 ÷ 0.25 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 10ページ",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-600-25",
+      "genreId": "math",
+      "prompt": "150円 たまりました。これは 目ひょうの 2割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "600",
+      "answerUnit": "円",
+      "work": "150 ÷ 0.25 = 600",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 150円",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-400-55",
+      "genreId": "math",
+      "prompt": "400円 ためる 目ひょうの 5割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "220",
+      "answerUnit": "円",
+      "work": "400 × 0.55 = 220",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 400円",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-40-15",
+      "genreId": "math",
+      "prompt": "バスに 6人 乗っています。これは 定員の 1割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "人",
+      "work": "6 ÷ 0.15 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 6人",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-100-55",
+      "genreId": "math",
+      "prompt": "本を 55ページ 読みました。これは 全体の 5割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "ページ",
+      "work": "55 ÷ 0.55 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 55ページ",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-200-55",
+      "genreId": "math",
+      "prompt": "200ページの 本の 5割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "110",
+      "answerUnit": "ページ",
+      "work": "200 × 0.55 = 110",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200ページ",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-80-85",
+      "genreId": "math",
+      "prompt": "80ページの 本の 8割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "68",
+      "answerUnit": "ページ",
+      "work": "80 × 0.85 = 68",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80ページ",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-60-55",
+      "genreId": "math",
+      "prompt": "本を 33ページ 読みました。これは 全体の 5割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "60",
+      "answerUnit": "ページ",
+      "work": "33 ÷ 0.55 = 60",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 33ページ",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-500-95",
+      "genreId": "math",
+      "prompt": "475円 たまりました。これは 目ひょうの 9割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "500",
+      "answerUnit": "円",
+      "work": "475 ÷ 0.95 = 500",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 475円",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-500-35",
+      "genreId": "math",
+      "prompt": "175円 たまりました。これは 目ひょうの 3割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "500",
+      "answerUnit": "円",
+      "work": "175 ÷ 0.35 = 500",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 175円",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-100-95",
+      "genreId": "math",
+      "prompt": "100ページの 本の 9割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "95",
+      "answerUnit": "ページ",
+      "work": "100 × 0.95 = 95",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 100ページ",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-800-95",
+      "genreId": "math",
+      "prompt": "800円 ためる 目ひょうで、760円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "9割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "760 ÷ 800 = 0.95 → 9割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 800円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-100-45",
+      "genreId": "math",
+      "prompt": "100m²の 畑の 4割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "45",
+      "answerUnit": "m²",
+      "work": "100 × 0.45 = 45",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 100m²",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-200-35",
+      "genreId": "math",
+      "prompt": "本を 70ページ 読みました。これは 全体の 3割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "ページ",
+      "work": "70 ÷ 0.35 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 70ページ",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-300-75",
+      "genreId": "math",
+      "prompt": "300m²の 畑のうち 225m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "7割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "225 ÷ 300 = 0.75 → 7割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 300m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-60-55",
+      "genreId": "math",
+      "prompt": "バスに 33人 乗っています。これは 定員の 5割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "60",
+      "answerUnit": "人",
+      "work": "33 ÷ 0.55 = 60",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 33人",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-300-75",
+      "genreId": "math",
+      "prompt": "300m²の 畑の 7割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "225",
+      "answerUnit": "m²",
+      "work": "300 × 0.75 = 225",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 300m²",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-80-95",
+      "genreId": "math",
+      "prompt": "定員 80人の バスに、定員の 9割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "76",
+      "answerUnit": "人",
+      "work": "80 × 0.95 = 76",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80人",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-200-65",
+      "genreId": "math",
+      "prompt": "200円 ためる 目ひょうの 6割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "130",
+      "answerUnit": "円",
+      "work": "200 × 0.65 = 130",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200円",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-80-85",
+      "genreId": "math",
+      "prompt": "80ページの 本のうち 68ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "8割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "68 ÷ 80 = 0.85 → 8割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-60-75",
+      "genreId": "math",
+      "prompt": "本を 45ページ 読みました。これは 全体の 7割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "60",
+      "answerUnit": "ページ",
+      "work": "45 ÷ 0.75 = 60",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 45ページ",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-300-25",
+      "genreId": "math",
+      "prompt": "トマトを 75m²に 植えました。これは 畑 全体の 2割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "300",
+      "answerUnit": "m²",
+      "work": "75 ÷ 0.25 = 300",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 75m²",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-200-75",
+      "genreId": "math",
+      "prompt": "トマトを 150m²に 植えました。これは 畑 全体の 7割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "m²",
+      "work": "150 ÷ 0.75 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 150m²",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-2000-25",
+      "genreId": "math",
+      "prompt": "2000円 ためる 目ひょうの 2割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "500",
+      "answerUnit": "円",
+      "work": "2000 × 0.25 = 500",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 2000円",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-40-55",
+      "genreId": "math",
+      "prompt": "本を 22ページ 読みました。これは 全体の 5割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "ページ",
+      "work": "22 ÷ 0.55 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 22ページ",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-base-20-85",
+      "genreId": "math",
+      "prompt": "テストで 17問 正かいしました。これは 全体の 8割5分です。問題は 全部で 何問ですか。",
+      "promptLayout": "word",
+      "answer": "20",
+      "answerUnit": "問",
+      "work": "17 ÷ 0.85 = 20",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 17問",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-60-95",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに 57人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "9割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "57 ÷ 60 = 0.95 → 9割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 60人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-600-85",
+      "genreId": "math",
+      "prompt": "600円 ためる 目ひょうの 8割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "510",
+      "answerUnit": "円",
+      "work": "600 × 0.85 = 510",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 600円",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-200-95",
+      "genreId": "math",
+      "prompt": "200ページの 本の 9割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "190",
+      "answerUnit": "ページ",
+      "work": "200 × 0.95 = 190",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200ページ",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-800-15",
+      "genreId": "math",
+      "prompt": "800円 ためる 目ひょうで、120円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "120 ÷ 800 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 800円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-500-65",
+      "genreId": "math",
+      "prompt": "500円 ためる 目ひょうで、325円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "325 ÷ 500 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 500円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-600-45",
+      "genreId": "math",
+      "prompt": "600円 ためる 目ひょうで、270円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "270 ÷ 600 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 600円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-200-45",
+      "genreId": "math",
+      "prompt": "90円 たまりました。これは 目ひょうの 4割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "円",
+      "work": "90 ÷ 0.45 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 90円",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-2000-65",
+      "genreId": "math",
+      "prompt": "2000円 ためる 目ひょうの 6割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "1300",
+      "answerUnit": "円",
+      "work": "2000 × 0.65 = 1300",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 2000円",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-300-15",
+      "genreId": "math",
+      "prompt": "トマトを 45m²に 植えました。これは 畑 全体の 1割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "300",
+      "answerUnit": "m²",
+      "work": "45 ÷ 0.15 = 300",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 45m²",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-60-85",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに 51人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "8割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "51 ÷ 60 = 0.85 → 8割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 60人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-80-95",
+      "genreId": "math",
+      "prompt": "80m²の 畑のうち 76m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "9割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "76 ÷ 80 = 0.95 → 9割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-60-25",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに、定員の 2割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "15",
+      "answerUnit": "人",
+      "work": "60 × 0.25 = 15",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 60人",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-1000-65",
+      "genreId": "math",
+      "prompt": "650円 たまりました。これは 目ひょうの 6割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "1000",
+      "answerUnit": "円",
+      "work": "650 ÷ 0.65 = 1000",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 650円",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-200-15",
+      "genreId": "math",
+      "prompt": "200m²の 畑の 1割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "30",
+      "answerUnit": "m²",
+      "work": "200 × 0.15 = 30",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200m²",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-20-15",
+      "genreId": "math",
+      "prompt": "定員 20人の バスに、定員の 1割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "3",
+      "answerUnit": "人",
+      "work": "20 × 0.15 = 3",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 20人",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-60-35",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに 21人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "21 ÷ 60 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 60人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-500-55",
+      "genreId": "math",
+      "prompt": "500円 ためる 目ひょうの 5割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "275",
+      "answerUnit": "円",
+      "work": "500 × 0.55 = 275",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 500円",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-200-95",
+      "genreId": "math",
+      "prompt": "200m²の 畑のうち 190m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "9割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "190 ÷ 200 = 0.95 → 9割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-40-75",
+      "genreId": "math",
+      "prompt": "40問の テストで、全体の 7割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "30",
+      "answerUnit": "問",
+      "work": "40 × 0.75 = 30",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40問",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-200-15",
+      "genreId": "math",
+      "prompt": "200m²の 畑のうち 30m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "30 ÷ 200 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-ratio-40-45",
+      "genreId": "math",
+      "prompt": "40問の テストで 18問 正かいしました。正かいした 問題は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "18 ÷ 40 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40問",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-80-95",
+      "genreId": "math",
+      "prompt": "80ページの 本のうち 76ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "9割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "76 ÷ 80 = 0.95 → 9割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-40-25",
+      "genreId": "math",
+      "prompt": "40ページの 本の 2割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "10",
+      "answerUnit": "ページ",
+      "work": "40 × 0.25 = 10",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40ページ",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-base-40-45",
+      "genreId": "math",
+      "prompt": "テストで 18問 正かいしました。これは 全体の 4割5分です。問題は 全部で 何問ですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "問",
+      "work": "18 ÷ 0.45 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 18問",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-ratio-20-65",
+      "genreId": "math",
+      "prompt": "20問の テストで 13問 正かいしました。正かいした 問題は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "13 ÷ 20 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 20問",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-160-15",
+      "genreId": "math",
+      "prompt": "160ページの 本の 1割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "24",
+      "answerUnit": "ページ",
+      "work": "160 × 0.15 = 24",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 160ページ",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-160-15",
+      "genreId": "math",
+      "prompt": "本を 24ページ 読みました。これは 全体の 1割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "160",
+      "answerUnit": "ページ",
+      "work": "24 ÷ 0.15 = 160",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 24ページ",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-40-95",
+      "genreId": "math",
+      "prompt": "トマトを 38m²に 植えました。これは 畑 全体の 9割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "m²",
+      "work": "38 ÷ 0.95 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 38m²",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-500-55",
+      "genreId": "math",
+      "prompt": "275円 たまりました。これは 目ひょうの 5割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "500",
+      "answerUnit": "円",
+      "work": "275 ÷ 0.55 = 500",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 275円",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-80-15",
+      "genreId": "math",
+      "prompt": "80m²の 畑のうち 12m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "12 ÷ 80 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-1000-15",
+      "genreId": "math",
+      "prompt": "1000円 ためる 目ひょうの 1割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "150",
+      "answerUnit": "円",
+      "work": "1000 × 0.15 = 150",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 1000円",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-1000-75",
+      "genreId": "math",
+      "prompt": "750円 たまりました。これは 目ひょうの 7割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "1000",
+      "answerUnit": "円",
+      "work": "750 ÷ 0.75 = 1000",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 750円",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-80-65",
+      "genreId": "math",
+      "prompt": "80m²の 畑のうち 52m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "52 ÷ 80 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-40-85",
+      "genreId": "math",
+      "prompt": "定員 40人の バスに、定員の 8割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "34",
+      "answerUnit": "人",
+      "work": "40 × 0.85 = 34",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40人",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-100-45",
+      "genreId": "math",
+      "prompt": "本を 45ページ 読みました。これは 全体の 4割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "ページ",
+      "work": "45 ÷ 0.45 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 45ページ",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-120-35",
+      "genreId": "math",
+      "prompt": "120ページの 本のうち 42ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "42 ÷ 120 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 120ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-100-25",
+      "genreId": "math",
+      "prompt": "トマトを 25m²に 植えました。これは 畑 全体の 2割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "m²",
+      "work": "25 ÷ 0.25 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 25m²",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-80-45",
+      "genreId": "math",
+      "prompt": "トマトを 36m²に 植えました。これは 畑 全体の 4割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "m²",
+      "work": "36 ÷ 0.45 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 36m²",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-80-35",
+      "genreId": "math",
+      "prompt": "トマトを 28m²に 植えました。これは 畑 全体の 3割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "m²",
+      "work": "28 ÷ 0.35 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 28m²",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-ratio-40-15",
+      "genreId": "math",
+      "prompt": "40問の テストで 6問 正かいしました。正かいした 問題は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "6 ÷ 40 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40問",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-2000-95",
+      "genreId": "math",
+      "prompt": "2000円 ためる 目ひょうの 9割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "1900",
+      "answerUnit": "円",
+      "work": "2000 × 0.95 = 1900",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 2000円",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-2000-25",
+      "genreId": "math",
+      "prompt": "500円 たまりました。これは 目ひょうの 2割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "2000",
+      "answerUnit": "円",
+      "work": "500 ÷ 0.25 = 2000",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 500円",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-1000-95",
+      "genreId": "math",
+      "prompt": "950円 たまりました。これは 目ひょうの 9割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "1000",
+      "answerUnit": "円",
+      "work": "950 ÷ 0.95 = 1000",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 950円",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-100-65",
+      "genreId": "math",
+      "prompt": "100ページの 本のうち 65ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "65 ÷ 100 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 100ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-20-55",
+      "genreId": "math",
+      "prompt": "20問の テストで、全体の 5割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "11",
+      "answerUnit": "問",
+      "work": "20 × 0.55 = 11",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 20問",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-600-65",
+      "genreId": "math",
+      "prompt": "390円 たまりました。これは 目ひょうの 6割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "600",
+      "answerUnit": "円",
+      "work": "390 ÷ 0.65 = 600",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 390円",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-ratio-40-35",
+      "genreId": "math",
+      "prompt": "40問の テストで 14問 正かいしました。正かいした 問題は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "14 ÷ 40 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40問",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-200-35",
+      "genreId": "math",
+      "prompt": "トマトを 70m²に 植えました。これは 畑 全体の 3割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "m²",
+      "work": "70 ÷ 0.35 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 70m²",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-20-25",
+      "genreId": "math",
+      "prompt": "20問の テストで、全体の 2割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "5",
+      "answerUnit": "問",
+      "work": "20 × 0.25 = 5",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 20問",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-400-35",
+      "genreId": "math",
+      "prompt": "400円 ためる 目ひょうで、140円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "140 ÷ 400 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 400円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-400-95",
+      "genreId": "math",
+      "prompt": "380円 たまりました。これは 目ひょうの 9割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "400",
+      "answerUnit": "円",
+      "work": "380 ÷ 0.95 = 400",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 380円",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-2000-85",
+      "genreId": "math",
+      "prompt": "2000円 ためる 目ひょうで、1700円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "8割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "1700 ÷ 2000 = 0.85 → 8割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 2000円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-160-65",
+      "genreId": "math",
+      "prompt": "本を 104ページ 読みました。これは 全体の 6割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "160",
+      "answerUnit": "ページ",
+      "work": "104 ÷ 0.65 = 160",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 104ページ",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-600-35",
+      "genreId": "math",
+      "prompt": "600円 ためる 目ひょうで、210円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "210 ÷ 600 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 600円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-20-15",
+      "genreId": "math",
+      "prompt": "20問の テストで、全体の 1割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "3",
+      "answerUnit": "問",
+      "work": "20 × 0.15 = 3",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 20問",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-500-25",
+      "genreId": "math",
+      "prompt": "125円 たまりました。これは 目ひょうの 2割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "500",
+      "answerUnit": "円",
+      "work": "125 ÷ 0.25 = 500",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 125円",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-80-25",
+      "genreId": "math",
+      "prompt": "定員 80人の バスに、定員の 2割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "20",
+      "answerUnit": "人",
+      "work": "80 × 0.25 = 20",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80人",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-100-65",
+      "genreId": "math",
+      "prompt": "100ページの 本の 6割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "65",
+      "answerUnit": "ページ",
+      "work": "100 × 0.65 = 65",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 100ページ",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-200-85",
+      "genreId": "math",
+      "prompt": "200ページの 本のうち 170ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "8割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "170 ÷ 200 = 0.85 → 8割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-80-95",
+      "genreId": "math",
+      "prompt": "80m²の 畑の 9割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "76",
+      "answerUnit": "m²",
+      "work": "80 × 0.95 = 76",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80m²",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-400-45",
+      "genreId": "math",
+      "prompt": "180円 たまりました。これは 目ひょうの 4割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "400",
+      "answerUnit": "円",
+      "work": "180 ÷ 0.45 = 400",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 180円",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-600-95",
+      "genreId": "math",
+      "prompt": "600円 ためる 目ひょうの 9割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "570",
+      "answerUnit": "円",
+      "work": "600 × 0.95 = 570",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 600円",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-120-75",
+      "genreId": "math",
+      "prompt": "120ページの 本の 7割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "90",
+      "answerUnit": "ページ",
+      "work": "120 × 0.75 = 90",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 120ページ",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-800-75",
+      "genreId": "math",
+      "prompt": "800円 ためる 目ひょうで、600円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "7割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "600 ÷ 800 = 0.75 → 7割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 800円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-80-15",
+      "genreId": "math",
+      "prompt": "80ページの 本のうち 12ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "12 ÷ 80 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-1000-65",
+      "genreId": "math",
+      "prompt": "1000円 ためる 目ひょうで、650円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "650 ÷ 1000 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 1000円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-40-35",
+      "genreId": "math",
+      "prompt": "40m²の 畑の 3割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "14",
+      "answerUnit": "m²",
+      "work": "40 × 0.35 = 14",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40m²",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-60-25",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに 15人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "2割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "15 ÷ 60 = 0.25 → 2割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 60人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-200-95",
+      "genreId": "math",
+      "prompt": "190円 たまりました。これは 目ひょうの 9割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "円",
+      "work": "190 ÷ 0.95 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 190円",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-600-75",
+      "genreId": "math",
+      "prompt": "600円 ためる 目ひょうで、450円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "7割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "450 ÷ 600 = 0.75 → 7割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 600円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-60-45",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに、定員の 4割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "27",
+      "answerUnit": "人",
+      "work": "60 × 0.45 = 27",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 60人",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-160-15",
+      "genreId": "math",
+      "prompt": "160ページの 本のうち 24ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "24 ÷ 160 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 160ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-80-45",
+      "genreId": "math",
+      "prompt": "80ページの 本の 4割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "36",
+      "answerUnit": "ページ",
+      "work": "80 × 0.45 = 36",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80ページ",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-120-15",
+      "genreId": "math",
+      "prompt": "本を 18ページ 読みました。これは 全体の 1割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "120",
+      "answerUnit": "ページ",
+      "work": "18 ÷ 0.15 = 120",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 18ページ",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-120-35",
+      "genreId": "math",
+      "prompt": "本を 42ページ 読みました。これは 全体の 3割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "120",
+      "answerUnit": "ページ",
+      "work": "42 ÷ 0.35 = 120",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 42ページ",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-800-35",
+      "genreId": "math",
+      "prompt": "280円 たまりました。これは 目ひょうの 3割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "800",
+      "answerUnit": "円",
+      "work": "280 ÷ 0.35 = 800",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 280円",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-160-95",
+      "genreId": "math",
+      "prompt": "本を 152ページ 読みました。これは 全体の 9割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "160",
+      "answerUnit": "ページ",
+      "work": "152 ÷ 0.95 = 160",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 152ページ",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-200-55",
+      "genreId": "math",
+      "prompt": "本を 110ページ 読みました。これは 全体の 5割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "ページ",
+      "work": "110 ÷ 0.55 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 110ページ",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-40-95",
+      "genreId": "math",
+      "prompt": "40m²の 畑のうち 38m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "9割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "38 ÷ 40 = 0.95 → 9割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-160-65",
+      "genreId": "math",
+      "prompt": "160ページの 本のうち 104ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "104 ÷ 160 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 160ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-20-75",
+      "genreId": "math",
+      "prompt": "定員 20人の バスに、定員の 7割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "15",
+      "answerUnit": "人",
+      "work": "20 × 0.75 = 15",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 20人",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-200-45",
+      "genreId": "math",
+      "prompt": "200円 ためる 目ひょうの 4割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "90",
+      "answerUnit": "円",
+      "work": "200 × 0.45 = 90",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200円",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-20-85",
+      "genreId": "math",
+      "prompt": "20問の テストで、全体の 8割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "17",
+      "answerUnit": "問",
+      "work": "20 × 0.85 = 17",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 20問",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-100-75",
+      "genreId": "math",
+      "prompt": "100ページの 本のうち 75ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "7割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "75 ÷ 100 = 0.75 → 7割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 100ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-800-55",
+      "genreId": "math",
+      "prompt": "440円 たまりました。これは 目ひょうの 5割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "800",
+      "answerUnit": "円",
+      "work": "440 ÷ 0.55 = 800",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 440円",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-base-40-65",
+      "genreId": "math",
+      "prompt": "テストで 26問 正かいしました。これは 全体の 6割5分です。問題は 全部で 何問ですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "問",
+      "work": "26 ÷ 0.65 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 26問",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-80-55",
+      "genreId": "math",
+      "prompt": "定員 80人の バスに、定員の 5割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "44",
+      "answerUnit": "人",
+      "work": "80 × 0.55 = 44",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80人",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-160-85",
+      "genreId": "math",
+      "prompt": "本を 136ページ 読みました。これは 全体の 8割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "160",
+      "answerUnit": "ページ",
+      "work": "136 ÷ 0.85 = 160",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 136ページ",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-800-65",
+      "genreId": "math",
+      "prompt": "520円 たまりました。これは 目ひょうの 6割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "800",
+      "answerUnit": "円",
+      "work": "520 ÷ 0.65 = 800",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 520円",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-80-75",
+      "genreId": "math",
+      "prompt": "80ページの 本の 7割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "60",
+      "answerUnit": "ページ",
+      "work": "80 × 0.75 = 60",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80ページ",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-20-25",
+      "genreId": "math",
+      "prompt": "バスに 5人 乗っています。これは 定員の 2割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "20",
+      "answerUnit": "人",
+      "work": "5 ÷ 0.25 = 20",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 5人",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-20-45",
+      "genreId": "math",
+      "prompt": "バスに 9人 乗っています。これは 定員の 4割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "20",
+      "answerUnit": "人",
+      "work": "9 ÷ 0.45 = 20",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 9人",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-ratio-40-25",
+      "genreId": "math",
+      "prompt": "40問の テストで 10問 正かいしました。正かいした 問題は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "2割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "10 ÷ 40 = 0.25 → 2割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40問",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-300-55",
+      "genreId": "math",
+      "prompt": "トマトを 165m²に 植えました。これは 畑 全体の 5割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "300",
+      "answerUnit": "m²",
+      "work": "165 ÷ 0.55 = 300",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 165m²",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-300-45",
+      "genreId": "math",
+      "prompt": "300m²の 畑の 4割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "135",
+      "answerUnit": "m²",
+      "work": "300 × 0.45 = 135",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 300m²",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-80-25",
+      "genreId": "math",
+      "prompt": "バスに 20人 乗っています。これは 定員の 2割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "人",
+      "work": "20 ÷ 0.25 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 20人",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-200-65",
+      "genreId": "math",
+      "prompt": "トマトを 130m²に 植えました。これは 畑 全体の 6割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "m²",
+      "work": "130 ÷ 0.65 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 130m²",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-2000-65",
+      "genreId": "math",
+      "prompt": "1300円 たまりました。これは 目ひょうの 6割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "2000",
+      "answerUnit": "円",
+      "work": "1300 ÷ 0.65 = 2000",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 1300円",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-base-20-35",
+      "genreId": "math",
+      "prompt": "テストで 7問 正かいしました。これは 全体の 3割5分です。問題は 全部で 何問ですか。",
+      "promptLayout": "word",
+      "answer": "20",
+      "answerUnit": "問",
+      "work": "7 ÷ 0.35 = 20",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 7問",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-200-35",
+      "genreId": "math",
+      "prompt": "200m²の 畑のうち 70m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "70 ÷ 200 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-60-15",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに 9人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "9 ÷ 60 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 60人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-100-85",
+      "genreId": "math",
+      "prompt": "本を 85ページ 読みました。これは 全体の 8割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "ページ",
+      "work": "85 ÷ 0.85 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 85ページ",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-120-95",
+      "genreId": "math",
+      "prompt": "本を 114ページ 読みました。これは 全体の 9割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "120",
+      "answerUnit": "ページ",
+      "work": "114 ÷ 0.95 = 120",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 114ページ",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-80-15",
+      "genreId": "math",
+      "prompt": "バスに 12人 乗っています。これは 定員の 1割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "人",
+      "work": "12 ÷ 0.15 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 12人",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-80-55",
+      "genreId": "math",
+      "prompt": "バスに 44人 乗っています。これは 定員の 5割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "人",
+      "work": "44 ÷ 0.55 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 44人",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-80-75",
+      "genreId": "math",
+      "prompt": "トマトを 60m²に 植えました。これは 畑 全体の 7割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "m²",
+      "work": "60 ÷ 0.75 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 60m²",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-200-95",
+      "genreId": "math",
+      "prompt": "200円 ためる 目ひょうの 9割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "190",
+      "answerUnit": "円",
+      "work": "200 × 0.95 = 190",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200円",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-40-45",
+      "genreId": "math",
+      "prompt": "40m²の 畑のうち 18m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "18 ÷ 40 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-40-25",
+      "genreId": "math",
+      "prompt": "トマトを 10m²に 植えました。これは 畑 全体の 2割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "m²",
+      "work": "10 ÷ 0.25 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 10m²",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-200-85",
+      "genreId": "math",
+      "prompt": "200円 ためる 目ひょうの 8割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "170",
+      "answerUnit": "円",
+      "work": "200 × 0.85 = 170",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200円",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-100-45",
+      "genreId": "math",
+      "prompt": "100m²の 畑のうち 45m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "45 ÷ 100 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 100m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-160-75",
+      "genreId": "math",
+      "prompt": "160ページの 本のうち 120ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "7割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "120 ÷ 160 = 0.75 → 7割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 160ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-60-95",
+      "genreId": "math",
+      "prompt": "バスに 57人 乗っています。これは 定員の 9割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "60",
+      "answerUnit": "人",
+      "work": "57 ÷ 0.95 = 60",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 57人",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-40-35",
+      "genreId": "math",
+      "prompt": "40ページの 本の 3割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "14",
+      "answerUnit": "ページ",
+      "work": "40 × 0.35 = 14",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40ページ",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-800-65",
+      "genreId": "math",
+      "prompt": "800円 ためる 目ひょうの 6割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "520",
+      "answerUnit": "円",
+      "work": "800 × 0.65 = 520",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 800円",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-80-35",
+      "genreId": "math",
+      "prompt": "定員 80人の バスに 28人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "28 ÷ 80 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-200-35",
+      "genreId": "math",
+      "prompt": "200ページの 本のうち 70ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "70 ÷ 200 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-120-65",
+      "genreId": "math",
+      "prompt": "本を 78ページ 読みました。これは 全体の 6割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "120",
+      "answerUnit": "ページ",
+      "work": "78 ÷ 0.65 = 120",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 78ページ",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-120-15",
+      "genreId": "math",
+      "prompt": "120ページの 本の 1割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "18",
+      "answerUnit": "ページ",
+      "work": "120 × 0.15 = 18",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 120ページ",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-100-95",
+      "genreId": "math",
+      "prompt": "100m²の 畑の 9割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "95",
+      "answerUnit": "m²",
+      "work": "100 × 0.95 = 95",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 100m²",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-200-55",
+      "genreId": "math",
+      "prompt": "200m²の 畑のうち 110m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "5割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "110 ÷ 200 = 0.55 → 5割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-500-45",
+      "genreId": "math",
+      "prompt": "500円 ためる 目ひょうで、225円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "225 ÷ 500 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 500円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-40-15",
+      "genreId": "math",
+      "prompt": "40ページの 本の 1割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "6",
+      "answerUnit": "ページ",
+      "work": "40 × 0.15 = 6",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40ページ",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-100-45",
+      "genreId": "math",
+      "prompt": "100ページの 本のうち 45ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "45 ÷ 100 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 100ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-base-20-95",
+      "genreId": "math",
+      "prompt": "テストで 19問 正かいしました。これは 全体の 9割5分です。問題は 全部で 何問ですか。",
+      "promptLayout": "word",
+      "answer": "20",
+      "answerUnit": "問",
+      "work": "19 ÷ 0.95 = 20",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 19問",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-300-75",
+      "genreId": "math",
+      "prompt": "トマトを 225m²に 植えました。これは 畑 全体の 7割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "300",
+      "answerUnit": "m²",
+      "work": "225 ÷ 0.75 = 300",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 225m²",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-60-75",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに、定員の 7割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "45",
+      "answerUnit": "人",
+      "work": "60 × 0.75 = 45",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 60人",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-300-45",
+      "genreId": "math",
+      "prompt": "トマトを 135m²に 植えました。これは 畑 全体の 4割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "300",
+      "answerUnit": "m²",
+      "work": "135 ÷ 0.45 = 300",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 135m²",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-800-35",
+      "genreId": "math",
+      "prompt": "800円 ためる 目ひょうの 3割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "280",
+      "answerUnit": "円",
+      "work": "800 × 0.35 = 280",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 800円",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-40-15",
+      "genreId": "math",
+      "prompt": "定員 40人の バスに、定員の 1割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "6",
+      "answerUnit": "人",
+      "work": "40 × 0.15 = 6",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40人",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-ratio-40-85",
+      "genreId": "math",
+      "prompt": "40問の テストで 34問 正かいしました。正かいした 問題は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "8割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "34 ÷ 40 = 0.85 → 8割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40問",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-40-35",
+      "genreId": "math",
+      "prompt": "40問の テストで、全体の 3割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "14",
+      "answerUnit": "問",
+      "work": "40 × 0.35 = 14",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40問",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-600-65",
+      "genreId": "math",
+      "prompt": "600円 ためる 目ひょうで、390円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "390 ÷ 600 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 600円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-80-45",
+      "genreId": "math",
+      "prompt": "本を 36ページ 読みました。これは 全体の 4割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "ページ",
+      "work": "36 ÷ 0.45 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 36ページ",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-200-15",
+      "genreId": "math",
+      "prompt": "トマトを 30m²に 植えました。これは 畑 全体の 1割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "m²",
+      "work": "30 ÷ 0.15 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 30m²",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-600-75",
+      "genreId": "math",
+      "prompt": "450円 たまりました。これは 目ひょうの 7割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "600",
+      "answerUnit": "円",
+      "work": "450 ÷ 0.75 = 600",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 450円",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-200-45",
+      "genreId": "math",
+      "prompt": "200ページの 本のうち 90ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "90 ÷ 200 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-60-15",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに、定員の 1割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "9",
+      "answerUnit": "人",
+      "work": "60 × 0.15 = 9",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 60人",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-40-55",
+      "genreId": "math",
+      "prompt": "40ページの 本の 5割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "22",
+      "answerUnit": "ページ",
+      "work": "40 × 0.55 = 22",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40ページ",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-60-85",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに、定員の 8割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "51",
+      "answerUnit": "人",
+      "work": "60 × 0.85 = 51",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 60人",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-200-25",
+      "genreId": "math",
+      "prompt": "200円 ためる 目ひょうで、50円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "2割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "50 ÷ 200 = 0.25 → 2割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-20-45",
+      "genreId": "math",
+      "prompt": "定員 20人の バスに 9人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "9 ÷ 20 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 20人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-60-45",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに 27人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "27 ÷ 60 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 60人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-80-95",
+      "genreId": "math",
+      "prompt": "本を 76ページ 読みました。これは 全体の 9割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "ページ",
+      "work": "76 ÷ 0.95 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 76ページ",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-2000-55",
+      "genreId": "math",
+      "prompt": "2000円 ためる 目ひょうの 5割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "1100",
+      "answerUnit": "円",
+      "work": "2000 × 0.55 = 1100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 2000円",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-160-25",
+      "genreId": "math",
+      "prompt": "本を 40ページ 読みました。これは 全体の 2割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "160",
+      "answerUnit": "ページ",
+      "work": "40 ÷ 0.25 = 160",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 40ページ",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-100-25",
+      "genreId": "math",
+      "prompt": "本を 25ページ 読みました。これは 全体の 2割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "ページ",
+      "work": "25 ÷ 0.25 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 25ページ",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-400-55",
+      "genreId": "math",
+      "prompt": "400円 ためる 目ひょうで、220円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "5割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "220 ÷ 400 = 0.55 → 5割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 400円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-120-65",
+      "genreId": "math",
+      "prompt": "120ページの 本のうち 78ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "78 ÷ 120 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 120ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-80-55",
+      "genreId": "math",
+      "prompt": "80m²の 畑のうち 44m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "5割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "44 ÷ 80 = 0.55 → 5割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-20-35",
+      "genreId": "math",
+      "prompt": "定員 20人の バスに、定員の 3割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "7",
+      "answerUnit": "人",
+      "work": "20 × 0.35 = 7",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 20人",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-160-95",
+      "genreId": "math",
+      "prompt": "160ページの 本の 9割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "152",
+      "answerUnit": "ページ",
+      "work": "160 × 0.95 = 152",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 160ページ",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-100-65",
+      "genreId": "math",
+      "prompt": "本を 65ページ 読みました。これは 全体の 6割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "ページ",
+      "work": "65 ÷ 0.65 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 65ページ",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-120-75",
+      "genreId": "math",
+      "prompt": "本を 90ページ 読みました。これは 全体の 7割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "120",
+      "answerUnit": "ページ",
+      "work": "90 ÷ 0.75 = 120",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 90ページ",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-40-15",
+      "genreId": "math",
+      "prompt": "40ページの 本のうち 6ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "6 ÷ 40 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-2000-45",
+      "genreId": "math",
+      "prompt": "2000円 ためる 目ひょうで、900円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "900 ÷ 2000 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 2000円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-2000-15",
+      "genreId": "math",
+      "prompt": "300円 たまりました。これは 目ひょうの 1割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "2000",
+      "answerUnit": "円",
+      "work": "300 ÷ 0.15 = 2000",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 300円",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-100-95",
+      "genreId": "math",
+      "prompt": "100ページの 本のうち 95ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "9割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "95 ÷ 100 = 0.95 → 9割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 100ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-200-85",
+      "genreId": "math",
+      "prompt": "200円 ためる 目ひょうで、170円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "8割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "170 ÷ 200 = 0.85 → 8割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-300-85",
+      "genreId": "math",
+      "prompt": "300m²の 畑の 8割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "255",
+      "answerUnit": "m²",
+      "work": "300 × 0.85 = 255",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 300m²",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-200-35",
+      "genreId": "math",
+      "prompt": "200円 ためる 目ひょうの 3割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "70",
+      "answerUnit": "円",
+      "work": "200 × 0.35 = 70",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200円",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-80-25",
+      "genreId": "math",
+      "prompt": "トマトを 20m²に 植えました。これは 畑 全体の 2割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "m²",
+      "work": "20 ÷ 0.25 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 20m²",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-300-95",
+      "genreId": "math",
+      "prompt": "300m²の 畑の 9割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "285",
+      "answerUnit": "m²",
+      "work": "300 × 0.95 = 285",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 300m²",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-40-95",
+      "genreId": "math",
+      "prompt": "40ページの 本のうち 38ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "9割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "38 ÷ 40 = 0.95 → 9割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-60-95",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに、定員の 9割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "57",
+      "answerUnit": "人",
+      "work": "60 × 0.95 = 57",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 60人",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-120-65",
+      "genreId": "math",
+      "prompt": "120ページの 本の 6割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "78",
+      "answerUnit": "ページ",
+      "work": "120 × 0.65 = 78",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 120ページ",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-160-35",
+      "genreId": "math",
+      "prompt": "160ページの 本のうち 56ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "56 ÷ 160 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 160ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-600-15",
+      "genreId": "math",
+      "prompt": "600円 ためる 目ひょうの 1割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "90",
+      "answerUnit": "円",
+      "work": "600 × 0.15 = 90",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 600円",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-80-35",
+      "genreId": "math",
+      "prompt": "80ページの 本のうち 28ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "28 ÷ 80 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-200-55",
+      "genreId": "math",
+      "prompt": "200円 ためる 目ひょうの 5割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "110",
+      "answerUnit": "円",
+      "work": "200 × 0.55 = 110",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200円",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-40-25",
+      "genreId": "math",
+      "prompt": "バスに 10人 乗っています。これは 定員の 2割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "人",
+      "work": "10 ÷ 0.25 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 10人",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-80-25",
+      "genreId": "math",
+      "prompt": "80ページの 本のうち 20ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "2割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "20 ÷ 80 = 0.25 → 2割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-40-25",
+      "genreId": "math",
+      "prompt": "定員 40人の バスに、定員の 2割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "10",
+      "answerUnit": "人",
+      "work": "40 × 0.25 = 10",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40人",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-100-25",
+      "genreId": "math",
+      "prompt": "100ページの 本の 2割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "25",
+      "answerUnit": "ページ",
+      "work": "100 × 0.25 = 25",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 100ページ",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-160-75",
+      "genreId": "math",
+      "prompt": "160ページの 本の 7割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "120",
+      "answerUnit": "ページ",
+      "work": "160 × 0.75 = 120",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 160ページ",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-80-35",
+      "genreId": "math",
+      "prompt": "80m²の 畑の 3割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "28",
+      "answerUnit": "m²",
+      "work": "80 × 0.35 = 28",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80m²",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-60-45",
+      "genreId": "math",
+      "prompt": "60ページの 本の 4割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "27",
+      "answerUnit": "ページ",
+      "work": "60 × 0.45 = 27",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 60ページ",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-1000-45",
+      "genreId": "math",
+      "prompt": "1000円 ためる 目ひょうの 4割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "450",
+      "answerUnit": "円",
+      "work": "1000 × 0.45 = 450",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 1000円",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-600-15",
+      "genreId": "math",
+      "prompt": "90円 たまりました。これは 目ひょうの 1割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "600",
+      "answerUnit": "円",
+      "work": "90 ÷ 0.15 = 600",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 90円",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-100-95",
+      "genreId": "math",
+      "prompt": "本を 95ページ 読みました。これは 全体の 9割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "ページ",
+      "work": "95 ÷ 0.95 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 95ページ",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-100-85",
+      "genreId": "math",
+      "prompt": "100ページの 本の 8割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "85",
+      "answerUnit": "ページ",
+      "work": "100 × 0.85 = 85",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 100ページ",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-base-40-35",
+      "genreId": "math",
+      "prompt": "テストで 14問 正かいしました。これは 全体の 3割5分です。問題は 全部で 何問ですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "問",
+      "work": "14 ÷ 0.35 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 14問",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-200-15",
+      "genreId": "math",
+      "prompt": "本を 30ページ 読みました。これは 全体の 1割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "ページ",
+      "work": "30 ÷ 0.15 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 30ページ",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-200-85",
+      "genreId": "math",
+      "prompt": "トマトを 170m²に 植えました。これは 畑 全体の 8割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "m²",
+      "work": "170 ÷ 0.85 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 170m²",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-500-45",
+      "genreId": "math",
+      "prompt": "500円 ためる 目ひょうの 4割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "225",
+      "answerUnit": "円",
+      "work": "500 × 0.45 = 225",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 500円",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-100-25",
+      "genreId": "math",
+      "prompt": "100m²の 畑のうち 25m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "2割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "25 ÷ 100 = 0.25 → 2割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 100m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-80-85",
+      "genreId": "math",
+      "prompt": "80m²の 畑の 8割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "68",
+      "answerUnit": "m²",
+      "work": "80 × 0.85 = 68",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80m²",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-40-35",
+      "genreId": "math",
+      "prompt": "定員 40人の バスに 14人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "14 ÷ 40 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-60-95",
+      "genreId": "math",
+      "prompt": "60ページの 本の 9割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "57",
+      "answerUnit": "ページ",
+      "work": "60 × 0.95 = 57",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 60ページ",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-300-65",
+      "genreId": "math",
+      "prompt": "トマトを 195m²に 植えました。これは 畑 全体の 6割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "300",
+      "answerUnit": "m²",
+      "work": "195 ÷ 0.65 = 300",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 195m²",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-1000-85",
+      "genreId": "math",
+      "prompt": "850円 たまりました。これは 目ひょうの 8割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "1000",
+      "answerUnit": "円",
+      "work": "850 ÷ 0.85 = 1000",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 850円",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-400-85",
+      "genreId": "math",
+      "prompt": "340円 たまりました。これは 目ひょうの 8割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "400",
+      "answerUnit": "円",
+      "work": "340 ÷ 0.85 = 400",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 340円",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-40-85",
+      "genreId": "math",
+      "prompt": "トマトを 34m²に 植えました。これは 畑 全体の 8割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "m²",
+      "work": "34 ÷ 0.85 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 34m²",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-500-15",
+      "genreId": "math",
+      "prompt": "75円 たまりました。これは 目ひょうの 1割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "500",
+      "answerUnit": "円",
+      "work": "75 ÷ 0.15 = 500",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 75円",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-20-35",
+      "genreId": "math",
+      "prompt": "20問の テストで、全体の 3割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "7",
+      "answerUnit": "問",
+      "work": "20 × 0.35 = 7",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 20問",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-40-65",
+      "genreId": "math",
+      "prompt": "40m²の 畑のうち 26m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "26 ÷ 40 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-40-95",
+      "genreId": "math",
+      "prompt": "40m²の 畑の 9割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "38",
+      "answerUnit": "m²",
+      "work": "40 × 0.95 = 38",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40m²",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-1000-45",
+      "genreId": "math",
+      "prompt": "1000円 ためる 目ひょうで、450円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "450 ÷ 1000 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 1000円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-400-85",
+      "genreId": "math",
+      "prompt": "400円 ためる 目ひょうの 8割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "340",
+      "answerUnit": "円",
+      "work": "400 × 0.85 = 340",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 400円",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-80-65",
+      "genreId": "math",
+      "prompt": "80ページの 本の 6割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "52",
+      "answerUnit": "ページ",
+      "work": "80 × 0.65 = 52",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80ページ",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-120-85",
+      "genreId": "math",
+      "prompt": "本を 102ページ 読みました。これは 全体の 8割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "120",
+      "answerUnit": "ページ",
+      "work": "102 ÷ 0.85 = 120",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 102ページ",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-1000-55",
+      "genreId": "math",
+      "prompt": "550円 たまりました。これは 目ひょうの 5割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "1000",
+      "answerUnit": "円",
+      "work": "550 ÷ 0.55 = 1000",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 550円",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-80-85",
+      "genreId": "math",
+      "prompt": "定員 80人の バスに 68人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "8割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "68 ÷ 80 = 0.85 → 8割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-100-35",
+      "genreId": "math",
+      "prompt": "100ページの 本のうち 35ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "35 ÷ 100 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 100ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-300-55",
+      "genreId": "math",
+      "prompt": "300m²の 畑のうち 165m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "5割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "165 ÷ 300 = 0.55 → 5割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 300m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-40-25",
+      "genreId": "math",
+      "prompt": "40問の テストで、全体の 2割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "10",
+      "answerUnit": "問",
+      "work": "40 × 0.25 = 10",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40問",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-100-85",
+      "genreId": "math",
+      "prompt": "100m²の 畑のうち 85m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "8割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "85 ÷ 100 = 0.85 → 8割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 100m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-80-45",
+      "genreId": "math",
+      "prompt": "80m²の 畑の 4割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "36",
+      "answerUnit": "m²",
+      "work": "80 × 0.45 = 36",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80m²",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-120-85",
+      "genreId": "math",
+      "prompt": "120ページの 本の 8割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "102",
+      "answerUnit": "ページ",
+      "work": "120 × 0.85 = 102",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 120ページ",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-40-15",
+      "genreId": "math",
+      "prompt": "40m²の 畑の 1割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "6",
+      "answerUnit": "m²",
+      "work": "40 × 0.15 = 6",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40m²",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-80-25",
+      "genreId": "math",
+      "prompt": "80m²の 畑のうち 20m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "2割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "20 ÷ 80 = 0.25 → 2割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-1000-85",
+      "genreId": "math",
+      "prompt": "1000円 ためる 目ひょうの 8割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "850",
+      "answerUnit": "円",
+      "work": "1000 × 0.85 = 850",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 1000円",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-200-85",
+      "genreId": "math",
+      "prompt": "200m²の 畑のうち 170m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "8割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "170 ÷ 200 = 0.85 → 8割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-100-25",
+      "genreId": "math",
+      "prompt": "100m²の 畑の 2割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "25",
+      "answerUnit": "m²",
+      "work": "100 × 0.25 = 25",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 100m²",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-80-45",
+      "genreId": "math",
+      "prompt": "定員 80人の バスに 36人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "36 ÷ 80 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-300-35",
+      "genreId": "math",
+      "prompt": "トマトを 105m²に 植えました。これは 畑 全体の 3割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "300",
+      "answerUnit": "m²",
+      "work": "105 ÷ 0.35 = 300",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 105m²",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-200-55",
+      "genreId": "math",
+      "prompt": "200m²の 畑の 5割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "110",
+      "answerUnit": "m²",
+      "work": "200 × 0.55 = 110",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200m²",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-120-25",
+      "genreId": "math",
+      "prompt": "120ページの 本のうち 30ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "2割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "30 ÷ 120 = 0.25 → 2割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 120ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-80-65",
+      "genreId": "math",
+      "prompt": "定員 80人の バスに 52人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "52 ÷ 80 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-20-65",
+      "genreId": "math",
+      "prompt": "バスに 13人 乗っています。これは 定員の 6割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "20",
+      "answerUnit": "人",
+      "work": "13 ÷ 0.65 = 20",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 13人",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-80-15",
+      "genreId": "math",
+      "prompt": "本を 12ページ 読みました。これは 全体の 1割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "ページ",
+      "work": "12 ÷ 0.15 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 12ページ",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-40-25",
+      "genreId": "math",
+      "prompt": "40m²の 畑の 2割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "10",
+      "answerUnit": "m²",
+      "work": "40 × 0.25 = 10",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40m²",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-160-45",
+      "genreId": "math",
+      "prompt": "160ページの 本の 4割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "72",
+      "answerUnit": "ページ",
+      "work": "160 × 0.45 = 72",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 160ページ",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-200-25",
+      "genreId": "math",
+      "prompt": "200ページの 本のうち 50ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "2割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "50 ÷ 200 = 0.25 → 2割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 200ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-60-85",
+      "genreId": "math",
+      "prompt": "60ページの 本の 8割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "51",
+      "answerUnit": "ページ",
+      "work": "60 × 0.85 = 51",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 60ページ",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-800-75",
+      "genreId": "math",
+      "prompt": "600円 たまりました。これは 目ひょうの 7割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "800",
+      "answerUnit": "円",
+      "work": "600 ÷ 0.75 = 800",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 600円",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-40-35",
+      "genreId": "math",
+      "prompt": "本を 14ページ 読みました。これは 全体の 3割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "ページ",
+      "work": "14 ÷ 0.35 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 14ページ",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-200-65",
+      "genreId": "math",
+      "prompt": "本を 130ページ 読みました。これは 全体の 6割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "ページ",
+      "work": "130 ÷ 0.65 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 130ページ",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-800-85",
+      "genreId": "math",
+      "prompt": "680円 たまりました。これは 目ひょうの 8割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "800",
+      "answerUnit": "円",
+      "work": "680 ÷ 0.85 = 800",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 680円",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-200-45",
+      "genreId": "math",
+      "prompt": "200m²の 畑の 4割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "90",
+      "answerUnit": "m²",
+      "work": "200 × 0.45 = 90",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200m²",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-100-65",
+      "genreId": "math",
+      "prompt": "トマトを 65m²に 植えました。これは 畑 全体の 6割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "m²",
+      "work": "65 ÷ 0.65 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 65m²",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-40-95",
+      "genreId": "math",
+      "prompt": "40ページの 本の 9割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "38",
+      "answerUnit": "ページ",
+      "work": "40 × 0.95 = 38",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40ページ",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-200-85",
+      "genreId": "math",
+      "prompt": "200ページの 本の 8割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "170",
+      "answerUnit": "ページ",
+      "work": "200 × 0.85 = 170",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200ページ",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-800-15",
+      "genreId": "math",
+      "prompt": "800円 ためる 目ひょうの 1割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "120",
+      "answerUnit": "円",
+      "work": "800 × 0.15 = 120",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 800円",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-40-85",
+      "genreId": "math",
+      "prompt": "40ページの 本の 8割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "34",
+      "answerUnit": "ページ",
+      "work": "40 × 0.85 = 34",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40ページ",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-160-35",
+      "genreId": "math",
+      "prompt": "160ページの 本の 3割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "56",
+      "answerUnit": "ページ",
+      "work": "160 × 0.35 = 56",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 160ページ",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-800-55",
+      "genreId": "math",
+      "prompt": "800円 ためる 目ひょうで、440円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "5割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "440 ÷ 800 = 0.55 → 5割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 800円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-200-35",
+      "genreId": "math",
+      "prompt": "70円 たまりました。これは 目ひょうの 3割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "円",
+      "work": "70 ÷ 0.35 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 70円",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-200-65",
+      "genreId": "math",
+      "prompt": "130円 たまりました。これは 目ひょうの 6割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "円",
+      "work": "130 ÷ 0.65 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 130円",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-400-95",
+      "genreId": "math",
+      "prompt": "400円 ためる 目ひょうの 9割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "380",
+      "answerUnit": "円",
+      "work": "400 × 0.95 = 380",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 400円",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-120-15",
+      "genreId": "math",
+      "prompt": "120ページの 本のうち 18ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "18 ÷ 120 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 120ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-500-75",
+      "genreId": "math",
+      "prompt": "375円 たまりました。これは 目ひょうの 7割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "500",
+      "answerUnit": "円",
+      "work": "375 ÷ 0.75 = 500",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 375円",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-40-25",
+      "genreId": "math",
+      "prompt": "40m²の 畑のうち 10m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "2割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "10 ÷ 40 = 0.25 → 2割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-600-15",
+      "genreId": "math",
+      "prompt": "600円 ためる 目ひょうで、90円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "90 ÷ 600 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 600円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-40-45",
+      "genreId": "math",
+      "prompt": "40問の テストで、全体の 4割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "18",
+      "answerUnit": "問",
+      "work": "40 × 0.45 = 18",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40問",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-500-85",
+      "genreId": "math",
+      "prompt": "500円 ためる 目ひょうで、425円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "8割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "425 ÷ 500 = 0.85 → 8割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 500円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-base-20-45",
+      "genreId": "math",
+      "prompt": "テストで 9問 正かいしました。これは 全体の 4割5分です。問題は 全部で 何問ですか。",
+      "promptLayout": "word",
+      "answer": "20",
+      "answerUnit": "問",
+      "work": "9 ÷ 0.45 = 20",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 9問",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-40-75",
+      "genreId": "math",
+      "prompt": "40ページの 本の 7割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "30",
+      "answerUnit": "ページ",
+      "work": "40 × 0.75 = 30",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40ページ",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-500-65",
+      "genreId": "math",
+      "prompt": "325円 たまりました。これは 目ひょうの 6割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "500",
+      "answerUnit": "円",
+      "work": "325 ÷ 0.65 = 500",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 325円",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-80-15",
+      "genreId": "math",
+      "prompt": "定員 80人の バスに 12人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "12 ÷ 80 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-compare-1000-35",
+      "genreId": "math",
+      "prompt": "1000円 ためる 目ひょうの 3割5分が たまりました。たまったのは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "350",
+      "answerUnit": "円",
+      "work": "1000 × 0.35 = 350",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 1000円",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-80-75",
+      "genreId": "math",
+      "prompt": "定員 80人の バスに、定員の 7割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "60",
+      "answerUnit": "人",
+      "work": "80 × 0.75 = 60",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80人",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-40-85",
+      "genreId": "math",
+      "prompt": "40問の テストで、全体の 8割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "34",
+      "answerUnit": "問",
+      "work": "40 × 0.85 = 34",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40問",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-60-65",
+      "genreId": "math",
+      "prompt": "定員 60人の バスに 39人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "39 ÷ 60 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 60人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-800-65",
+      "genreId": "math",
+      "prompt": "800円 ためる 目ひょうで、520円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "520 ÷ 800 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 800円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-100-15",
+      "genreId": "math",
+      "prompt": "100m²の 畑のうち 15m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "15 ÷ 100 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 100m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-60-95",
+      "genreId": "math",
+      "prompt": "60ページの 本のうち 57ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "9割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "57 ÷ 60 = 0.95 → 9割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 60ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-200-85",
+      "genreId": "math",
+      "prompt": "170円 たまりました。これは 目ひょうの 8割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "円",
+      "work": "170 ÷ 0.85 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 170円",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-600-85",
+      "genreId": "math",
+      "prompt": "510円 たまりました。これは 目ひょうの 8割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "600",
+      "answerUnit": "円",
+      "work": "510 ÷ 0.85 = 600",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 510円",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-200-95",
+      "genreId": "math",
+      "prompt": "トマトを 190m²に 植えました。これは 畑 全体の 9割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "m²",
+      "work": "190 ÷ 0.95 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 190m²",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-40-45",
+      "genreId": "math",
+      "prompt": "40m²の 畑の 4割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "18",
+      "answerUnit": "m²",
+      "work": "40 × 0.45 = 18",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40m²",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-200-25",
+      "genreId": "math",
+      "prompt": "200m²の 畑の 2割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "50",
+      "answerUnit": "m²",
+      "work": "200 × 0.25 = 50",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200m²",
+        "2割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-100-35",
+      "genreId": "math",
+      "prompt": "100m²の 畑のうち 35m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "35 ÷ 100 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 100m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-400-55",
+      "genreId": "math",
+      "prompt": "220円 たまりました。これは 目ひょうの 5割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "400",
+      "answerUnit": "円",
+      "work": "220 ÷ 0.55 = 400",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 220円",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-80-65",
+      "genreId": "math",
+      "prompt": "本を 52ページ 読みました。これは 全体の 6割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "80",
+      "answerUnit": "ページ",
+      "work": "52 ÷ 0.65 = 80",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 52ページ",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-ratio-40-65",
+      "genreId": "math",
+      "prompt": "40問の テストで 26問 正かいしました。正かいした 問題は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "6割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "26 ÷ 40 = 0.65 → 6割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40問",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-200-45",
+      "genreId": "math",
+      "prompt": "200ページの 本の 4割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "90",
+      "answerUnit": "ページ",
+      "work": "200 × 0.45 = 90",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200ページ",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-200-75",
+      "genreId": "math",
+      "prompt": "150円 たまりました。これは 目ひょうの 7割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "200",
+      "answerUnit": "円",
+      "work": "150 ÷ 0.75 = 200",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 150円",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-40-45",
+      "genreId": "math",
+      "prompt": "本を 18ページ 読みました。これは 全体の 4割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "ページ",
+      "work": "18 ÷ 0.45 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 18ページ",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-160-35",
+      "genreId": "math",
+      "prompt": "本を 56ページ 読みました。これは 全体の 3割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "160",
+      "answerUnit": "ページ",
+      "work": "56 ÷ 0.35 = 160",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 56ページ",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-500-35",
+      "genreId": "math",
+      "prompt": "500円 ためる 目ひょうで、175円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "175 ÷ 500 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 500円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-200-35",
+      "genreId": "math",
+      "prompt": "200m²の 畑の 3割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "70",
+      "answerUnit": "m²",
+      "work": "200 × 0.35 = 70",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200m²",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-200-75",
+      "genreId": "math",
+      "prompt": "200ページの 本の 7割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "150",
+      "answerUnit": "ページ",
+      "work": "200 × 0.75 = 150",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 200ページ",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-40-75",
+      "genreId": "math",
+      "prompt": "本を 30ページ 読みました。これは 全体の 7割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "40",
+      "answerUnit": "ページ",
+      "work": "30 ÷ 0.75 = 40",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 30ページ",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-300-85",
+      "genreId": "math",
+      "prompt": "トマトを 255m²に 植えました。これは 畑 全体の 8割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "300",
+      "answerUnit": "m²",
+      "work": "255 ÷ 0.85 = 300",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 255m²",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-ratio-80-55",
+      "genreId": "math",
+      "prompt": "定員 80人の バスに 44人 乗っています。乗っている人は 定員の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "5割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "44 ÷ 80 = 0.55 → 5割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80人",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-2000-35",
+      "genreId": "math",
+      "prompt": "2000円 ためる 目ひょうで、700円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "3割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "700 ÷ 2000 = 0.35 → 3割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 2000円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-400-35",
+      "genreId": "math",
+      "prompt": "140円 たまりました。これは 目ひょうの 3割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "400",
+      "answerUnit": "円",
+      "work": "140 ÷ 0.35 = 400",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 140円",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-100-15",
+      "genreId": "math",
+      "prompt": "100m²の 畑の 1割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "15",
+      "answerUnit": "m²",
+      "work": "100 × 0.15 = 15",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 100m²",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-2000-95",
+      "genreId": "math",
+      "prompt": "1900円 たまりました。これは 目ひょうの 9割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "2000",
+      "answerUnit": "円",
+      "work": "1900 ÷ 0.95 = 2000",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 1900円",
+        "9割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-compare-20-65",
+      "genreId": "math",
+      "prompt": "20問の テストで、全体の 6割5分を 正かいしました。正かいしたのは 何問ですか。",
+      "promptLayout": "word",
+      "answer": "13",
+      "answerUnit": "問",
+      "work": "20 × 0.65 = 13",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 20問",
+        "6割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-compare-40-75",
+      "genreId": "math",
+      "prompt": "定員 40人の バスに、定員の 7割5分の 人が 乗っています。乗っているのは 何人ですか。",
+      "promptLayout": "word",
+      "answer": "30",
+      "answerUnit": "人",
+      "work": "40 × 0.75 = 30",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40人",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-60-85",
+      "genreId": "math",
+      "prompt": "60ページの 本のうち 51ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "8割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "51 ÷ 60 = 0.85 → 8割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 60ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-600-45",
+      "genreId": "math",
+      "prompt": "270円 たまりました。これは 目ひょうの 4割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "600",
+      "answerUnit": "円",
+      "work": "270 ÷ 0.45 = 600",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 270円",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-80-75",
+      "genreId": "math",
+      "prompt": "80m²の 畑の 7割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "60",
+      "answerUnit": "m²",
+      "work": "80 × 0.75 = 60",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 80m²",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-test-ratio-20-25",
+      "genreId": "math",
+      "prompt": "20問の テストで 5問 正かいしました。正かいした 問題は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "2割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "5 ÷ 20 = 0.25 → 2割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 20問",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-100-35",
+      "genreId": "math",
+      "prompt": "100m²の 畑の 3割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "35",
+      "answerUnit": "m²",
+      "work": "100 × 0.35 = 35",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 100m²",
+        "3割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-100-75",
+      "genreId": "math",
+      "prompt": "本を 75ページ 読みました。これは 全体の 7割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "ページ",
+      "work": "75 ÷ 0.75 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 75ページ",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-base-100-85",
+      "genreId": "math",
+      "prompt": "トマトを 85m²に 植えました。これは 畑 全体の 8割5分です。畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "100",
+      "answerUnit": "m²",
+      "work": "85 ÷ 0.85 = 100",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 85m²",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-80-45",
+      "genreId": "math",
+      "prompt": "80ページの 本のうち 36ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "36 ÷ 80 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 80ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-40-75",
+      "genreId": "math",
+      "prompt": "40m²の 畑の 7割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "30",
+      "answerUnit": "m²",
+      "work": "40 × 0.75 = 30",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 40m²",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-compare-100-75",
+      "genreId": "math",
+      "prompt": "100m²の 畑の 7割5分に トマトを 植えました。トマトの 畑は 何m²ですか。",
+      "promptLayout": "word",
+      "answer": "75",
+      "answerUnit": "m²",
+      "work": "100 × 0.75 = 75",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 100m²",
+        "7割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-500-55",
+      "genreId": "math",
+      "prompt": "500円 ためる 目ひょうで、275円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "5割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "275 ÷ 500 = 0.55 → 5割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 500円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-bus-base-60-85",
+      "genreId": "math",
+      "prompt": "バスに 51人 乗っています。これは 定員の 8割5分です。定員は 何人ですか。",
+      "promptLayout": "word",
+      "answer": "60",
+      "answerUnit": "人",
+      "work": "51 ÷ 0.85 = 60",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 51人",
+        "8割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-base-160-55",
+      "genreId": "math",
+      "prompt": "本を 88ページ 読みました。これは 全体の 5割5分です。本は 全部で 何ページですか。",
+      "promptLayout": "word",
+      "answer": "160",
+      "answerUnit": "ページ",
+      "work": "88 ÷ 0.55 = 160",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 88ページ",
+        "5割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-40-75",
+      "genreId": "math",
+      "prompt": "40m²の 畑のうち 30m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "7割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "30 ÷ 40 = 0.75 → 7割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 40m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-book-compare-100-45",
+      "genreId": "math",
+      "prompt": "100ページの 本の 4割5分を 読みました。読んだのは 何ページですか。",
+      "promptLayout": "word",
+      "answer": "45",
+      "answerUnit": "ページ",
+      "work": "100 × 0.45 = 45",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "くらべる量 = もとにする量 × 割合",
+        "もとにする量は 100ページ",
+        "4割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-300-15",
+      "genreId": "math",
+      "prompt": "300m²の 畑のうち 45m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "1割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "45 ÷ 300 = 0.15 → 1割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 300m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-ratio-500-95",
+      "genreId": "math",
+      "prompt": "500円 ためる 目ひょうで、475円 たまりました。たまったのは 目ひょうの 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "9割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "475 ÷ 500 = 0.95 → 9割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 500円",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-field-ratio-300-45",
+      "genreId": "math",
+      "prompt": "300m²の 畑のうち 135m²に トマトを 植えました。トマトの 畑は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "4割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "135 ÷ 300 = 0.45 → 4割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 300m²",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-saving-base-800-15",
+      "genreId": "math",
+      "prompt": "120円 たまりました。これは 目ひょうの 1割5分です。目ひょうは 何円ですか。",
+      "promptLayout": "word",
+      "answer": "800",
+      "answerUnit": "円",
+      "work": "120 ÷ 0.15 = 800",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "もとにする量 = くらべる量 ÷ 割合",
+        "くらべる量は 120円",
+        "1割5分を 小数で 表す"
+      ]
+    },
+    {
+      "id": "ma-wb-book-ratio-60-75",
+      "genreId": "math",
+      "prompt": "60ページの 本のうち 45ページを 読みました。読んだのは 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "7割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "45 ÷ 60 = 0.75 → 7割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 60ページ",
+        "0.1が 1割、0.01が 1分"
+      ]
+    },
+    {
+      "id": "ma-wb-test-ratio-20-85",
+      "genreId": "math",
+      "prompt": "20問の テストで 17問 正かいしました。正かいした 問題は 全体の 何割何分ですか。",
+      "promptLayout": "word",
+      "answer": "8割5分",
+      "answerParts": [
+        "割",
+        "分"
+      ],
+      "work": "17 ÷ 20 = 0.85 → 8割5分",
+      "level": "g56",
+      "topic": "ratio",
+      "hintSource": [
+        "割合 = くらべる量 ÷ もとにする量",
+        "もとにする量は 20問",
+        "0.1が 1割、0.01が 1分"
       ]
     }
   ]

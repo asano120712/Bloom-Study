@@ -150,6 +150,11 @@ export interface Question {
   answerPrefix?: string
   answerUnit?: string
   /**
+   * 答えを単位ごとのマスに分けて書く(文章題の「何割何分」)。並びは単位の順(['割', '分'])。
+   * このときの answer は単位つきでつないだ形(「7割5分」)で持ち、判定もその形で比べる。
+   */
+  answerParts?: string[]
+  /**
    * KRADFILE 由来の部品。assemble モードはこのうち2部品に割れる字だけを出す。
    * KRADFILE には配置(左右・上下)が無いので、割れる向きと先にくる部品は
    * features/assemble の表で補う。

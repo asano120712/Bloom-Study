@@ -7,6 +7,7 @@ import { FractionForm, type FractionSlot, type FractionWork } from '@/components
 import { FractionInput, type FractionPart } from '@/components/FractionInput'
 import { AnswerRowForm } from '@/components/AnswerRowForm'
 import { MathText } from '@/components/MathText'
+import { MemoIcon, MemoPad } from '@/components/MemoPad'
 import { WordForm, type WordSlot } from '@/components/WordForm'
 import { WordInput, type WordPart } from '@/components/WordInput'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
@@ -117,13 +118,19 @@ function plainAnswerBoxes(prompt: string): number {
 /**
  * 文章題を手書きするマス。式を書く場所(途中の計算と同じく読み取らない)と、答え。
  * 割合は 0.75 のような小数の答えがあるので、答えには小数点を打てるようにする。
+ * 「何割何分」は、割と分のマスを1つずつ置く(どちらも 1〜9 の1けた)。まとめた画像でも横に並べる。
  */
-function wordRows(questionId: string): WriteRow[] {
-  return [
-    // 式は横長の1つの書く場所に、記号まで自由に書く(読み取らないので、マスに分けない)
-    { key: `${questionId}-expression`, boxes: 1, span: 5, line: 1, scratch: true },
-    { key: `${questionId}-answer`, boxes: 4, line: 0, decimalPoint: true },
-  ]
+function wordRows(questionId: string, answerParts?: string[]): WriteRow[] {
+  // 式は横長の1つの書く場所に、記号まで自由に書く(読み取らないので、マスに分けない)
+  const expression: WriteRow = { key: `${questionId}-expression`, boxes: 1, span: 5, line: 1, scratch: true }
+  if (answerParts) {
+    return [
+      expression,
+      { key: `${questionId}-answer`, boxes: 1, line: 0 },
+      { key: `${questionId}-answer2`, boxes: 1, line: 0 },
+    ]
+  }
+  return [expression, { key: `${questionId}-answer`, boxes: 4, line: 0, decimalPoint: true }]
 }
 
 /** 手書きで出す途中の計算のマス(かけ算の段、わり算の「かける」「ひく」) */
@@ -206,6 +213,11 @@ export function QuizPage() {
   const [missedAnswer, setMissedAnswer] = useState(false)
   /** 分数の答えが、値は合っているのに約分していなかった。直して答え直してもらう */
   const [reducible, setReducible] = useState(false)
+  /**
+   * 計算のメモを開いているか。メモは閉じても消さず、問題ごとに作り直す(1問ごとに画面ごと作り直される)。
+   * 開いていてもヒントの時間は止めない(メモに書いているあいだも、考えている時間なので)。
+   */
+  const [memoOpen, setMemoOpen] = useState(false)
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
 
@@ -458,7 +470,7 @@ export function QuizPage() {
   const writeRows: WriteRow[] = isFraction
     ? fractionRows(question.id, question.prompt)
     : isWord
-      ? wordRows(question.id)
+      ? wordRows(question.id, question.answerParts)
       : isPlainMath
         ? [
             {
@@ -533,11 +545,13 @@ export function QuizPage() {
 
     const { answered, confidence } = isFraction
       ? await readFraction(rows)
-      : isWord || isPlainMath
-        ? await readWithPoint(rows.find((row) => row.key === `${question.id}-answer`)).then(
-            (read) => ({ answered: read.text, confidence: read.confidence }),
-          )
-        : await readColumn(rows)
+      : isWord && question.answerParts
+        ? await readUnits(rows, question.answerParts)
+        : isWord || isPlainMath
+          ? await readWithPoint(rows.find((row) => row.key === `${question.id}-answer`)).then(
+              (read) => ({ answered: read.text, confidence: read.confidence }),
+            )
+          : await readColumn(rows)
 
     const judged = judgeNumber(question, answered)
     if (judged.isCorrect && confidence >= READ_CONFIDENCE) {
@@ -581,6 +595,19 @@ export function QuizPage() {
     return {
       text: `${whole.text || '0'}.${fraction.text}`,
       confidence: Math.min(whole.confidence, fraction.confidence),
+    }
+  }
+
+  /** 単位ごとのマス(「何割何分」の割・分)を読んで、単位つきでつなぐ(「7割5分」) */
+  const readUnits = async (rows: WrittenRow[], units: string[]) => {
+    const [first, second] = await Promise.all(
+      ['answer', 'answer2'].map((part) =>
+        readCells(rows.find((row) => row.key === `${question.id}-${part}`)?.cells ?? []),
+      ),
+    )
+    return {
+      answered: `${first.text}${units[0]}${second.text}${units[1]}`,
+      confidence: Math.min(first.confidence, second.confidence),
     }
   }
 
@@ -659,6 +686,11 @@ export function QuizPage() {
       left: { label: number, spokenLabel: `${copy.number.wordParts.expression}の${number}`, ...fill('left') },
       right: { label: number, spokenLabel: `${copy.number.wordParts.expression}の${number}`, ...fill('right') },
       answer: { label: answer, ...fill('answer') },
+      // 「何割何分」は、答えを単位ごとのマスに分ける(□ 割 □ 分)
+      answerParts: question.answerParts?.map((unit, index) => ({
+        slot: { label: unit, ...fill(index === 0 ? 'answer' : 'answer2') },
+        unit,
+      })),
       prefix: question.answerPrefix,
       unit: question.answerUnit,
     }
@@ -677,6 +709,24 @@ export function QuizPage() {
             入力の近くではなく「この問題をやめる」ことを考える場所(上)のほう。
             やめるとは反対側に置いて、押し間違えないようにしてある。
           */}
+          {/*
+            計算のメモ。計算だけに出す(漢字・英単語は思い出す練習なので、メモで答えを書いて
+            確かめられてしまう)。パスの横に置き、答えの入力から離しておく(押し間違えないように)。
+          */}
+          {showsPromptBelow && (
+            <button
+              type="button"
+              onClick={() => setMemoOpen((current) => !current)}
+              aria-label={copy.quiz.memoOpen}
+              aria-pressed={memoOpen}
+              // 字ではなくアイコンで出す(読み上げには aria-label の「計算のメモを開く」を使う)
+              className={`flex size-8 shrink-0 items-center justify-center rounded-full border-2 ${
+                memoOpen ? 'border-bloom-700 bg-bloom-700 text-white' : 'border-bloom-200 text-ink-600'
+              }`}
+            >
+              <MemoIcon className="size-5" />
+            </button>
+          )}
           <button
             type="button"
             onClick={pass}
@@ -687,6 +737,10 @@ export function QuizPage() {
           </button>
         </span>
       </header>
+
+      {showsPromptBelow && (
+        <MemoPad key={question.id} open={memoOpen} onClose={() => setMemoOpen(false)} />
+      )}
 
       {/*
         計算だけ、出題をヒントの下に置く(ヒント → 式 → 答え)。
@@ -847,6 +901,7 @@ export function QuizPage() {
             {inputMode === 'number' && isWord && (
               <WordInput
                 key={`word-${question.id}`}
+                answerParts={question.answerParts}
                 display={(entry, focus, select) => (
                   <WordForm
                     {...wordSlots((part) => ({
