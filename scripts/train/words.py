@@ -6,7 +6,9 @@
 単語の中で書いた字は、1字だけで書いた字と形が変わる(o の閉じ方、i の点の位置、t の横棒の長さ)。
 送ってもらった英単語には答えが付いているので、**答えに合わせて区切れば、ラベル付きの1字の見本**になる。
 つづりを間違えた語や、区切りに失敗した語を混ぜると間違った字を覚えるので、
-答えに合わせた区切りで、どの字もある程度(MIN_SCORE 以上)答えの字に見えた語だけを使う。
+答えに合わせて区切ったとき、ほとんどの字(READABLE_SHARE 以上)が READABLE 以上で読めていて、
+ほぼ読めない字(UNREADABLE 未満)が1字までの語だけを使う。その語の字は、苦手な字も含めて全部使う
+(他の人の字では、いちばん学ぶ価値のある語ほど1字だけ読めないことが多い)。
 
 区切り方・描き直し方は src/features/recognize/word.ts と**同じ手順**で書いてある(ここが写し)。
 どちらかを変えたら、もう一方も合わせること。--eval の数字が試し場と同じになるかで確かめられる。
@@ -37,8 +39,10 @@ CELL = 120
 LINE_WIDTH = 6
 AUTO_MIN = 0.3
 
-# 見本として使う語の条件: 答えに合わせて区切ったとき、いちばん低い字がこれ以上
-MIN_SCORE = 0.05
+# 見本として使う語の条件(上の説明を参照)。つづりを間違えた impressin(読めない字が2字)は外れる
+READABLE = 0.3
+READABLE_SHARE = 0.75
+UNREADABLE = 0.05
 
 
 def spans_of(strokes):
@@ -167,12 +171,21 @@ def load_words():
         return json.load(handle)
 
 
+def usable(found):
+    if not found:
+        return False
+    scores = [entry["score"] for entry in found]
+    readable = sum(score >= READABLE for score in scores)
+    unreadable = sum(score < UNREADABLE for score in scores)
+    return readable >= len(scores) * READABLE_SHARE and unreadable <= 1
+
+
 def extract(model, attempts):
     """見本として使える語から、1字ずつの見本を取り出す"""
     samples, used = [], 0
     for attempt in attempts:
         found = align(model, attempt["strokes"], attempt["word"])
-        if not found or min(entry["score"] for entry in found) < MIN_SCORE:
+        if not usable(found):
             continue
         used += 1
         for index, entry in enumerate(found):
@@ -183,6 +196,8 @@ def extract(model, attempts):
                     "ink": pack(entry["ink"]),
                     "at": f"{attempt['at']}#{index}",
                     "word": attempt["word"],
+                    # 書いた人は、英単語に付いていたものを引き継ぐ(人ごとに比べるため)
+                    **({"writer": attempt["writer"]} if attempt.get("writer") else {}),
                 }
             )
     return samples, used

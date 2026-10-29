@@ -49,8 +49,13 @@ KINDS = {
         # EMNIST の試験が 90.15→88.68% に落ちた(他の人の字を忘れる)。混ぜる割合と学習率を下げ、
         # もとの学習の終わりの学習率(約 0.002)に合わせると 48/51・89.81% で釣り合った
         "steps": 600,
-        "share": 0.1,
         "rate": 0.002,
+        # 他の人(4人)の字が届いたあと、1人ずつ伏せて「初めて書く人」として測ると、
+        # 混ぜる割合 0.1 のままでは 48→51/82 語、書いた人ごとに 300 枚までにそろえて
+        # 割合を 0.4 に上げると 55/82 語が自動になった(EMNIST の試験は 89.3% ほど)。
+        # 自分の字ばかり多いと、モデルが自分の字に寄って、初めての人の字に効きにくい
+        "share": 0.4,
+        "per_writer": 300,
     },
 }
 KIND = KINDS["letters" if "--kind" in sys.argv and sys.argv[sys.argv.index("--kind") + 1] == "letters" else "digits"]
@@ -86,10 +91,20 @@ def load_samples():
     if "--with-words" in sys.argv and os.path.exists(WORD_LETTERS):
         with open(WORD_LETTERS, encoding="utf-8") as handle:
             raw += json.load(handle)
+    raw = [sample for sample in raw if sample["label"] in KIND["labels"]]
+    if KIND.get("per_writer"):
+        # 書いた人ごとに枚数の上限をそろえる。書いた人の記録が無い見本は、最初に書いた人(作り手)のもの
+        rng = np.random.default_rng(0)
+        by_writer = {}
+        for sample in raw:
+            by_writer.setdefault(sample.get("writer", ""), []).append(sample)
+        raw = [
+            samples[index]
+            for samples in by_writer.values()
+            for index in rng.permutation(len(samples))[: KIND["per_writer"]]
+        ]
     images, labels = [], []
     for sample in raw:
-        if sample["label"] not in KIND["labels"]:
-            continue
         pixels = normalize_gray(unpack(sample))
         if pixels is None:
             continue  # 何も書かずに残したもの
