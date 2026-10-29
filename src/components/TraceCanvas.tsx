@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
+import { useLayoutEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { VIEW_BOX, type TraceItem } from '@/features/trace'
 import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
 
@@ -51,6 +51,42 @@ function sampleOf(path: SVGPathElement | null): StrokeSample {
 
 const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y)
 
+/** お手本の線の太さ(お手本の座標系)。線の間が広い字はこの太さで、詰まった字は細くする */
+const LINE_WIDTH = { max: 10, min: 5 }
+/** 線と線の間に残したいすき間(お手本の座標系) */
+const LINE_GAP = 2
+
+/**
+ * 2本の線がどれだけ離れて並んでいるか。
+ *
+ * 短いほうの線の各点から、もう片方の線までの距離をとり、その真ん中の値を使う。
+ * いちばん近いところだけを見ると、角でつながる線(口の角など)や交わる線がほぼ 0 になり、
+ * 並んだ線の間隔が測れない。真ん中の値なら、交わる線は大きく、平行に並ぶ線はその間隔になる。
+ */
+function spacingOf(a: Point[], b: Point[]): number {
+  const [short, long] = a.length <= b.length ? [a, b] : [b, a]
+  const gaps = short
+    .map((point) => Math.min(...long.map((other) => distance(point, other))))
+    .sort((x, y) => x - y)
+  return gaps[Math.floor(gaps.length / 2)] ?? Infinity
+}
+
+/**
+ * その字に合うお手本の線の太さ。
+ *
+ * 鳥・書・曜のように横線が細かく並ぶ字は、いつもの太さ(10)だと線の間がつぶれて
+ * 一つのかたまりに見える。いちばん詰まった2本の間隔から、すき間が残る太さまで細くする。
+ */
+function lineWidthOf(samples: StrokeSample[]): number {
+  let spacing = Infinity
+  for (let i = 0; i < samples.length; i++) {
+    for (let j = i + 1; j < samples.length; j++) {
+      spacing = Math.min(spacing, spacingOf(samples[i].points, samples[j].points))
+    }
+  }
+  return Math.max(LINE_WIDTH.min, Math.min(LINE_WIDTH.max, spacing - LINE_GAP))
+}
+
 /**
  * お手本をなぞる入力。
  *
@@ -64,6 +100,7 @@ export function TraceCanvas({ item, onComplete, frozen = false }: TraceCanvasPro
   useNoTouchGesture(svgRef)
   const guideRefs = useRef<(SVGPathElement | null)[]>([])
   const [samples, setSamples] = useState<StrokeSample[]>([])
+  const [lineWidth, setLineWidth] = useState(LINE_WIDTH.max)
 
   /** いまなぞっているストローク。ここまでは終わっている、の意味でも使う */
   const [strokeIndex, setStrokeIndex] = useState(0)
@@ -71,9 +108,12 @@ export function TraceCanvas({ item, onComplete, frozen = false }: TraceCanvasPro
   const [reached, setReached] = useState(0)
   const tracingRef = useRef(false)
 
-  // お手本が変わったら測り直す。パスの長さは描かれた要素からしか取れない
-  useEffect(() => {
-    setSamples(item.strokes.map((_, index) => sampleOf(guideRefs.current[index])))
+  // お手本が変わったら測り直す。パスの長さは描かれた要素からしか取れない。
+  // 線の太さもここで決まるので、描く前に測る(いつもの太さで一瞬描かれてから細くなるのを防ぐ)
+  useLayoutEffect(() => {
+    const measured = item.strokes.map((_, index) => sampleOf(guideRefs.current[index]))
+    setSamples(measured)
+    setLineWidth(lineWidthOf(measured))
     setStrokeIndex(0)
     setReached(0)
     tracingRef.current = false
@@ -193,27 +233,37 @@ export function TraceCanvas({ item, onComplete, frozen = false }: TraceCanvasPro
         strokeDasharray="4 4"
       />
 
-      {item.strokes.map((d, index) => (
-        <g key={`${item.id}-${index}`}>
-          {/* お手本。まだなぞっていない線はグレーで置いておく */}
+      {/*
+        お手本。まだなぞっていない線はグレーで置いておく。
+        薄くするのは線ごとではなくまとめて(g の opacity)。線ごとに薄くすると、
+        線が交わるところだけ重なって濃い点になり、そこに何かあるように見える。
+      */}
+      <g opacity="0.28">
+        {item.strokes.map((d, index) => (
           <path
+            key={`${item.id}-${index}`}
             ref={(element) => {
               guideRefs.current[index] = element
             }}
             d={d}
             fill="none"
-            strokeWidth="10"
+            strokeWidth={lineWidth}
             strokeLinecap="round"
             strokeLinejoin="round"
             className="stroke-ink-400"
-            strokeOpacity="0.28"
           />
-          {/* なぞれたぶん。dash のずらしで「途中まで」を描く */}
-          {samples[index] && (
+        ))}
+      </g>
+
+      {/* なぞれたぶん。dash のずらしで「途中まで」を描く */}
+      {item.strokes.map(
+        (d, index) =>
+          samples[index] && (
             <path
+              key={`${item.id}-${index}`}
               d={d}
               fill="none"
-              strokeWidth="10"
+              strokeWidth={lineWidth}
               strokeLinecap="round"
               strokeLinejoin="round"
               className="stroke-bloom-500"
@@ -227,9 +277,8 @@ export function TraceCanvas({ item, onComplete, frozen = false }: TraceCanvasPro
                       (1 - reached / Math.max(1, samples[index].points.length - 1))
               }
             />
-          )}
-        </g>
-      ))}
+          ),
+      )}
 
       {/* 書き始めの目印。ここに指を置く、が一目で分かるように光らせる */}
       {!frozen && current?.points[reached] && (

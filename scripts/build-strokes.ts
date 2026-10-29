@@ -72,7 +72,13 @@ function strokesOf(xml: string, char: string): string[] {
  * 109 四方の中で 0.05 の違いは見えないうえ、漢字240字ぶんでは容量に効く。
  */
 function round(d: string): string {
-  return d.replace(/-?\d+\.\d+/g, (value) => String(Math.round(Number(value) * 10) / 10))
+  return d.replace(/-?\d+\.\d+/g, (value) => {
+    const rounded = String(Math.round(Number(value) * 10) / 10)
+    // -0.04 は丸めると -0 になり、文字にすると "0" でマイナスが消える。パスではマイナスが
+    // 数の区切りも兼ねている(3.3-0.04 は 3.3 と -0.04)ので、消えると前の数とつながって
+    // 「3.30」という1つの数になり、そこから先の線の形が崩れる。消えたぶんは空白で区切る
+    return value.startsWith('-') && !rounded.startsWith('-') ? ` ${rounded}` : rounded
+  })
 }
 
 interface Entry {
