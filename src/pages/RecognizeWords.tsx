@@ -63,6 +63,8 @@ interface Attempt {
   top: string | null
   strokes: Stroke[]
   at: string
+  /** 書いた人(記号)。この欄を作る前のものには無い */
+  writer?: string
 }
 
 function readLog(): Attempt[] {
@@ -83,7 +85,7 @@ function writeLog(log: Attempt[]) {
 
 const rate = (hits: number, total: number) => (total ? `${Math.round((hits / total) * 100)}%` : '—')
 
-export function RecognizeWords() {
+export function RecognizeWords({ writer }: { writer: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   useNoTouchGesture(canvasRef)
   const strokesRef = useRef<Stroke[]>([])
@@ -163,16 +165,19 @@ export function RecognizeWords() {
         top: found.words[0]?.word ?? null,
         strokes,
         at: new Date().toISOString(),
+        writer: writer || undefined,
       },
     ]
     setLog(next)
     writeLog(next)
   }
 
-  const lengthOk = log.filter((attempt) => attempt.groups === attempt.word.length).length
-  const exact = log.filter((attempt) => attempt.exact).length
-  const auto = log.filter((attempt) => attempt.lowest !== null && attempt.lowest >= AUTO_MIN).length
-  const top = log.filter((attempt) => attempt.top === attempt.word).length
+  // 成功率は、いま書いている人の分だけで出す(1台を何人かで回して使うときに混ざらないように)
+  const mine = log.filter((attempt) => (attempt.writer ?? '') === writer)
+  const lengthOk = mine.filter((attempt) => attempt.groups === attempt.word.length).length
+  const exact = mine.filter((attempt) => attempt.exact).length
+  const auto = mine.filter((attempt) => attempt.lowest !== null && attempt.lowest >= AUTO_MIN).length
+  const top = mine.filter((attempt) => attempt.top === attempt.word).length
 
   return (
     <section className="mt-4">
@@ -294,16 +299,21 @@ export function RecognizeWords() {
       </div>
 
       <div className="mt-6 rounded-2xl bg-base-100 p-4 text-sm">
-        <h2 className="font-bold">これまで {log.length}語</h2>
+        <h2 className="font-bold">
+          {writer ? `${writer} さんの` : ''}これまで {mine.length}語
+          {mine.length !== log.length && (
+            <span className="ml-2 text-xs font-normal text-ink-400">(この端末で全部 {log.length}語)</span>
+          )}
+        </h2>
         <dl className="mt-2 grid grid-cols-[1fr_auto] gap-y-1">
           <dt className="text-ink-600">区切りが合った</dt>
-          <dd>{rate(lengthOk, log.length)}</dd>
+          <dd>{rate(lengthOk, mine.length)}</dd>
           <dt className="text-ink-600">そのまま読んで合った</dt>
-          <dd>{rate(exact, log.length)}</dd>
+          <dd>{rate(exact, mine.length)}</dd>
           <dt className="text-ink-600">答えを使って自動でせいかい</dt>
-          <dd>{rate(auto, log.length)}</dd>
+          <dd>{rate(auto, mine.length)}</dd>
           <dt className="text-ink-600">単語の候補の1位が合った</dt>
-          <dd>{rate(top, log.length)}</dd>
+          <dd>{rate(top, mine.length)}</dd>
         </dl>
 
         <div className="mt-3 flex gap-3">
