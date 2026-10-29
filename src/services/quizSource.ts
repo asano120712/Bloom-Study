@@ -39,7 +39,9 @@ export interface QuizSource {
  */
 function isAnswerable(question: Question, inputMode: InputMode): boolean {
   if (inputMode === 'assemble') return assemblyOf(question) !== null
-  return true
+  // なぞり書きはお手本の線が要る。逆に、お手本の線しかない問題は、ほかの答え方では出せない
+  if (inputMode === 'trace') return Boolean(question.strokes?.length)
+  return !question.strokes
 }
 
 /**

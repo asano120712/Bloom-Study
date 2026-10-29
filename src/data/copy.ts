@@ -30,6 +30,28 @@ export interface Copy {
    * 絵文字は使わず、言葉そのもので正誤が分かるようにする(色だけに頼らない)。
    */
   verdicts: Record<JudgeVerdict, string>
+  /** 薄いお手本の上に書くなぞり書き(一般モードの漢字) */
+  traceWrite: {
+    guide: string
+    /** 書く場所の読み上げ。字が入る */
+    canvas: (char: string) => string
+    undo: string
+    clear: string
+    /** 次に書く画を示すかの切り替え */
+    showOrder: string
+    /** 結果画面に出す、どこを直すかの一言 */
+    notes: {
+      great: string
+      /** 半分以上の画がずれたとき。1画ずつ言うより、全体として伝える */
+      overall: string
+      shape: (stroke: number) => string
+      missing: (stroke: number) => string
+      reversed: (stroke: number) => string
+      order: string
+      extra: string
+      count: (written: number, expected: number) => string
+    }
+  }
   top: { lead: string[]; start: string; record: string }
   genreSelect: { title: string; note: string; back: string }
   /**
@@ -121,8 +143,6 @@ export interface Copy {
     other: string
     /** 何問目か(おとなだけ。こどもは花の数で見せる) */
     progress: (index: number, total: number) => string
-    /** やめるまで続くときの何問目か(全部の数が無い) */
-    count: (index: number) => string
   }
   /** 数で答えるとき */
   number: {
@@ -186,7 +206,7 @@ const ADULT: Copy = {
     math: { label: '計算', description: 'たし算から文章題まで、筆算や式で解く' },
     'trace-shape': { label: 'なぞり書き(形)', description: '丸や三角を指でなぞる' },
     'trace-hiragana': { label: 'なぞり書き(ひらがな)', description: 'ひらがなを書き順どおりになぞる' },
-    'trace-kanji': { label: 'なぞり書き(漢字)', description: '小1・小2の漢字を書き順どおりになぞる' },
+    'trace-kanji': { label: 'なぞり書き(漢字)', description: '小1・小2の漢字を、薄いお手本の上に書く' },
     'build-kanji': { label: '漢字の組み立て', description: 'お手本を覚えてから、部品で漢字を組む' },
     match: { label: '違い探し', description: '少しだけ形が違う4つから、お手本と同じものを選ぶ' },
   },
@@ -198,7 +218,7 @@ const ADULT: Copy = {
     handwriting: { label: '手書き', note: '指でなぞって書く' },
     typing: { label: 'タイピング', note: 'キーボードで入力する' },
     assemble: { label: 'パーツを組む', note: 'パーツをスライドしてマスに組む' },
-    trace: { label: 'なぞり書き', note: 'お手本を書き順どおりになぞる' },
+    trace: { label: 'なぞり書き', note: '薄いお手本の上に書いて、きれいさを見る' },
     build: { label: '組み立て', note: 'お手本を覚えてから、部品で組む' },
     number: { label: '数字で答える', note: '数字キーボードで打つ' },
   },
@@ -221,6 +241,28 @@ const ADULT: Copy = {
     'self-correct': 'できた',
     'self-incorrect': '違った',
     passed: 'パスした',
+    neat: 'とてもきれい',
+    fair: 'きれい',
+    rough: 'もう少し',
+  },
+  traceWrite: {
+    // 小1・小2の字の練習なので、むずかしい漢字はひらがなにして、やわらかく誘う
+    // 狭い画面で言葉の途中から折り返さないよう、「、」のあとで改行する
+    guide: 'うすいおてほんの上に、\n書き順どおりに書いてみよう',
+    canvas: (char) => `${char}を書く`,
+    undo: '1画戻す',
+    clear: '全部消す',
+    showOrder: 'おてほんを表示',
+    notes: {
+      great: 'お手本どおりに書けています',
+      overall: '全体がお手本からずれています。薄い線の上をたどるように書こう',
+      shape: (stroke) => `${stroke}画目の形が、お手本からずれています`,
+      missing: (stroke) => `${stroke}画目が書けていません`,
+      reversed: (stroke) => `${stroke}画目の向きが逆です`,
+      order: '書き順が違うところがあります',
+      extra: 'お手本に無い線があります',
+      count: (written, expected) => `${expected}画の字を、${written}画で書いています`,
+    },
   },
   top: {
     lead: [
@@ -272,8 +314,8 @@ const ADULT: Copy = {
         '1画なぞると、次の画の ● が光ります。',
       ],
       'trace-kanji': [
-        '光っている ● から、書き順どおりに指でなぞります。',
-        '小1・小2で習う漢字が出ます。',
+        '小1・小2で習う漢字が、薄いお手本で出ます。その上に、書き順どおりに書きます。',
+        '書けたら、形・向き・書き順をお手本と比べて、「とてもきれい」「きれい」「もう少し」で判定します。',
       ],
       'build-kanji': [
         'はじめにお手本の漢字が出ます。覚えたら先へ進みます。',
@@ -366,7 +408,6 @@ const ADULT: Copy = {
     again: 'もう一度',
     other: '他の遊び',
     progress: (index, total) => `${index} / ${total} 問目`,
-    count: (index) => `${index} 問目`,
   },
   number: {
     inputLabel: '入力中の答え',
@@ -433,7 +474,7 @@ const KIDS: Copy = {
     math: { label: 'けいさん', description: 'たしざんから ぶんしょうだいまで とこう' },
     'trace-shape': { label: 'かたちを なぞろう', description: 'まる・さんかく・しかくを ゆびで なぞる' },
     'trace-hiragana': { label: 'ひらがなを なぞろう', description: 'ゆびで なぞって じを おぼえる' },
-    'trace-kanji': { label: 'かんじを なぞろう', description: 'ゆびで なぞって かんじを おぼえる' },
+    'trace-kanji': { label: 'かんじを なぞろう', description: 'うすい おてほんの うえに かこう' },
     'build-kanji': { label: 'かんじを くみたてよう', description: 'おぼえてから ぶひんで くみたてる' },
     match: { label: 'ちがい さがし', description: 'よく みて、おなじ かたちを さがそう' },
   },
@@ -445,7 +486,7 @@ const KIDS: Copy = {
     handwriting: { label: 'てがき', note: 'ゆびで かいて こたえる' },
     typing: { label: 'キーボード', note: 'もじを うって こたえる' },
     assemble: { label: 'ぶひんを くむ', note: 'ぶひんを うごかして マスに いれる' },
-    trace: { label: 'なぞる', note: 'おてほんを ゆびで なぞる' },
+    trace: { label: 'なぞる', note: 'うすい おてほんの うえに かく' },
     build: { label: 'くみたてる', note: 'おぼえてから ぶひんで くみたてる' },
     number: { label: 'すうじで こたえる', note: 'すうじの キーボードで うつ' },
   },
@@ -464,6 +505,26 @@ const KIDS: Copy = {
     'self-correct': 'できた！',
     'self-incorrect': 'ちがった',
     passed: 'パスしたよ',
+    neat: 'とても きれい！',
+    fair: 'きれい！',
+    rough: 'もうすこし',
+  },
+  traceWrite: {
+    guide: 'うすい おてほんの うえに、かきじゅんどおりに かこう',
+    canvas: (char) => `${char}を かく`,
+    undo: '1かく もどす',
+    clear: 'ぜんぶ けす',
+    showOrder: 'かきじゅんを みせる',
+    notes: {
+      great: 'おてほんどおりに かけたよ',
+      overall: 'ぜんたいが ずれているよ。うすい せんの うえを なぞってみよう',
+      shape: (stroke) => `${stroke}かくめの かたちが ずれているよ`,
+      missing: (stroke) => `${stroke}かくめが かけていないよ`,
+      reversed: (stroke) => `${stroke}かくめの むきが はんたいだよ`,
+      order: 'かきじゅんが ちがう ところが あるよ',
+      extra: 'おてほんに ない せんが あるよ',
+      count: (written, expected) => `${expected}かくの じを、${written}かくで かいているよ`,
+    },
   },
   top: {
     lead: ['したのボタンで すすめるよ', 'きになったのを やってみよう！'],
@@ -511,7 +572,10 @@ const KIDS: Copy = {
         'ひかっている ● から、ゆびで なぞってね。',
         'いっかく なぞると、つぎの ● が ひかるよ。',
       ],
-      'trace-kanji': ['ひかっている ● から、ゆびで なぞってね。'],
+      'trace-kanji': [
+        'うすい おてほんの うえに、かきじゅんどおりに かこう。',
+        'かけたら、どれだけ きれいに かけたかを みるよ。',
+      ],
       'build-kanji': [
         'さいしょに おてほんを よく みてね。',
         'ぶひんを うごかして、ますに いれよう。',
@@ -602,7 +666,6 @@ const KIDS: Copy = {
     again: 'もういちど',
     other: 'ほかの あそび',
     progress: (index, total) => `${index} / ${total}`,
-    count: (index) => `${index} もんめ`,
   },
   number: {
     inputLabel: 'いま うっている こたえ',

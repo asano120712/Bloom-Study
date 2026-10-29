@@ -1,5 +1,4 @@
 import hiragana from '@/data/strokes.hiragana.generated.json'
-import kanji from '@/data/strokes.kanji.generated.json'
 
 /**
  * なぞりがきのお手本。
@@ -7,6 +6,9 @@ import kanji from '@/data/strokes.kanji.generated.json'
  * 字も図形も「書き順どおりに並んだストロークの SVG パス」で持つ。
  * フォントの字形からは書き順を復元できないので、ひらがなは KanjiVG から生成する
  * (scripts/build-kana-strokes.ts)。図形は同じ座標系で手で書く。
+ *
+ * ここにあるのは、こども向けの「光る ● から指でなぞる」あそびのお手本(図形・ひらがな)。
+ * 小1・小2の漢字は、薄いお手本の上に書いてきれいさを見る出題にしてある(./questions)。
  */
 export interface TraceItem {
   id: string
@@ -18,7 +20,7 @@ export interface TraceItem {
 
 export { VIEW_BOX } from './box'
 
-export type TraceSetId = 'shape' | 'hiragana' | 'kanji'
+export type TraceSetId = 'shape' | 'hiragana'
 
 /**
  * 図形のお手本。運筆の練習で使う順(たて→よこ→ななめ→まる→…)に並べる。
@@ -54,18 +56,10 @@ const KANA: TraceItem[] = [...hiragana.characters]
   .sort((a, b) => a.strokes.length - b.strokes.length)
   .map((entry) => ({ id: `kana-${entry.char}`, label: entry.char, strokes: entry.strokes }))
 
-/**
- * 漢字のお手本。小1・小2の配当だけ(熟語の穴うめがまだ成立しない学年)。
- * 画数の少ない字から出すので、1年の字が先に並ぶ。
- */
-const KANJI: TraceItem[] = [...kanji.characters]
-  .sort((a, b) => a.strokes.length - b.strokes.length || a.grade - b.grade)
-  .map((entry) => ({ id: `kanji-${entry.char}`, label: entry.char, strokes: entry.strokes }))
-
-const SETS: Record<TraceSetId, TraceItem[]> = { shape: SHAPES, hiragana: KANA, kanji: KANJI }
+const SETS: Record<TraceSetId, TraceItem[]> = { shape: SHAPES, hiragana: KANA }
 
 export function isTraceSet(value: string | undefined): value is TraceSetId {
-  return value === 'shape' || value === 'hiragana' || value === 'kanji'
+  return value === 'shape' || value === 'hiragana'
 }
 
 /** 1回ぶんの出題数。小さい子が飽きる前に「ぜんぶできた」に届く数にする */
@@ -86,20 +80,4 @@ export function traceSession(setId: TraceSetId): TraceItem[] {
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled.slice(0, TRACE_SESSION_SIZE)
-}
-
-/**
- * 漢字のなぞりがきは、やめるまで続ける(小1・小2の漢字を選んだときの練習で、
- * 小さい子向けのひと区切りより、たくさんなぞれるほうがよい)。
- * 全部の字を混ぜて渡し、出し切ったら呼ぶ側がまた足す。
- */
-export const ENDLESS_TRACE_SETS: TraceSetId[] = ['kanji']
-
-export function traceRound(setId: TraceSetId): TraceItem[] {
-  const shuffled = [...SETS[setId]]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled
 }

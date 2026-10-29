@@ -76,7 +76,8 @@ export function isMathTopic(value: string | null | undefined): value is MathTopi
  * 部品は思い出したと申告するまで見せない
  * (先に見せると再認になり、思い出す練習にならないため)。
  */
-export type InputMode = 'typing' | 'handwriting' | 'assemble' | 'number'
+/** trace は、薄いお手本の上に書いて、きれいさを見る(小1・小2の漢字のなぞり書き) */
+export type InputMode = 'typing' | 'handwriting' | 'assemble' | 'number' | 'trace'
 
 /**
  * 結果画面のおてほんに敷くガイド。
@@ -162,6 +163,8 @@ export interface Question {
   parts?: string[]
   /** assemble モードで並べるタイル(正解の部品 + 見分けにくいダミー) */
   partTiles?: string[]
+  /** なぞり書きのお手本の線(SVG のパス、書き順どおり)。trace モードはこれを持つ問題だけを出す */
+  strokes?: string[]
   /**
    * 出題語のかわりに、答えの字そのものをお手本として見せる(小1・小2の組み立て)。
    * 「思い出した」を押すまで見せて、組むときは引っこめる(見ながら組むと写すだけになる)。
@@ -231,6 +234,10 @@ export type JudgeVerdict =
   | 'self-incorrect'
   /** パスした(答えを見ただけ。記録には残さない) */
   | 'passed'
+  /** なぞり書きのきれいさ。とてもきれい・きれいは正解、もう少しは不正解として記録する */
+  | 'neat'
+  | 'fair'
+  | 'rough'
 
 export interface JudgeResult {
   verdict: JudgeVerdict

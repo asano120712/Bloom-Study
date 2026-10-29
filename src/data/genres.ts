@@ -146,9 +146,9 @@ const QUIZ_CHOICES: Record<GenreId, AnswerChoice[]> = {
   ],
 }
 
-/** 小1・小2の漢字。なぞって覚える(別画面のあそび)と、お手本を覚えてから部品で組む */
+/** 小1・小2の漢字。薄いお手本の上に書いてきれいさを見るのと、お手本を覚えてから部品で組む */
 const KANJI_LOW_CHOICES: AnswerChoice[] = [
-  { id: 'trace', path: '/trace/kanji' },
+  { id: 'trace', inputMode: 'trace' },
   { id: 'build', inputMode: 'assemble' },
 ]
 
