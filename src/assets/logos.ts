@@ -17,3 +17,11 @@ export const HERO_SOURCES = {
   animated: '/bloomstudy_hero.svg',
   static: '/bloomstudy_hero_static.svg',
 } as const
+
+/**
+ * ボタンに使うアイコン。形だけを使い、色はボタンの文字色で塗る(型抜き。MemoPad の MemoIcon)。
+ * ファイルの線の色が決め打ちでも、押したとき(白)と押していないとき(灰)で色を変えられる。
+ */
+export const ICON_SOURCES = {
+  memo: '/images/memo.svg',
+} as const

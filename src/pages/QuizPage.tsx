@@ -7,6 +7,7 @@ import { FractionForm, type FractionSlot, type FractionWork } from '@/components
 import { FractionInput, type FractionPart } from '@/components/FractionInput'
 import { AnswerRowForm } from '@/components/AnswerRowForm'
 import { MathText } from '@/components/MathText'
+import { MemoIcon, MemoPad } from '@/components/MemoPad'
 import { WordForm, type WordSlot } from '@/components/WordForm'
 import { WordInput, type WordPart } from '@/components/WordInput'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
@@ -209,6 +210,11 @@ export function QuizPage() {
   const [missedAnswer, setMissedAnswer] = useState(false)
   /** 分数の答えが、値は合っているのに約分していなかった。直して答え直してもらう */
   const [reducible, setReducible] = useState(false)
+  /**
+   * 計算のメモを開いているか。メモは閉じても消さず、問題ごとに作り直す(1問ごとに画面ごと作り直される)。
+   * 開いていてもヒントの時間は止めない(メモに書いているあいだも、考えている時間なので)。
+   */
+  const [memoOpen, setMemoOpen] = useState(false)
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
 
@@ -655,6 +661,24 @@ export function QuizPage() {
             入力の近くではなく「この問題をやめる」ことを考える場所(上)のほう。
             やめるとは反対側に置いて、押し間違えないようにしてある。
           */}
+          {/*
+            計算のメモ。計算だけに出す(漢字・英単語は思い出す練習なので、メモで答えを書いて
+            確かめられてしまう)。パスの横に置き、答えの入力から離しておく(押し間違えないように)。
+          */}
+          {showsPromptBelow && (
+            <button
+              type="button"
+              onClick={() => setMemoOpen((current) => !current)}
+              aria-label={copy.quiz.memoOpen}
+              aria-pressed={memoOpen}
+              // 字ではなくアイコンで出す(読み上げには aria-label の「計算のメモを開く」を使う)
+              className={`flex size-8 shrink-0 items-center justify-center rounded-full border-2 ${
+                memoOpen ? 'border-bloom-700 bg-bloom-700 text-white' : 'border-bloom-200 text-ink-600'
+              }`}
+            >
+              <MemoIcon className="size-5" />
+            </button>
+          )}
           <button
             type="button"
             onClick={pass}
@@ -665,6 +689,10 @@ export function QuizPage() {
           </button>
         </span>
       </header>
+
+      {showsPromptBelow && (
+        <MemoPad key={question.id} open={memoOpen} onClose={() => setMemoOpen(false)} />
+      )}
 
       {/*
         計算だけ、出題をヒントの下に置く(ヒント → 式 → 答え)。

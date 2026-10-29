@@ -7,8 +7,14 @@ interface HandwritingCanvasProps {
   /**
    * 「かけた」を押したとき。自動判定は行わず、正解提示に進む。
    * 書いた字を結果画面で見せるため、キャンバスを PNG(dataURL)にして渡す。
+   * メモ(memo)では使わない。
    */
-  onSubmit: (imageDataUrl: string) => void
+  onSubmit?: (imageDataUrl: string) => void
+  /**
+   * 計算のメモとして使う。答えではないので「かけた」の代わりに「全部消す」を出し、
+   * 地を透明にする(紙の色と透け具合はメモの枠のほうで付ける)。
+   */
+  memo?: boolean
   disabled?: boolean
 }
 
@@ -40,7 +46,7 @@ function scaledLineWidth(): number {
  * 手書き入力キャンバス。外部ライブラリを使わず Canvas API のみで実装する。
  * OCR による自動判定は行わない(機能要件書 2.4 の通り自己申告方式)。
  */
-export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCanvasProps) {
+export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: HandwritingCanvasProps) {
   const copy = useCopy()
   const canvasRef = useRef<HTMLCanvasElement>(null)
   useNoTouchGesture(canvasRef)
@@ -218,6 +224,14 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
    * 書いた字を PNG にして返す。キャンバスの背景は透明なので、
    * 結果画面のどこに置いても読めるよう、白地に合成してから書き出す。
    */
+  /** 全部消す(メモだけ)。答えのキャンバスでは消しゴムで部分ごとに消す */
+  const clearAll = () => {
+    const canvas = canvasRef.current
+    canvas?.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height)
+    setHasStroke(false)
+    setErasing(false)
+  }
+
   const exportImage = (): string => {
     const canvas = canvasRef.current
     if (!canvas) return ''
@@ -251,9 +265,11 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
           onPointerCancel={endStroke}
           onMouseDown={preventSelection}
           draggable={false}
-          aria-label="手書き入力エリア"
+          aria-label={memo ? copy.quiz.memo : '手書き入力エリア'}
           // select-none: なぞったときに周りが範囲選択される(青い枠)のを防ぐ
-          className={`w-full min-h-0 flex-1 touch-none select-none rounded-2xl border-2 bg-white ${
+          className={`w-full min-h-0 flex-1 touch-none select-none rounded-2xl border-2 ${
+            memo ? 'bg-transparent' : 'bg-white'
+          } ${
             // 消しゴムのあいだは枠を赤くする。マウスの矢印は、指先の消しゴムと重なるので消す
             erasing ? 'cursor-none border-warm-500' : 'border-bloom-200'
           }`}
@@ -280,15 +296,26 @@ export function HandwritingCanvas({ onSubmit, disabled = false }: HandwritingCan
       </div>
       <div className="flex shrink-0 gap-3">
         <HandwritingTools erasing={erasing} onChange={setErasing} canErase={hasStroke} disabled={disabled} />
-        <button
-          type="button"
-          onClick={() => onSubmit(exportImage())}
-          // 消している途中で出すと、消し残しに気づかないまま答えになる
-          disabled={disabled || !hasStroke || erasing}
-          className="min-h-14 flex-1 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
-        >
-          {copy.handwriting.done}
-        </button>
+        {memo ? (
+          <button
+            type="button"
+            onClick={clearAll}
+            disabled={disabled || !hasStroke}
+            className="min-h-14 flex-1 rounded-full border-2 border-bloom-200 px-6 text-lg font-bold text-ink-600 disabled:text-ink-400"
+          >
+            {copy.quiz.memoClear}
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => onSubmit?.(exportImage())}
+            // 消している途中で出すと、消し残しに気づかないまま答えになる
+            disabled={disabled || !hasStroke || erasing}
+            className="min-h-14 flex-1 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
+          >
+            {copy.handwriting.done}
+          </button>
+        )}
       </div>
     </div>
   )
