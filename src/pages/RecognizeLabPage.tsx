@@ -1,7 +1,10 @@
 import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { AppShell } from '@/components/AppShell'
-import { guess, guessDigit, type Guess } from '@/features/recognize'
-import { addSample, clearSamples, packInk, readSamples } from '@/features/recognize/samples'
+import { guessDigit, guessLetter, type Guess } from '@/features/recognize'
+import { addSample, clearSamples, packInk, readSamples, readWriter, writeWriter } from '@/features/recognize/samples'
+import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
+import { RecognizePractice } from './RecognizePractice'
+import { RecognizeWords } from './RecognizeWords'
 
 /**
  * 読み取りの試し場(開発時だけ)。
@@ -18,7 +21,71 @@ const CELL = 120
 const LINE_WIDTH = 6
 
 export function RecognizeLabPage() {
+  /** practice = お題を書いて自分の字を覚える、words = 英単語を1枚に書いて読む、try = 自由に書いて読み・外れた字を集める */
+  const [tab, setTab] = useState<'practice' | 'words' | 'try'>('practice')
+  /** 書いた人(記号でよい)。送る字と英単語に付ける */
+  const [writer, setWriter] = useState(readWriter)
+
+  return (
+    <AppShell>
+      <h1 className="text-xl font-bold">読み取りの試し場</h1>
+      <p className="mt-1 text-sm text-ink-600">開発用の画面です。書いた字は、この端末の外へは送りません。</p>
+
+      <label className="mt-3 flex items-center gap-2 text-sm">
+        <span className="shrink-0 text-ink-600">書いた人</span>
+        <input
+          value={writer}
+          onChange={(event) => {
+            setWriter(event.target.value)
+            writeWriter(event.target.value)
+          }}
+          placeholder="A、B などの記号でOK"
+          className="min-h-10 min-w-0 flex-1 rounded-lg border-2 border-bloom-200 bg-white px-3"
+        />
+      </label>
+      {!writer && (
+        <p className="mt-1 text-xs text-warm-600">入れないまま送ると、誰が書いた字か分からなくなります</p>
+      )}
+
+      <div className="mt-4 flex gap-1 rounded-full border-2 border-bloom-200 p-1">
+        {(
+          [
+            ['practice', '練習して覚える'],
+            ['words', '英単語'],
+            ['try', '試す・集める'],
+          ] as const
+        ).map(([id, name]) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => setTab(id)}
+            className={`min-h-10 flex-1 rounded-full text-sm font-bold ${
+              tab === id ? 'bg-bloom-700 text-white' : 'text-ink-600'
+            }`}
+          >
+            {name}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'practice' ? (
+        <RecognizePractice />
+      ) : tab === 'words' ? (
+        <RecognizeWords writer={writer} />
+      ) : (
+        <TryPanel writer={writer} />
+      )}
+    </AppShell>
+  )
+}
+
+/**
+ * 自由に書いて、何に見えているかを並べる。外れた字は残して、共通のモデルの学習に回す
+ * (こちらは「送る」で開発サーバーへ集める。練習の字とは別に、端末の中に置く)。
+ */
+function TryPanel({ writer }: { writer: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  useNoTouchGesture(canvasRef)
   const drawingRef = useRef(false)
   const [candidates, setCandidates] = useState<'digits' | 'letters'>('digits')
   const [guesses, setGuesses] = useState<Guess[]>([])
@@ -56,12 +123,9 @@ export function RecognizeLabPage() {
     const context = contextOf()
     if (!context) return
     const image = context.getImageData(0, 0, CELL, CELL)
-    // 数字は学習したモデル、英字はまだお手本と重ねる方式
-    if (candidates === 'digits') {
-      void guessDigit(image, DIGITS).then((found) => setGuesses(found.slice(0, 5)))
-      return
-    }
-    setGuesses(guess(image, LETTERS).slice(0, 5))
+    // どちらも学習したモデルで読む(英字は EMNIST、数字は MNIST)
+    const read = candidates === 'digits' ? guessDigit(image, DIGITS) : guessLetter(image, LETTERS)
+    void read.then((found) => setGuesses(found.slice(0, 5)))
   }
 
   const clear = () => {
@@ -70,10 +134,7 @@ export function RecognizeLabPage() {
   }
 
   return (
-    <AppShell>
-      <h1 className="text-xl font-bold">読み取りの試し場</h1>
-      <p className="mt-1 text-sm text-ink-600">書いて「よむ」。開発用の画面です。</p>
-
+    <>
       <div className="mt-4 flex gap-2">
         {(['digits', 'letters'] as const).map((kind) => (
           <button
@@ -191,6 +252,7 @@ export function RecognizeLabPage() {
                   guessed: guesses[0]?.label,
                   score: guesses[0]?.score,
                   at: new Date().toISOString(),
+                  writer: writer || undefined,
                 }).length,
               )
             }}
@@ -235,6 +297,6 @@ export function RecognizeLabPage() {
           残したものを全部消す
         </button>
       </section>
-    </AppShell>
+    </>
   )
 }

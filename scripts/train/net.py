@@ -3,9 +3,11 @@
 TypeScript 側(src/features/recognize/net.ts)で同じ計算を再現するので、
 **層の種類と順番は増やさない**。conv / relu / maxpool / dense / softmax だけ。
 
-  28×28 → conv(8, 3×3) → relu → maxpool2 → conv(16, 3×3) → relu → maxpool2 → dense(10)
+  28×28 → conv(f1, 3×3) → relu → maxpool2 → conv(f2, 3×3) → relu → maxpool2 → dense(classes)
 
-重みは全部で約5,200個。int8 に落として 10KB ほどで配れる。
+数字は f1=8, f2=16, classes=10(重み約5,200個。int8 に落として 10KB ほど)。
+英字は種類が多く形も似ているので、フィルターを増やして使う(train_letters.py)。
+TS 側はフィルターの数を重みの形から読むので、ここを変えても合わせ直さなくてよい。
 """
 
 import numpy as np
@@ -31,28 +33,30 @@ def im2col(x, k):
 
 
 class Net:
-    def __init__(self, rng):
+    def __init__(self, rng, classes=10, f1=8, f2=16):
+        self.f1, self.f2 = f1, f2
+
         def he(shape, fan_in):
             return (rng.standard_normal(shape) * np.sqrt(2.0 / fan_in)).astype(np.float32)
 
-        self.w1 = he((8, 1, 3, 3), 9)
-        self.b1 = np.zeros(8, dtype=np.float32)
-        self.w2 = he((16, 8, 3, 3), 8 * 9)
-        self.b2 = np.zeros(16, dtype=np.float32)
-        self.w3 = he((10, 16 * 5 * 5), 16 * 5 * 5)
-        self.b3 = np.zeros(10, dtype=np.float32)
+        self.w1 = he((f1, 1, 3, 3), 9)
+        self.b1 = np.zeros(f1, dtype=np.float32)
+        self.w2 = he((f2, f1, 3, 3), f1 * 9)
+        self.b2 = np.zeros(f2, dtype=np.float32)
+        self.w3 = he((classes, f2 * 5 * 5), f2 * 5 * 5)
+        self.b3 = np.zeros(classes, dtype=np.float32)
 
     def forward(self, x, keep=False):
         n = x.shape[0]
         cache = {}
 
         c1, oh1, ow1 = im2col(x, 3)
-        z1 = (self.w1.reshape(8, -1) @ c1).reshape(n, 8, oh1, ow1) + self.b1[None, :, None, None]
+        z1 = (self.w1.reshape(self.f1, -1) @ c1).reshape(n, self.f1, oh1, ow1) + self.b1[None, :, None, None]
         a1 = np.maximum(z1, 0)
         p1 = pool2(a1)
 
         c2, oh2, ow2 = im2col(p1, 3)
-        z2 = (self.w2.reshape(16, -1) @ c2).reshape(n, 16, oh2, ow2) + self.b2[None, :, None, None]
+        z2 = (self.w2.reshape(self.f2, -1) @ c2).reshape(n, self.f2, oh2, ow2) + self.b2[None, :, None, None]
         a2 = np.maximum(z2, 0)
         p2 = pool2(a2)
 
@@ -98,18 +102,18 @@ class Net:
             out[:, :, :h2, :w2] = spread
             return out
 
-        d_a2 = unpool(d_p2, cache["a2"], 16)
+        d_a2 = unpool(d_p2, cache["a2"], self.f2)
         d_z2 = d_a2 * (cache["z2"] > 0)
-        n2 = d_z2.reshape(d_z2.shape[0], 16, -1)
+        n2 = d_z2.reshape(d_z2.shape[0], self.f2, -1)
         g["w2"] = np.einsum("nfo,nko->fk", n2, cache["c2"]).reshape(self.w2.shape)
         g["b2"] = n2.sum(axis=(0, 2))
 
-        d_c2 = np.einsum("fk,nfo->nko", self.w2.reshape(16, -1), n2)
+        d_c2 = np.einsum("fk,nfo->nko", self.w2.reshape(self.f2, -1), n2)
         d_p1 = col2im(d_c2, cache["p1"].shape, 3, cache["oh2"], cache["ow2"])
 
-        d_a1 = unpool(d_p1, cache["a1"], 8)
+        d_a1 = unpool(d_p1, cache["a1"], self.f1)
         d_z1 = d_a1 * (cache["z1"] > 0)
-        n1 = d_z1.reshape(d_z1.shape[0], 8, -1)
+        n1 = d_z1.reshape(d_z1.shape[0], self.f1, -1)
         g["w1"] = np.einsum("nfo,nko->fk", n1, cache["c1"]).reshape(self.w1.shape)
         g["b1"] = n1.sum(axis=(0, 2))
 

@@ -2,18 +2,19 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { useCopy } from '@/hooks/useAudienceMode'
 import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
 import { EraserArt, HandwritingTools } from '@/components/HandwritingTools'
+import type { Point, Stroke } from '@/features/recognize/word'
 
 interface HandwritingCanvasProps {
   /**
-   * 「かけた」を押したとき。自動判定は行わず、正解提示に進む。
+   * 「かけた」を押したとき。
    * 書いた字を結果画面で見せるため、キャンバスを PNG(dataURL)にして渡す。
-   * メモ(memo)では使わない。
-   */
-  onSubmit?: (imageDataUrl: string) => void
+   * 書いた線(キャンバスの中の座標)も渡す。英単語は、これを読み取って自動で判定する。
+   * メモ(memo)では使わない。*/
+  onSubmit?: (imageDataUrl: string, strokes: Stroke[]) => void
   /**
    * 計算のメモとして使う。答えではないので「かけた」の代わりに「全部消す」を出し、
    * 地を透明にする(紙の色と透け具合はメモの枠のほうで付ける)。
-   */
+   * */
   memo?: boolean
   disabled?: boolean
 }
@@ -27,6 +28,15 @@ const STROKE_COLOR = '#23292B'
 const ERASER_SCALE = 4
 /** 指先に出す消しゴムの絵の大きさ(px) */
 const ERASER_ART = 44
+/** 点 p から、線分 a-b までの距離 */
+function distanceToSegment(p: Point, a: Point, b: Point): number {
+  const dx = b.x - a.x
+  const dy = b.y - a.y
+  const length = dx * dx + dy * dy
+  const t = length ? Math.max(0, Math.min(1, ((p.x - a.x) * dx + (p.y - a.y) * dy) / length)) : 0
+  return Math.hypot(p.x - (a.x + t * dx), p.y - (a.y + t * dy))
+}
+
 /** LINE_WIDTH を決めたときの root font-size。index.css の clamp 下限と同じ値 */
 const BASE_ROOT_FONT_SIZE = 16
 
@@ -64,6 +74,14 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
    * 動くたびに描き直さないよう、state ではなく要素の位置を直接動かす。
    */
   const eraserRef = useRef<HTMLDivElement>(null)
+  /**
+   * 書いた線(キャンバスの CSS ピクセル)。英単語の自動判定で読む。
+   * 消しゴムでこすったところは点を取り除き、そこで線を切る。絵だけ消して線を残すと、
+   * 消したはずの字まで読んでしまう。
+   */
+  const strokesRef = useRef<Stroke[]>([])
+  /** 消しゴムが前にいた場所。動いたあいだの道のりをまとめて消すため */
+  const lastEraseRef = useRef<Point | null>(null)
 
   /**
    * 表示サイズに合わせて描画バッファを取り直す(高解像度ディスプレイ対応)。
@@ -150,6 +168,25 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
     placeEraser(inset, height - inset)
   }, [erasing])
 
+  /** 消しゴムが from から to へ動いたあいだに触れた線の点を取り除く */
+  const eraseAlong = (to: Point) => {
+    const from = lastEraseRef.current ?? to
+    lastEraseRef.current = to
+    // 消える丸の半径に、書いた線の太さの半分を足す(線の縁にかかっただけで絵からは消えるため)
+    const reach = (scaledLineWidth() * ERASER_SCALE) / 2 + scaledLineWidth() / 2
+    strokesRef.current = strokesRef.current.flatMap((stroke) => {
+      const pieces: Stroke[] = [[]]
+      for (const point of stroke) {
+        if (distanceToSegment(point, from, to) <= reach) {
+          if (pieces.at(-1)?.length) pieces.push([])
+        } else {
+          pieces.at(-1)?.push(point)
+        }
+      }
+      return pieces.filter((piece) => piece.length > 0)
+    })
+  }
+
   const startStroke = (event: React.PointerEvent<HTMLCanvasElement>) => {
     if (disabled) return
     if (erasing) moveEraser(event)
@@ -172,6 +209,10 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
       // 触れただけでも、その場所は消す(長さ0の線は丸い先端だけが描かれる)
       context.lineTo(x, y)
       context.stroke()
+      lastEraseRef.current = null
+      eraseAlong({ x, y })
+    } else {
+      strokesRef.current.push([{ x, y }])
     }
   }
 
@@ -185,8 +226,13 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
     const { x, y } = positionOf(event)
     context.lineTo(x, y)
     context.stroke()
-    // 書いたと数えるのは線を引いたとき。触れただけ(タップ)では何も残らないので数えない
-    if (!erasing) setHasStroke(true)
+    if (erasing) {
+      eraseAlong({ x, y })
+    } else {
+      strokesRef.current.at(-1)?.push({ x, y })
+      // 書いたと数えるのは線を引いたとき。触れただけ(タップ)では何も残らないので数えない
+      setHasStroke(true)
+    }
   }
 
   const endStroke = () => {
@@ -196,6 +242,7 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
     if (erasing && isBlank()) {
       setHasStroke(false)
       setErasing(false)
+      strokesRef.current = []
     }
   }
 
@@ -228,6 +275,7 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
   const clearAll = () => {
     const canvas = canvasRef.current
     canvas?.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height)
+    strokesRef.current = []
     setHasStroke(false)
     setErasing(false)
   }
@@ -308,7 +356,8 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
         ) : (
           <button
             type="button"
-            onClick={() => onSubmit?.(exportImage())}
+            // タップしただけの線(点1つ)は絵に何も残らないので、読み取りにも渡さない
+            onClick={() => onSubmit?.(exportImage(), strokesRef.current.filter((stroke) => stroke.length > 1))}
             // 消している途中で出すと、消し残しに気づかないまま答えになる
             disabled={disabled || !hasStroke || erasing}
             className="min-h-14 flex-1 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
