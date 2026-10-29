@@ -3,20 +3,15 @@ import { Navigate, useParams } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { PlayFinished, PlayProgress } from '@/components/PlayFrame'
 import { TraceCanvas } from '@/components/TraceCanvas'
-import {
-  ENDLESS_TRACE_SETS,
-  isTraceSet,
-  traceRound,
-  traceSession,
-  type TraceItem,
-} from '@/features/trace'
+import { isTraceSet, traceSession, type TraceItem } from '@/features/trace'
 import { useCopy } from '@/hooks/useAudienceMode'
 
 /** 「できた!」を見せておく時間(ms)。押さなくても次へ進む */
 const CELEBRATE_MS = 1100
 
 /**
- * なぞりがき。こども向けのあそびで、おとなが小1・2の漢字を選んだときもここに来る。
+ * なぞりがき(こども向けのあそび。図形とひらがな)。
+ * 小1・小2の漢字のなぞり書きは、ここではなく出題画面で出す(features/trace/questions)。
  *
  * 字を書けない・読めない年齢も来るので、こたえかたも難易度も選ばせず、
  * 押したらすぐ始まる。正誤も出さない。なぞれたら次、それだけ。
@@ -29,10 +24,8 @@ export function TracePage() {
   const { setId } = useParams<{ setId: string }>()
   const copy = useCopy()
 
-  /** やめるまで続けるか(漢字)。続けるときは、出し切る前に次の一巡を足していく */
-  const endless = isTraceSet(setId) && ENDLESS_TRACE_SETS.includes(setId)
   const [items, setItems] = useState<TraceItem[]>(() =>
-    isTraceSet(setId) ? (endless ? traceRound(setId) : traceSession(setId)) : [],
+    isTraceSet(setId) ? traceSession(setId) : [],
   )
   const [index, setIndex] = useState(0)
   /** なぞり終えて「できた!」を見せている間 */
@@ -55,8 +48,6 @@ export function TracePage() {
     setCelebrating(true)
     timer.current = window.setTimeout(() => {
       setCelebrating(false)
-      // 続けるときは、最後の字の次に混ぜ直した一巡を足す(終わりの画面には行かない)
-      if (endless && index + 1 >= items.length) setItems((current) => [...current, ...traceRound(setId)])
       setIndex((current) => current + 1)
     }, CELEBRATE_MS)
   }
@@ -77,7 +68,7 @@ export function TracePage() {
 
   return (
     <AppShell fitViewport exitTo="/genres">
-      <PlayProgress total={endless ? undefined : items.length} done={index} />
+      <PlayProgress total={items.length} done={index} />
 
       <p className="mt-3 shrink-0 text-center text-2xl font-bold">{item.label}</p>
 

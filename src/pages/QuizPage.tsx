@@ -11,6 +11,7 @@ import { MemoIcon, MemoPad } from '@/components/MemoPad'
 import { WordForm, type WordSlot } from '@/components/WordForm'
 import { WordInput, type WordPart } from '@/components/WordInput'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
+import { FreeTraceCanvas } from '@/components/FreeTraceCanvas'
 import { HintList } from '@/components/HintList'
 import { NumberInput } from '@/components/NumberInput'
 import { PartsInput } from '@/components/PartsInput'
@@ -18,6 +19,7 @@ import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { answerChoicesOf, findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
+import type { TraceJudgement } from '@/features/trace/judge'
 import {
   answerFromSteps,
   columnScript,
@@ -166,7 +168,10 @@ export function QuizPage() {
 
   const modeParam = searchParams.get('mode')
   const inputMode: InputMode =
-    modeParam === 'typing' || modeParam === 'handwriting' || modeParam === 'assemble'
+    modeParam === 'typing' ||
+    modeParam === 'handwriting' ||
+    modeParam === 'assemble' ||
+    modeParam === 'trace'
       ? modeParam
       : (genre && answerChoicesOf(genre.id, difficulty)[0]?.inputMode) || 'handwriting'
 
@@ -267,7 +272,7 @@ export function QuizPage() {
     結果画面など他の画面では、これまでどおり長押しできる。
   */
   useEffect(() => {
-    if (inputMode !== 'handwriting') return
+    if (inputMode !== 'handwriting' && inputMode !== 'trace') return
     const root = document.documentElement
     const stopMenu = (event: Event) => event.preventDefault()
     root.classList.add('no-press-menu')
@@ -301,10 +306,41 @@ export function QuizPage() {
     return <Navigate to="/genres" replace />
   }
 
+  /** 出題がお手本の字そのものか(組み立て・なぞり書き)。出題語として上に出さない */
+  const showsModel = Boolean(question.modelPrompt || inputMode === 'trace')
+
+  /**
+   * なぞり書きの判定を、結果画面に添える一言にする。多すぎると読まれないので3つまで。
+   * 形のずれと書けていない画は、どの画かを言う(結果の絵でも赤く示す)。
+   */
+  const traceNotes = (judgement: TraceJudgement): string[] => {
+    const { notes } = copy.traceWrite
+    // 半分以上の画がずれたときは、全体として伝える。ずれた線は隣の画とみなされることがあり、
+    // 1画ずつ言うと「書いたのに書けていない」のような、合わない一言が混ざる
+    const offCount = judgement.checks.filter((check) => check.shape === 'off').length
+    if (offCount * 2 >= judgement.checks.length) return [notes.overall]
+    const lines: string[] = []
+    if (judgement.written !== judgement.checks.length) {
+      lines.push(notes.count(judgement.written, judgement.checks.length))
+    }
+    judgement.checks.forEach((check, index) => {
+      if (check.written === null) lines.push(notes.missing(index + 1))
+      else if (check.shape === 'off') lines.push(notes.shape(index + 1))
+    })
+    if (judgement.orderWrong) lines.push(notes.order)
+    judgement.checks.forEach((check, index) => {
+      if (check.reversed) lines.push(notes.reversed(index + 1))
+    })
+    if (judgement.extra > 0 && judgement.written === judgement.checks.length) lines.push(notes.extra)
+    return lines.length ? lines.slice(0, 3) : [notes.great]
+  }
+
   const finish = async (
     result: JudgeResult,
     hintsUsed: number,
     submission: ResultSubmission,
+    /** 結果画面に添える一言(なぞり書きの、どこを直すか) */
+    notes?: string[],
   ) => {
     const answer: AnswerRecord = {
       questionId: question.id,
@@ -320,8 +356,8 @@ export function QuizPage() {
 
     const state: ResultState = {
       result,
-      // お手本を見せる問題は、出題がお手本の字そのもの。結果ではお手本と同じ字が二重に並ぶので出さない
-      prompt: question.modelPrompt ? '' : question.prompt,
+      // お手本を見せる問題・なぞり書きは、出題がお手本の字そのもの。結果ではお手本と同じ字が二重に並ぶので出さない
+      prompt: showsModel ? '' : question.prompt,
       promptReading: question.promptReading,
       work: question.work,
       // 文章題は、おてほんに単位を添える(「75%」「時速 60km」)
@@ -333,6 +369,7 @@ export function QuizPage() {
       topic,
       // 自分が書いた・打ったこたえを結果画面で見せる
       submission,
+      notes,
       // やめるまで続ける。出題セットを出し切ったら、次に入ったとき混ぜ直したセットで始まる(useQuizSession)
       hasNext: true,
       currentStreak: next.currentStreak,
@@ -353,8 +390,8 @@ export function QuizPage() {
 
     const state: ResultState = {
       result: { verdict: 'passed', isCorrect: false, answer: question.answer },
-      // お手本を見せる問題は、出題がお手本の字そのもの。結果ではお手本と同じ字が二重に並ぶので出さない
-      prompt: question.modelPrompt ? '' : question.prompt,
+      // お手本を見せる問題・なぞり書きは、出題がお手本の字そのもの。結果ではお手本と同じ字が二重に並ぶので出さない
+      prompt: showsModel ? '' : question.prompt,
       promptReading: question.promptReading,
       work: question.work,
       // 文章題は、おてほんに単位を添える(「75%」「時速 60km」)
@@ -754,7 +791,7 @@ export function QuizPage() {
         紙の筆算と同じで、式と答えを書く場所が隣り合っていたほうが解きやすい。
         思い出す系のジャンルは、先に出題語を見て考える流れなので上のまま。
       */}
-      {!showsPromptBelow && !question.modelPrompt && (
+      {!showsPromptBelow && !showsModel && (
         <PromptBlock question={question} layout={layout} caption={promptCaption} />
       )}
 
@@ -772,7 +809,8 @@ export function QuizPage() {
         お手本を見せる問題(小1・小2の組み立て)は、ヒントのかわりにお手本の字を真ん中に大きく出す。
         熟語が無いので、出せるヒントも無い。
       */}
-      {question.modelPrompt ? (
+      {/* なぞり書きは、お手本が書く場所の中に出るので、ここには何も置かない */}
+      {inputMode === 'trace' ? null : question.modelPrompt ? (
         <section className="flex min-h-0 flex-1 flex-col items-center justify-center text-center select-none">
           {!recalled && (
             <>
@@ -813,7 +851,7 @@ export function QuizPage() {
       */}
       <section
         className={`flex min-h-0 flex-col ${
-          writesInBoxes && !selfReport
+          (writesInBoxes && !selfReport) || inputMode === 'trace'
             ? 'flex-1 pt-2'
             : `mt-auto flex-2 pt-4 ${writesInBoxes ? 'justify-center' : 'justify-end'}`
         }`}
@@ -1039,6 +1077,26 @@ export function QuizPage() {
                 key={`handwriting-${question.id}`}
                 onSubmit={(image, strokes) => void judgeWrittenWord(image, strokes)}
                 disabled={readingWord}
+              />
+            )}
+            {inputMode === 'trace' && question.strokes && (
+              <FreeTraceCanvas
+                key={`trace-${question.id}`}
+                label={question.answer}
+                strokes={question.strokes}
+                onSubmit={(judgement, image) =>
+                  finish(
+                    {
+                      verdict: judgement.grade,
+                      // とてもきれい・きれいは正解(連続が続く)、もう少しは不正解として残す
+                      isCorrect: judgement.grade !== 'rough',
+                      answer: question.answer,
+                    },
+                    0,
+                    { kind: 'handwriting', imageDataUrl: image },
+                    traceNotes(judgement),
+                  )
+                }
               />
             )}
             {inputMode === 'assemble' && assembleLayout && (

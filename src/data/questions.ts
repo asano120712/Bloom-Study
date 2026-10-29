@@ -67,13 +67,18 @@ export function questionsOf(genreId: GenreId): Promise<Question[]> {
   const cached = loaded.get(genreId)
   if (cached) return cached
 
-  const loading = LOADERS[genreId]().then((module) => {
+  const loading = Promise.all([
+    LOADERS[genreId](),
+    // 小1・小2のなぞり書き。お手本の線(150KB ほど)を持つので、漢字のときだけ読む
+    genreId === 'kanji' ? import('@/features/trace/questions').then((m) => m.traceQuestions) : [],
+  ]).then(([module, traces]) => {
     const generated = module.default.questions as Question[]
     const manual = MANUAL_QUESTIONS.filter((question) => question.genreId === genreId)
     return [
       ...manual,
       // 小1・小2の組み立て(お手本を見て組む)。部品のデータから作る
       ...(genreId === 'kanji' ? buildQuestions : []),
+      ...traces,
       // 手で書いたものを優先する(同じ答えがあれば生成側を捨てる)
       ...generated.filter((question) => !manualAnswers.has(question.answer)),
     ]

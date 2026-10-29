@@ -7,18 +7,16 @@ import { BloomMark } from './BloomMark'
  *
  * こどもは字や数を読めない年齢も来るので、できた数を花で見せ、終わりは花が喜ぶ。
  * おとな(小1・2の漢字を選んだとき)は、出題と同じく「何問目」を字で出し、
- * やめるまで続くとき(total が無いとき)は全部の数を出さずに「何問目」だけにする。
  * 終わりも結果画面と同じく落ち着いた見せ方にする(喜ぶ顔はこども向けだけ)。
  */
-export function PlayProgress({ total, done }: { total?: number; done: number }) {
+export function PlayProgress({ total, done }: { total: number; done: number }) {
   const copy = useCopy()
   const isKids = useAudienceMode() === 'kids'
 
-  // 終わりの無いときは、花を並べられないので、こどもでも数で出す
-  if (!isKids || total === undefined) {
+  if (!isKids) {
     return (
       <p aria-live="polite" className="shrink-0 pt-1 text-center text-sm font-bold text-ink-600">
-        {total === undefined ? copy.play.count(done + 1) : copy.play.progress(Math.min(done + 1, total), total)}
+        {copy.play.progress(Math.min(done + 1, total), total)}
       </p>
     )
   }

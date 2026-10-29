@@ -37,6 +37,8 @@ export interface ResultState {
   topic?: MathTopic
   /** 自分が書いた・打ったこたえ。パスしたときは無い */
   submission?: ResultSubmission
+  /** 判定に添える一言(なぞり書きの、どこを直すか) */
+  notes?: string[]
   hasNext: boolean
   currentStreak: number
 }
@@ -93,7 +95,7 @@ export function ResultPage() {
 
   if (!state) return <Navigate to="/genres" replace />
 
-  const { result, prompt, promptReading, work, answerText, submission, hasNext, currentStreak } = state
+  const { result, prompt, promptReading, work, answerText, submission, notes, hasNext, currentStreak } = state
   const canReadAloud = Boolean(speechLang) && canSpeak()
 
   return (
@@ -113,6 +115,14 @@ export function ResultPage() {
         >
           {copy.verdicts[result.verdict]}
         </p>
+
+        {notes && notes.length > 0 && (
+          <ul className="-mt-3 flex flex-col gap-1 text-sm text-ink-600">
+            {notes.map((note) => (
+              <li key={note}>{note}</li>
+            ))}
+          </ul>
+        )}
 
         <div className="w-full rounded-3xl bg-bloom-50 px-5 py-6">
           {/* 出題が無いのは、お手本の字を見せる問題(小1・小2の組み立て)。お手本と同じ字なので出さない */}
