@@ -4,6 +4,7 @@ import { guessDigit, guessLetter, type Guess } from '@/features/recognize'
 import { addSample, clearSamples, packInk, readSamples, readWriter, writeWriter } from '@/features/recognize/samples'
 import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
 import { RecognizePractice } from './RecognizePractice'
+import { RecognizeKanji } from './RecognizeKanji'
 import { RecognizeWords } from './RecognizeWords'
 
 /**
@@ -21,8 +22,11 @@ const CELL = 120
 const LINE_WIDTH = 6
 
 export function RecognizeLabPage() {
-  /** practice = お題を書いて自分の字を覚える、words = 英単語を1枚に書いて読む、try = 自由に書いて読み・外れた字を集める */
-  const [tab, setTab] = useState<'practice' | 'words' | 'try'>('practice')
+  /**
+   * practice = お題を書いて自分の字を覚える、words = 英単語を1枚に書いて読む、
+   * kanji = 漢字を書いて答えの形か見る、try = 自由に書いて読み・外れた字を集める
+   */
+  const [tab, setTab] = useState<'practice' | 'words' | 'kanji' | 'try'>('practice')
   /** 書いた人(記号でよい)。送る字と英単語に付ける */
   const [writer, setWriter] = useState(readWriter)
 
@@ -50,9 +54,10 @@ export function RecognizeLabPage() {
       <div className="mt-4 flex gap-1 rounded-full border-2 border-bloom-200 p-1">
         {(
           [
-            ['practice', '練習して覚える'],
+            ['practice', '練習'],
             ['words', '英単語'],
-            ['try', '試す・集める'],
+            ['kanji', '漢字'],
+            ['try', '集める'],
           ] as const
         ).map(([id, name]) => (
           <button
@@ -72,6 +77,8 @@ export function RecognizeLabPage() {
         <RecognizePractice />
       ) : tab === 'words' ? (
         <RecognizeWords writer={writer} />
+      ) : tab === 'kanji' ? (
+        <RecognizeKanji writer={writer} />
       ) : (
         <TryPanel writer={writer} />
       )}
