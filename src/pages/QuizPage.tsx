@@ -28,6 +28,7 @@ import {
   type ColumnStep,
 } from '@/features/math'
 import { readCells } from '@/features/recognize'
+import { judgeKanji, kanjiShapes } from '@/features/recognize/kanji'
 import { lettersModel } from '@/features/recognize/model'
 import { judgeWord, type Stroke } from '@/features/recognize/word'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
@@ -49,7 +50,7 @@ import {
 } from '@/types'
 import { shuffleWithSeed } from '@/utils/shuffle'
 import type { ResultState, ResultSubmission } from './ResultPage'
-import { AUTO_JUDGE_ENGLISH } from '@/config'
+import { AUTO_JUDGE_ENGLISH, AUTO_JUDGE_KANJI } from '@/config'
 
 /**
  * 自動で「せいかい」にしてよい自信の下限。
@@ -185,8 +186,10 @@ export function QuizPage() {
   const [selfReport, setSelfReport] = useState<{
     hintsUsed: number
     image: string
-    /** 読み取れた数(計算)か単語(英単語)。読み取りに回さなかった(漢字の)ときは無い */
+    /** 読み取れた数(計算)か単語(英単語)・漢字。読み取りに回さなかったときは無い */
     read?: string
+    /** 読み取りに回したが、何に見えたかを出せなかった(答えにも似た字にも近くなかった) */
+    unread?: boolean
     /**
      * 読めたものが正解と同じだった(読み取りの自信が足りずに確かめてもらうとき)。
      * 言い方を変えて、なぜ確かめるのかを伝える
@@ -245,12 +248,17 @@ export function QuizPage() {
 
   /** 英単語を手書きで答えて、書いた線から自動で判定するか */
   const readsWords = AUTO_JUDGE_ENGLISH && genre?.id === 'english' && inputMode === 'handwriting'
-  /** 書いた英単語を読み取っているあいだ。「かけた」を二度押させない */
+  /** 漢字を手書きで答えて、書いた線から形を見て自動で判定するか */
+  const readsKanji = AUTO_JUDGE_KANJI && genre?.id === 'kanji' && inputMode === 'handwriting'
+  /** 書いた英単語・漢字を読み取っているあいだ。「かけた」を二度押させない */
   const [readingWord, setReadingWord] = useState(false)
-  // 英字のモデル(104KB)を先に読んでおく。1問めの「かけた」で待たせないため
+  // 英字のモデル(104KB)・漢字のお手本(1.1MB)を先に読んでおく。1問めの「かけた」で待たせないため
   useEffect(() => {
     if (readsWords) void lettersModel()
   }, [readsWords])
+  useEffect(() => {
+    if (readsKanji) void kanjiShapes()
+  }, [readsKanji])
 
   /*
     手書きで答えるあいだは、画面全体で長押しのメニューと文字の選択を止める。
@@ -502,7 +510,8 @@ export function QuizPage() {
    * 自信(いちばん怪しいマスの値)が足りないときも、同じく本人に預ける。
    */
   /**
-   * 手書きの英単語を、書いた線から読み取って判定する(AUTO_JUDGE_ENGLISH のとき)。
+   * 手書きの英単語・漢字を、書いた線から読み取って判定する(AUTO_JUDGE_ENGLISH / AUTO_JUDGE_KANJI のとき)。
+   * 英単語は1字ずつ読んで答えと比べ、漢字は答えの漢字と形の似た漢字のお手本と形を比べる。
    *
    * 答え(か別解)だと自信を持って読めたときだけ、そのまま「せいかい」にする。
    * 読めなかったときは、これまでと同じ自己申告の画面に回す。読み取りだけで「ざんねん」にはしない
@@ -512,7 +521,7 @@ export function QuizPage() {
    */
   const judgeWrittenWord = async (image: string, strokes: Stroke[]): Promise<void> => {
     const hintsUsed = revealedCount
-    if (!readsWords || strokes.length === 0) {
+    if (!(readsWords || readsKanji) || strokes.length === 0) {
       setSelfReport({ hintsUsed, image })
       return
     }
@@ -521,7 +530,9 @@ export function QuizPage() {
       /^[a-z]+$/.test(answer),
     )
     // 読み取りで何か起きても、自己申告に回せば答えられる
-    const judged = await judgeWord(strokes, answers).catch(() => null)
+    const judged = await (readsKanji ? judgeKanji(strokes, question.answer) : judgeWord(strokes, answers)).catch(
+      () => null,
+    )
     setReadingWord(false)
     if (judged?.accepted) {
       finish({ verdict: 'correct', isCorrect: true, answer: question.answer }, hintsUsed, {
@@ -533,7 +544,7 @@ export function QuizPage() {
     setSelfReport(
       judged?.read
         ? { hintsUsed, image, read: judged.read, readMatches: judged.likely }
-        : { hintsUsed, image },
+        : { hintsUsed, image, unread: true },
     )
   }
 
@@ -826,6 +837,7 @@ export function QuizPage() {
                   />
                 </p>
               )}
+              {selfReport.unread && <p className="mt-3 text-sm text-ink-600">{copy.quiz.readUnknown}</p>}
             </div>
             <div className="flex gap-3">
               <button
