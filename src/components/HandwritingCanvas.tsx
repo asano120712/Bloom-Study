@@ -54,7 +54,7 @@ function scaledLineWidth(): number {
 
 /**
  * 手書き入力キャンバス。外部ライブラリを使わず Canvas API のみで実装する。
- * OCR による自動判定は行わない(機能要件書 2.4 の通り自己申告方式)。
+ * ここでは線を描くだけで、字の読み取りはしない。読み取りと判定は、書いた線や絵を受け取った側で行う。
  */
 export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: HandwritingCanvasProps) {
   const copy = useCopy()
@@ -271,7 +271,7 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
    * 書いた字を PNG にして返す。キャンバスの背景は透明なので、
    * 結果画面のどこに置いても読めるよう、白地に合成してから書き出す。
    */
-  /** 全部消す(メモだけ)。答えのキャンバスでは消しゴムで部分ごとに消す */
+  /** 全部消す。メモの「全部消す」と、消しゴムを持ったままもう一度「消す」を押したとき */
   const clearAll = () => {
     const canvas = canvasRef.current
     canvas?.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height)
@@ -343,7 +343,13 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
         )}
       </div>
       <div className="flex shrink-0 gap-3">
-        <HandwritingTools erasing={erasing} onChange={setErasing} canErase={hasStroke} disabled={disabled} />
+        <HandwritingTools
+          erasing={erasing}
+          onChange={setErasing}
+          canErase={hasStroke}
+          onClearAll={clearAll}
+          disabled={disabled}
+        />
         {memo ? (
           <button
             type="button"
