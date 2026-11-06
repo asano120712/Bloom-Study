@@ -104,8 +104,8 @@ export function hasColumnForm(genreId: GenreId, difficulty: Difficulty, topic?: 
  *
  * クイズのこたえかた(inputMode)と、別画面のあそび(path)が並ぶ。
  * 小1・小2の漢字は熟語の穴うめが成立しない(出題文に出る相手の字が読めない)ので、
- * この学年だけ なぞりがき と くみたて に差し替える。くみたては、お手本を見せてから
- * パーツを組むクイズ(features/build)で、出題画面は小3以上と同じものを使う。
+ * この学年だけ なぞりがき と パズル に差し替える。パズルは、お手本を見せてから
+ * 部品を選ぶクイズ(data/questions.ts でパズルの一覧から作る)で、出題画面は小3以上と同じものを使う。
  */
 export type AnswerChoiceId = InputMode | 'trace' | 'build'
 
@@ -118,14 +118,13 @@ export interface AnswerChoice {
 }
 
 /**
- * パーツを組むを出せる難易度。
+ * パズルを出せる難易度。
  *
- * 組み立てには「左右・上下のどちらに割れるか」が要るが、KRADFILE は配置を持たない。
- * features/assemble の表に手で持っている字しか出せず、いまは小3〜小6ぶんしかない
- * (小3・4で58問、小5・6で41問)。中学以上を出すには、まず表を増やすこと。
- * ここを直さずに出すと、問題が0問のセットになって「おわり」画面へ飛ぶ。
+ * パズルには「左右・上下のどちらに割れるか」が要るが、KRADFILE は配置を持たない。
+ * KanjiVG の部品のまとまり(kvg:position)から生成したパズル(scripts/build-kanji-puzzles.ts)で、
+ * 小3から社会人まで、それぞれ 190〜270字ほどを出せる。
  */
-const ASSEMBLE_LEVELS: Difficulty[] = ['g34', 'g56']
+const ASSEMBLE_LEVELS: Difficulty[] = ['g34', 'g56', 'junior', 'senior', 'working']
 
 const QUIZ_CHOICES: Record<GenreId, AnswerChoice[]> = {
   // 手書きを先頭に置く。書いて思い出すのが基本のこたえかたなので、

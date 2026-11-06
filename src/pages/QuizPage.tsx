@@ -15,6 +15,7 @@ import { FreeTraceCanvas } from '@/components/FreeTraceCanvas'
 import { HintList } from '@/components/HintList'
 import { NumberInput } from '@/components/NumberInput'
 import { PartsInput } from '@/components/PartsInput'
+import { KanjiDrawing } from '@/components/PartTile'
 import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { answerChoicesOf, findGenre } from '@/data/genres'
@@ -266,9 +267,11 @@ export function QuizPage() {
   useEffect(() => {
     if (readsWords) void lettersModel()
   }, [readsWords])
+  // パズルのタイルも、同じお手本の線から描く
+  const drawsPuzzle = genre?.id === 'kanji' && inputMode === 'assemble'
   useEffect(() => {
-    if (readsKanji) void kanjiShapes()
-  }, [readsKanji])
+    if (readsKanji || drawsPuzzle) void kanjiShapes()
+  }, [readsKanji, drawsPuzzle])
 
   /*
     手書きで答えるあいだは、画面全体で長押しのメニューと文字の選択を止める。
@@ -827,7 +830,8 @@ export function QuizPage() {
             <>
               <p className="text-base text-ink-600">{copy.build.look}</p>
               <p className="animate-bloom-in mt-2 font-display text-7xl leading-none text-bloom-700">
-                {question.prompt}
+                {/* パズルは、部品と同じお手本の線で描く(フォントの字だと、部品だけ手書きのような線で浮く) */}
+                {question.puzzle ? <KanjiDrawing char={question.prompt} /> : question.prompt}
               </p>
             </>
           )}

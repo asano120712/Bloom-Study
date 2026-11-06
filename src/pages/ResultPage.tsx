@@ -7,6 +7,7 @@ import { ModelAnswer } from '@/components/ModelAnswer'
 import { findGenre } from '@/data/genres'
 import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
 import { useHasFinePointer } from '@/hooks/useHasFinePointer'
+import { PartTile } from '@/components/PartTile'
 import { canSpeak, speak } from '@/services/speech'
 import type { Difficulty, GenreId, InputMode, JudgeResult, MathTopic, PromptForm } from '@/types'
 import { quizPathOf } from '@/utils/quizPath'
@@ -221,8 +222,15 @@ function SubmissionView({
     return (
       <div className="w-full">
         <p className="text-sm text-ink-400">{labels.parts}</p>
-        <p className="mt-2 text-2xl font-bold text-ink-900">
-          {submission.parts.length ? submission.parts.join(' ＋ ') : '—'}
+        <p className="mt-2 flex items-center justify-center text-2xl font-bold text-ink-900">
+          {submission.parts.length
+            ? submission.parts.map((part, index) => (
+                <span key={part} className="inline-flex items-center">
+                  {index > 0 && <span className="mx-1">＋</span>}
+                  <PartTile id={part} />
+                </span>
+              ))
+            : '—'}
         </p>
       </div>
     )
