@@ -200,6 +200,26 @@ export interface Copy {
     reset: string
   }
   exit: { label: string; title: string; note: string; stay: string; leave: string }
+  /** こどもの記録(スタンプカード)。1日に決まった回数あそぶと、その日にスタンプが押される */
+  stampCard: {
+    title: string
+    /** 日曜はじまり */
+    weekdays: string[]
+    month: (month: number) => string
+    year: (year: number) => string
+    prev: string
+    next: string
+    /** 日のマスの読み上げ */
+    day: (day: number, stamped: boolean) => string
+    today: (count: number) => string
+    left: (left: number) => string
+    /** 1日の回数に届いたとき。スタンプカードを出す前に見せる */
+    reached: (goal: number) => string
+    got: string
+    already: string
+    monthTotal: (count: number) => string
+    play: string
+  }
 }
 
 const ADULT: Copy = {
@@ -470,6 +490,22 @@ const ADULT: Copy = {
     stay: '続ける',
     leave: 'やめる',
   },
+  stampCard: {
+    title: 'スタンプカード',
+    weekdays: ['日', '月', '火', '水', '木', '金', '土'],
+    month: (month) => `${month}月`,
+    year: (year) => `${year}年`,
+    prev: '前の月',
+    next: '次の月',
+    day: (day, stamped) => `${day}日${stamped ? '、スタンプあり' : ''}`,
+    today: (count) => `今日は ${count}回 遊んだ`,
+    left: (left) => `あと ${left}回で スタンプ`,
+    reached: (goal) => `${goal}回 たまった!`,
+    got: 'スタンプ ゲット!',
+    already: '今日のスタンプは ゲット済み',
+    monthTotal: (count) => `この月のスタンプ ${count}個`,
+    play: '遊びに行く',
+  },
 }
 
 const KIDS: Copy = {
@@ -534,7 +570,7 @@ const KIDS: Copy = {
   top: {
     lead: ['したのボタンで すすめるよ', 'きになったのを やってみよう！'],
     start: 'はじめる',
-    record: 'これまでの きろく',
+    record: 'スタンプカード',
   },
   genreSelect: {
     title: 'なにを べんきょう する？',
@@ -729,6 +765,22 @@ const KIDS: Copy = {
     note: 'いまの もんだいは とばされるよ。',
     stay: 'つづける',
     leave: 'やめる',
+  },
+  stampCard: {
+    title: 'スタンプカード',
+    weekdays: ['にち', 'げつ', 'か', 'すい', 'もく', 'きん', 'ど'],
+    month: (month) => `${month}がつ`,
+    year: (year) => `${year}ねん`,
+    prev: 'まえの つき',
+    next: 'つぎの つき',
+    day: (day, stamped) => `${day}にち${stamped ? '、スタンプ あり' : ''}`,
+    today: (count) => `きょうは ${count}かい あそんだよ`,
+    left: (left) => `あと ${left}かいで スタンプ！`,
+    reached: (goal) => `${goal}かい たまった！`,
+    got: 'スタンプ ゲット！',
+    already: 'きょうの スタンプは ゲットずみ！',
+    monthTotal: (count) => `この つきの スタンプ ${count}こ`,
+    play: 'あそびに いく',
   },
 }
 

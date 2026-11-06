@@ -3,7 +3,8 @@ import { AppShell } from '@/components/AppShell'
 import { PlayFinished, PlayProgress } from '@/components/PlayFrame'
 import { FigureView } from '@/components/FigureView'
 import { figureLabel, isSameFigure, matchSession, type Figure } from '@/features/match'
-import { useCopy } from '@/hooks/useAudienceMode'
+import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
+import { addPlay } from '@/services/stampCard'
 
 /** 「あたり!」を見せておく時間(ms)。押さなくても次へ進む */
 const CELEBRATE_MS = 1100
@@ -22,6 +23,7 @@ const HINT_AFTER = 2
  */
 export function MatchPage() {
   const copy = useCopy()
+  const isKids = useAudienceMode() === 'kids'
 
   const [problems, setProblems] = useState(matchSession)
   const [index, setIndex] = useState(0)
@@ -51,6 +53,8 @@ export function MatchPage() {
       return
     }
 
+    // こどものスタンプカード。当てた1問を1回と数える(当てるまで次へ進まない)
+    if (isKids) addPlay()
     setCelebrating(true)
     later(() => {
       setCelebrating(false)
@@ -71,7 +75,7 @@ export function MatchPage() {
   if (isFinished) {
     return (
       <AppShell>
-        <PlayFinished onRestart={restart} />
+        <PlayFinished onRestart={restart} played={problems.length} />
       </AppShell>
     )
   }
