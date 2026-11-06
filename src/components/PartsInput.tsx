@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import type { AssembleLayout } from '@/features/assemble'
 import { useCopy } from '@/hooks/useAudienceMode'
+import { KanjiDrawing, PartTile } from './PartTile'
 
 interface PartsInputProps {
   /** 下のトレイに並べるタイル(正解の2部品 + ダミー) */
@@ -294,7 +295,7 @@ export function PartsInput({
                       phase === 'placing' ? '' : JOIN_SHIFT[layout][slot]
                     }`}
                   >
-                    {tile}
+                    <PartTile id={tile} />
                   </button>
                 ) : (
                   // 小さいマスでは「つくり」が折り返すので、枠に収まる字面まで落とす
@@ -311,7 +312,8 @@ export function PartsInput({
         {phase === 'built' && assembled && (
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="animate-bloom-in font-display text-5xl leading-none text-bloom-700 [@media(min-height:780px)]:text-7xl">
-              {assembled}
+              {/* 部品を線で描くパズルは、組み上がった字も同じ線で描く */}
+              {tiles.some((tile) => tile.includes('|')) ? <KanjiDrawing char={assembled} /> : assembled}
             </span>
           </div>
         )}
@@ -322,6 +324,7 @@ export function PartsInput({
         {trayTiles.map((tile) => (
           <button
             key={tile}
+            data-tile={tile}
             type="button"
             disabled={locked}
             onPointerDown={(event) => onPointerDown(event, tile, 'tray')}
@@ -331,7 +334,7 @@ export function PartsInput({
               dragging?.from === 'tray' && dragging.tile === tile ? 'opacity-40' : ''
             }`}
           >
-            {tile}
+            <PartTile id={tile} />
           </button>
         ))}
       </div>
@@ -352,7 +355,7 @@ export function PartsInput({
           className="pointer-events-none fixed z-50 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl border-2 border-bloom-700 bg-white font-display text-5xl leading-none text-ink-900 shadow-lg"
           style={{ left: dragging.x, top: dragging.y }}
         >
-          {dragging.tile}
+          <PartTile id={dragging.tile} />
         </div>
       )}
     </div>
