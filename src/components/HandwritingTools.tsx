@@ -7,6 +7,11 @@ interface HandwritingToolsProps {
   onChange: (erasing: boolean) => void
   /** 消すものがあるか。何も書いていないあいだは、消しゴムを選ばせない */
   canErase: boolean
+  /**
+   * 消しゴムを持っているときに、もう一度「消す」を押したら全部消す。
+   * 渡さなければ、今までどおり持ち替えるだけ(計算のマスは1マスずつ消すので渡さない)。
+   */
+  onClearAll?: () => void
   disabled?: boolean
 }
 
@@ -16,9 +21,19 @@ interface HandwritingToolsProps {
  * 字だけの「けす」ボタン1つだと、押すと何が起きるのか(全部消えるのか)が分からず、
  * 押したあとも、いま書くのか消すのかが字の入れ替わりでしか見えなかった。
  * お絵かきアプリと同じく道具を2つ並べ、持っているほうに色を付ける。
+ *
+ * onClearAll があるときは、消しゴムを持ったままもう一度押すと全部消す。
+ * 押す前から分かるように、持っているあいだはボタンの字を「全消し」に変えておく。
  */
-export function HandwritingTools({ erasing, onChange, canErase, disabled = false }: HandwritingToolsProps) {
+export function HandwritingTools({
+  erasing,
+  onChange,
+  canErase,
+  onClearAll,
+  disabled = false,
+}: HandwritingToolsProps) {
   const copy = useCopy()
+  const clearsAll = erasing && onClearAll !== undefined
   return (
     <div role="group" aria-label={copy.handwriting.tools} className="flex shrink-0 gap-1 rounded-full border-2 border-bloom-200 p-1">
       <ToolButton
@@ -30,11 +45,12 @@ export function HandwritingTools({ erasing, onChange, canErase, disabled = false
         disabled={disabled}
       />
       <ToolButton
-        label={copy.handwriting.eraser}
+        label={clearsAll ? copy.handwriting.clearAll : copy.handwriting.eraser}
+        ariaLabel={clearsAll ? copy.handwriting.clearAllAria : undefined}
         icon={<EraserIcon className="size-6" />}
         active={erasing}
         activeClassName="bg-warm-500 text-white"
-        onClick={() => onChange(true)}
+        onClick={() => (clearsAll ? onClearAll() : onChange(true))}
         disabled={disabled || !canErase}
       />
     </div>
@@ -43,6 +59,8 @@ export function HandwritingTools({ erasing, onChange, canErase, disabled = false
 
 interface ToolButtonProps {
   label: string
+  /** 字だけでは押したら何が起きるか伝わらないときの読み上げ */
+  ariaLabel?: string
   icon: ReactNode
   active: boolean
   activeClassName: string
@@ -50,11 +68,12 @@ interface ToolButtonProps {
   disabled: boolean
 }
 
-function ToolButton({ label, icon, active, activeClassName, onClick, disabled }: ToolButtonProps) {
+function ToolButton({ label, ariaLabel, icon, active, activeClassName, onClick, disabled }: ToolButtonProps) {
   return (
     <button
       type="button"
       onClick={onClick}
+      aria-label={ariaLabel}
       disabled={disabled}
       aria-pressed={active}
       // SE の幅でも「かけた」の場所を残すため、絵の下に小さく字を添える縦並びにする
