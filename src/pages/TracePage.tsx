@@ -4,7 +4,8 @@ import { AppShell } from '@/components/AppShell'
 import { PlayFinished, PlayProgress } from '@/components/PlayFrame'
 import { TraceCanvas } from '@/components/TraceCanvas'
 import { isTraceSet, traceSession, type TraceItem } from '@/features/trace'
-import { useCopy } from '@/hooks/useAudienceMode'
+import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
+import { addPlay } from '@/services/stampCard'
 
 /** 「できた!」を見せておく時間(ms)。押さなくても次へ進む */
 const CELEBRATE_MS = 1100
@@ -23,6 +24,7 @@ const CELEBRATE_MS = 1100
 export function TracePage() {
   const { setId } = useParams<{ setId: string }>()
   const copy = useCopy()
+  const isKids = useAudienceMode() === 'kids'
 
   const [items, setItems] = useState<TraceItem[]>(() =>
     isTraceSet(setId) ? traceSession(setId) : [],
@@ -45,6 +47,8 @@ export function TracePage() {
   const isFinished = index >= items.length
 
   const complete = () => {
+    // こどものスタンプカード。なぞれた1字を1回と数える
+    if (isKids) addPlay()
     setCelebrating(true)
     timer.current = window.setTimeout(() => {
       setCelebrating(false)
@@ -61,7 +65,7 @@ export function TracePage() {
   if (isFinished) {
     return (
       <AppShell>
-        <PlayFinished onRestart={restart} />
+        <PlayFinished onRestart={restart} played={items.length} />
       </AppShell>
     )
   }

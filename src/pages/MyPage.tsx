@@ -1,11 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
 import { Loading } from '@/components/Loading'
 import { TRIAL_LIMIT } from '@/config'
 import { questionsOf } from '@/data/questions'
-import { useCopy } from '@/hooks/useAudienceMode'
+import { Confetti, StampCardBook, TodayMeter } from '@/components/StampCard'
+import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
+import { usePressStage } from '@/hooks/usePressStage'
 import { useStats } from '@/hooks/useStats'
+import {
+  STAMP_GOAL,
+  dayKey,
+  markCelebrated,
+  needsCelebration,
+  readStamps,
+  setTodayForTesting,
+} from '@/services/stampCard'
 import type { AnswerRecord } from '@/types'
 
 /**
@@ -56,7 +66,99 @@ function Stat({ label, value }: { label: string; value: string }) {
   )
 }
 
+/**
+ * 記録のページ。こどもモードではスタンプカード、一般モードでは正解数・連続・解答履歴を出す。
+ * こどものあそびは正誤の記録を残さないので、こどもに見せるのはスタンプカードだけにする。
+ */
 export function MyPage() {
+  return useAudienceMode() === 'kids' ? <KidsStampPage /> : <RecordPage />
+}
+
+/**
+ * こどものスタンプカード。今日のスタンプが押されたのに、まだ押すところを見ていなければ
+ * (あそびの途中で10回目に届いて、そのままやめたときなど)、開いたときに押す。
+ */
+function KidsStampPage() {
+  // 試し用のボタンで今日の回数を変えたら、読み直して作り直す
+  const [version, setVersion] = useState(0)
+  return <KidsStampCard key={version} onTestChange={() => setVersion((current) => current + 1)} />
+}
+
+function KidsStampCard({ onTestChange }: { onTestChange: () => void }) {
+  const copy = useCopy()
+  const [data] = useState(readStamps)
+  const [celebrate] = useState(() => needsCelebration(data))
+  const [got, setGot] = useState(false)
+  const finishPress = useCallback(() => {
+    markCelebrated()
+    setGot(true)
+  }, [])
+  const pressStage = usePressStage(celebrate, 600, finishPress)
+  const today = data.plays[dayKey()] ?? 0
+
+  return (
+    <AppShell>
+      <h1 className="text-center text-2xl font-bold">{copy.stampCard.title}</h1>
+
+      <div className="relative mt-6">
+        <StampCardBook plays={data.plays} pressStage={pressStage} />
+        {got && <Confetti />}
+      </div>
+
+      <div className="mt-6 flex flex-col items-center gap-2 text-center">
+        <TodayMeter count={today} />
+        <p className="text-base font-bold text-ink-600">{copy.stampCard.today(today)}</p>
+        {/* 押す演出のあいだは何も出さない(押す前に「ゲットずみ」と出ると、順番が逆になる) */}
+        <p
+          aria-live="polite"
+          className={`min-h-7 text-lg font-bold text-warm-600 ${got ? 'animate-got-pop' : ''} ${
+            celebrate && !got ? 'invisible' : ''
+          }`}
+        >
+          {got
+            ? copy.stampCard.got
+            : today >= STAMP_GOAL
+              ? copy.stampCard.already
+              : copy.stampCard.left(STAMP_GOAL - today)}
+        </p>
+      </div>
+
+      <Link
+        to="/genres"
+        className="mt-8 flex min-h-16 items-center justify-center rounded-full bg-bloom-700 text-xl font-bold text-white"
+      >
+        {copy.stampCard.play}
+      </Link>
+
+      {/*
+        開発中だけの試し用。スタンプの演出を何度でも見られるように、今日の回数を変える。
+        本番のビルドには出ない(子どもが押して、その日のスタンプを消してしまわないように)。
+      */}
+      {import.meta.env.DEV && (
+        <div className="mt-6 flex gap-2">
+          {[
+            { label: '今日をリセット(開発用)', count: 0 },
+            { label: '今日をあと1回にする(開発用)', count: STAMP_GOAL - 1 },
+          ].map(({ label, count }) => (
+            <button
+              key={label}
+              type="button"
+              onClick={() => {
+                setTodayForTesting(count)
+                onTestChange()
+              }}
+              className="flex min-h-12 flex-1 items-center justify-center rounded-full border-2 border-dashed border-ink-400 px-2 text-xs font-bold text-ink-600"
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+    </AppShell>
+  )
+}
+
+function RecordPage() {
   const { stats, isLoading, reset } = useStats()
   const copy = useCopy()
   const promptTexts = usePromptTexts(stats.history)
