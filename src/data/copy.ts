@@ -114,6 +114,11 @@ export interface Copy {
      * 「同じなのになぜ聞くの」とならないよう、確かめてほしい理由を言う
      */
     readAsUnsure: (text: string) => string
+    /**
+     * 読み取りに回したが、答えにも似た字にも近くなかった(何に見えたかを出せない)とき。
+     * 何も出さないと、読み取ったのかどうかも分からないので、確かめてほしいことだけ伝える
+     */
+    readUnknown: string
     answerLabel: string
     wrong: string
     right: string
@@ -371,6 +376,7 @@ const ADULT: Copy = {
     passAria: 'この問題をパスする',
     readAs: (text) => `書いた字は「${text}」に見えました`,
     readAsUnsure: (text) => `「${text}」に見えましたが、自信がありません。合っていたら「できた」を押してください`,
+    readUnknown: 'うまく読み取れませんでした。合っていたら「できた」を押してください',
     answerLabel: '答え',
     wrong: '違った',
     right: 'できた',
@@ -631,6 +637,7 @@ const KIDS: Copy = {
     passAria: 'この もんだいを パスする',
     readAs: (text) => `かいた じは「${text}」に みえたよ`,
     readAsUnsure: (text) => `「${text}」に みえたけど、すこし じしんが ないよ。あってたら「できた」を おしてね`,
+    readUnknown: 'うまく よみとれなかったよ。あってたら「できた」を おしてね',
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',

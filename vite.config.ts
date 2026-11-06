@@ -14,7 +14,8 @@ import tailwindcss from '@tailwindcss/vite'
  *
  * `apply: 'serve'` なので本番のビルドには入らない。受けるのも開発サーバーだけ。
  *
- * 1字ずつの見本(/dev/samples)と、英単語を書いた線(/dev/words)は、形が違うので別のファイルに貯める。
+ * 1字ずつの見本(/dev/samples)と、英単語を書いた線(/dev/words)、漢字を書いた線(/dev/kanji)は、
+ * 形が違うので別のファイルに貯める。
  *
  * 試し場の「送る」は端末に残っている見本を毎回全部送るので、手元で消した見本(書き損じなど)も
  * 次に送ったときに戻ってくる。消した見本の時刻を `<ファイル名>.removed.json` に並べておくと、受け取らない。
@@ -73,6 +74,7 @@ export default defineConfig({
     tailwindcss(),
     devSampleSink('/dev/samples', 'samples.json', '見本'),
     devSampleSink('/dev/words', 'words.json', '英単語'),
+    devSampleSink('/dev/kanji', 'kanji.json', '漢字'),
   ],
   resolve: {
     alias: {

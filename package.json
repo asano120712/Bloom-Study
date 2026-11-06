@@ -12,6 +12,7 @@
     "questions:english": "node scripts/build-english-questions.ts",
     "preview": "vite preview",
     "strokes": "node scripts/build-strokes.ts",
+    "shapes:kanji": "node scripts/build-kanji-shapes.ts",
     "parts:kanji": "node scripts/build-kanji-questions.ts --grades=1,2 --parts-only",
     "questions:math": "node scripts/build-math-questions.ts"
   },
