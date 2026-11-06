@@ -132,6 +132,9 @@ export interface Copy {
     /** 道具のボタンの字。絵の下に小さく添えるので、2〜3字に収める */
     pen: string
     eraser: string
+    /** 消しゴムを持っているあいだの消しゴムのボタンの字。もう一度押すと全部消える */
+    clearAll: string
+    clearAllAria: string
     done: string
     boxLabel: (place: number) => string
   }
@@ -394,6 +397,8 @@ const ADULT: Copy = {
     tools: '書く道具',
     pen: '書く',
     eraser: '消す',
+    clearAll: '全消し',
+    clearAllAria: 'もう一度押すと、書いたものを全部消す',
     done: '書けた',
     boxLabel: (place) => `答えの ${place} マス目`,
   },
@@ -652,6 +657,8 @@ const KIDS: Copy = {
     tools: 'どうぐ',
     pen: 'かく',
     eraser: 'けす',
+    clearAll: 'ぜんぶ',
+    clearAllAria: 'もういちど おすと、ぜんぶ けす',
     done: 'かけた',
     boxLabel: (place) => `こたえの ${place} マスめ`,
   },
