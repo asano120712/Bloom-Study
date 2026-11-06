@@ -7,6 +7,7 @@
 ```
 python3 -m pip install --user numpy      # 1度だけ。torch は使わない
 python3 scripts/train/train_digits.py    # MNIST を取得して学習 → 重みを書き出す
+python3 scripts/train/train_letters.py   # 英字(小文字)。先に EMNIST を .cache/emnist/gzip.zip に置く(emnist.py を参照)
 node scripts/check-recognizer.ts         # TS 側の推論が Python と同じ答えを出すか
 ```
 

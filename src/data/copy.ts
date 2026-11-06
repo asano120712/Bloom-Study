@@ -30,6 +30,28 @@ export interface Copy {
    * 絵文字は使わず、言葉そのもので正誤が分かるようにする(色だけに頼らない)。
    */
   verdicts: Record<JudgeVerdict, string>
+  /** 薄いお手本の上に書くなぞり書き(一般モードの漢字) */
+  traceWrite: {
+    guide: string
+    /** 書く場所の読み上げ。字が入る */
+    canvas: (char: string) => string
+    undo: string
+    clear: string
+    /** 次に書く画を示すかの切り替え */
+    showOrder: string
+    /** 結果画面に出す、どこを直すかの一言 */
+    notes: {
+      great: string
+      /** 半分以上の画がずれたとき。1画ずつ言うより、全体として伝える */
+      overall: string
+      shape: (stroke: number) => string
+      missing: (stroke: number) => string
+      reversed: (stroke: number) => string
+      order: string
+      extra: string
+      count: (written: number, expected: number) => string
+    }
+  }
   top: { lead: string[]; start: string; record: string }
   genreSelect: { title: string; note: string; back: string }
   /**
@@ -73,6 +95,12 @@ export interface Copy {
     close: string
   }
   quiz: {
+    /** 計算のメモ。見出しと、開くボタン(読み上げ)・閉じる・全部消す・下を透かすかの切り替え */
+    memo: string
+    memoOpen: string
+    memoClose: string
+    memoClear: string
+    memoSeeThrough: string
     /** 右上の進み具合。「3 れんぞく / 5 問め」 */
     progress: (streak: number, index: number) => string
     /** 分からない問題を飛ばす。答えは見せるが記録には残さない */
@@ -86,6 +114,11 @@ export interface Copy {
      * 「同じなのになぜ聞くの」とならないよう、確かめてほしい理由を言う
      */
     readAsUnsure: (text: string) => string
+    /**
+     * 読み取りに回したが、答えにも似た字にも近くなかった(何に見えたかを出せない)とき。
+     * 何も出さないと、読み取ったのかどうかも分からないので、確かめてほしいことだけ伝える
+     */
+    readUnknown: string
     answerLabel: string
     wrong: string
     right: string
@@ -104,12 +137,21 @@ export interface Copy {
     /** 道具のボタンの字。絵の下に小さく添えるので、2〜3字に収める */
     pen: string
     eraser: string
+    /** 消しゴムを持っているあいだの消しゴムのボタンの字。もう一度押すと全部消える */
+    clearAll: string
+    clearAllAria: string
     done: string
     boxLabel: (place: number) => string
   }
   typing: { placeholderTap: string; placeholderKey: string; inputLabel: string; submit: string }
   /** あそび(なぞりがき・おなじものさがし)で共通の言葉 */
-  play: { allDone: string; again: string; other: string }
+  play: {
+    allDone: string
+    again: string
+    other: string
+    /** 何問目か(おとなだけ。こどもは花の数で見せる) */
+    progress: (index: number, total: number) => string
+  }
   /** 数で答えるとき */
   number: {
     inputLabel: string
@@ -131,9 +173,11 @@ export interface Copy {
     shiftPoint: (places: number) => string
     /** 手書きの答えのマスで、小数点を打つ場所(読み上げ) */
     decimalPoint: string
+    /** 文章題の式と答えのマス。見出しと、空のマスに薄く出す名前 */
+    wordParts: { expression: string; answer: string; operator: string; number: string }
   }
   trace: { guide: string; done: string }
-  build: { look: string; answerIs: string }
+  build: { look: string }
   match: { question: string; correct: string; hint: string }
   result: {
     model: string
@@ -167,10 +211,10 @@ const ADULT: Copy = {
   activities: {
     english: { label: '英単語', description: '日本語の出題語を見て、英単語を思い出す' },
     kanji: { label: '漢字', description: '熟語の ◯ に入る漢字を書いて思い出す' },
-    math: { label: '計算', description: 'かけ算・わり算を、ヒントを見ながら解く' },
+    math: { label: '計算', description: 'たし算から文章題まで、筆算や式で解く' },
     'trace-shape': { label: 'なぞり書き(形)', description: '丸や三角を指でなぞる' },
     'trace-hiragana': { label: 'なぞり書き(ひらがな)', description: 'ひらがなを書き順どおりになぞる' },
-    'trace-kanji': { label: 'なぞり書き(漢字)', description: '小1・小2の漢字を書き順どおりになぞる' },
+    'trace-kanji': { label: 'なぞり書き(漢字)', description: '小1・小2の漢字を、薄いお手本の上に書く' },
     'build-kanji': { label: '漢字の組み立て', description: 'お手本を覚えてから、部品で漢字を組む' },
     match: { label: '違い探し', description: '少しだけ形が違う4つから、お手本と同じものを選ぶ' },
   },
@@ -182,7 +226,7 @@ const ADULT: Copy = {
     handwriting: { label: '手書き', note: '指でなぞって書く' },
     typing: { label: 'タイピング', note: 'キーボードで入力する' },
     assemble: { label: 'パーツを組む', note: 'パーツをスライドしてマスに組む' },
-    trace: { label: 'なぞり書き', note: 'お手本を書き順どおりになぞる' },
+    trace: { label: 'なぞり書き', note: '薄いお手本の上に書いて、きれいさを見る' },
     build: { label: '組み立て', note: 'お手本を覚えてから、部品で組む' },
     number: { label: '数字で答える', note: '数字キーボードで打つ' },
   },
@@ -205,6 +249,28 @@ const ADULT: Copy = {
     'self-correct': 'できた',
     'self-incorrect': '違った',
     passed: 'パスした',
+    neat: 'とてもきれい',
+    fair: 'きれい',
+    rough: 'もう少し',
+  },
+  traceWrite: {
+    // 小1・小2の字の練習なので、むずかしい漢字はひらがなにして、やわらかく誘う
+    // 狭い画面で言葉の途中から折り返さないよう、「、」のあとで改行する
+    guide: 'うすいおてほんの上に、\n書き順どおりに書いてみよう',
+    canvas: (char) => `${char}を書く`,
+    undo: '1画戻す',
+    clear: '全部消す',
+    showOrder: 'おてほんを表示',
+    notes: {
+      great: 'お手本どおりに書けています',
+      overall: '全体がお手本からずれています。薄い線の上をたどるように書こう',
+      shape: (stroke) => `${stroke}画目の形が、お手本からずれています`,
+      missing: (stroke) => `${stroke}画目が書けていません`,
+      reversed: (stroke) => `${stroke}画目の向きが逆です`,
+      order: '書き順が違うところがあります',
+      extra: 'お手本に無い線があります',
+      count: (written, expected) => `${expected}画の字を、${written}画で書いています`,
+    },
   },
   top: {
     lead: [
@@ -231,18 +297,21 @@ const ADULT: Copy = {
         '日本語の出題語が出ます。英単語を思い出して答えます。',
         '答え方は、手書きとタイピングから選べます。',
         'ヒントは時間がたつと1つずつ増えます。待つほどやさしくなります。',
-        '手書きは字を読み取りません。書けたら、自分で合っていたかを選びます。',
+        '手書きは書いた単語を読み取って、合っていればそのまま正解になります。読み取りに自信がないときは、自分で確かめます。',
       ],
       kanji: [
         '熟語の ◯ に入る漢字を1字答えます。読みも一緒に出ます。',
-        '小1・2は、なぞり書きと、パーツを組む遊びから選べます。',
+        '答え方は手書きです。小3〜6は、パーツを組む答え方も選べます。小1・2は、なぞり書きと組み立ての遊びになります。',
+        '手書きは書いた字を読み取って、合っていればそのまま正解になります。読み取りに自信がないときは、自分で確かめます。',
         'パーツを組むときは、へんとつくりの枠へスライドして入れます。',
       ],
       math: [
-        '2桁以上の計算は、筆算の形で出ます。',
+        '学年と、計算の種類を選んで始めます。ランダムにすると、いろいろな計算が混ざって出ます。',
+        '答え方は、数字キーボードと手書きから選べます。筆算でも、1行の式でも解けます。',
         '筆算は段ごと・位ごとに打ちます。上の見出しが、いま打つところを教えます。',
-        '間違えると赤い枠になります。正しく打ち直すと先へ進みます。',
-        '記録に残るのは答えのところだけです。途中の段を打ち直しても「できた」のままです。',
+        '間違えると赤い枠になります。正しく打ち直すと先へ進みます。記録に残るのは答えのところだけです。',
+        '手書きは、マスに1字ずつ書きます。書いた数を読み取って、合っていればそのまま正解になります。読み取りに自信がないときは、自分で確かめます。',
+        '右上のメモを開くと、紙の余白のように自由に書いて計算できます。',
       ],
       'trace-shape': [
         '光っている ● から、指でなぞります。',
@@ -253,8 +322,8 @@ const ADULT: Copy = {
         '1画なぞると、次の画の ● が光ります。',
       ],
       'trace-kanji': [
-        '光っている ● から、書き順どおりに指でなぞります。',
-        '小1・小2で習う漢字が出ます。',
+        '小1・小2で習う漢字が、薄いお手本で出ます。その上に、書き順どおりに書きます。',
+        '書けたら、形・向き・書き順をお手本と比べて、「とてもきれい」「きれい」「もう少し」で判定します。',
       ],
       'build-kanji': [
         'はじめにお手本の漢字が出ます。覚えたら先へ進みます。',
@@ -286,6 +355,8 @@ const ADULT: Copy = {
       fracAdd: '分数のたし算・ひき算',
       fracMul: '分数のかけ算・わり算',
       decimal: '小数のかけ算・わり算',
+      ratio: '割合(文章題)',
+      speed: '速さ(文章題)',
     },
     mixedTopic: { label: 'ランダム', note: '全部の種類を混ぜて出す' },
     topicExample: (expression) => `例 ${expression}`,
@@ -295,11 +366,17 @@ const ADULT: Copy = {
     close: '戻る',
   },
   quiz: {
+    memo: 'メモ',
+    memoOpen: '計算のメモを開く',
+    memoClose: '閉じる',
+    memoClear: '全部消す',
+    memoSeeThrough: '下を透かす',
     progress: (streak, index) => `${streak} 連続 / ${index} 問目`,
     pass: 'パス',
     passAria: 'この問題をパスする',
     readAs: (text) => `書いた字は「${text}」に見えました`,
     readAsUnsure: (text) => `「${text}」に見えましたが、自信がありません。合っていたら「できた」を押してください`,
+    readUnknown: 'うまく読み取れませんでした。合っていたら「できた」を押してください',
     answerLabel: '答え',
     wrong: '違った',
     right: 'できた',
@@ -326,6 +403,8 @@ const ADULT: Copy = {
     tools: '書く道具',
     pen: '書く',
     eraser: '消す',
+    clearAll: '全消し',
+    clearAllAria: 'もう一度押すと、書いたものを全部消す',
     done: '書けた',
     boxLabel: (place) => `答えの ${place} マス目`,
   },
@@ -335,7 +414,12 @@ const ADULT: Copy = {
     inputLabel: '入力中の答え',
     submit: '答え合わせ',
   },
-  play: { allDone: '全部できた!', again: 'もう一度', other: '他の遊び' },
+  play: {
+    allDone: '全部終わった!',
+    again: 'もう一度',
+    other: '他の遊び',
+    progress: (index, total) => `${index} / ${total} 問目`,
+  },
   number: {
     inputLabel: '入力中の答え',
     placeholder: '数字で答えよう',
@@ -348,9 +432,10 @@ const ADULT: Copy = {
     fractionParts: { whole: '整数', numerator: '分子', denominator: '分母' },
     shiftPoint: (places) => `小数点を ${places}桁右に移して割る`,
     decimalPoint: 'ここに小数点を打つ',
+    wordParts: { expression: '式', answer: '答え', operator: '記号を選ぶ(× か ÷)', number: '数' },
   },
-  trace: { guide: '光っている ● から指でなぞってね', done: 'できた!' },
-  build: { look: 'この漢字をよく見て、覚えよう', answerIs: '答えはこれ' },
+  trace: { guide: '光っている ● から、書き順どおりになぞろう', done: 'なぞれた!' },
+  build: { look: 'この漢字をよく見て、覚えよう' },
   match: {
     question: 'よく見て。どれと同じ?',
     correct: '当たり!',
@@ -397,10 +482,10 @@ const KIDS: Copy = {
   activities: {
     english: { label: 'えいご', description: 'にほんごを みて、えいごを おもいだそう' },
     kanji: { label: 'かんじ', description: '◯ に はいる かんじを かこう' },
-    math: { label: 'けいさん', description: 'ヒントを みながら かけざん・わりざん' },
+    math: { label: 'けいさん', description: 'たしざんから ぶんしょうだいまで とこう' },
     'trace-shape': { label: 'かたちを なぞろう', description: 'まる・さんかく・しかくを ゆびで なぞる' },
     'trace-hiragana': { label: 'ひらがなを なぞろう', description: 'ゆびで なぞって じを おぼえる' },
-    'trace-kanji': { label: 'かんじを なぞろう', description: 'ゆびで なぞって かんじを おぼえる' },
+    'trace-kanji': { label: 'かんじを なぞろう', description: 'うすい おてほんの うえに かこう' },
     'build-kanji': { label: 'かんじを くみたてよう', description: 'おぼえてから ぶひんで くみたてる' },
     match: { label: 'ちがい さがし', description: 'よく みて、おなじ かたちを さがそう' },
   },
@@ -412,7 +497,7 @@ const KIDS: Copy = {
     handwriting: { label: 'てがき', note: 'ゆびで かいて こたえる' },
     typing: { label: 'キーボード', note: 'もじを うって こたえる' },
     assemble: { label: 'ぶひんを くむ', note: 'ぶひんを うごかして マスに いれる' },
-    trace: { label: 'なぞる', note: 'おてほんを ゆびで なぞる' },
+    trace: { label: 'なぞる', note: 'うすい おてほんの うえに かく' },
     build: { label: 'くみたてる', note: 'おぼえてから ぶひんで くみたてる' },
     number: { label: 'すうじで こたえる', note: 'すうじの キーボードで うつ' },
   },
@@ -431,6 +516,26 @@ const KIDS: Copy = {
     'self-correct': 'できた！',
     'self-incorrect': 'ちがった',
     passed: 'パスしたよ',
+    neat: 'とても きれい！',
+    fair: 'きれい！',
+    rough: 'もうすこし',
+  },
+  traceWrite: {
+    guide: 'うすい おてほんの うえに、かきじゅんどおりに かこう',
+    canvas: (char) => `${char}を かく`,
+    undo: '1かく もどす',
+    clear: 'ぜんぶ けす',
+    showOrder: 'かきじゅんを みせる',
+    notes: {
+      great: 'おてほんどおりに かけたよ',
+      overall: 'ぜんたいが ずれているよ。うすい せんの うえを なぞってみよう',
+      shape: (stroke) => `${stroke}かくめの かたちが ずれているよ`,
+      missing: (stroke) => `${stroke}かくめが かけていないよ`,
+      reversed: (stroke) => `${stroke}かくめの むきが はんたいだよ`,
+      order: 'かきじゅんが ちがう ところが あるよ',
+      extra: 'おてほんに ない せんが あるよ',
+      count: (written, expected) => `${expected}かくの じを、${written}かくで かいているよ`,
+    },
   },
   top: {
     lead: ['したのボタンで すすめるよ', 'きになったのを やってみよう！'],
@@ -449,14 +554,26 @@ const KIDS: Copy = {
     back: 'もどる',
     close: 'とじる',
     steps: {
+      // 手順の横の絵は、おとな向けと同じ並び(src/data/howTo.ts)。文も同じ順に合わせる
       english: [
         'にほんごを みて、えいごを おもいだそう。',
+        'てで かくか、キーボードで うつかを えらべるよ。',
         'まっていると ヒントが でてくるよ。',
+        'かいた たんごを よみとって、あっていたら せいかいに なるよ。',
       ],
-      kanji: ['◯ に はいる かんじを かこう。', 'まっていると ヒントが でてくるよ。'],
+      kanji: [
+        '◯ に はいる かんじを こたえよう。',
+        'てで かいて こたえよう。ぶひんを くむ こたえかたも あるよ。',
+        'かいた じを よみとって、あっていたら せいかいに なるよ。',
+        'ぶひんを うごかして、わくに いれよう。',
+      ],
       math: [
-        'ふたけた いじょうの けいさんは ひっさんで でるよ。',
-        'うえの もじが、いま うつ ところを おしえてくれるよ。',
+        'がくねんと けいさんの しゅるいを えらんで はじめよう。おまかせも あるよ。',
+        'すうじで うつか、てで かくかを えらべるよ。',
+        'ひっさんは、うえの もじが いま うつ ところを おしえてくれるよ。',
+        'まちがえると あかい わくに なるよ。なおすと つぎに すすめるよ。',
+        'てで かくときは、ますに 1もじずつ かこう。かいた かずを よみとって、あっていたら せいかいに なるよ。',
+        'みぎうえの メモで、すきに かいて けいさんできるよ。',
       ],
       'trace-shape': [
         'ひかっている ● から、ゆびで なぞってね。',
@@ -466,7 +583,10 @@ const KIDS: Copy = {
         'ひかっている ● から、ゆびで なぞってね。',
         'いっかく なぞると、つぎの ● が ひかるよ。',
       ],
-      'trace-kanji': ['ひかっている ● から、ゆびで なぞってね。'],
+      'trace-kanji': [
+        'うすい おてほんの うえに、かきじゅんどおりに かこう。',
+        'かけたら、どれだけ きれいに かけたかを みるよ。',
+      ],
       'build-kanji': [
         'さいしょに おてほんを よく みてね。',
         'ぶひんを うごかして、ますに いれよう。',
@@ -496,6 +616,8 @@ const KIDS: Copy = {
       fracAdd: 'ぶんすうの たしざん・ひきざん',
       fracMul: 'ぶんすうの かけざん・わりざん',
       decimal: 'しょうすうの かけざん・わりざん',
+      ratio: 'わりあい(ぶんしょうだい)',
+      speed: 'はやさ(ぶんしょうだい)',
     },
     mixedTopic: { label: 'おまかせ', note: 'いろいろな けいさんが でるよ' },
     topicExample: (expression) => `れい ${expression}`,
@@ -505,11 +627,17 @@ const KIDS: Copy = {
     close: 'もどる',
   },
   quiz: {
+    memo: 'メモ',
+    memoOpen: 'けいさんの メモを ひらく',
+    memoClose: 'とじる',
+    memoClear: 'ぜんぶ けす',
+    memoSeeThrough: 'したを すかす',
     progress: (streak, index) => `${streak} れんぞく / ${index} もんめ`,
     pass: 'パス',
     passAria: 'この もんだいを パスする',
     readAs: (text) => `かいた じは「${text}」に みえたよ`,
     readAsUnsure: (text) => `「${text}」に みえたけど、すこし じしんが ないよ。あってたら「できた」を おしてね`,
+    readUnknown: 'うまく よみとれなかったよ。あってたら「できた」を おしてね',
     answerLabel: 'こたえ',
     wrong: 'ちがった',
     right: 'できた',
@@ -536,6 +664,8 @@ const KIDS: Copy = {
     tools: 'どうぐ',
     pen: 'かく',
     eraser: 'けす',
+    clearAll: 'ぜんぶ',
+    clearAllAria: 'もういちど おすと、ぜんぶ けす',
     done: 'かけた',
     boxLabel: (place) => `こたえの ${place} マスめ`,
   },
@@ -545,7 +675,12 @@ const KIDS: Copy = {
     inputLabel: '入力中のこたえ',
     submit: 'こたえあわせ',
   },
-  play: { allDone: 'ぜんぶ できた！', again: 'もういちど', other: 'ほかの あそび' },
+  play: {
+    allDone: 'ぜんぶ できた！',
+    again: 'もういちど',
+    other: 'ほかの あそび',
+    progress: (index, total) => `${index} / ${total}`,
+  },
   number: {
     inputLabel: 'いま うっている こたえ',
     placeholder: 'すうじで こたえよう',
@@ -558,9 +693,10 @@ const KIDS: Copy = {
     fractionParts: { whole: 'せいすう', numerator: 'ぶんし', denominator: 'ぶんぼ' },
     shiftPoint: (places) => `しょうすうてんを ${places}けた みぎに うつして わる`,
     decimalPoint: 'ここに しょうすうてんを うつ',
+    wordParts: { expression: 'しき', answer: 'こたえ', operator: 'きごうを えらぶ(× か ÷)', number: 'かず' },
   },
   trace: { guide: 'ひかってる ● から ゆびで なぞってね', done: 'できた！' },
-  build: { look: 'この かんじを よく みてね', answerIs: 'こたえは これ' },
+  build: { look: 'この かんじを よく みてね' },
   match: {
     question: 'よく みてね。どれと おなじ？',
     correct: 'あたり！',

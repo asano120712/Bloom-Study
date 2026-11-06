@@ -4,6 +4,14 @@
   python3 scripts/train/finetune.py --holdout   # 半分を伏せて、効くかどうかを測る
   python3 scripts/train/finetune.py --loo       # 1枚ずつ伏せる(枚数が少ないとき)
 
+  --kind letters を付けると英字(EMNIST の小文字 + 集めた英字)。付けなければ数字。
+  見本の置き場所(samples.json)は数字と英字で共通なので、その種類のラベルの見本だけを使う。
+  --with-words を付けると、英単語から取り出した1字(words.py が書く word_letters.json)も混ぜる。
+
+英字は、毎回 **EMNIST だけで学習したモデル(.cache/model.letters.base.json)から**仕上げ直す。
+前回仕上げ直したモデルをさらに仕上げ直すと、回を重ねるほどずれが積み重なるため。
+(元のモデルは train_letters.py が書き出すときに一緒に置く。無ければ今のモデルから始める)
+
 合成した水増し(scripts/train/style_seven.py)では、実機で書いた7に届かなかった。
 **実物を混ぜる**のがいちばん近道だが、枚数が少ないので、
 効くかどうかを先に「1枚伏せ(leave-one-out)」で確かめられるようにしてある。
@@ -18,25 +26,59 @@ import numpy as np
 sys.path.insert(0, os.path.dirname(__file__))
 
 import augment
+import emnist
 import mnist
 from net import Net
 from preprocess import normalize_gray, unpack
 
-MODEL = os.path.join(os.path.dirname(__file__), "..", "..", "src", "data", "model.digits.generated.json")
+DATA = os.path.join(os.path.dirname(__file__), "..", "..", "src", "data")
+KINDS = {
+    "digits": {
+        "labels": [str(i) for i in range(10)],
+        "model": os.path.join(DATA, "model.digits.generated.json"),
+        "load": mnist.load,
+        "dataset": "MNIST + 実機で集めた見本(scripts/train/.cache/samples.json)",
+    },
+    "letters": {
+        "labels": list(emnist.LETTERS),
+        "model": os.path.join(DATA, "model.letters.generated.json"),
+        "load": emnist.load,
+        "dataset": "EMNIST byclass の小文字 + 実機で集めた見本(scripts/train/.cache/samples.json)",
+        "base": os.path.join(os.path.dirname(__file__), ".cache", "model.letters.base.json"),
+        # 数字と同じ設定(割合 0.25・学習率 0.01)では、集めた字は 43→47/51 に上がったが、
+        # EMNIST の試験が 90.15→88.68% に落ちた(他の人の字を忘れる)。混ぜる割合と学習率を下げ、
+        # もとの学習の終わりの学習率(約 0.002)に合わせると 48/51・89.81% で釣り合った
+        "steps": 600,
+        "rate": 0.002,
+        # 他の人(4人)の字が届いたあと、1人ずつ伏せて「初めて書く人」として測ると、
+        # 混ぜる割合 0.1 のままでは 48→51/82 語、書いた人ごとに 300 枚までにそろえて
+        # 割合を 0.4 に上げると 55/82 語が自動になった(EMNIST の試験は 89.3% ほど)。
+        # 自分の字ばかり多いと、モデルが自分の字に寄って、初めての人の字に効きにくい
+        "share": 0.4,
+        "per_writer": 300,
+    },
+}
+KIND = KINDS["letters" if "--kind" in sys.argv and sys.argv[sys.argv.index("--kind") + 1] == "letters" else "digits"]
+MODEL = KIND["model"]
+# 仕上げ直しの出発点
+START = KIND["base"] if "base" in KIND and os.path.exists(KIND["base"]) else MODEL
+WORD_LETTERS = os.path.join(os.path.dirname(__file__), ".cache", "word_letters.json")
 SAMPLES = os.path.join(os.path.dirname(__file__), ".cache", "samples.json")
 
-STEPS = 400
+STEPS = KIND.get("steps", 400)
 BATCH = 128
 # 1回ぶんのうち、集めた見本を入れる割合。入れすぎると MNIST のぶんを忘れる
-SAMPLE_SHARE = 0.25
-LEARNING_RATE = 0.01
+SAMPLE_SHARE = KIND.get("share", 0.25)
+LEARNING_RATE = KIND.get("rate", 0.01)
 MOMENTUM = 0.9
 
 
 def load_model(path=MODEL):
     with open(path, encoding="utf-8") as handle:
         payload = json.load(handle)
-    model = Net(np.random.default_rng(0))
+    # 層の大きさは書き出した重みの形から読む(数字と英字でフィルターの数が違う)
+    shapes = {layer["name"]: layer["shape"] for layer in payload["layers"]}
+    model = Net(np.random.default_rng(0), classes=shapes["w3"][0], f1=shapes["w1"][0], f2=shapes["w2"][0])
     for layer in payload["layers"]:
         values = np.array(layer["values"], dtype=np.float32) * layer["scale"]
         setattr(model, layer["name"], values.reshape(layer["shape"]))
@@ -46,13 +88,28 @@ def load_model(path=MODEL):
 def load_samples():
     with open(SAMPLES, encoding="utf-8") as handle:
         raw = json.load(handle)
+    if "--with-words" in sys.argv and os.path.exists(WORD_LETTERS):
+        with open(WORD_LETTERS, encoding="utf-8") as handle:
+            raw += json.load(handle)
+    raw = [sample for sample in raw if sample["label"] in KIND["labels"]]
+    if KIND.get("per_writer"):
+        # 書いた人ごとに枚数の上限をそろえる。書いた人の記録が無い見本は、最初に書いた人(作り手)のもの
+        rng = np.random.default_rng(0)
+        by_writer = {}
+        for sample in raw:
+            by_writer.setdefault(sample.get("writer", ""), []).append(sample)
+        raw = [
+            samples[index]
+            for samples in by_writer.values()
+            for index in rng.permutation(len(samples))[: KIND["per_writer"]]
+        ]
     images, labels = [], []
     for sample in raw:
         pixels = normalize_gray(unpack(sample))
         if pixels is None:
-            continue
+            continue  # 何も書かずに残したもの
         images.append(pixels)
-        labels.append(int(sample["label"]))
+        labels.append(KIND["labels"].index(sample["label"]))
     return np.array(images, dtype=np.float32), np.array(labels, dtype=np.int64)
 
 
@@ -92,8 +149,8 @@ def export(model, labels):
     payload = {
         "_source": {
             "note": "自動生成。scripts/train/finetune.py で上書きされる",
-            "dataset": "MNIST + 実機で集めた見本(scripts/train/.cache/samples.json)",
-            "shape": "28x28 → conv8 → pool → conv16 → pool → dense10",
+            "dataset": KIND["dataset"],
+            "shape": f"28x28 → conv{model.f1} → pool → conv{model.f2} → pool → dense{len(labels)}",
         },
         "labels": labels,
         "layers": [],
@@ -110,7 +167,8 @@ def export(model, labels):
 
 
 def main():
-    train_x, train_y, test_x, test_y = mnist.load()
+    train_x, train_y, test_x, test_y = KIND["load"]()
+    names = KIND["labels"]
     sample_x, sample_y = load_samples()
     print(f"集めた見本 {len(sample_x)}枚")
 
@@ -122,18 +180,18 @@ def main():
         hit = total = 0
         for turn, held in enumerate(folds):
             used = np.setdiff1d(order, held)
-            model = finetune(load_model(), train_x, train_y, sample_x[used], sample_y[used], np.random.default_rng(turn))
+            model = finetune(load_model(START), train_x, train_y, sample_x[used], sample_y[used], np.random.default_rng(turn))
             prob = predict(model, sample_x[held])
             top = prob.argmax(axis=1)
             for i, index in enumerate(held):
                 mark = "○" if top[i] == sample_y[index] else "×"
                 if top[i] != sample_y[index]:
-                    order_text = " ".join(f"{j}:{prob[i][j]:.2f}" for j in np.argsort(-prob[i])[:3])
-                    print(f"  × 伏せた{sample_y[index]} → {order_text}")
+                    order_text = " ".join(f"{names[j]}:{prob[i][j]:.2f}" for j in np.argsort(-prob[i])[:3])
+                    print(f"  × 伏せた{names[sample_y[index]]} → {order_text}")
                 hit += int(top[i] == sample_y[index])
             total += len(held)
             print(f"  {turn + 1}回め: {int((top == sample_y[held]).sum())} / {len(held)}  "
-                  f"(MNIST {float((predict(model, test_x[:2000]).argmax(axis=1) == test_y[:2000]).mean()) * 100:.1f}%)")
+                  f"(共通の試験 {float((predict(model, test_x[:2000]).argmax(axis=1) == test_y[:2000]).mean()) * 100:.1f}%)")
         print(f"\n伏せたぶんの正解 {hit} / {total}")
         return
 
@@ -143,20 +201,21 @@ def main():
         for i in range(len(sample_x)):
             keep = np.arange(len(sample_x)) != i
             model = finetune(
-                load_model(), train_x, train_y, sample_x[keep], sample_y[keep], np.random.default_rng(100 + i)
+                load_model(START), train_x, train_y, sample_x[keep], sample_y[keep], np.random.default_rng(100 + i)
             )
             prob = predict(model, sample_x[i : i + 1])[0]
             top = int(prob.argmax())
             hit += top == sample_y[i]
-            order = " ".join(f"{j}:{prob[j]:.2f}" for j in np.argsort(-prob)[:3])
-            print(f"  {'○' if top == sample_y[i] else '×'} 伏せた1枚({sample_y[i]}) → {order}")
+            order = " ".join(f"{names[j]}:{prob[j]:.2f}" for j in np.argsort(-prob)[:3])
+            print(f"  {'○' if top == sample_y[i] else '×'} 伏せた1枚({names[sample_y[i]]}) → {order}")
         print(f"\n1枚伏せでの正解 {hit} / {len(sample_x)}")
         return
 
-    model = finetune(load_model(), train_x, train_y, sample_x, sample_y, np.random.default_rng(7))
-    print(f"MNIST の試験: {float((predict(model, test_x).argmax(axis=1) == test_y).mean()) * 100:.2f}%")
+    print(f"出発点: {os.path.relpath(START)}")
+    model = finetune(load_model(START), train_x, train_y, sample_x, sample_y, np.random.default_rng(7))
+    print(f"共通の試験: {float((predict(model, test_x).argmax(axis=1) == test_y).mean()) * 100:.2f}%")
     print(f"集めた見本:   {float((predict(model, sample_x).argmax(axis=1) == sample_y).mean()) * 100:.2f}%")
-    export(model, [str(i) for i in range(10)])
+    export(model, names)
 
 
 if __name__ == "__main__":

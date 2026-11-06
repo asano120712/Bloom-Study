@@ -24,6 +24,8 @@ export interface ResultState {
   promptReading?: string
   /** 解き方の途中式(分数の計算だけ)。おてほんの下に、答えまでの道すじとして見せる */
   work?: string
+  /** おてほんに出す答え(文章題は単位つき)。無ければ判定の答えのまま */
+  answerText?: string
   genreId: GenreId
   /** 「つぎの問題へ」で同じこたえかたを引き継ぐ */
   inputMode: InputMode
@@ -35,6 +37,8 @@ export interface ResultState {
   topic?: MathTopic
   /** 自分が書いた・打ったこたえ。パスしたときは無い */
   submission?: ResultSubmission
+  /** 判定に添える一言(なぞり書きの、どこを直すか) */
+  notes?: string[]
   hasNext: boolean
   currentStreak: number
 }
@@ -91,7 +95,7 @@ export function ResultPage() {
 
   if (!state) return <Navigate to="/genres" replace />
 
-  const { result, prompt, promptReading, work, submission, hasNext, currentStreak } = state
+  const { result, prompt, promptReading, work, answerText, submission, notes, hasNext, currentStreak } = state
   const canReadAloud = Boolean(speechLang) && canSpeak()
 
   return (
@@ -112,15 +116,26 @@ export function ResultPage() {
           {copy.verdicts[result.verdict]}
         </p>
 
-        <div className="w-full rounded-3xl bg-bloom-50 px-5 py-6">
-          <p className="text-sm text-ink-400">
-            {/* 分数の式は、分子を上・分母を下に積んで見せる */}
-            <MathText text={prompt} />
-            {promptReading && <span className="ml-1">{promptReading}</span>}
-          </p>
+        {notes && notes.length > 0 && (
+          <ul className="-mt-3 flex flex-col gap-1 text-sm text-ink-600">
+            {notes.map((note) => (
+              <li key={note}>{note}</li>
+            ))}
+          </ul>
+        )}
 
-          <div className="mt-4">
-            <ModelAnswer answer={result.answer} guide={genre?.answerGuide ?? 'baseline'} />
+        <div className="w-full rounded-3xl bg-bloom-50 px-5 py-6">
+          {/* 出題が無いのは、お手本の字を見せる問題(小1・小2の組み立て)。お手本と同じ字なので出さない */}
+          {prompt && (
+            <p className="mb-4 text-sm text-ink-400">
+              {/* 分数の式は、分子を上・分母を下に積んで見せる */}
+              <MathText text={prompt} />
+              {promptReading && <span className="ml-1">{promptReading}</span>}
+            </p>
+          )}
+
+          <div>
+            <ModelAnswer answer={answerText ?? result.answer} guide={genre?.answerGuide ?? 'baseline'} />
           </div>
 
           {/*

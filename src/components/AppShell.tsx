@@ -37,8 +37,16 @@ export function AppShell({ children, fitViewport = false, exitTo }: AppShellProp
   }, [])
 
   return (
+    /*
+      safe-area: viewport-fit=cover で画面の端まで描いているので、ノッチとホームバーのぶんを空ける。
+      iPhone を横にするとノッチ側の余白が無くなり、下では「かけた」などのボタンが
+      ホームバー(上へなぞるとホームに戻る)に重なる。書く場所を端から離しておくと、
+      端からなぞる「戻る」も起きにくい。
+    */
     <div
-      className={`flex flex-col bg-base-50 ${fitViewport ? 'h-dvh overflow-hidden' : 'min-h-dvh'}`}
+      className={`flex flex-col bg-base-50 pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] ${
+        fitViewport ? 'h-dvh overflow-hidden' : 'min-h-dvh'
+      }`}
     >
       {/*
         min-h-0 が要る。flex 要素の既定 min-height:auto は中身より小さくならないため、

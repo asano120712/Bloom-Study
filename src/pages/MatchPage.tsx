@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { AppShell } from '@/components/AppShell'
-import { BloomMark } from '@/components/BloomMark'
+import { PlayFinished, PlayProgress } from '@/components/PlayFrame'
 import { FigureView } from '@/components/FigureView'
 import { figureLabel, isSameFigure, matchSession, type Figure } from '@/features/match'
 import { useCopy } from '@/hooks/useAudienceMode'
@@ -72,23 +71,7 @@ export function MatchPage() {
   if (isFinished) {
     return (
       <AppShell>
-        <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
-          <BloomMark size={120} face="joy" />
-          <p className="text-2xl font-bold text-bloom-700">{copy.play.allDone}</p>
-
-          <div className="flex w-full flex-col gap-3">
-            <button
-              type="button"
-              onClick={restart}
-              className="flex min-h-16 w-full items-center justify-center rounded-full bg-bloom-700 text-xl font-bold text-white"
-            >
-              {copy.play.again}
-            </button>
-            <Link to="/genres" className="flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600">
-              {copy.play.other}
-            </Link>
-          </div>
-        </div>
+        <PlayFinished onRestart={restart} />
       </AppShell>
     )
   }
@@ -97,19 +80,7 @@ export function MatchPage() {
 
   return (
     <AppShell fitViewport exitTo="/genres">
-      {/* できた数を花で出す。数字より、増えていくのが見えるほうが分かりやすい */}
-      <div className="flex shrink-0 items-center justify-center gap-2 pt-1">
-        {problems.map((each, position) => (
-          <span
-            key={figureLabel(each.answer) + position}
-            className={`transition-opacity duration-500 ${
-              position < index ? '' : 'opacity-20 grayscale'
-            }`}
-          >
-            <BloomMark size={20} motion="none" />
-          </span>
-        ))}
-      </div>
+      <PlayProgress total={problems.length} done={index} />
 
       <p className="mt-3 shrink-0 text-center text-xl font-bold">{copy.match.question}</p>
 

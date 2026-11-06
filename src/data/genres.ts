@@ -47,7 +47,7 @@ const DIFFICULTIES: Record<GenreId, Difficulty[]> = {
 const MATH_TOPICS: Partial<Record<Difficulty, MathTopic[]>> = {
   g12: ['add', 'sub'],
   g34: ['add', 'sub', 'mul', 'div'],
-  g56: ['mul', 'div', 'decimal', 'fracAdd', 'fracMul'],
+  g56: ['mul', 'div', 'decimal', 'fracAdd', 'fracMul', 'ratio', 'speed'],
 }
 
 export function mathTopicsOf(genreId: GenreId, difficulty: Difficulty): MathTopic[] {
@@ -68,6 +68,8 @@ const MATH_TOPIC_EXAMPLES: Partial<Record<Difficulty, Partial<Record<MathTopic, 
     fracAdd: '2/3 + 1/4',
     fracMul: '3/4 ÷ 2/5',
     decimal: '2.4 × 3.5',
+    ratio: '40人の 75%は 何人?',
+    speed: '120km を 2時間で 走る 時速は?',
   },
 }
 
@@ -89,7 +91,8 @@ export function difficultiesOf(genreId: GenreId): Difficulty[] {
 const COLUMN_LEVELS: Difficulty[] = ['g34', 'g56', 'junior', 'senior', 'working']
 
 /** 分数の種類。筆算が無いので、解く形(筆算か1行か)を聞かない */
-const FRACTION_TOPICS: MathTopic[] = ['fracAdd', 'fracMul']
+/** 筆算が無い種類(分数・文章題)。解く形(筆算か1行か)を聞かない */
+const FRACTION_TOPICS: MathTopic[] = ['fracAdd', 'fracMul', 'ratio', 'speed']
 
 export function hasColumnForm(genreId: GenreId, difficulty: Difficulty, topic?: MathTopic): boolean {
   if (topic && FRACTION_TOPICS.includes(topic)) return false
@@ -101,7 +104,8 @@ export function hasColumnForm(genreId: GenreId, difficulty: Difficulty, topic?: 
  *
  * クイズのこたえかた(inputMode)と、別画面のあそび(path)が並ぶ。
  * 小1・小2の漢字は熟語の穴うめが成立しない(出題文に出る相手の字が読めない)ので、
- * この学年だけ なぞりがき と くみたて に差し替える。
+ * この学年だけ なぞりがき と くみたて に差し替える。くみたては、お手本を見せてから
+ * パーツを組むクイズ(features/build)で、出題画面は小3以上と同じものを使う。
  */
 export type AnswerChoiceId = InputMode | 'trace' | 'build'
 
@@ -135,17 +139,17 @@ const QUIZ_CHOICES: Record<GenreId, AnswerChoice[]> = {
     { id: 'handwriting', inputMode: 'handwriting' },
     { id: 'assemble', inputMode: 'assemble' },
   ],
-  // 数は打って答えるほうが自動で正誤を見られる。手書きは自己申告なので後ろに置く
+  // 数は打つほうが速く、読み取りの間違いも起きないので先に置く。手書きも字を読み取って自動で判定する
   math: [
     { id: 'number', inputMode: 'number' },
     { id: 'handwriting', inputMode: 'handwriting' },
   ],
 }
 
-/** 小1・小2の漢字。クイズではなく、なぞって覚える・部品から組み立てる */
+/** 小1・小2の漢字。薄いお手本の上に書いてきれいさを見るのと、お手本を覚えてから部品で組む */
 const KANJI_LOW_CHOICES: AnswerChoice[] = [
-  { id: 'trace', path: '/trace/kanji' },
-  { id: 'build', path: '/build' },
+  { id: 'trace', inputMode: 'trace' },
+  { id: 'build', inputMode: 'assemble' },
 ]
 
 export function answerChoicesOf(genreId: GenreId, difficulty: Difficulty): AnswerChoice[] {

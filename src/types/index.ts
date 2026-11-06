@@ -43,7 +43,16 @@ export function isDifficulty(value: string | null | undefined): value is Difficu
  * 苦手な計算だけを続けて練習できるよう、出題の前に選ばせる。
  * 何も選ばない(ランダム)ときは種類で絞らず、その学年の問題をまぜて出す。
  */
-export type MathTopic = 'add' | 'sub' | 'mul' | 'div' | 'fracAdd' | 'fracMul' | 'decimal'
+export type MathTopic =
+  | 'add'
+  | 'sub'
+  | 'mul'
+  | 'div'
+  | 'fracAdd'
+  | 'fracMul'
+  | 'decimal'
+  | 'ratio'
+  | 'speed'
 
 const MATH_TOPICS: readonly MathTopic[] = [
   'add',
@@ -53,6 +62,8 @@ const MATH_TOPICS: readonly MathTopic[] = [
   'fracAdd',
   'fracMul',
   'decimal',
+  'ratio',
+  'speed',
 ]
 
 export function isMathTopic(value: string | null | undefined): value is MathTopic {
@@ -65,7 +76,8 @@ export function isMathTopic(value: string | null | undefined): value is MathTopi
  * 部品は思い出したと申告するまで見せない
  * (先に見せると再認になり、思い出す練習にならないため)。
  */
-export type InputMode = 'typing' | 'handwriting' | 'assemble' | 'number'
+/** trace は、薄いお手本の上に書いて、きれいさを見る(小1・小2の漢字のなぞり書き) */
+export type InputMode = 'typing' | 'handwriting' | 'assemble' | 'number' | 'trace'
 
 /**
  * 結果画面のおてほんに敷くガイド。
@@ -112,9 +124,10 @@ export interface Question {
    * 2桁以上のかけ算を1行で出すと暗算に近くなり、小3・4には難しい。
    * 筆算はこの学年で習う形なので、縦に積むほうが解きやすく、位をそろえる練習にもなる。
    * 'fraction' は分数の式。分子を上・分母を下に積んで見せ、答えも分数の形のマスで受ける。
+   * 'word' は文章題。文を読んで、式と答え(単位つき)を書く。
    * 指定が無ければそのまま1行で出す。
    */
-  promptLayout?: 'column' | 'division' | 'fraction'
+  promptLayout?: 'column' | 'division' | 'fraction' | 'word'
   /** 正解文字列 */
   answer: string
   /**
@@ -132,6 +145,17 @@ export interface Question {
    */
   work?: string
   /**
+   * 答えのマスの前と後ろに添える言葉(文章題だけ)。「時速 □ km」「□ %」「□ 割」。
+   * 単位まで書かせると、数が合っていても単位の書き方で外れてしまうので、こちらで出しておく。
+   */
+  answerPrefix?: string
+  answerUnit?: string
+  /**
+   * 答えを単位ごとのマスに分けて書く(文章題の「何割何分」)。並びは単位の順(['割', '分'])。
+   * このときの answer は単位つきでつないだ形(「7割5分」)で持ち、判定もその形で比べる。
+   */
+  answerParts?: string[]
+  /**
    * KRADFILE 由来の部品。assemble モードはこのうち2部品に割れる字だけを出す。
    * KRADFILE には配置(左右・上下)が無いので、割れる向きと先にくる部品は
    * features/assemble の表で補う。
@@ -139,6 +163,13 @@ export interface Question {
   parts?: string[]
   /** assemble モードで並べるタイル(正解の部品 + 見分けにくいダミー) */
   partTiles?: string[]
+  /** なぞり書きのお手本の線(SVG のパス、書き順どおり)。trace モードはこれを持つ問題だけを出す */
+  strokes?: string[]
+  /**
+   * 出題語のかわりに、答えの字そのものをお手本として見せる(小1・小2の組み立て)。
+   * 「思い出した」を押すまで見せて、組むときは引っこめる(見ながら組むと写すだけになる)。
+   */
+  modelPrompt?: boolean
   /**
    * ジャンル固有のヒント素材。ジャンルのヒント分解ルールだけが解釈する。
    * 漢字ジャンルでは `見出し|本文` 形式のパーツ列
@@ -203,6 +234,10 @@ export type JudgeVerdict =
   | 'self-incorrect'
   /** パスした(答えを見ただけ。記録には残さない) */
   | 'passed'
+  /** なぞり書きのきれいさ。とてもきれい・きれいは正解、もう少しは不正解として記録する */
+  | 'neat'
+  | 'fair'
+  | 'rough'
 
 export interface JudgeResult {
   verdict: JudgeVerdict

@@ -5,8 +5,13 @@ import { BoxHandwriting, type WriteRow, type WrittenRow } from '@/components/Box
 import { ColumnForm, DivisionForm, type ColumnCell } from '@/components/ColumnForm'
 import { FractionForm, type FractionSlot, type FractionWork } from '@/components/FractionForm'
 import { FractionInput, type FractionPart } from '@/components/FractionInput'
+import { AnswerRowForm } from '@/components/AnswerRowForm'
 import { MathText } from '@/components/MathText'
+import { MemoIcon, MemoPad } from '@/components/MemoPad'
+import { WordForm, type WordSlot } from '@/components/WordForm'
+import { WordInput, type WordPart } from '@/components/WordInput'
 import { HandwritingCanvas } from '@/components/HandwritingCanvas'
+import { FreeTraceCanvas } from '@/components/FreeTraceCanvas'
 import { HintList } from '@/components/HintList'
 import { NumberInput } from '@/components/NumberInput'
 import { PartsInput } from '@/components/PartsInput'
@@ -14,15 +19,20 @@ import { Loading } from '@/components/Loading'
 import { TypingInput } from '@/components/TypingInput'
 import { answerChoicesOf, findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
+import type { TraceJudgement } from '@/features/trace/judge'
 import {
   answerFromSteps,
   columnScript,
   fractionText,
   parseExpression,
+  withoutPoint,
   shiftedDivision,
   type ColumnStep,
 } from '@/features/math'
 import { readCells } from '@/features/recognize'
+import { judgeKanji, kanjiShapes } from '@/features/recognize/kanji'
+import { lettersModel } from '@/features/recognize/model'
+import { judgeWord, type Stroke } from '@/features/recognize/word'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeNumber, judgeParts, judgeTyping } from '@/features/judge'
 import { useCopy } from '@/hooks/useAudienceMode'
@@ -42,6 +52,7 @@ import {
 } from '@/types'
 import { shuffleWithSeed } from '@/utils/shuffle'
 import type { ResultState, ResultSubmission } from './ResultPage'
+import { AUTO_JUDGE_ENGLISH, AUTO_JUDGE_KANJI } from '@/config'
 
 /**
  * 自動で「せいかい」にしてよい自信の下限。
@@ -88,6 +99,43 @@ function fractionRows(questionId: string, prompt: string): WriteRow[] {
   ]
 }
 
+/**
+ * 1行の式を手書きで答えるときの、答えのマスの数。
+ *
+ * **答えになりうる最大のけた数**にする(答えのけた数そのものを見せると、見当をつける手間が減る)。
+ * たし算は大きいほうの数のけた数 + 1(くり上がり)、ひき算は大きいほうのけた数、
+ * かけ算は2つの数のけた数の和、わり算はわられる数のけた数 + 1(わり進む 0)。
+ * 小数は小数点を数えず、0.18 のように頭に 0 が付くぶんを1つ足す。
+ */
+function plainAnswerBoxes(prompt: string): number {
+  const parsed = parseExpression(prompt)
+  if (!parsed) return 3
+  const [left, right] = [withoutPoint(parsed.left).length, withoutPoint(parsed.right).length]
+  const decimal = prompt.includes('.') ? 1 : 0
+  if (parsed.operator === '+') return Math.max(left, right) + 1 + decimal
+  if (parsed.operator === '×') return left + right + decimal
+  if (parsed.operator === '÷') return left + 1 + decimal
+  return Math.max(left, right) + decimal
+}
+
+/**
+ * 文章題を手書きするマス。式を書く場所(途中の計算と同じく読み取らない)と、答え。
+ * 割合は 0.75 のような小数の答えがあるので、答えには小数点を打てるようにする。
+ * 「何割何分」は、割と分のマスを1つずつ置く(どちらも 1〜9 の1けた)。まとめた画像でも横に並べる。
+ */
+function wordRows(questionId: string, answerParts?: string[]): WriteRow[] {
+  // 式は横長の1つの書く場所に、記号まで自由に書く(読み取らないので、マスに分けない)
+  const expression: WriteRow = { key: `${questionId}-expression`, boxes: 1, span: 5, line: 1, scratch: true }
+  if (answerParts) {
+    return [
+      expression,
+      { key: `${questionId}-answer`, boxes: 1, line: 0 },
+      { key: `${questionId}-answer2`, boxes: 1, line: 0 },
+    ]
+  }
+  return [expression, { key: `${questionId}-answer`, boxes: 4, line: 0, decimalPoint: true }]
+}
+
 /** 手書きで出す途中の計算のマス(かけ算の段、わり算の「かける」「ひく」) */
 function isScratch(step: ColumnStep): boolean {
   return step.slot.kind === 'row' || step.slot.kind === 'product' || step.slot.kind === 'rest'
@@ -121,7 +169,10 @@ export function QuizPage() {
 
   const modeParam = searchParams.get('mode')
   const inputMode: InputMode =
-    modeParam === 'typing' || modeParam === 'handwriting' || modeParam === 'assemble'
+    modeParam === 'typing' ||
+    modeParam === 'handwriting' ||
+    modeParam === 'assemble' ||
+    modeParam === 'trace'
       ? modeParam
       : (genre && answerChoicesOf(genre.id, difficulty)[0]?.inputMode) || 'handwriting'
 
@@ -140,10 +191,12 @@ export function QuizPage() {
   const [selfReport, setSelfReport] = useState<{
     hintsUsed: number
     image: string
-    /** 読み取れた数。読み取りに回さなかった(漢字・英単語の)ときは無い */
+    /** 読み取れた数(計算)か単語(英単語)・漢字。読み取りに回さなかったときは無い */
     read?: string
+    /** 読み取りに回したが、何に見えたかを出せなかった(答えにも似た字にも近くなかった) */
+    unread?: boolean
     /**
-     * 読めた数が正解と同じだった(読み取りの自信が足りずに確かめてもらうとき)。
+     * 読めたものが正解と同じだった(読み取りの自信が足りずに確かめてもらうとき)。
      * 言い方を変えて、なぜ確かめるのかを伝える
      */
     readMatches?: boolean
@@ -168,6 +221,16 @@ export function QuizPage() {
   const [missedAnswer, setMissedAnswer] = useState(false)
   /** 分数の答えが、値は合っているのに約分していなかった。直して答え直してもらう */
   const [reducible, setReducible] = useState(false)
+  /**
+   * 計算のメモを開いているか。メモは閉じても消さず、問題ごとに作り直す(1問ごとに画面ごと作り直される)。
+   * 開いていてもヒントの時間は止めない(メモに書いているあいだも、考えている時間なので)。
+   */
+  const [memoOpen, setMemoOpen] = useState(false)
+  /**
+   * お手本を見せる問題(小1・小2の組み立て)で、「思い出した」を押したか。
+   * 押したらお手本を引っこめる(見ながら組むと写すだけになる)。問題ごとに画面ごと作り直されるので戻さなくてよい。
+   */
+  const [recalled, setRecalled] = useState(false)
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
 
@@ -193,6 +256,20 @@ export function QuizPage() {
 
   const isPreparing = isStatsLoading || isSessionLoading
 
+  /** 英単語を手書きで答えて、書いた線から自動で判定するか */
+  const readsWords = AUTO_JUDGE_ENGLISH && genre?.id === 'english' && inputMode === 'handwriting'
+  /** 漢字を手書きで答えて、書いた線から形を見て自動で判定するか */
+  const readsKanji = AUTO_JUDGE_KANJI && genre?.id === 'kanji' && inputMode === 'handwriting'
+  /** 書いた英単語・漢字を読み取っているあいだ。「かけた」を二度押させない */
+  const [readingWord, setReadingWord] = useState(false)
+  // 英字のモデル(104KB)・漢字のお手本(1.1MB)を先に読んでおく。1問めの「かけた」で待たせないため
+  useEffect(() => {
+    if (readsWords) void lettersModel()
+  }, [readsWords])
+  useEffect(() => {
+    if (readsKanji) void kanjiShapes()
+  }, [readsKanji])
+
   /*
     手書きで答えるあいだは、画面全体で長押しのメニューと文字の選択を止める。
 
@@ -203,7 +280,7 @@ export function QuizPage() {
     結果画面など他の画面では、これまでどおり長押しできる。
   */
   useEffect(() => {
-    if (inputMode !== 'handwriting') return
+    if (inputMode !== 'handwriting' && inputMode !== 'trace') return
     const root = document.documentElement
     const stopMenu = (event: Event) => event.preventDefault()
     root.classList.add('no-press-menu')
@@ -232,15 +309,46 @@ export function QuizPage() {
     )
   }
 
-  // 出題セットを出し切った場合は、先頭に戻さずジャンル選択へ返す
+  // 出題セットの外を指しているとき(保存した位置が壊れているなど)。ふだんは出し切ると混ぜ直すので来ない
   if (!question) {
     return <Navigate to="/genres" replace />
+  }
+
+  /** 出題がお手本の字そのものか(組み立て・なぞり書き)。出題語として上に出さない */
+  const showsModel = Boolean(question.modelPrompt || inputMode === 'trace')
+
+  /**
+   * なぞり書きの判定を、結果画面に添える一言にする。多すぎると読まれないので3つまで。
+   * 形のずれと書けていない画は、どの画かを言う(結果の絵でも赤く示す)。
+   */
+  const traceNotes = (judgement: TraceJudgement): string[] => {
+    const { notes } = copy.traceWrite
+    // 半分以上の画がずれたときは、全体として伝える。ずれた線は隣の画とみなされることがあり、
+    // 1画ずつ言うと「書いたのに書けていない」のような、合わない一言が混ざる
+    const offCount = judgement.checks.filter((check) => check.shape === 'off').length
+    if (offCount * 2 >= judgement.checks.length) return [notes.overall]
+    const lines: string[] = []
+    if (judgement.written !== judgement.checks.length) {
+      lines.push(notes.count(judgement.written, judgement.checks.length))
+    }
+    judgement.checks.forEach((check, index) => {
+      if (check.written === null) lines.push(notes.missing(index + 1))
+      else if (check.shape === 'off') lines.push(notes.shape(index + 1))
+    })
+    if (judgement.orderWrong) lines.push(notes.order)
+    judgement.checks.forEach((check, index) => {
+      if (check.reversed) lines.push(notes.reversed(index + 1))
+    })
+    if (judgement.extra > 0 && judgement.written === judgement.checks.length) lines.push(notes.extra)
+    return lines.length ? lines.slice(0, 3) : [notes.great]
   }
 
   const finish = async (
     result: JudgeResult,
     hintsUsed: number,
     submission: ResultSubmission,
+    /** 結果画面に添える一言(なぞり書きの、どこを直すか) */
+    notes?: string[],
   ) => {
     const answer: AnswerRecord = {
       questionId: question.id,
@@ -256,9 +364,12 @@ export function QuizPage() {
 
     const state: ResultState = {
       result,
-      prompt: question.prompt,
+      // お手本を見せる問題・なぞり書きは、出題がお手本の字そのもの。結果ではお手本と同じ字が二重に並ぶので出さない
+      prompt: showsModel ? '' : question.prompt,
       promptReading: question.promptReading,
       work: question.work,
+      // 文章題は、おてほんに単位を添える(「75%」「時速 60km」)
+      answerText: question.answerUnit ? answerText(question.answer) : undefined,
       genreId: genre.id,
       inputMode,
       difficulty,
@@ -266,8 +377,9 @@ export function QuizPage() {
       topic,
       // 自分が書いた・打ったこたえを結果画面で見せる
       submission,
-      // この出題セットに次の問題が残っているときだけ「つぎへ」を出す
-      hasNext: cursor + 1 < questions.length,
+      notes,
+      // やめるまで続ける。出題セットを出し切ったら、次に入ったとき混ぜ直したセットで始まる(useQuizSession)
+      hasNext: true,
       currentStreak: next.currentStreak,
     }
     navigate('/result', { state })
@@ -286,15 +398,18 @@ export function QuizPage() {
 
     const state: ResultState = {
       result: { verdict: 'passed', isCorrect: false, answer: question.answer },
-      prompt: question.prompt,
+      // お手本を見せる問題・なぞり書きは、出題がお手本の字そのもの。結果ではお手本と同じ字が二重に並ぶので出さない
+      prompt: showsModel ? '' : question.prompt,
       promptReading: question.promptReading,
       work: question.work,
+      // 文章題は、おてほんに単位を添える(「75%」「時速 60km」)
+      answerText: question.answerUnit ? answerText(question.answer) : undefined,
       genreId: genre.id,
       inputMode,
       difficulty,
       promptForm,
       topic,
-      hasNext: cursor + 1 < questions.length,
+      hasNext: true,
       currentStreak: stats.currentStreak,
     }
     navigate('/result', { state })
@@ -308,15 +423,17 @@ export function QuizPage() {
    */
   /**
    * この問題を筆算で出すか。1行の式を選んだときは、答えだけ打つ形にする。
-   * 分数は筆算が無いので、どちらを選んでいても分数の形(分子を上・分母を下)で出す。
+   * 分数と文章題は筆算が無いので、どちらを選んでいても、その形(分数・文章題)で出す。
    */
   const layout =
-    question.promptLayout === 'fraction'
-      ? 'fraction'
+    question.promptLayout === 'fraction' || question.promptLayout === 'word'
+      ? question.promptLayout
       : promptForm === 'plain'
         ? undefined
         : question.promptLayout
   const isFraction = layout === 'fraction'
+  /** 文章題か。文は上に出し、入力の欄には式と答えのマスだけを置く */
+  const isWord = layout === 'word'
   /** 筆算(縦に積む式)か。分数の式は筆算の手順を持たない */
   const isColumn = layout === 'column' || layout === 'division'
   const script = inputMode === 'number' && isColumn ? columnScript(question.prompt) : []
@@ -400,9 +517,22 @@ export function QuizPage() {
   */
   const writeScript =
     answerSteps[0]?.slot.kind === 'place' ? [...answerSteps].reverse() : answerSteps
+  /** 1行の式(筆算にしない計算)を手書きするか。答えのマスに書いて、読み取って判定する */
+  const isPlainMath = genre.id === 'math' && layout === undefined
   const writeRows: WriteRow[] = isFraction
     ? fractionRows(question.id, question.prompt)
-    : writeScript.map((entry, index) => ({
+    : isWord
+      ? wordRows(question.id, question.answerParts)
+      : isPlainMath
+        ? [
+            {
+              key: `${question.id}-answer`,
+              boxes: plainAnswerBoxes(question.prompt),
+              // 小数の答えは、マスの間をタップして小数点を打つ
+              decimalPoint: question.prompt.includes('.'),
+            },
+          ]
+        : writeScript.map((entry, index) => ({
         key: `${question.id}-${index}`,
         boxes: entry.width,
         // 答えは横に1行(わり算の商も、位ごとの答えも)。途中の計算は画像に入れないので行は問わない
@@ -423,6 +553,45 @@ export function QuizPage() {
    *
    * 自信(いちばん怪しいマスの値)が足りないときも、同じく本人に預ける。
    */
+  /**
+   * 手書きの英単語・漢字を、書いた線から読み取って判定する(AUTO_JUDGE_ENGLISH / AUTO_JUDGE_KANJI のとき)。
+   * 英単語は1字ずつ読んで答えと比べ、漢字は答えの漢字と形の似た漢字のお手本と形を比べる。
+   *
+   * 答え(か別解)だと自信を持って読めたときだけ、そのまま「せいかい」にする。
+   * 読めなかったときは、これまでと同じ自己申告の画面に回す。読み取りだけで「ざんねん」にはしない
+   * (読み取りが外れただけで、正しく書けた字を間違い扱いにしないため)。
+   * 自己申告の画面には、何に見えたかを出す(筆算と同じ言い方)。答えに近く読めたときは
+   * 「〇〇に見えましたが、自信がありません」、そうでないときは「書いた字は〇〇に見えました」。
+   */
+  const judgeWrittenWord = async (image: string, strokes: Stroke[]): Promise<void> => {
+    const hintsUsed = revealedCount
+    if (!(readsWords || readsKanji) || strokes.length === 0) {
+      setSelfReport({ hintsUsed, image })
+      return
+    }
+    setReadingWord(true)
+    const answers = [question.answer, ...(question.acceptableAnswers ?? [])].filter((answer) =>
+      /^[a-z]+$/.test(answer),
+    )
+    // 読み取りで何か起きても、自己申告に回せば答えられる
+    const judged = await (readsKanji ? judgeKanji(strokes, question.answer) : judgeWord(strokes, answers)).catch(
+      () => null,
+    )
+    setReadingWord(false)
+    if (judged?.accepted) {
+      finish({ verdict: 'correct', isCorrect: true, answer: question.answer }, hintsUsed, {
+        kind: 'handwriting',
+        imageDataUrl: image,
+      })
+      return
+    }
+    setSelfReport(
+      judged?.read
+        ? { hintsUsed, image, read: judged.read, readMatches: judged.likely }
+        : { hintsUsed, image, unread: true },
+    )
+  }
+
   const judgeWritten = async (
     image: string,
     rows: WrittenRow[],
@@ -431,7 +600,13 @@ export function QuizPage() {
 
     const { answered, confidence } = isFraction
       ? await readFraction(rows)
-      : await readColumn(rows)
+      : isWord && question.answerParts
+        ? await readUnits(rows, question.answerParts)
+        : isWord || isPlainMath
+          ? await readWithPoint(rows.find((row) => row.key === `${question.id}-answer`)).then(
+              (read) => ({ answered: read.text, confidence: read.confidence }),
+            )
+          : await readColumn(rows)
 
     const judged = judgeNumber(question, answered)
     if (judged.isCorrect && confidence >= READ_CONFIDENCE) {
@@ -475,6 +650,19 @@ export function QuizPage() {
     return {
       text: `${whole.text || '0'}.${fraction.text}`,
       confidence: Math.min(whole.confidence, fraction.confidence),
+    }
+  }
+
+  /** 単位ごとのマス(「何割何分」の割・分)を読んで、単位つきでつなぐ(「7割5分」) */
+  const readUnits = async (rows: WrittenRow[], units: string[]) => {
+    const [first, second] = await Promise.all(
+      ['answer', 'answer2'].map((part) =>
+        readCells(rows.find((row) => row.key === `${question.id}-${part}`)?.cells ?? []),
+      ),
+    )
+    return {
+      answered: `${first.text}${units[0]}${second.text}${units[1]}`,
+      confidence: Math.min(first.confidence, second.confidence),
     }
   }
 
@@ -532,10 +720,36 @@ export function QuizPage() {
 
   /** 計算は「ヒント → 式 → 答え」の順に置く */
   const showsPromptBelow = genre.id === 'math'
-  /** 筆算と分数のときは、式と答えのマスをひと続きに見せたいので入力側が出す */
-  const showsPromptInInput = showsPromptBelow && layout !== undefined
-  /** 手書きも、筆算なら大きなキャンバスではなくマスに1字ずつ書く */
-  const writesInBoxes = showsPromptInInput && inputMode === 'handwriting'
+  /**
+   * 筆算と分数のときは、式と答えのマスをひと続きに見せたいので入力側が出す。
+   * 文章題は、長い文を上に出し、入力の欄には式と答えのマスだけを置く
+   * (文は折り返すので、マスの大きさを測る場所に入れると測り方がずれる)。
+   */
+  const showsPromptInInput = showsPromptBelow && layout !== undefined && !isWord
+  /**
+   * 計算の手書きは、どの形(筆算・分数・文章題・1行の式)でも、大きなキャンバスではなくマスに1字ずつ書く。
+   * マスごとに字を読み取って、自動で判定するため(大きなキャンバスでは、どこに何けた書いたか分からない)。
+   */
+  const writesInBoxes = genre.id === 'math' && inputMode === 'handwriting'
+  /** 答えに単位を添えて見せる(文章題の「時速 60km」「75%」)。確認・結果の画面で使う */
+  const answerText = (value: string) =>
+    `${question.answerPrefix ? `${question.answerPrefix} ` : ''}${value}${question.answerUnit ?? ''}`
+  /** 文章題の式と答えのマス。見出しの言葉はここで付け、中身は呼ぶ側が渡す */
+  const wordSlots = (fill: (part: WordPart) => Partial<WordSlot>) => {
+    const { number, answer } = copy.number.wordParts
+    return {
+      left: { label: number, spokenLabel: `${copy.number.wordParts.expression}の${number}`, ...fill('left') },
+      right: { label: number, spokenLabel: `${copy.number.wordParts.expression}の${number}`, ...fill('right') },
+      answer: { label: answer, ...fill('answer') },
+      // 「何割何分」は、答えを単位ごとのマスに分ける(□ 割 □ 分)
+      answerParts: question.answerParts?.map((unit, index) => ({
+        slot: { label: unit, ...fill(index === 0 ? 'answer' : 'answer2') },
+        unit,
+      })),
+      prefix: question.answerPrefix,
+      unit: question.answerUnit,
+    }
+  }
 
   return (
     <AppShell fitViewport exitTo="/genres">
@@ -550,6 +764,24 @@ export function QuizPage() {
             入力の近くではなく「この問題をやめる」ことを考える場所(上)のほう。
             やめるとは反対側に置いて、押し間違えないようにしてある。
           */}
+          {/*
+            計算のメモ。計算だけに出す(漢字・英単語は思い出す練習なので、メモで答えを書いて
+            確かめられてしまう)。パスの横に置き、答えの入力から離しておく(押し間違えないように)。
+          */}
+          {showsPromptBelow && (
+            <button
+              type="button"
+              onClick={() => setMemoOpen((current) => !current)}
+              aria-label={copy.quiz.memoOpen}
+              aria-pressed={memoOpen}
+              // 字ではなくアイコンで出す(読み上げには aria-label の「計算のメモを開く」を使う)
+              className={`flex size-8 shrink-0 items-center justify-center rounded-full border-2 ${
+                memoOpen ? 'border-bloom-700 bg-bloom-700 text-white' : 'border-bloom-200 text-ink-600'
+              }`}
+            >
+              <MemoIcon className="size-5" />
+            </button>
+          )}
           <button
             type="button"
             onClick={pass}
@@ -561,12 +793,16 @@ export function QuizPage() {
         </span>
       </header>
 
+      {showsPromptBelow && (
+        <MemoPad key={question.id} open={memoOpen} onClose={() => setMemoOpen(false)} />
+      )}
+
       {/*
         計算だけ、出題をヒントの下に置く(ヒント → 式 → 答え)。
         紙の筆算と同じで、式と答えを書く場所が隣り合っていたほうが解きやすい。
         思い出す系のジャンルは、先に出題語を見て考える流れなので上のまま。
       */}
-      {!showsPromptBelow && (
+      {!showsPromptBelow && !showsModel && (
         <PromptBlock question={question} layout={layout} caption={promptCaption} />
       )}
 
@@ -580,18 +816,35 @@ export function QuizPage() {
         筆算は式・途中の段・答えのマスで縦に長く、背の低い端末(iPhone SE)では
         書くマスや数字キーボードが押し出される。ヒントの枠に回していた高さをマスへ回す。
       */}
-      <section
-        className={`flex min-h-0 flex-col ${showsPromptInInput ? 'mt-2 shrink-0' : 'mt-4 max-h-52 flex-1'}`}
-      >
-        <HintList
-          hints={revealedHints(hints, revealedCount)}
-          layout={hintLayoutOf(genre.id)}
-          secondsToNext={secondsToNext}
-          compact={showsPromptInInput}
-          fractions={isFraction}
-        />
-
-      </section>
+      {/*
+        お手本を見せる問題(小1・小2の組み立て)は、ヒントのかわりにお手本の字を真ん中に大きく出す。
+        熟語が無いので、出せるヒントも無い。
+      */}
+      {/* なぞり書きは、お手本が書く場所の中に出るので、ここには何も置かない */}
+      {inputMode === 'trace' ? null : question.modelPrompt ? (
+        <section className="flex min-h-0 flex-1 flex-col items-center justify-center text-center select-none">
+          {!recalled && (
+            <>
+              <p className="text-base text-ink-600">{copy.build.look}</p>
+              <p className="animate-bloom-in mt-2 font-display text-7xl leading-none text-bloom-700">
+                {question.prompt}
+              </p>
+            </>
+          )}
+        </section>
+      ) : (
+        <section
+          className={`flex min-h-0 flex-col ${showsPromptInInput || isWord ? 'mt-2 shrink-0' : 'mt-4 max-h-52 flex-1'}`}
+        >
+          <HintList
+            hints={revealedHints(hints, revealedCount)}
+            layout={hintLayoutOf(genre.id)}
+            secondsToNext={secondsToNext}
+            compact={showsPromptInInput || isWord}
+            fractions={isFraction}
+          />
+        </section>
+      )}
 
       {/* 計算は、ヒントのあとに出題を置く。答えを書く場所のすぐ上になる */}
       {showsPromptBelow && !showsPromptInInput && (
@@ -609,7 +862,7 @@ export function QuizPage() {
       */}
       <section
         className={`flex min-h-0 flex-col ${
-          writesInBoxes && !selfReport
+          (writesInBoxes && !selfReport) || inputMode === 'trace'
             ? 'flex-1 pt-2'
             : `mt-auto flex-2 pt-4 ${writesInBoxes ? 'justify-center' : 'justify-end'}`
         }`}
@@ -620,7 +873,7 @@ export function QuizPage() {
             <div className="rounded-3xl bg-bloom-50 px-5 py-4 text-center">
               <p className="text-sm text-ink-400">{copy.quiz.answerLabel}</p>
               <p className="mt-1 text-3xl font-bold text-bloom-700">
-                <MathText text={question.answer} />
+                <MathText text={answerText(question.answer)} />
               </p>
               {/*
                 自分が書いたものを、こたえと並べて見せる。書いたマスはこの画面では消えるので、
@@ -639,12 +892,13 @@ export function QuizPage() {
                   <MathText
                     text={
                       selfReport.readMatches
-                        ? copy.quiz.readAsUnsure(selfReport.read)
-                        : copy.quiz.readAs(selfReport.read)
+                        ? copy.quiz.readAsUnsure(answerText(selfReport.read))
+                        : copy.quiz.readAs(answerText(selfReport.read))
                     }
                   />
                 </p>
               )}
+              {selfReport.unread && <p className="mt-3 text-sm text-ink-600">{copy.quiz.readUnknown}</p>}
             </div>
             <div className="flex gap-3">
               <button
@@ -717,7 +971,28 @@ export function QuizPage() {
                 }}
               />
             )}
-            {inputMode === 'number' && !isFraction && (
+            {inputMode === 'number' && isWord && (
+              <WordInput
+                key={`word-${question.id}`}
+                answerParts={question.answerParts}
+                display={(entry, focus, select) => (
+                  <WordForm
+                    {...wordSlots((part) => ({
+                      digits: entry[part],
+                      focused: focus === part,
+                      onSelect: () => select(part),
+                    }))}
+                  />
+                )}
+                onSubmit={(value) =>
+                  finish(judgeNumber(question, value), revealedCount, {
+                    kind: 'text',
+                    text: answerText(value),
+                  })
+                }
+              />
+            )}
+            {inputMode === 'number' && !isFraction && !isWord && (
               <NumberInput
                 // 打ち直しのたびに作り直して、打った数を空に戻す
                 key={`number-${question.id}-${stepIndex}-${missed ?? ''}`}
@@ -774,7 +1049,18 @@ export function QuizPage() {
                 key={`boxes-${question.id}`}
                 rows={writeRows}
                 // マスは筆算のその場所に置く。式と離すと、どこに書くのか分からなくなる
-                form={(cellsOf) => (
+                form={(cellsOf) =>
+                  isPlainMath ? (
+                    <AnswerRowForm cells={cellsOf(`${question.id}-answer`)} />
+                  ) : isWord ? (
+                    <WordForm
+                      writing
+                      {...wordSlots((part) => ({ content: cellsOf(`${question.id}-${part}`) }))}
+                      left={undefined}
+                      right={undefined}
+                      expression={cellsOf(`${question.id}-expression`)}
+                    />
+                  ) : (
                   <PromptBlock
                     question={question}
                     layout={layout}
@@ -793,14 +1079,36 @@ export function QuizPage() {
                       content: cellsOf(row.key),
                     }))}
                   />
-                )}
+                  )
+                }
                 onSubmit={(image, rows) => void judgeWritten(image, rows)}
               />
             )}
             {inputMode === 'handwriting' && !writesInBoxes && (
               <HandwritingCanvas
                 key={`handwriting-${question.id}`}
-                onSubmit={(image) => setSelfReport({ hintsUsed: revealedCount, image })}
+                onSubmit={(image, strokes) => void judgeWrittenWord(image, strokes)}
+                disabled={readingWord}
+              />
+            )}
+            {inputMode === 'trace' && question.strokes && (
+              <FreeTraceCanvas
+                key={`trace-${question.id}`}
+                label={question.answer}
+                strokes={question.strokes}
+                onSubmit={(judgement, image) =>
+                  finish(
+                    {
+                      verdict: judgement.grade,
+                      // とてもきれい・きれいは正解(連続が続く)、もう少しは不正解として残す
+                      isCorrect: judgement.grade !== 'rough',
+                      answer: question.answer,
+                    },
+                    0,
+                    { kind: 'handwriting', imageDataUrl: image },
+                    traceNotes(judgement),
+                  )
+                }
               />
             )}
             {inputMode === 'assemble' && assembleLayout && (
@@ -812,6 +1120,7 @@ export function QuizPage() {
                 assembledOf={(first, second) =>
                   judgeParts(question, first, second).isCorrect ? question.answer : null
                 }
+                onReveal={() => setRecalled(true)}
                 onSubmit={(first, second) =>
                   finish(judgeParts(question, first, second), revealedCount, {
                     kind: 'parts',
@@ -845,7 +1154,7 @@ function PromptBlock({
 }: {
   question: Question
   /** 筆算・分数の形で出すか。渡さなければ1行の式のまま出す */
-  layout?: 'column' | 'division' | 'fraction'
+  layout?: 'column' | 'division' | 'fraction' | 'word'
   /** 出題語の上の一言。無いジャンル(計算)もある */
   caption?: string
   /** 打ち直してもらうときの一言。式の上、見出しのすぐ下に出す */
@@ -898,7 +1207,10 @@ function PromptBlock({
       */}
       <p
         className={`mt-1 font-bold tracking-wide ${
-          writing
+          layout === 'word'
+            ? // 文章題の文は長いので、式より小さく、左寄せで、行の間を空けて読みやすくする
+              'text-left text-[min(1.125rem,4.6vw)] leading-relaxed tracking-normal'
+            : writing
             ? 'text-[min(2.5rem,10vw)] leading-[1.2]'
             : layout === 'division'
               ? 'text-[min(1.875rem,7.5vw,max(1.5rem,3.2svh))] leading-[1.15]'

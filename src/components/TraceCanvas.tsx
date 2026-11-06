@@ -1,5 +1,14 @@
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
+import { useLayoutEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { VIEW_BOX, type TraceItem } from '@/features/trace'
+import {
+  distance,
+  LINE_WIDTH,
+  lineWidthOf,
+  sampleOf,
+  type Point,
+  type StrokeSample,
+} from '@/features/trace/geometry'
+import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
 
 interface TraceCanvasProps {
   item: TraceItem
@@ -22,34 +31,6 @@ const TOLERANCE = 14
  */
 const LOOK_AHEAD = 12
 
-/** サンプル点の間隔(座標系の長さ)。細かすぎても粗すぎても判定が鈍る */
-const SAMPLE_STEP = 2
-
-interface Point {
-  x: number
-  y: number
-}
-
-interface StrokeSample {
-  length: number
-  points: Point[]
-}
-
-/** パス上を等間隔に拾う。なぞりの進み具合はこの点列で見る */
-function sampleOf(path: SVGPathElement | null): StrokeSample {
-  if (!path) return { length: 0, points: [] }
-  const length = path.getTotalLength()
-  const count = Math.max(2, Math.ceil(length / SAMPLE_STEP))
-  const points: Point[] = []
-  for (let i = 0; i <= count; i++) {
-    const { x, y } = path.getPointAtLength((length * i) / count)
-    points.push({ x, y })
-  }
-  return { length, points }
-}
-
-const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y)
-
 /**
  * お手本をなぞる入力。
  *
@@ -60,8 +41,10 @@ const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.y - b.y)
  */
 export function TraceCanvas({ item, onComplete, frozen = false }: TraceCanvasProps) {
   const svgRef = useRef<SVGSVGElement>(null)
+  useNoTouchGesture(svgRef)
   const guideRefs = useRef<(SVGPathElement | null)[]>([])
   const [samples, setSamples] = useState<StrokeSample[]>([])
+  const [lineWidth, setLineWidth] = useState(LINE_WIDTH.max)
 
   /** いまなぞっているストローク。ここまでは終わっている、の意味でも使う */
   const [strokeIndex, setStrokeIndex] = useState(0)
@@ -69,9 +52,12 @@ export function TraceCanvas({ item, onComplete, frozen = false }: TraceCanvasPro
   const [reached, setReached] = useState(0)
   const tracingRef = useRef(false)
 
-  // お手本が変わったら測り直す。パスの長さは描かれた要素からしか取れない
-  useEffect(() => {
-    setSamples(item.strokes.map((_, index) => sampleOf(guideRefs.current[index])))
+  // お手本が変わったら測り直す。パスの長さは描かれた要素からしか取れない。
+  // 線の太さもここで決まるので、描く前に測る(いつもの太さで一瞬描かれてから細くなるのを防ぐ)
+  useLayoutEffect(() => {
+    const measured = item.strokes.map((_, index) => sampleOf(guideRefs.current[index]))
+    setSamples(measured)
+    setLineWidth(lineWidthOf(measured))
     setStrokeIndex(0)
     setReached(0)
     tracingRef.current = false
@@ -191,27 +177,37 @@ export function TraceCanvas({ item, onComplete, frozen = false }: TraceCanvasPro
         strokeDasharray="4 4"
       />
 
-      {item.strokes.map((d, index) => (
-        <g key={`${item.id}-${index}`}>
-          {/* お手本。まだなぞっていない線はグレーで置いておく */}
+      {/*
+        お手本。まだなぞっていない線はグレーで置いておく。
+        薄くするのは線ごとではなくまとめて(g の opacity)。線ごとに薄くすると、
+        線が交わるところだけ重なって濃い点になり、そこに何かあるように見える。
+      */}
+      <g opacity="0.28">
+        {item.strokes.map((d, index) => (
           <path
+            key={`${item.id}-${index}`}
             ref={(element) => {
               guideRefs.current[index] = element
             }}
             d={d}
             fill="none"
-            strokeWidth="10"
+            strokeWidth={lineWidth}
             strokeLinecap="round"
             strokeLinejoin="round"
             className="stroke-ink-400"
-            strokeOpacity="0.28"
           />
-          {/* なぞれたぶん。dash のずらしで「途中まで」を描く */}
-          {samples[index] && (
+        ))}
+      </g>
+
+      {/* なぞれたぶん。dash のずらしで「途中まで」を描く */}
+      {item.strokes.map(
+        (d, index) =>
+          samples[index] && (
             <path
+              key={`${item.id}-${index}`}
               d={d}
               fill="none"
-              strokeWidth="10"
+              strokeWidth={lineWidth}
               strokeLinecap="round"
               strokeLinejoin="round"
               className="stroke-bloom-500"
@@ -225,9 +221,8 @@ export function TraceCanvas({ item, onComplete, frozen = false }: TraceCanvasPro
                       (1 - reached / Math.max(1, samples[index].points.length - 1))
               }
             />
-          )}
-        </g>
-      ))}
+          ),
+      )}
 
       {/* 書き始めの目印。ここに指を置く、が一目で分かるように光らせる */}
       {!frozen && current?.points[reached] && (

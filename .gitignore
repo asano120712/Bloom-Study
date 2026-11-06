@@ -33,3 +33,6 @@ scripts/train/.cache/
 .env
 .env.*
 !.env.example
+
+# Python が自動で作るキャッシュ
+__pycache__/
