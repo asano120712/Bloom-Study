@@ -22,7 +22,7 @@ export interface Copy {
    * (筆算の途中では、ここに「1だんめ 3 × 5」のような手の名前が入る)。
    */
   genrePrompt: Partial<Record<GenreId, string>>
-  /** こたえかた。クイズの入力方法と、小1・小2のあそび(なぞり・くみたて) */
+  /** こたえかた。クイズの入力方法と、小1・小2のあそび(なぞり・パズル) */
   answerModes: Record<AnswerChoiceId, { label: string; note: string }>
   difficulties: Record<Difficulty, { label: string }>
   /**
@@ -215,7 +215,7 @@ const ADULT: Copy = {
     'trace-shape': { label: 'なぞり書き(形)', description: '丸や三角を指でなぞる' },
     'trace-hiragana': { label: 'なぞり書き(ひらがな)', description: 'ひらがなを書き順どおりになぞる' },
     'trace-kanji': { label: 'なぞり書き(漢字)', description: '小1・小2の漢字を、薄いお手本の上に書く' },
-    'build-kanji': { label: '漢字の組み立て', description: 'お手本を覚えてから、部品で漢字を組む' },
+    'build-kanji': { label: '漢字のパズル', description: 'お手本を覚えてから、部位に分かれたパーツを選んで漢字を作る' },
     match: { label: '違い探し', description: '少しだけ形が違う4つから、お手本と同じものを選ぶ' },
   },
   genrePrompt: {
@@ -225,9 +225,9 @@ const ADULT: Copy = {
   answerModes: {
     handwriting: { label: '手書き', note: '指でなぞって書く' },
     typing: { label: 'タイピング', note: 'キーボードで入力する' },
-    assemble: { label: 'パーツを組む', note: 'パーツをスライドしてマスに組む' },
+    assemble: { label: 'パズル', note: '部位に分かれたパーツを選んで漢字を作る' },
     trace: { label: 'なぞり書き', note: '薄いお手本の上に書いて、きれいさを見る' },
-    build: { label: '組み立て', note: 'お手本を覚えてから、部品で組む' },
+    build: { label: 'パズル', note: 'お手本を覚えて、部位ごとにパーツを選ぶ' },
     number: { label: '数字で答える', note: '数字キーボードで打つ' },
   },
   /*
@@ -301,9 +301,9 @@ const ADULT: Copy = {
       ],
       kanji: [
         '熟語の ◯ に入る漢字を1字答えます。読みも一緒に出ます。',
-        '答え方は手書きです。小3〜6は、パーツを組む答え方も選べます。小1・2は、なぞり書きと組み立ての遊びになります。',
+        '答え方は手書きです。小3〜6は、パズルの答え方も選べます。小1・2は、なぞり書きとパズルの遊びになります。',
         '手書きは書いた字を読み取って、合っていればそのまま正解になります。読み取りに自信がないときは、自分で確かめます。',
-        'パーツを組むときは、へんとつくりの枠へスライドして入れます。',
+        'パズルは、漢字を へん・つくり などの部位に分けたパーツから、合うものを選んで枠に入れます。',
       ],
       math: [
         '学年と、計算の種類を選んで始めます。ランダムにすると、いろいろな計算が混ざって出ます。',
@@ -327,8 +327,8 @@ const ADULT: Copy = {
       ],
       'build-kanji': [
         'はじめにお手本の漢字が出ます。覚えたら先へ進みます。',
-        'パーツをスライドして、へんとつくりの枠に入れます。',
-        '組み上がると、その漢字になって見えます。',
+        '部位に分かれたパーツから、へんとつくりに合うものを選んで枠に入れます。',
+        'そろうと、その漢字になって見えます。',
       ],
       match: [
         'お手本と同じ形を、4つの中から1つ選びます。',
@@ -387,11 +387,11 @@ const ADULT: Copy = {
     done: 'ヒントはここまで',
   },
   parts: {
-    recall: ['頭の中で書いてみよう。', '思い出せたら部品を組み立てます。'],
+    recall: ['頭の中で書いてみよう。', '思い出せたらパズルに進みます。'],
     recalled: '思い出した',
     heading: {
-      horizontal: 'へん(左)とつくり(右)を組もう',
-      vertical: '上と下を組もう',
+      horizontal: 'へん(左)とつくり(右)を選ぼう',
+      vertical: '上と下を選ぼう',
     },
     slot: {
       horizontal: { first: 'へん', second: 'つくり' },
@@ -447,7 +447,7 @@ const ADULT: Copy = {
     listen: '読み方を聞く',
     mine: {
       text: '自分が打った答え',
-      parts: '自分が組んだパーツ',
+      parts: '自分が選んだパーツ',
       handwriting: '自分が書いた答え',
     },
     streak: (streak) => `${streak} 問連続正解中`,
@@ -486,7 +486,7 @@ const KIDS: Copy = {
     'trace-shape': { label: 'かたちを なぞろう', description: 'まる・さんかく・しかくを ゆびで なぞる' },
     'trace-hiragana': { label: 'ひらがなを なぞろう', description: 'ゆびで なぞって じを おぼえる' },
     'trace-kanji': { label: 'かんじを なぞろう', description: 'うすい おてほんの うえに かこう' },
-    'build-kanji': { label: 'かんじを くみたてよう', description: 'おぼえてから ぶひんで くみたてる' },
+    'build-kanji': { label: 'かんじパズル', description: 'おぼえてから、ぶひんを えらんで かんじを つくろう' },
     match: { label: 'ちがい さがし', description: 'よく みて、おなじ かたちを さがそう' },
   },
   genrePrompt: {
@@ -496,9 +496,9 @@ const KIDS: Copy = {
   answerModes: {
     handwriting: { label: 'てがき', note: 'ゆびで かいて こたえる' },
     typing: { label: 'キーボード', note: 'もじを うって こたえる' },
-    assemble: { label: 'ぶひんを くむ', note: 'ぶひんを うごかして マスに いれる' },
+    assemble: { label: 'パズル', note: 'わけた ぶひんから、あうものを えらぶ' },
     trace: { label: 'なぞる', note: 'うすい おてほんの うえに かく' },
-    build: { label: 'くみたてる', note: 'おぼえてから ぶひんで くみたてる' },
+    build: { label: 'パズル', note: 'おぼえてから、ぶひんを えらんで つくる' },
     number: { label: 'すうじで こたえる', note: 'すうじの キーボードで うつ' },
   },
   difficulties: {
@@ -563,9 +563,9 @@ const KIDS: Copy = {
       ],
       kanji: [
         '◯ に はいる かんじを こたえよう。',
-        'てで かいて こたえよう。ぶひんを くむ こたえかたも あるよ。',
+        'てで かいて こたえよう。パズルの こたえかたも あるよ。',
         'かいた じを よみとって、あっていたら せいかいに なるよ。',
-        'ぶひんを うごかして、わくに いれよう。',
+        'パズルは、わけた ぶひんから あうものを えらんで、わくに いれよう。',
       ],
       math: [
         'がくねんと けいさんの しゅるいを えらんで はじめよう。おまかせも あるよ。',
@@ -589,7 +589,7 @@ const KIDS: Copy = {
       ],
       'build-kanji': [
         'さいしょに おてほんを よく みてね。',
-        'ぶひんを うごかして、ますに いれよう。',
+        'わけた ぶひんから あうものを えらんで、ますに いれよう。',
       ],
       match: [
         'おてほんと おなじ かたちを、4つから えらぼう。',
@@ -648,11 +648,11 @@ const KIDS: Copy = {
     done: 'ヒントは ここまで',
   },
   parts: {
-    recall: ['あたまの なかで かいてみよう。', 'おもいだせたら ぶひんを くみたてよう。'],
+    recall: ['あたまの なかで かいてみよう。', 'おもいだせたら パズルを しよう。'],
     recalled: 'おもいだした',
     heading: {
-      horizontal: 'ひだりと みぎを くみあわせよう',
-      vertical: 'うえと したを くみあわせよう',
+      horizontal: 'ひだりと みぎを えらぼう',
+      vertical: 'うえと したを えらぼう',
     },
     slot: {
       horizontal: { first: 'ひだり', second: 'みぎ' },
@@ -708,7 +708,7 @@ const KIDS: Copy = {
     listen: 'よみかたを きく',
     mine: {
       text: 'じぶんが うった こたえ',
-      parts: 'じぶんが くんだ ぶひん',
+      parts: 'じぶんが えらんだ ぶひん',
       handwriting: 'じぶんが かいた こたえ',
     },
     streak: (streak) => `${streak} もん つづけて せいかい`,
