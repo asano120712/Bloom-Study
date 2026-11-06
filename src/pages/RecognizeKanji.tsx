@@ -4,6 +4,7 @@ import {
   KANJI_MARGIN,
   compareKanji,
   fitted,
+  hasAllStrokes,
   kanjiDistance,
   kanjiShapes,
   modelStrokes,
@@ -61,13 +62,17 @@ function writeLog(log: Attempt[]) {
 /** 並べるための、線と絵を合わせた離れ具合(出題の画面の判定と同じもの) */
 const combined = kanjiDistance
 
-/** 出題の画面で自動で「せいかい」になるか(judgeKanji と同じ条件) */
+/**
+ * 出題の画面で自動で「せいかい」になるか(judgeKanji と同じ条件)。
+ * 線が足りない・余計な線の見張りを入れる前に記録した字は、その値が無いので数えない
+ */
 const autoAccepts = (candidates: KanjiCandidate[], answer: string) => {
   const [best, second] = candidates
   return (
     best?.char === answer &&
     combined(best) <= KANJI_AUTO_MAX &&
-    (!second || combined(second) - combined(best) >= KANJI_MARGIN)
+    (!second || combined(second) - combined(best) >= KANJI_MARGIN) &&
+    hasAllStrokes(best)
   )
 }
 
@@ -281,6 +286,8 @@ export function RecognizeKanji({ writer }: { writer: string }) {
                 </span>
                 <span className="text-xs text-ink-600">
                   線 {candidate.strokes.toFixed(3)} / 部品 {candidate.parts.toFixed(3)} / 絵 {candidate.image.toFixed(2)}
+                  {candidate.char === target.answer &&
+                    ` / 本数の差 ${candidate.strokeCountDiff} / 余り ${candidate.covered.toFixed(2)}`}
                 </span>
               </li>
             ))}
