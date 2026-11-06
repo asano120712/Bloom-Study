@@ -3,7 +3,8 @@ import { AppShell } from '@/components/AppShell'
 import { PlayFinished, PlayProgress } from '@/components/PlayFrame'
 import { FigureView } from '@/components/FigureView'
 import { figureLabel, isSameFigure, matchSession, type Figure } from '@/features/match'
-import { useCopy } from '@/hooks/useAudienceMode'
+import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
+import { addPlay } from '@/services/stampCard'
 
 /** 「あたり!」を見せておく時間(ms)。押さなくても次へ進む */
 const CELEBRATE_MS = 1100
@@ -22,6 +23,7 @@ const HINT_AFTER = 2
  */
 export function MatchPage() {
   const copy = useCopy()
+  const isKids = useAudienceMode() === 'kids'
 
   const [problems, setProblems] = useState(matchSession)
   const [index, setIndex] = useState(0)
@@ -51,6 +53,8 @@ export function MatchPage() {
       return
     }
 
+    // こどものスタンプカード。当てた1問を1回と数える(当てるまで次へ進まない)
+    if (isKids) addPlay()
     setCelebrating(true)
     later(() => {
       setCelebrating(false)
@@ -71,7 +75,7 @@ export function MatchPage() {
   if (isFinished) {
     return (
       <AppShell>
-        <PlayFinished onRestart={restart} />
+        <PlayFinished onRestart={restart} played={problems.length} />
       </AppShell>
     )
   }
@@ -91,28 +95,36 @@ export function MatchPage() {
         </div>
       </div>
 
-      {/* 4つの選択肢。親指で届くよう2×2に並べる */}
-      <div className="mt-4 grid min-h-0 flex-1 grid-cols-2 content-center gap-3">
-        {problem.choices.map((choice, position) => {
-          const isAnswer = isSameFigure(choice, problem.answer)
-          return (
-            <button
-              key={`${figureLabel(choice)}-${position}`}
-              type="button"
-              // 図形そのものは読み上げられないので、名前はボタンが持つ
-              aria-label={figureLabel(choice)}
-              onClick={() => choose(choice, position)}
-              className={`flex aspect-square w-full items-center justify-center rounded-3xl border-2 bg-white p-4 ${
-                celebrating && isAnswer ? 'border-bloom-500 bg-bloom-50' : 'border-bloom-200'
-              } ${missed === position ? 'animate-shake' : ''} ${
-                // 点滅だけだと薄れて見えるので、枠と地も変えて「ここ」と分かるようにする
-                helping && isAnswer ? 'animate-pulse border-bloom-500 bg-bloom-50' : ''
-              }`}
-            >
-              <FigureView figure={choice} />
-            </button>
-          )
-        })}
+      {/*
+        4つの選択肢。親指で届くよう2×2に並べる。
+        大きさは、置く場所の幅と高さの小さいほうに合わせる(cqw / cqh)。幅だけで決めると、
+        背の低い画面(ブラウザのバーが出たスマホ、横向き)では上へはみ出してお手本にかぶり、
+        高さに合わせようとして枠が縦長に伸びることもある。2×2のまとまりごと正方形にして、
+        1つずつのマスも必ず正方形にする。
+      */}
+      <div className="mt-4 flex min-h-0 flex-1 items-center justify-center [container-type:size]">
+        <div className="grid aspect-square w-[min(100cqw,100cqh)] grid-cols-2 grid-rows-2 gap-3">
+          {problem.choices.map((choice, position) => {
+            const isAnswer = isSameFigure(choice, problem.answer)
+            return (
+              <button
+                key={`${figureLabel(choice)}-${position}`}
+                type="button"
+                // 図形そのものは読み上げられないので、名前はボタンが持つ
+                aria-label={figureLabel(choice)}
+                onClick={() => choose(choice, position)}
+                className={`flex size-full min-h-0 min-w-0 items-center justify-center rounded-3xl border-2 bg-white p-4 ${
+                  celebrating && isAnswer ? 'border-bloom-500 bg-bloom-50' : 'border-bloom-200'
+                } ${missed === position ? 'animate-shake' : ''} ${
+                  // 点滅だけだと薄れて見えるので、枠と地も変えて「ここ」と分かるようにする
+                  helping && isAnswer ? 'animate-pulse border-bloom-500 bg-bloom-50' : ''
+                }`}
+              >
+                <FigureView figure={choice} />
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       <div className="mt-3 flex h-12 shrink-0 items-center justify-center">

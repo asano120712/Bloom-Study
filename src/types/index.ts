@@ -163,6 +163,12 @@ export interface Question {
   parts?: string[]
   /** assemble モードで並べるタイル(正解の部品 + 見分けにくいダミー) */
   partTiles?: string[]
+  /**
+   * パズル(scripts/build-kanji-puzzles.ts が作るもの)の分かれ方。これがあるときは、parts と partTiles が
+   * 「字|0」(左か上)・「字|1」(右か下)の形のタイルの名前になり、部品はお手本の線で描く。
+   * features/assemble の手で持つ表を使わずに、中学以上の字もパズルにできる
+   */
+  puzzle?: { layout: 'horizontal' | 'vertical' }
   /** なぞり書きのお手本の線(SVG のパス、書き順どおり)。trace モードはこれを持つ問題だけを出す */
   strokes?: string[]
   /**

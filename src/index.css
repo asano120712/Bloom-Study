@@ -86,6 +86,184 @@
       transform: translateY(0) scale(1);
     }
   }
+
+  /*
+   * スタンプカードの演出(こども向け)。
+   * カードが下からせり上がる → 上からスタンプが落ちてきてドンと押される → インクがにじみ、
+   * きらきらが散り、カードが少し沈む。押されるまでの時間(着地 360ms)を、にじみ・きらきら・沈みの
+   * 遅れにそろえてある。動きを減らす設定では、下の media で一瞬で終わる。
+   */
+  --animate-card-rise: card-rise 700ms cubic-bezier(0.2, 1.25, 0.4, 1) both;
+
+  @keyframes card-rise {
+    from {
+      opacity: 0;
+      transform: translateY(45%) rotate(-4deg) scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /*
+   * 押す前の「ため」(2秒)。スタンプが上からふわっと現れてマスの上に大きく浮かび、
+   * ゆれがだんだん大きく・速くなっていき、最後にぐっと持ち上がる。そこから stamp-press で押す。
+   * 終わりの姿勢は stamp-press の始まりと同じにしてあり、つなぎ目で跳ばない。
+   */
+  --animate-stamp-hold: stamp-hold 2000ms ease-in-out both;
+
+  @keyframes stamp-hold {
+    0% {
+      opacity: 0;
+      transform: translateY(-240%) scale(4) rotate(var(--stamp-angle));
+    }
+    14% {
+      opacity: 0.95;
+      transform: translateY(-150%) scale(4) rotate(var(--stamp-angle));
+    }
+    30% {
+      transform: translateY(-140%) scale(4) rotate(calc(var(--stamp-angle) - 4deg));
+    }
+    44% {
+      transform: translateY(-152%) scale(4) rotate(calc(var(--stamp-angle) + 5deg));
+    }
+    56% {
+      transform: translateY(-138%) scale(4) rotate(calc(var(--stamp-angle) - 7deg));
+    }
+    66% {
+      transform: translateY(-150%) scale(4) rotate(calc(var(--stamp-angle) + 8deg));
+    }
+    74% {
+      transform: translateY(-140%) scale(4) rotate(calc(var(--stamp-angle) - 9deg));
+    }
+    81% {
+      transform: translateY(-148%) scale(4) rotate(calc(var(--stamp-angle) + 9deg));
+    }
+    100% {
+      opacity: 0.95;
+      transform: translateY(-185%) scale(4.3) rotate(calc(var(--stamp-angle) - 14deg));
+    }
+  }
+
+  /* 角度(--stamp-angle)はスタンプごとに少しずつ違う。押した跡がそろいすぎると、はんこらしく見えない */
+  --animate-stamp-press: stamp-press 620ms cubic-bezier(0.55, 0, 0.4, 1) both;
+
+  @keyframes stamp-press {
+    0% {
+      opacity: 0.95;
+      transform: translateY(-185%) scale(4.3) rotate(calc(var(--stamp-angle) - 14deg));
+    }
+    58% {
+      opacity: 1;
+      transform: translateY(0) scale(0.82) rotate(var(--stamp-angle));
+    }
+    74% {
+      transform: scale(1.1) rotate(var(--stamp-angle));
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(var(--stamp-angle));
+    }
+  }
+
+  --animate-ink-ring: ink-ring 650ms ease-out 360ms both;
+
+  @keyframes ink-ring {
+    from {
+      opacity: 0.7;
+      transform: scale(0.6);
+    }
+    to {
+      opacity: 0;
+      transform: scale(2.2);
+    }
+  }
+
+  /* きらきら。飛ぶ向きと距離は --dx / --dy で1粒ずつ渡す */
+  --animate-sparkle: sparkle 720ms cubic-bezier(0.15, 0.8, 0.3, 1) 360ms both;
+
+  @keyframes sparkle {
+    0% {
+      opacity: 1;
+      transform: translate(0, 0) scale(0.4);
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--dx), var(--dy)) scale(1);
+    }
+  }
+
+  --animate-card-thud: card-thud 340ms ease-out 360ms both;
+
+  @keyframes card-thud {
+    0%,
+    100% {
+      transform: none;
+    }
+    35% {
+      transform: translateY(4px) scale(0.985);
+    }
+  }
+
+  /* 押す前に、今日のマスを光らせて「ここに押すよ」と知らせる */
+  --animate-cell-glow: cell-glow 900ms ease-in-out infinite;
+
+  @keyframes cell-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgb(224 138 106 / 0.55);
+    }
+    50% {
+      box-shadow: 0 0 0 7px rgb(224 138 106 / 0);
+    }
+  }
+
+  /* 押したあとの紙吹雪。横の位置・遅れ・長さ・回る向きは1枚ずつ style で渡す */
+  --animate-confetti: confetti var(--fall, 1400ms) cubic-bezier(0.25, 0.6, 0.45, 1) var(--delay, 0ms) both;
+
+  @keyframes confetti {
+    0% {
+      opacity: 0;
+      transform: translate(0, -24px) rotate(0deg);
+    }
+    10% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--drift, 0px), var(--distance, 320px)) rotate(var(--spin, 540deg));
+    }
+  }
+
+  /* 今日の回数の玉が1つずつ埋まる。遅れは玉ごとに style で渡す */
+  --animate-dot-pop: dot-pop 420ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+
+  @keyframes dot-pop {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  /* 「スタンプ ゲット!」の字。押し終わってから、はずむように出る */
+  --animate-got-pop: got-pop 520ms cubic-bezier(0.3, 1.5, 0.5, 1) both;
+
+  @keyframes got-pop {
+    from {
+      opacity: 0;
+      transform: scale(0.5) translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
 :root {

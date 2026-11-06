@@ -1,4 +1,3 @@
-import { buildQuestions } from '@/features/build'
 import type { GenreId, Question } from '@/types'
 
 /**
@@ -52,6 +51,13 @@ const LOADERS: Record<GenreId, () => Promise<{ default: { questions: unknown[] }
   math: () => import('./questions.math.generated.json'),
 }
 
+/** パズルの一覧の1字ぶん(scripts/build-kanji-puzzles.ts)。level は小1・小2の字だけ持つ */
+interface Puzzle {
+  layout: 'horizontal' | 'vertical'
+  tiles: string[]
+  level?: 'g12'
+}
+
 /** 一度読んだジャンルは覚えておく。問題を出すたびに読み直さない */
 const loaded = new Map<GenreId, Promise<Question[]>>()
 
@@ -71,13 +77,40 @@ export function questionsOf(genreId: GenreId): Promise<Question[]> {
     LOADERS[genreId](),
     // 小1・小2のなぞり書き。お手本の線(150KB ほど)を持つので、漢字のときだけ読む
     genreId === 'kanji' ? import('@/features/trace/questions').then((m) => m.traceQuestions) : [],
-  ]).then(([module, traces]) => {
-    const generated = module.default.questions as Question[]
+    // パズル(どの部品のタイルを並べるか。160KB)。漢字のときだけ読む
+    genreId === 'kanji'
+      ? import('./puzzles.kanji.generated.json').then((m) => m.default.puzzles as Record<string, Puzzle>)
+      : {},
+  ]).then(([module, traces, puzzles]) => {
+    const puzzleOf = (answer: string) => (puzzles as Record<string, Puzzle>)[answer]
+    const withPuzzle = (question: Question, puzzle: Puzzle): Question => ({
+      ...question,
+      puzzle: { layout: puzzle.layout },
+      parts: puzzle.tiles.slice(0, 2),
+      partTiles: puzzle.tiles,
+    })
+    const generated = (module.default.questions as Question[]).map((question) => {
+      // パズルがある字は、KRADFILE の部品(文字のタイル)の代わりに、お手本の線で描くタイルにする
+      const puzzle = puzzleOf(question.answer)
+      return puzzle ? withPuzzle(question, puzzle) : question
+    })
+    /*
+      小1・小2のパズル。この学年は熟語の穴うめが成立しない(出題文に出る相手の字が読めない)ので、
+      問題文のかわりにお手本の字そのものを見せて、覚えてから部品を選ばせる(modelPrompt)。
+      出題・判定・結果・記録は、小3以上のパズルと同じ出題画面がそのまま受け持つ。
+    */
+    const lowPuzzles = Object.entries(puzzles as Record<string, Puzzle>)
+      .filter(([, puzzle]) => puzzle.level === 'g12')
+      .map(([char, puzzle]) =>
+        withPuzzle(
+          { id: `kj-build-${char}`, genreId: 'kanji', prompt: char, answer: char, level: 'g12', modelPrompt: true },
+          puzzle,
+        ),
+      )
     const manual = MANUAL_QUESTIONS.filter((question) => question.genreId === genreId)
     return [
       ...manual,
-      // 小1・小2の組み立て(お手本を見て組む)。部品のデータから作る
-      ...(genreId === 'kanji' ? buildQuestions : []),
+      ...lowPuzzles,
       ...traces,
       // 手で書いたものを優先する(同じ答えがあれば生成側を捨てる)
       ...generated.filter((question) => !manualAnswers.has(question.answer)),

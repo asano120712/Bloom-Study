@@ -119,6 +119,12 @@ export function assemblyOfParts(char: string, parts: string[] | undefined): Asse
  * 並べるタイルに両方の部品が含まれていることまで見る。
  */
 export function assemblyOf(question: Question): Assembly | null {
+  // お手本の線で描くパズル(中学以上も含む)。分かれ方は生成したデータが持つ
+  if (question.puzzle && question.parts?.length === 2) {
+    const [first, second] = question.parts
+    if (!question.partTiles?.includes(first) || !question.partTiles.includes(second)) return null
+    return { layout: question.puzzle.layout, first, second }
+  }
   const assembly = assemblyOfParts(question.answer, question.parts)
   if (!assembly) return null
 

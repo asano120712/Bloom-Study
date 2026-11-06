@@ -145,6 +145,10 @@ function resample(points: Point[]): Point[] {
 
 interface Group {
   element: string
+  /** KanjiVG の kvg:position(left / right / top / bottom など)。無いものは空 */
+  position: string
+  /** 部品が途中で分かれて書かれる、その片方(kvg:part が付いている。哀 の 衣 は 口 をはさんで2つに分かれる) */
+  partial: boolean
   children: (Group | number)[]
 }
 
@@ -156,7 +160,7 @@ function groupsOf(xml: string, char: string): Group | null {
   const start = xml.indexOf(`<kanji id="kvg:kanji_${idOf(char)}">`)
   if (start === -1) return null
   const block = xml.slice(start, xml.indexOf('</kanji>', start))
-  const root: Group = { element: '', children: [] }
+  const root: Group = { element: '', position: '', partial: false, children: [] }
   const stack: Group[] = [root]
   let stroke = 0
   for (const tag of block.matchAll(/<g\b[^>]*>|<\/g>|<path\b[^>]*>/g)) {
@@ -164,7 +168,12 @@ function groupsOf(xml: string, char: string): Group | null {
     if (text.startsWith('</g')) {
       stack.pop()
     } else if (text.startsWith('<g')) {
-      const group: Group = { element: /kvg:element="([^"]*)"/.exec(text)?.[1] ?? '', children: [] }
+      const group: Group = {
+        element: /kvg:element="([^"]*)"/.exec(text)?.[1] ?? '',
+        position: /kvg:position="([^"]*)"/.exec(text)?.[1] ?? '',
+        partial: /kvg:part="/.test(text),
+        children: [],
+      }
       stack.at(-1)!.children.push(group)
       if (!text.endsWith('/>')) stack.push(group)
     } else {
@@ -215,6 +224,34 @@ function componentsOf(xml: string, char: string): number[][] {
   return [...first.filter((part) => part.length >= 2), ...out]
 }
 
+/** パズルに使う、字の2つの分け方 */
+interface PuzzleSplit {
+  /** horizontal = 左右、vertical = 上下 */
+  layout: 'horizontal' | 'vertical'
+  /** 左(または上)の部品の線の番号。右(または下)は残りの線 */
+  first: number[]
+  /** 部品の名前(KanjiVG の kvg:element)。[左か上, 右か下]。付いていない部品は空 */
+  names: [string, string]
+}
+
+/**
+ * パズルに使う、字の2つの分け方。いちばん外のまとまりが、左右(left / right)か
+ * 上下(top / bottom)の2つの部品だけに分かれる字だけ(線が部品に入らずに並ぶ字・たれ・にょう・かまえは除く)。
+ */
+function splitForPuzzle(xml: string, char: string): PuzzleSplit | null {
+  const outer = groupsOf(xml, char)
+  if (!outer || outer.children.length !== 2) return null
+  const [a, b] = outer.children
+  if (typeof a === 'number' || typeof b === 'number') return null
+  const positions = `${a.position}/${b.position}`
+  if (positions !== 'left/right' && positions !== 'top/bottom') return null
+  // 部品が途中で分かれて書かれる字は、片方ずつでは部品の形にならない(哀 が 亠 と 口+衣の下 になる)
+  if (a.partial || b.partial) return null
+  const first = strokesIn(a)
+  if (!first.length || !strokesIn(b).length) return null
+  return { layout: positions === 'left/right' ? 'horizontal' : 'vertical', first, names: [a.element, b.element] }
+}
+
 /** 1字ぶんのお手本。線ごとに [x, y, x, y, ...] と平らに並べる(ファイルを小さくするため) */
 function shapeOf(xml: string, char: string): number[][] | null {
   const paths = pathsOf(xml, char)
@@ -256,12 +293,15 @@ function main(): void {
   const kanjidic = readDict<Kanjidic2>('kanjidic2-en')
   const kradfile = readDict<Kradfile>('kradfile')
 
+  // 小1・小2の漢字は熟語の穴うめに出ないが、パズル(お手本を見てから選ぶ)には出すので、答えと同じく扱う
+  const low = kanjidic.characters.filter((c) => c.misc.grade === 1 || c.misc.grade === 2).map((c) => c.literal)
   const answers = [
-    ...new Set(
-      (JSON.parse(readFileSync(QUESTIONS, 'utf8')) as { questions: { answer: string }[] }).questions.map(
+    ...new Set([
+      ...(JSON.parse(readFileSync(QUESTIONS, 'utf8')) as { questions: { answer: string }[] }).questions.map(
         (question) => question.answer,
       ),
-    ),
+      ...low,
+    ]),
   ]
   const joyo = kanjidic.characters
     .filter((c) => c.misc.grade != null && JOYO_GRADES.includes(c.misc.grade))
@@ -277,6 +317,7 @@ function main(): void {
   const needed = [...new Set([...answers, ...Object.values(similar).flat()])]
   const characters: Record<string, number[][]> = {}
   const parts: Record<string, number[][]> = {}
+  const splits: Record<string, PuzzleSplit> = {}
   const missing: string[] = []
   for (const char of needed) {
     const shape = shapeOf(xml, char)
@@ -284,6 +325,8 @@ function main(): void {
       characters[char] = shape
       const split = componentsOf(xml, char)
       if (split.length) parts[char] = split
+      const halves = splitForPuzzle(xml, char)
+      if (halves) splits[char] = halves
     }
     else missing.push(char)
   }
@@ -311,10 +354,14 @@ function main(): void {
       /** 線ごとに [x, y, x, y, ...] */
       format:
         'characters[字] = 線の配列(書き順)。線は x, y を交互に並べた整数。' +
-        'parts[字] = 部品ごとの線の番号(0 から)。1段めの部品のあとに、その中の2段めの部品が続く',
+        'parts[字] = 部品ごとの線の番号(0 から)。1段めの部品のあとに、その中の2段めの部品が続く。' +
+        'splits[字] = パズル用の2つの分け方(layout: horizontal=左右 / vertical=上下、first=左か上の線の番号で右か下は残り、names=部品の名前)',
     },
     characters,
     parts,
+    splits,
+    /** 小1・小2の漢字(パズルで、お手本を見てから選ぶ問題にする) */
+    low: low.filter((char) => characters[char]),
     similar,
   }
   writeFileSync(OUT, `${JSON.stringify(payload)}\n`)

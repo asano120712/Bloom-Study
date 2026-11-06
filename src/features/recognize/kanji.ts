@@ -39,6 +39,8 @@ interface Shapes {
   parts: Record<string, number[][]>
   /** 答えの漢字 → 形の似た漢字 */
   similar: Record<string, string[]>
+  /** パズル用の2つの分け方(layout、左か上の線の番号 first、部品の名前 names)。パズルのタイルを描くのに使う */
+  splits: Record<string, { layout: 'horizontal' | 'vertical'; first: number[]; names: [string, string] }>
 }
 
 let loading: Promise<Shapes> | null = null
