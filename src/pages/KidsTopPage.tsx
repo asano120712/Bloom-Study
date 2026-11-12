@@ -1,5 +1,6 @@
 import { Fragment, useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { AboutFooter } from '@/components/AboutFooter'
 import { AppShell } from '@/components/AppShell'
 import { StaffCorners } from '@/components/StaffCorners'
 import { HeroVisual } from '@/components/HeroVisual'
@@ -54,6 +55,7 @@ export function KidsTopPage() {
             </Link>
           </div>
         </div>
+        <AboutFooter />
       </AppShell>
     </>
   )
