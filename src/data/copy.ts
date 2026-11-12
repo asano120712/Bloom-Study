@@ -202,7 +202,6 @@ export interface Copy {
     empty: string
     hintsUsed: (count: number) => string
     solve: string
-    reset: string
   }
   exit: { label: string; title: string; note: string; stay: string; leave: string }
   /** こどもの記録(スタンプカード)。1日に決まった回数あそぶと、その日にスタンプが押される */
@@ -487,7 +486,6 @@ const ADULT: Copy = {
     empty: 'まだ記録がありません。',
     hintsUsed: (count) => `ヒント${count}`,
     solve: '問題を解く',
-    reset: '記録をリセットする(開発用)',
   },
   exit: {
     label: '← やめる',
@@ -764,7 +762,6 @@ const KIDS: Copy = {
     empty: 'まだ きろくが ないよ。',
     hintsUsed: (count) => `ヒント${count}`,
     solve: 'もんだいを とく',
-    reset: 'きろくを けす(かいはつよう)',
   },
   exit: {
     label: '← やめる',

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ActivityArt } from '@/components/ActivityArt'
 import { AppShell } from '@/components/AppShell'
+import { StaffCorners } from '@/components/StaffCorners'
 import { HowToSheet } from '@/components/HowToSheet'
 import { InputModeSheet } from '@/components/InputModeSheet'
 import { activitiesFor, type Activity, type ActivityId } from '@/data/activities'
@@ -51,6 +52,8 @@ export function GenreSelectPage() {
 
   return (
     <AppShell>
+      {/* 四隅を順に押すと、隠しページ(スタッフ用)を開く */}
+      <StaffCorners />
       <h1 className="text-2xl font-bold">{copy.genreSelect.title}</h1>
       <p className="mt-2 text-sm text-ink-600">{copy.genreSelect.note}</p>
 

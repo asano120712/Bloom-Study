@@ -71,16 +71,23 @@ export function needsCelebration(data = readStamps()): boolean {
 }
 
 /**
- * 開発中の試し用。今日の回数を count にして、押す演出をもう一度見られるようにする。
- * 画面には開発中だけ出す(本番のビルドでは呼ばれない)。
+ * 今日のスタンプまでの回数を 0 に戻す(隠しページのスタッフ用)。
+ * 押す演出を見せたことも忘れるので、また10回あそべば、もう一度スタンプを押すところが見られる。
  */
-export function setTodayForTesting(count: number): void {
+export function resetToday(): void {
   const data = readStamps()
   const today = dayKey()
-  writeStamps({
-    plays: { ...data.plays, [today]: count },
-    celebrated: data.celebrated.filter((day) => day !== today),
-  })
+  const { [today]: _, ...plays } = data.plays
+  writeStamps({ plays, celebrated: data.celebrated.filter((day) => day !== today) })
+}
+
+/** スタンプカードを全部消す(隠しページのスタッフ用。文化祭で端末を次の人に渡す前など) */
+export function clearStamps(): void {
+  try {
+    localStorage.removeItem(STORAGE_KEY)
+  } catch {
+    // 消せない環境では何もしない(もともと保存もできていない)
+  }
 }
 
 /** 押す演出を見せ終えた。同じ日にもう一度は見せない */

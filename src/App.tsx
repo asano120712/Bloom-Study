@@ -16,11 +16,14 @@ import { primeSpeech } from '@/services/speech'
  * 待っている間は Loading を出すが、Loading 自体が 200ms は何も描かないので、
  * 手元で開くぶんにはチラつかない。
  */
+import { STAFF_PATH } from '@/hooks/useStaffGesture'
 const QuizPage = lazy(() => import('@/pages/QuizPage').then((m) => ({ default: m.QuizPage })))
 const ResultPage = lazy(() => import('@/pages/ResultPage').then((m) => ({ default: m.ResultPage })))
 const TracePage = lazy(() => import('@/pages/TracePage').then((m) => ({ default: m.TracePage })))
 const MatchPage = lazy(() => import('@/pages/MatchPage').then((m) => ({ default: m.MatchPage })))
 const MyPage = lazy(() => import('@/pages/MyPage').then((m) => ({ default: m.MyPage })))
+// 隠しページ(スタッフ用)。四隅を順に押すと開く(useStaffGesture)。開いてもパスワードが要る
+const StaffPage = lazy(() => import('@/pages/StaffPage').then((m) => ({ default: m.StaffPage })))
 const TrialEndPage = lazy(() =>
   import('@/pages/TrialEndPage').then((m) => ({ default: m.TrialEndPage })),
 )
@@ -76,6 +79,7 @@ export default function App() {
           <Route path="/trace/:setId" element={<TracePage />} />
           <Route path="/match" element={<MatchPage />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path={STAFF_PATH} element={<StaffPage />} />
           <Route path="/trial-end" element={<TrialEndPage />} />
           {/*
             読み取りの試し場。開発中だけ出す(本番のビルドには入らない)。
