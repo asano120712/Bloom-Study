@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
+import { AboutFooter } from '@/components/AboutFooter'
 import { AppShell } from '@/components/AppShell'
 import { StaffCorners } from '@/components/StaffCorners'
 import { HeroVisual } from '@/components/HeroVisual'
@@ -49,6 +50,7 @@ export function TopPage() {
             </Link>
           </div>
         </div>
+        <AboutFooter />
       </AppShell>
     </>
   )

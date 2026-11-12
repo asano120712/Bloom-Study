@@ -24,6 +24,7 @@ const MatchPage = lazy(() => import('@/pages/MatchPage').then((m) => ({ default:
 const MyPage = lazy(() => import('@/pages/MyPage').then((m) => ({ default: m.MyPage })))
 // 隠しページ(スタッフ用)。四隅を順に押すと開く(useStaffGesture)。開いてもパスワードが要る
 const StaffPage = lazy(() => import('@/pages/StaffPage').then((m) => ({ default: m.StaffPage })))
+const AboutPage = lazy(() => import('@/pages/AboutPage').then((m) => ({ default: m.AboutPage })))
 const TrialEndPage = lazy(() =>
   import('@/pages/TrialEndPage').then((m) => ({ default: m.TrialEndPage })),
 )
@@ -79,6 +80,7 @@ export default function App() {
           <Route path="/trace/:setId" element={<TracePage />} />
           <Route path="/match" element={<MatchPage />} />
           <Route path="/mypage" element={<MyPage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path={STAFF_PATH} element={<StaffPage />} />
           <Route path="/trial-end" element={<TrialEndPage />} />
           {/*

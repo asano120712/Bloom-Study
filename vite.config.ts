@@ -67,11 +67,43 @@ function devSampleSink(route: string, file: string, name: string): Plugin {
   }
 }
 
+/**
+ * このアプリについて の画面に出す、データの数(漢字の問題 〇問 など)。
+ *
+ * 数えるためだけに、重い問題データ(全部で数MB)を画面に読ませたくないので、
+ * ビルドのときに数えて、数だけを `virtual:data-counts` として渡す。
+ * 問題を作り直せば、次のビルド(開発中は開き直し)で数も変わる。
+ */
+function dataCounts(): Plugin {
+  const id = 'virtual:data-counts'
+  const read = (file: string) =>
+    JSON.parse(readFileSync(fileURLToPath(new URL(`./src/data/${file}`, import.meta.url)), 'utf-8'))
+  return {
+    name: 'bloomstudy:data-counts',
+    resolveId: (source) => (source === id ? `\0${id}` : undefined),
+    load(resolved) {
+      if (resolved !== `\0${id}`) return
+      const counts = {
+        kanjiQuestions: read('questions.kanji.generated.json').questions.length,
+        englishWords: read('questions.english.generated.json').questions.length,
+        mathQuestions: read('questions.math.generated.json').questions.length,
+        traceCharacters:
+          read('strokes.kanji.generated.json').characters.length +
+          read('strokes.hiragana.generated.json').characters.length,
+        kanjiPuzzles: Object.keys(read('puzzles.kanji.generated.json').puzzles).length,
+        kanjiShapes: Object.keys(read('shapes.kanji.generated.json').characters).length,
+      }
+      return `export default ${JSON.stringify(counts)}`
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    dataCounts(),
     devSampleSink('/dev/samples', 'samples.json', '見本'),
     devSampleSink('/dev/words', 'words.json', '英単語'),
     devSampleSink('/dev/kanji', 'kanji.json', '漢字'),
