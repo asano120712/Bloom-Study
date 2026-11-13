@@ -162,9 +162,12 @@ function assign(cost: number[][]): number[] {
  * 本数が違うときは、相手の無い線1本につき UNMATCHED を足す。
  * 対応(お手本の線ごとに、対応した書いた線の番号。相手が無ければ -1)も返す(部品ごとに比べるため)。
  */
-function strokesDistance(written: Point[][], model: Point[][]): { distance: number; matchOf: number[] } {
+function strokesDistance(
+  written: Point[][],
+  model: Point[][],
+): { distance: number; matchOf: number[]; worst: number } {
   const size = Math.max(written.length, model.length)
-  if (!size) return { distance: Number.POSITIVE_INFINITY, matchOf: [] }
+  if (!size) return { distance: Number.POSITIVE_INFINITY, matchOf: [], worst: Number.POSITIVE_INFINITY }
   const cost = Array.from({ length: size }, (_, i) =>
     Array.from({ length: size }, (_, j) =>
       i < written.length && j < model.length ? strokeDistance(written[i], model[j]) : UNMATCHED,
@@ -172,10 +175,14 @@ function strokesDistance(written: Point[][], model: Point[][]): { distance: numb
   )
   const pairs = assign(cost)
   const matchOf = new Array<number>(model.length).fill(-1)
+  let worst = 0
   pairs.forEach((j, i) => {
-    if (i < written.length && j < model.length) matchOf[j] = i
+    if (i < written.length && j < model.length) {
+      matchOf[j] = i
+      worst = Math.max(worst, cost[i][j])
+    }
   })
-  return { distance: pairs.reduce((sum, j, i) => sum + cost[i][j], 0) / size, matchOf }
+  return { distance: pairs.reduce((sum, j, i) => sum + cost[i][j], 0) / size, matchOf, worst }
 }
 
 /**
@@ -333,6 +340,78 @@ function missingCoverage(written: Point[][], model: Point[][], matchOf: number[]
   return lowest
 }
 
+/**
+ * 線の終わりと次の線の始まりが、これより近ければ、1画をペンを離して2本に分けて書いたとみなす
+ * (字全体を 1 としたとき)
+ */
+const JOIN_GAP = 0.07
+/** 線の中で、これより鋭く曲がったところ(度)は、2画をつなげて書いた折り目の候補 */
+const CORNER_ANGLE = 75
+
+/**
+ * ペンを離して2本に分けて書いた線を、1本につなぎ直す。
+ * 書いた順に隣り合う2本のうち、前の線の終わりと次の線の始まりが近いものを、近い順につなぐ。
+ * 口の折れ(┐)を横と縦に分けて書くと、お手本より線が多くなり、画数で止めていた。
+ * limit 本までしか減らさない(お手本の画数より少なくはしない)。
+ */
+function joinPenLifts(strokes: Point[][], limit: number): Point[][] {
+  const out = strokes.map((stroke) => [...stroke])
+  while (out.length > limit) {
+    let best = -1
+    let bestGap = JOIN_GAP
+    for (let i = 0; i + 1 < out.length; i += 1) {
+      const end = out[i][out[i].length - 1]
+      const start = out[i + 1][0]
+      const gap = Math.hypot(end.x - start.x, end.y - start.y)
+      if (gap <= bestGap) {
+        bestGap = gap
+        best = i
+      }
+    }
+    if (best < 0) break
+    out.splice(best, 2, [...out[best], ...out[best + 1]])
+  }
+  return out
+}
+
+/**
+ * 2画をつなげて書いた線を、折り目で2本に分け直す。
+ * 線の中のいちばん鋭く曲がったところ(CORNER_ANGLE より鋭いところ)で切る。
+ * 口の1画めと2画めをつなげて書くと、お手本より線が少なくなる。limit 本まで増やす。
+ *
+ * お手本にいちばん合う切り方を選ぶ形(つなぎの線を捨てる切り方も含めて)も試したが、
+ * 線を抜いた字までうまく合わせてしまい(自動になる 5% → 7%)、正しく書いた字は増えなかった。
+ */
+function splitCorners(strokes: Point[][], limit: number): Point[][] {
+  const out = strokes.map((stroke) => resample(stroke, POINTS_PER_STROKE * 3))
+  while (out.length < limit) {
+    let bestStroke = -1
+    let bestAt = -1
+    let bestTurn = CORNER_ANGLE
+    for (const [s, stroke] of out.entries()) {
+      // 端の近くでは切らない(はねや、書き始めのぶれを折り目と取り違えるため)
+      for (let i = 3; i + 3 < stroke.length; i += 1) {
+        const a = stroke[i - 3]
+        const b = stroke[i]
+        const c = stroke[i + 3]
+        const turn = Math.abs(
+          ((Math.atan2(c.y - b.y, c.x - b.x) - Math.atan2(b.y - a.y, b.x - a.x)) * 180) / Math.PI,
+        )
+        const angle = turn > 180 ? 360 - turn : turn
+        if (angle > bestTurn) {
+          bestTurn = angle
+          bestStroke = s
+          bestAt = i
+        }
+      }
+    }
+    if (bestStroke < 0) break
+    const stroke = out[bestStroke]
+    out.splice(bestStroke, 1, stroke.slice(0, bestAt + 1), stroke.slice(bestAt))
+  }
+  return out
+}
+
 /** お手本はそろえ終わった形を覚えておく(似た漢字は何度も出てくる) */
 const prepared = new Map<string, Prepared>()
 
@@ -367,8 +446,15 @@ export interface KanjiCandidate {
    * 低いと線が足りない。2画をつなげて書いたときは、余った線の上をつなげた線が通るので高い。余りが無ければ 1
    */
   covered: number
-  /** 書いた線の本数 - お手本の画数(つなげて書くとマイナス、分けて書いたり余計な線があるとプラス) */
+  /**
+   * つなぎ直し・分け直しをしたあとの線の本数 - お手本の画数。
+   * 分けて書いただけ・つなげて書いただけなら 0 に戻る。戻らなければ、線が余っている・足りない
+   */
   strokeCountDiff: number
+  /** 書いたままの線の本数 - お手本の画数(つなぎ直す前) */
+  written: number
+  /** 対応した線どうしのうち、いちばん離れている組の離れ具合。無理につなぎ直す・分け直すと大きくなる */
+  worst: number
   /** 絵で比べた離れ具合(chamfer。64マスの中で平均何マス離れているか) */
   image: number
 }
@@ -382,19 +468,33 @@ export async function compareKanji(written: Stroke[], answer: string): Promise<K
   const strokes = written.filter((stroke) => stroke.length > 0)
   if (!strokes.length) return []
   const mine = prepare(strokes)
+  const unit = fitToUnit(strokes)
 
   const out: KanjiCandidate[] = []
   for (const char of [answer, ...(similar[answer] ?? [])]) {
     const model = modelOf(char, characters)
     if (!model) continue
-    const matched = strokesDistance(mine.strokes, model.strokes)
+    // 線の本数がお手本と違うときは、分けて書いた線をつなぎ直し、つなげて書いた線を分け直してから比べる。
+    // 絵で比べる値(image)は線の分け方に左右されないので、元の書き方のまま
+    const count = model.strokes.length
+    const target = model.strokes
+    const charParts = parts[char] ?? []
+    const lines =
+      strokes.length > count
+        ? joinPenLifts(unit, count).map((stroke) => resample(stroke))
+        : strokes.length < count
+          ? splitCorners(unit, count).map((stroke) => resample(stroke))
+          : mine.strokes
+    const matched = strokesDistance(lines, target)
     out.push({
       char,
       strokes: matched.distance,
-      parts: partsDistance(mine.strokes, model.strokes, matched.matchOf, parts[char] ?? []),
+      parts: partsDistance(lines, target, matched.matchOf, charParts),
       image: mine.image && model.image ? chamfer(mine.image, model.image) : Number.POSITIVE_INFINITY,
-      covered: missingCoverage(mine.strokes, model.strokes, matched.matchOf, parts[char] ?? []),
-      strokeCountDiff: mine.strokes.length - model.strokes.length,
+      covered: missingCoverage(lines, target, matched.matchOf, charParts),
+      strokeCountDiff: lines.length - target.length,
+      written: strokes.length - count,
+      worst: matched.worst,
     })
   }
   return out
@@ -420,46 +520,52 @@ export function fitted(strokes: Stroke[]): Point[][] {
 }
 
 /**
- * 並べるための、線・部品・絵を合わせた離れ具合。小さいほど近い。
- * 線と部品は 0〜0.3 ほど、絵は 0〜3 ほどで動くので、線は 10 倍、部品は 5 倍してそろえる。
- * 部品を重くしすぎると(10 倍以上)、書き方の揺れにも敏感になって、かえって悪くなった。
+ * 並べるための、線・部品・絵・いちばんずれた線を合わせた離れ具合。小さいほど近い。
+ * 線と部品は 0〜0.3 ほど、絵は 0〜3 ほどで動くので、線は 13 倍、部品は 5 倍、
+ * いちばんずれた線は 3 倍してそろえる。
+ *
+ * 重みは、送ってもらった字(2026-11-12 時点で 638字)と、そこから作った線を抜いた字・足した字で探した。
+ * いちばんずれた線を足すと、形は似ていても1か所だけ大きく違う字(似た漢字)と、
+ * 全体が少しずつ揺れているだけの正しい字を分けやすくなる。
  */
 export function kanjiDistance(candidate: KanjiCandidate): number {
-  return candidate.strokes * 10 + candidate.parts * 5 + candidate.image
+  return candidate.strokes * 13 + candidate.parts * 5 + candidate.image + candidate.worst * 3
 }
 
 /**
  * 自動で「せいかい」にする条件。答えの漢字がいちばん近く、その距離が KANJI_AUTO_MAX 以下で、
- * 2番めに近い字より KANJI_MARGIN 以上近いとき。
+ * 2番めに近い字より KANJI_MARGIN 以上近いとき。KANJI_FAR_MAX までは、2番めとの差が
+ * KANJI_FAR_MARGIN 以上あれば(迷う相手がいなければ)せいかいにする。
  *
- * 試し場で書いた字(自分の字 277字)で、間違って自動にする字が 0 のまま、正しく書いた字が
- * 多く通る値を探した。部品ごとにも比べるようにして、正しく書いた 156字の 74% → 86% ほどが
- * 自動になった。似た漢字をわざと書いた 121字、関係ない漢字を答えにした 156字は1字も自動にならない。
- * 間違いにいちばん近かったのは、2番めとの差がほぼ無いもの(栽に裁を書いた字、0.04)と、
- * 距離が 4.4 を超えるもの(暗に暁を書いた字)だったので、差は 0.2、距離は少し余裕をみて 4.2 にした。
+ * 送ってもらった字(正しく書いた 418字・似た漢字をわざと書いた 220字)で決めた。
+ * 正しく書いた字は 70% → 78% が自動になり、似た漢字は1字も自動にならない。
+ * 書いた日ごとに見ても、正しく書いた字が通る割合・まちがいが通る割合は、どの日もほぼ同じだった
+ * (決めるのに使わなかった 11/12 の字で、正しく書いた字の 84% が自動、似た漢字は 0字)。
  */
-export const KANJI_AUTO_MAX = 4.2
+export const KANJI_AUTO_MAX = 5.2
 export const KANJI_MARGIN = 0.2
+export const KANJI_FAR_MAX = 6
+export const KANJI_FAR_MARGIN = 0.4
 /**
  * 自動にはしないが、何に見えたかを出してよい距離。答えがいちばん近ければ
  * 「〇〇に見えましたが、自信がありません」、似た漢字のほうが近ければ「書いた字は〇〇に見えました」。
  */
-export const KANJI_UNSURE_MAX = KANJI_AUTO_MAX
+export const KANJI_UNSURE_MAX = KANJI_FAR_MAX
 
 /**
  * 線が足りない・余計な線がある字を、自動でせいかいにしないための見張り。
  *
- * 全体の近さだけでは、線が1本足りなくても(偽の 為 の横線)、余計な線を足しても自動になっていた。
- * 正しく書いた字から線を1本抜いた字・1本足した字を作って測ると、それぞれ 74%・76% が自動になった。
- * - 書いた線の本数は、お手本の画数と同じか、1本少ないところまで(2画を1本につなげて書くのは許す)。
- *   余計な線を足した字は 76% → 8% になる。画数をまったく見ないと、余計な線はどうしても防げなかった
- * - 対応できずに余ったお手本の線は、部品の中で、その上に書いた線が KANJI_MIN_COVERED 以上通っていること
- *   (つなげて書いた線は余った線の上を通るので、つなげて書いても不利にならない)。
- *   線を1本抜いた字は 74% → 10% になる
- * 正しく書いた字で自動になるのは 87% → 71%(自動にならなかった字は、自己申告に回るだけ)。
+ * 書いた線の本数がお手本と違うときは、まず、ペンを離して2本に分けて書いた線をつなぎ直し、
+ * 2画をつなげて書いた線を折り目で分け直す(compareKanji)。それでも本数が合わなければ止める。
+ * 本数だけ見て止めていたときは、口の折れを分けて書いた字(福・堂・鹿)まで自動にならなかった。
+ *
+ * ただ、つなぎ直し・分け直しは、線を抜いた字や足した字まで「直して」しまう。そこで、
+ * 対応した線どうしのうちいちばん離れている組(worst)が KANJI_WORST 以下であることも見る。
+ * 分けて書いただけの字はどの線もお手本とよく合うが、無理に直した字はどこかが大きくずれる。
+ * 直したときは厳しめ(0.16)、書いたままのときは少しゆるめ(0.25)。
+ * 正しく書いた字から線を1本抜いた字・1本足した字のうち、自動になるのは 4%・7%(前は 8%・10%)。
  */
-export const KANJI_STROKE_COUNT_RANGE = { fewer: 1, more: 0 }
-export const KANJI_MIN_COVERED = 0.5
+export const KANJI_WORST = { written: 0.25, reshaped: 0.16 }
 
 export interface KanjiJudgement {
   accepted: boolean
@@ -469,30 +575,34 @@ export interface KanjiJudgement {
   likely: boolean
 }
 
-/** 線が足りない・余計な線が無さそうか(KANJI_STROKE_COUNT_RANGE と KANJI_MIN_COVERED を見る) */
+/** 線が足りない・余計な線が無さそうか(本数が合い、いちばんずれた線が KANJI_WORST 以下) */
 export function hasAllStrokes(candidate: KanjiCandidate): boolean {
-  return (
-    candidate.strokeCountDiff >= -KANJI_STROKE_COUNT_RANGE.fewer &&
-    candidate.strokeCountDiff <= KANJI_STROKE_COUNT_RANGE.more &&
-    candidate.covered >= KANJI_MIN_COVERED
-  )
+  const limit = candidate.written === 0 ? KANJI_WORST.written : KANJI_WORST.reshaped
+  return candidate.strokeCountDiff === 0 && candidate.worst <= limit
+}
+
+/**
+ * 近い順に並べた候補から、自動で「せいかい」にしてよいか。出題の画面と試し場で同じ決まりを使う。
+ * 線の見張りを入れる前に記録した字(worst が無い)は、自動にならない。
+ */
+export function autoAccepts(candidates: KanjiCandidate[], answer: string): boolean {
+  const [best, second] = candidates
+  if (!best || best.char !== answer) return false
+  const distance = kanjiDistance(best)
+  const margin = second ? kanjiDistance(second) - distance : Number.POSITIVE_INFINITY
+  const near = distance <= KANJI_AUTO_MAX ? margin >= KANJI_MARGIN : distance <= KANJI_FAR_MAX && margin >= KANJI_FAR_MARGIN
+  return near && hasAllStrokes(best)
 }
 
 /** 書いた線が答えの漢字の形になっているか(出題の画面の自動判定)。「違う」とは決めない */
 export async function judgeKanji(written: Stroke[], answer: string): Promise<KanjiJudgement> {
   const candidates = (await compareKanji(written, answer)).sort((a, b) => kanjiDistance(a) - kanjiDistance(b))
-  const [best, second] = candidates
+  const [best] = candidates
   if (!best) return { accepted: false, likely: false }
+  if (autoAccepts(candidates, answer)) return { accepted: true, read: answer, likely: true }
   const distance = kanjiDistance(best)
-  const margin = second ? kanjiDistance(second) - distance : Number.POSITIVE_INFINITY
-  if (best.char === answer) {
-    // 形は近いが、線が足りない・余計な線がありそうなときは「自信がありません」に回す
-    if (distance <= KANJI_AUTO_MAX && margin >= KANJI_MARGIN && hasAllStrokes(best)) {
-      return { accepted: true, read: answer, likely: true }
-    }
-    if (distance <= KANJI_UNSURE_MAX) return { accepted: false, read: answer, likely: true }
-    return { accepted: false, likely: false }
-  }
-  if (distance <= KANJI_AUTO_MAX) return { accepted: false, read: best.char, likely: false }
-  return { accepted: false, likely: false }
+  if (distance > KANJI_UNSURE_MAX) return { accepted: false, likely: false }
+  // 形は近いが、迷う相手がいる・線が足りない・余計な線がありそうなときは「自信がありません」に回す
+  if (best.char === answer) return { accepted: false, read: answer, likely: true }
+  return { accepted: false, read: best.char, likely: false }
 }
