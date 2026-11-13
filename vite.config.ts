@@ -4,6 +4,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
 /**
  * 手書きの見本を受け取って保存する口(開発時だけ)。
@@ -104,6 +105,60 @@ export default defineConfig({
     react(),
     tailwindcss(),
     dataCounts(),
+    /*
+      PWA(ホーム画面に置けるアプリにする)。
+      - 画面・問題データ・お手本を全部先に保存しておき、電波が無くても遊べるようにする
+        (文化祭の会場は回線が混む。いちばん大きい計算の問題で約1.8MB)
+      - 新しい版を公開したら、次に開いたときに入れ替わる(autoUpdate)。遊んでいる途中で勝手に読み直さない
+      - 登録の処理は別ファイル(registerSW.js)にする。CSP で埋め込みのスクリプトを禁じているため
+      - 開発サーバーでは動かさない(古い保存が残って、直したはずの画面が出るのを避ける)
+    */
+    VitePWA({
+      registerType: 'autoUpdate',
+      injectRegister: 'script',
+      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
+      manifest: {
+        name: 'Bloomstudy',
+        short_name: 'Bloomstudy',
+        description: '思い出す力と書く力を鍛える、ゲーム型の学習ウェブアプリ',
+        lang: 'ja',
+        start_url: '/',
+        scope: '/',
+        display: 'standalone',
+        background_color: '#FBFDFC',
+        theme_color: '#0F6E56',
+        icons: [
+          { src: '/pwa-192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/pwa-512.png', sizes: '512x512', type: 'image/png' },
+          // 花は安全な範囲(中心から 40%)に収めてあるので、切り抜かれる用にも同じ絵を使う
+          { src: '/pwa-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        ],
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
+        // 計算の問題(約1.8MB)と漢字のお手本(約1.3MB)も保存する。既定の 2MB では計算が漏れる
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+        navigateFallback: '/index.html',
+        cleanupOutdatedCaches: true,
+        // フォントは Google Fonts から読む。一度読んだら保存して、電波が無くても同じ字で出す
+        runtimeCaching: [
+          {
+            urlPattern: ({ url }) => url.origin === 'https://fonts.googleapis.com',
+            handler: 'StaleWhileRevalidate',
+            options: { cacheName: 'google-fonts-css' },
+          },
+          {
+            urlPattern: ({ url }) => url.origin === 'https://fonts.gstatic.com',
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-files',
+              expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 365 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
+          },
+        ],
+      },
+    }),
     devSampleSink('/dev/samples', 'samples.json', '見本'),
     devSampleSink('/dev/words', 'words.json', '英単語'),
     devSampleSink('/dev/kanji', 'kanji.json', '漢字'),
