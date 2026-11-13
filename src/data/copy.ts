@@ -202,9 +202,19 @@ export interface Copy {
     empty: string
     hintsUsed: (count: number) => string
     solve: string
-    reset: string
   }
   exit: { label: string; title: string; note: string; stay: string; leave: string }
+  /** このアプリについて(ホームの下のリンクと、その画面)。読むのは保護者なので、こどもでも言葉はおとな寄り */
+  about: {
+    link: string
+    title: string
+    lead: string[]
+    numbers: string
+    tech: string
+    credits: string
+    creditsNote: string
+    back: string
+  }
   /** こどもの記録(スタンプカード)。1日に決まった回数あそぶと、その日にスタンプが押される */
   stampCard: {
     title: string
@@ -487,7 +497,19 @@ const ADULT: Copy = {
     empty: 'まだ記録がありません。',
     hintsUsed: (count) => `ヒント${count}`,
     solve: '問題を解く',
-    reset: '記録をリセットする(開発用)',
+  },
+  about: {
+    link: 'このアプリについて',
+    title: 'このアプリについて',
+    lead: [
+      'Bloom Study は、答えをすぐに出さず、ヒントを1つずつ見ながら思い出す力を育てる学習アプリです。英単語・漢字・計算を、おとな向けとこども向けで用意しています。',
+    ],
+    numbers: '数字で見る Bloom Study',
+    tech: '使っている技術',
+    credits: '使っているデータ',
+    creditsNote:
+      '問題やお手本は、次のデータをもとに作っています。CC BY-SA のデータから作ったもの(問題・お手本の線など)は、同じライセンスで扱います。',
+    back: 'ホームに戻る',
   },
   exit: {
     label: '← やめる',
@@ -764,7 +786,20 @@ const KIDS: Copy = {
     empty: 'まだ きろくが ないよ。',
     hintsUsed: (count) => `ヒント${count}`,
     solve: 'もんだいを とく',
-    reset: 'きろくを けす(かいはつよう)',
+  },
+  about: {
+    // リンクは こどもの画面に出るので、ほかの言葉にそろえて分かち書きにする
+    link: 'この アプリに ついて',
+    title: 'このアプリについて',
+    lead: [
+      'Bloom Study は、答えをすぐに出さず、ヒントを1つずつ見ながら思い出す力を育てる学習アプリです。英単語・漢字・計算を、おとな向けとこども向けで用意しています。',
+    ],
+    numbers: '数字で見る Bloom Study',
+    tech: '使っている技術',
+    credits: '使っているデータ',
+    creditsNote:
+      '問題やお手本は、次のデータをもとに作っています。CC BY-SA のデータから作ったもの(問題・お手本の線など)は、同じライセンスで扱います。',
+    back: 'ホームに もどる',
   },
   exit: {
     label: '← やめる',

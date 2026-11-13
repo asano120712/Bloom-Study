@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import {
-  KANJI_AUTO_MAX,
-  KANJI_MARGIN,
+  autoAccepts,
   compareKanji,
   fitted,
-  hasAllStrokes,
   kanjiDistance,
   kanjiShapes,
   modelStrokes,
@@ -59,22 +57,8 @@ function writeLog(log: Attempt[]) {
   }
 }
 
-/** 並べるための、線と絵を合わせた離れ具合(出題の画面の判定と同じもの) */
+/** 並べるための離れ具合(出題の画面の判定と同じもの) */
 const combined = kanjiDistance
-
-/**
- * 出題の画面で自動で「せいかい」になるか(judgeKanji と同じ条件)。
- * 線が足りない・余計な線の見張りを入れる前に記録した字は、その値が無いので数えない
- */
-const autoAccepts = (candidates: KanjiCandidate[], answer: string) => {
-  const [best, second] = candidates
-  return (
-    best?.char === answer &&
-    combined(best) <= KANJI_AUTO_MAX &&
-    (!second || combined(second) - combined(best) >= KANJI_MARGIN) &&
-    hasAllStrokes(best)
-  )
-}
 
 const rate = (hits: number, total: number) => (total ? `${Math.round((hits / total) * 100)}%` : '—')
 

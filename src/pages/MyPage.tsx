@@ -14,7 +14,6 @@ import {
   markCelebrated,
   needsCelebration,
   readStamps,
-  setTodayForTesting,
 } from '@/services/stampCard'
 import type { AnswerRecord } from '@/types'
 
@@ -79,12 +78,6 @@ export function MyPage() {
  * (あそびの途中で10回目に届いて、そのままやめたときなど)、開いたときに押す。
  */
 function KidsStampPage() {
-  // 試し用のボタンで今日の回数を変えたら、読み直して作り直す
-  const [version, setVersion] = useState(0)
-  return <KidsStampCard key={version} onTestChange={() => setVersion((current) => current + 1)} />
-}
-
-function KidsStampCard({ onTestChange }: { onTestChange: () => void }) {
   const copy = useCopy()
   const [data] = useState(readStamps)
   const [celebrate] = useState(() => needsCelebration(data))
@@ -129,37 +122,12 @@ function KidsStampCard({ onTestChange }: { onTestChange: () => void }) {
       >
         {copy.stampCard.play}
       </Link>
-
-      {/*
-        開発中だけの試し用。スタンプの演出を何度でも見られるように、今日の回数を変える。
-        本番のビルドには出ない(子どもが押して、その日のスタンプを消してしまわないように)。
-      */}
-      {import.meta.env.DEV && (
-        <div className="mt-6 flex gap-2">
-          {[
-            { label: '今日をリセット(開発用)', count: 0 },
-            { label: '今日をあと1回にする(開発用)', count: STAMP_GOAL - 1 },
-          ].map(({ label, count }) => (
-            <button
-              key={label}
-              type="button"
-              onClick={() => {
-                setTodayForTesting(count)
-                onTestChange()
-              }}
-              className="flex min-h-12 flex-1 items-center justify-center rounded-full border-2 border-dashed border-ink-400 px-2 text-xs font-bold text-ink-600"
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
     </AppShell>
   )
 }
 
 function RecordPage() {
-  const { stats, isLoading, reset } = useStats()
+  const { stats, isLoading } = useStats()
   const copy = useCopy()
   const promptTexts = usePromptTexts(stats.history)
 
@@ -221,13 +189,6 @@ function RecordPage() {
         >
           {copy.myPage.solve}
         </Link>
-        <button
-          type="button"
-          onClick={() => void reset()}
-          className="flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600"
-        >
-          {copy.myPage.reset}
-        </button>
       </div>
     </AppShell>
   )

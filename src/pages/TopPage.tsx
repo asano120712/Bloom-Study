@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
+import { AboutFooter } from '@/components/AboutFooter'
 import { AppShell } from '@/components/AppShell'
+import { StaffCorners } from '@/components/StaffCorners'
 import { HeroVisual } from '@/components/HeroVisual'
 import { OpeningSplash } from '@/components/OpeningSplash'
 import { useCopy } from '@/hooks/useAudienceMode'
@@ -23,6 +25,8 @@ export function TopPage() {
       {isOpening && <OpeningSplash onFinish={finishOpening} />}
 
       <AppShell>
+        {/* 四隅を順に押すと、隠しページ(スタッフ用)を開く */}
+        <StaffCorners />
         <div className="flex flex-1 flex-col items-center justify-center gap-8 text-center">
           <HeroVisual className="w-full rounded-3xl" />
 
@@ -46,6 +50,7 @@ export function TopPage() {
             </Link>
           </div>
         </div>
+        <AboutFooter />
       </AppShell>
     </>
   )
