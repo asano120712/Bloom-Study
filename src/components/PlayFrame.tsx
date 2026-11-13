@@ -2,10 +2,17 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
 import { usePressStage } from '@/hooks/usePressStage'
-import { STAMP_GOAL, dayKey, markCelebrated, needsCelebration, readStamps } from '@/services/stampCard'
+import {
+  STAMP_GOAL,
+  dayKey,
+  markCelebrated,
+  needsCelebration,
+  readStamps,
+  type StampKind,
+} from '@/services/stampCard'
 import { prefersReducedMotion } from '@/utils/motion'
 import { BloomMark } from './BloomMark'
-import { Confetti, StampCardSheet, TodayMeter } from './StampCard'
+import { Confetti, StampCardSheet, StampChooser, TodayMeter } from './StampCard'
 
 /**
  * あそび(なぞりがき・おなじものさがし)の、進み具合と終わりの画面。
@@ -93,7 +100,7 @@ function KidsStamp({ played }: { played: number }) {
   const [showCard, setShowCard] = useState(false)
   const today = data.plays[dayKey()] ?? 0
 
-  if (celebrate && showCard) return <StampCelebration plays={data.plays} />
+  if (celebrate && showCard) return <StampCelebration plays={data.plays} kinds={data.kinds} />
 
   return (
     <>
@@ -150,32 +157,48 @@ function GoalReached({ added, onDone }: { added: number; onDone: () => void }) {
   )
 }
 
-/** スタンプカードを出して、今日のマスに押す。カードがせり上がりきってから押す */
-function StampCelebration({ plays }: { plays: Record<string, number> }) {
+/**
+ * スタンプカードを出して、今日のマスに押す。カードがせり上がりきってからスタンプが浮かび、
+ * どのスタンプにするか選んで、押すボタンで押す。
+ */
+function StampCelebration({ plays, kinds }: { plays: Record<string, number>; kinds: Record<string, StampKind> }) {
   const copy = useCopy()
   const [got, setGot] = useState(false)
+  const [kind, setKind] = useState<StampKind>('flower')
+  const [stamped, setStamped] = useState(kinds)
   const finishPress = useCallback(() => {
-    markCelebrated()
+    markCelebrated(kind)
+    setStamped((current) => ({ ...current, [dayKey()]: kind }))
     setGot(true)
-  }, [])
-  const pressStage = usePressStage(true, 800, finishPress)
+  }, [kind])
+  const { stage: pressStage, press } = usePressStage(true, 800, finishPress)
+  const choosing = pressStage === 'hold' || pressStage === 'lift'
 
   return (
     <>
       <p className="text-2xl font-bold text-bloom-700">{copy.play.allDone}</p>
       <div className="animate-card-rise relative w-full">
         <div className={pressStage === 'press' ? 'animate-card-thud' : ''}>
-          <StampCardSheet plays={plays} pressStage={pressStage} />
+          <StampCardSheet plays={plays} kinds={stamped} pressStage={pressStage} pressKind={kind} />
         </div>
         {got && <Confetti />}
       </div>
-      <p
-        aria-live="polite"
-        className={`flex min-h-10 items-center gap-2 text-2xl font-bold text-warm-600 ${got ? 'animate-got-pop' : 'invisible'}`}
-      >
-        <BloomMark size={36} face="joy" motion="none" />
-        {copy.stampCard.got}
-      </p>
+      {/*
+        選ぶところと「スタンプ ゲット!」を同じ場所に重ねて、選ぶところのぶんの高さをずっと取っておく。
+        入れ替わるたびに高さが変わると、真ん中に寄せているカードが上下に跳ねる。
+      */}
+      <div className="grid w-full place-items-center">
+        <div className={`w-full [grid-area:1/1] ${choosing ? 'animate-got-pop' : 'invisible'}`}>
+          <StampChooser value={kind} onChange={setKind} onPress={press} disabled={pressStage === 'lift'} />
+        </div>
+        <p
+          aria-live="polite"
+          className={`flex min-h-10 items-center gap-2 text-2xl font-bold text-warm-600 [grid-area:1/1] ${got ? 'animate-got-pop' : 'invisible'}`}
+        >
+          <BloomMark size={36} face="joy" motion="none" />
+          {copy.stampCard.got}
+        </p>
+      </div>
     </>
   )
 }

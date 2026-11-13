@@ -4,7 +4,7 @@ import { AppShell } from '@/components/AppShell'
 import { Loading } from '@/components/Loading'
 import { TRIAL_LIMIT } from '@/config'
 import { questionsOf } from '@/data/questions'
-import { Confetti, StampCardBook, TodayMeter } from '@/components/StampCard'
+import { Confetti, StampCardBook, StampChooser, TodayMeter } from '@/components/StampCard'
 import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
 import { usePressStage } from '@/hooks/usePressStage'
 import { useStats } from '@/hooks/useStats'
@@ -14,6 +14,7 @@ import {
   markCelebrated,
   needsCelebration,
   readStamps,
+  type StampKind,
 } from '@/services/stampCard'
 import type { AnswerRecord } from '@/types'
 
@@ -76,17 +77,23 @@ export function MyPage() {
 /**
  * こどものスタンプカード。今日のスタンプが押されたのに、まだ押すところを見ていなければ
  * (あそびの途中で10回目に届いて、そのままやめたときなど)、開いたときに押す。
+ * 押す前に、どのスタンプにするかを選んでもらう(選ばずに閉じたら、次に開いたときにまた選ぶ)。
  */
 function KidsStampPage() {
   const copy = useCopy()
   const [data] = useState(readStamps)
   const [celebrate] = useState(() => needsCelebration(data))
   const [got, setGot] = useState(false)
+  const [kind, setKind] = useState<StampKind>('flower')
+  /** 押したあとは、今日のマスに選んだスタンプを出す(data は開いたときに読んだまま) */
+  const [kinds, setKinds] = useState(data.kinds)
   const finishPress = useCallback(() => {
-    markCelebrated()
+    markCelebrated(kind)
+    setKinds((current) => ({ ...current, [dayKey()]: kind }))
     setGot(true)
-  }, [])
-  const pressStage = usePressStage(celebrate, 600, finishPress)
+  }, [kind])
+  const { stage: pressStage, press } = usePressStage(celebrate, 600, finishPress)
+  const choosing = pressStage === 'hold' || pressStage === 'lift'
   const today = data.plays[dayKey()] ?? 0
 
   return (
@@ -94,26 +101,39 @@ function KidsStampPage() {
       <h1 className="text-center text-2xl font-bold">{copy.stampCard.title}</h1>
 
       <div className="relative mt-6">
-        <StampCardBook plays={data.plays} pressStage={pressStage} />
+        <StampCardBook plays={data.plays} kinds={kinds} pressStage={pressStage} pressKind={kind} />
         {got && <Confetti />}
       </div>
 
-      <div className="mt-6 flex flex-col items-center gap-2 text-center">
-        <TodayMeter count={today} />
-        <p className="text-base font-bold text-ink-600">{copy.stampCard.today(today)}</p>
-        {/* 押す演出のあいだは何も出さない(押す前に「ゲットずみ」と出ると、順番が逆になる) */}
-        <p
-          aria-live="polite"
-          className={`min-h-7 text-lg font-bold text-warm-600 ${got ? 'animate-got-pop' : ''} ${
-            celebrate && !got ? 'invisible' : ''
-          }`}
+      {/*
+        押す日は、選ぶところと今日の回数を同じ場所に重ね、高いほうの高さを取っておく
+        (入れ替わるたびに、下の「あそびに いく」が上下に動かないように)。
+      */}
+      <div className="mt-6 grid">
+        {celebrate && (
+          <div className={`[grid-area:1/1] ${choosing ? 'animate-got-pop' : 'invisible'}`}>
+            <StampChooser value={kind} onChange={setKind} onPress={press} disabled={pressStage === 'lift'} />
+          </div>
+        )}
+        <div
+          className={`flex flex-col items-center gap-2 text-center [grid-area:1/1] ${choosing ? 'invisible' : ''}`}
         >
-          {got
-            ? copy.stampCard.got
-            : today >= STAMP_GOAL
-              ? copy.stampCard.already
-              : copy.stampCard.left(STAMP_GOAL - today)}
-        </p>
+          <TodayMeter count={today} />
+          <p className="text-base font-bold text-ink-600">{copy.stampCard.today(today)}</p>
+          {/* 押す演出のあいだは何も出さない(押す前に「ゲットずみ」と出ると、順番が逆になる) */}
+          <p
+            aria-live="polite"
+            className={`min-h-7 text-lg font-bold text-warm-600 ${got ? 'animate-got-pop' : ''} ${
+              celebrate && !got ? 'invisible' : ''
+            }`}
+          >
+            {got
+              ? copy.stampCard.got
+              : today >= STAMP_GOAL
+                ? copy.stampCard.already
+                : copy.stampCard.left(STAMP_GOAL - today)}
+          </p>
+        </div>
       </div>
 
       <Link

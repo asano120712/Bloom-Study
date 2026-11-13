@@ -107,40 +107,48 @@
   }
 
   /*
-   * 押す前の「ため」(2秒)。スタンプが上からふわっと現れてマスの上に大きく浮かび、
-   * ゆれがだんだん大きく・速くなっていき、最後にぐっと持ち上がる。そこから stamp-press で押す。
-   * 終わりの姿勢は stamp-press の始まりと同じにしてあり、つなぎ目で跳ばない。
+   * 押す前に、スタンプを選んでもらうあいだ(押すボタンを押すまで)。
+   * 上からふわっと現れてマスの上に大きく浮かび(stamp-appear)、そのままゆっくりゆれて待つ(stamp-sway)。
+   * 押すボタンを押したら stamp-lift でぐっと持ち上げ、stamp-press で押す。
+   * stamp-lift の終わりは stamp-press の始まりと同じ姿勢で、つなぎ目で跳ばない。
    */
-  --animate-stamp-hold: stamp-hold 2000ms ease-in-out both;
+  --animate-stamp-float:
+    stamp-appear 700ms cubic-bezier(0.22, 1, 0.36, 1) both, stamp-sway 1800ms ease-in-out 700ms infinite;
+  --animate-stamp-lift: stamp-lift 380ms cubic-bezier(0.3, 0, 0.5, 1) both;
 
-  @keyframes stamp-hold {
-    0% {
+  @keyframes stamp-appear {
+    from {
       opacity: 0;
       transform: translateY(-240%) scale(4) rotate(var(--stamp-angle));
     }
-    14% {
+    to {
       opacity: 0.95;
       transform: translateY(-150%) scale(4) rotate(var(--stamp-angle));
     }
-    30% {
-      transform: translateY(-140%) scale(4) rotate(calc(var(--stamp-angle) - 4deg));
-    }
-    44% {
-      transform: translateY(-152%) scale(4) rotate(calc(var(--stamp-angle) + 5deg));
-    }
-    56% {
-      transform: translateY(-138%) scale(4) rotate(calc(var(--stamp-angle) - 7deg));
-    }
-    66% {
-      transform: translateY(-150%) scale(4) rotate(calc(var(--stamp-angle) + 8deg));
-    }
-    74% {
-      transform: translateY(-140%) scale(4) rotate(calc(var(--stamp-angle) - 9deg));
-    }
-    81% {
-      transform: translateY(-148%) scale(4) rotate(calc(var(--stamp-angle) + 9deg));
-    }
+  }
+
+  @keyframes stamp-sway {
+    0%,
     100% {
+      opacity: 0.95;
+      transform: translateY(-150%) scale(4) rotate(var(--stamp-angle));
+    }
+    25% {
+      opacity: 0.95;
+      transform: translateY(-140%) scale(4) rotate(calc(var(--stamp-angle) - 5deg));
+    }
+    75% {
+      opacity: 0.95;
+      transform: translateY(-146%) scale(4) rotate(calc(var(--stamp-angle) + 5deg));
+    }
+  }
+
+  @keyframes stamp-lift {
+    from {
+      opacity: 0.95;
+      transform: translateY(-150%) scale(4) rotate(var(--stamp-angle));
+    }
+    to {
       opacity: 0.95;
       transform: translateY(-185%) scale(4.3) rotate(calc(var(--stamp-angle) - 14deg));
     }
