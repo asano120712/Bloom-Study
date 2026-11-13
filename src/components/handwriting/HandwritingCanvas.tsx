@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useCopy } from '@/hooks/useAudienceMode'
 import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
-import { EraserArt, HandwritingTools } from '@/components/HandwritingTools'
+import { EraserArt, HandwritingTools } from '@/components/handwriting/HandwritingTools'
 import type { Point, Stroke } from '@/features/recognize/word'
 
 interface HandwritingCanvasProps {

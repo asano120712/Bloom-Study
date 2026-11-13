@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
-import { MathText } from './MathText'
+import { MathText } from '../quiz/MathText'
 
 /** 分数のマス1つぶん(整数・分子・分母、途中式の分子・分母) */
 export interface FractionSlot {

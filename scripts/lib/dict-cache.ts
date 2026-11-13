@@ -3,7 +3,7 @@ import { readFileSync, readdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
 
-export const CACHE_DIR = fileURLToPath(new URL('../.dict-cache', import.meta.url))
+export const CACHE_DIR = fileURLToPath(new URL('../../.dict-cache', import.meta.url))
 
 /**
  * ファイル名にバージョンが入る(kanjidic2-en-3.6.2.json)ため、前方一致で探す。

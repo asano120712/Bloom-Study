@@ -86,7 +86,7 @@ export function RecognizeKanji({ writer }: { writer: string }) {
 
   useEffect(() => {
     let active = true
-    void Promise.all([import('@/data/questions.kanji.generated.json'), kanjiShapes()]).then(([module, shapes]) => {
+    void Promise.all([import('@/data/generated/questions.kanji.generated.json'), kanjiShapes()]).then(([module, shapes]) => {
       if (!active) return
       const all = [...new Set((module.default.questions as { answer: string }[]).map((question) => question.answer))]
       setAnswers(all)

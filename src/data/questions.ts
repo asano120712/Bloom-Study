@@ -38,20 +38,20 @@ const MANUAL_QUESTIONS: Question[] = [
 
 /**
  * 辞書から生成した問題。中身を直接編集しても次回生成で消える。
- * 漢字: scripts/build-kanji-questions.ts / 英単語: scripts/build-english-questions.ts
- * 計算: scripts/build-math-questions.ts(辞書は使わず規則で作る)
+ * 漢字: scripts/build/build-kanji-questions.ts / 英単語: scripts/build/build-english-questions.ts
+ * 計算: scripts/build/build-math-questions.ts(辞書は使わず規則で作る)
  *
  * **ジャンルごとに、使うときだけ読む。** まとめて読むと、計算をやる人も
  * 漢字と英単語のデータ(合わせて1MB超)を一緒に読むことになる。
  * 1ジャンルぶんなら、その3分の1以下で済む。
  */
 const LOADERS: Record<GenreId, () => Promise<{ default: { questions: unknown[] } }>> = {
-  kanji: () => import('./questions.kanji.generated.json'),
-  english: () => import('./questions.english.generated.json'),
-  math: () => import('./questions.math.generated.json'),
+  kanji: () => import('./generated/questions.kanji.generated.json'),
+  english: () => import('./generated/questions.english.generated.json'),
+  math: () => import('./generated/questions.math.generated.json'),
 }
 
-/** パズルの一覧の1字ぶん(scripts/build-kanji-puzzles.ts)。level は小1・小2の字だけ持つ */
+/** パズルの一覧の1字ぶん(scripts/build/build-kanji-puzzles.ts)。level は小1・小2の字だけ持つ */
 interface Puzzle {
   layout: 'horizontal' | 'vertical'
   tiles: string[]
@@ -79,7 +79,7 @@ export function questionsOf(genreId: GenreId): Promise<Question[]> {
     genreId === 'kanji' ? import('@/features/trace/questions').then((m) => m.traceQuestions) : [],
     // パズル(どの部品のタイルを並べるか。160KB)。漢字のときだけ読む
     genreId === 'kanji'
-      ? import('./puzzles.kanji.generated.json').then((m) => m.default.puzzles as Record<string, Puzzle>)
+      ? import('./generated/puzzles.kanji.generated.json').then((m) => m.default.puzzles as Record<string, Puzzle>)
       : {},
   ]).then(([module, traces, puzzles]) => {
     const puzzleOf = (answer: string) => (puzzles as Record<string, Puzzle>)[answer]

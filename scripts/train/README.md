@@ -1,7 +1,7 @@
 # 学習まわり(開発時だけ)
 
 手書きの読み取りに使う重みを作る。**できあがった重みだけ**を
-`src/data/model.*.generated.json` に置き、アプリは TypeScript 側で読むだけ。
+`src/data/generated/model.*.generated.json` に置き、アプリは TypeScript 側で読むだけ。
 ここのスクリプトはビルドにもアプリにも含まれない。
 
 ```

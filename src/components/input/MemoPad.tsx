@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useCopy } from '@/hooks/useAudienceMode'
 import { ICON_SOURCES } from '@/assets/logos'
-import { HandwritingCanvas } from './HandwritingCanvas'
+import { HandwritingCanvas } from '../handwriting/HandwritingCanvas'
 
 /**
  * 計算のメモ。紙の余白のように、自由に書いて計算できる。読み取りも判定もしない。

@@ -10,7 +10,7 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { loadWeights, predict, type Model } from '../src/features/recognize/net.ts'
 
-const modelPath = fileURLToPath(new URL('../src/data/model.digits.generated.json', import.meta.url))
+const modelPath = fileURLToPath(new URL('../src/data/generated/model.digits.generated.json', import.meta.url))
 const checkPath = fileURLToPath(new URL('./train/.cache/check.json', import.meta.url))
 
 const model = JSON.parse(readFileSync(modelPath, 'utf-8')) as Model

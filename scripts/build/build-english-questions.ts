@@ -13,11 +13,11 @@
 import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
-import { readDict } from './dict-cache.ts'
-import { englishLevelOf, type Level } from './difficulty.ts'
-import { ENGLISH_DENYLIST } from './english-denylist.ts'
-import { isUnsuitable } from './unsuitable.ts'
-import { NO_PRIORITY, priorityKey, readWordPriority, type WordPriority } from './word-priority.ts'
+import { readDict } from '../lib/dict-cache.ts'
+import { englishLevelOf, type Level } from '../lib/difficulty.ts'
+import { ENGLISH_DENYLIST } from '../lib/english-denylist.ts'
+import { isUnsuitable } from '../lib/unsuitable.ts'
+import { NO_PRIORITY, priorityKey, readWordPriority, type WordPriority } from '../lib/word-priority.ts'
 
 // ---------------------------------------------------------------- 辞書側の型
 
@@ -73,7 +73,7 @@ const REJECTED_MISC = new Set([
 const MIN_ANSWER_LENGTH = 4
 const MAX_ANSWER_LENGTH = 10
 
-const OUT_PATH = fileURLToPath(new URL('../src/data/questions.english.generated.json', import.meta.url))
+const OUT_PATH = fileURLToPath(new URL('../../src/data/generated/questions.english.generated.json', import.meta.url))
 
 const args = process.argv.slice(2)
 const reportOnly = args.includes('--report')

@@ -99,7 +99,7 @@ export function RecognizeWords({ writer }: { writer: string }) {
 
   useEffect(() => {
     let active = true
-    void import('@/data/questions.english.generated.json').then((module) => {
+    void import('@/data/generated/questions.english.generated.json').then((module) => {
       if (!active) return
       const questions = module.default.questions as { answer: string; acceptableAnswers?: string[] }[]
       const all = questions.map((question) => question.answer)

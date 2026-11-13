@@ -3,7 +3,7 @@
  *
  * 部品は、文字(フォント)ではなく KanjiVG のお手本の線で描く。
  * フォントに無い部品(𠦝・㑒)も出せ、その漢字の中での形のまま出せる(価 の右は 覀 という名前だが、見た目は 西 に近い)。
- * 線と分け方は scripts/build-kanji-shapes.ts が書き出したもの(shapes.kanji.generated.json の characters と splits)を使う。
+ * 線と分け方は scripts/build/build-kanji-shapes.ts が書き出したもの(shapes.kanji.generated.json の characters と splits)を使う。
  *
  * - 正解: 答えの漢字の、左(上)と右(下)の部品
  * - ハズレ: 似た漢字(shapes の similar)のうち、同じ分かれ方の字の部品。正解と同じ名前の部品や、
@@ -19,9 +19,9 @@
 import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
-const SHAPES = fileURLToPath(new URL('../src/data/shapes.kanji.generated.json', import.meta.url))
-const QUESTIONS = fileURLToPath(new URL('../src/data/questions.kanji.generated.json', import.meta.url))
-const OUT = fileURLToPath(new URL('../src/data/puzzles.kanji.generated.json', import.meta.url))
+const SHAPES = fileURLToPath(new URL('../../src/data/generated/shapes.kanji.generated.json', import.meta.url))
+const QUESTIONS = fileURLToPath(new URL('../../src/data/generated/questions.kanji.generated.json', import.meta.url))
+const OUT = fileURLToPath(new URL('../../src/data/generated/puzzles.kanji.generated.json', import.meta.url))
 
 /** 並べるタイルの数(正解2つ + ハズレ)。今のパズル(PartsInput のトレイ)と同じ */
 const TILE_COUNT = 8

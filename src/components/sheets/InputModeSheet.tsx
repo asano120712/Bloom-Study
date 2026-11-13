@@ -8,7 +8,7 @@ import {
   type AnswerChoice,
 } from '@/data/genres'
 import { useCopy } from '@/hooks/useAudienceMode'
-import { MathText } from './MathText'
+import { MathText } from '../quiz/MathText'
 import type { Difficulty, Genre, MathTopic, PromptForm } from '@/types'
 
 interface InputModeSheetProps {

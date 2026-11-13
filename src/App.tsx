@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { AppShell } from '@/components/AppShell'
-import { Loading } from '@/components/Loading'
+import { AppShell } from '@/components/layout/AppShell'
+import { Loading } from '@/components/layout/Loading'
 import { GenreSelectPage } from '@/pages/GenreSelectPage'
 import { KidsTopPage } from '@/pages/KidsTopPage'
 import { TopPage } from '@/pages/TopPage'
@@ -33,7 +33,7 @@ const TrialEndPage = lazy(() =>
  * 本番のビルドからは丸ごと消えるよう、取り込み自体を DEV で切り分ける。
  */
 const RecognizeLabPage = import.meta.env.DEV
-  ? lazy(() => import('@/pages/RecognizeLabPage').then((m) => ({ default: m.RecognizeLabPage })))
+  ? lazy(() => import('@/pages/recognize-lab/RecognizeLabPage').then((m) => ({ default: m.RecognizeLabPage })))
   : null
 
 /**

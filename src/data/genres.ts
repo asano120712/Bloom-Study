@@ -121,7 +121,7 @@ export interface AnswerChoice {
  * パズルを出せる難易度。
  *
  * パズルには「左右・上下のどちらに割れるか」が要るが、KRADFILE は配置を持たない。
- * KanjiVG の部品のまとまり(kvg:position)から生成したパズル(scripts/build-kanji-puzzles.ts)で、
+ * KanjiVG の部品のまとまり(kvg:position)から生成したパズル(scripts/build/build-kanji-puzzles.ts)で、
  * 小3から社会人まで、それぞれ 190〜270字ほどを出せる。
  */
 const ASSEMBLE_LEVELS: Difficulty[] = ['g34', 'g56', 'junior', 'senior', 'working']

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { ActivityArt } from '@/components/ActivityArt'
-import { ColumnForm } from '@/components/ColumnForm'
-import { MemoIcon } from '@/components/MemoPad'
+import { ActivityArt } from '@/components/brand/ActivityArt'
+import { ColumnForm } from '@/components/input/ColumnForm'
+import { MemoIcon } from '@/components/input/MemoPad'
 import type { ActivityId } from '@/data/activities'
 import type { AnswerChoiceId } from '@/data/genres'
 import { useCopy } from '@/hooks/useAudienceMode'
@@ -88,7 +88,7 @@ function HintDemo() {
 /**
  * 筆算は段ごとに打つ。まちがえると赤枠になり、打ち直すと先へ進む。
  *
- * 本物の筆算([ColumnForm](src/components/ColumnForm.tsx))に、
+ * 本物の筆算([ColumnForm](src/components/input/ColumnForm.tsx))に、
  * 打ち終わった段を順に渡していく。見た目が本番と同じになる。
  */
 const COLUMN_DEMO = { expression: '98 × 7', rows: ['56', '63'], answer: '686' } as const

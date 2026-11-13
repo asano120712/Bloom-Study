@@ -2,7 +2,7 @@
 
   python3 scripts/train/train_digits.py
 
-書き出し先: src/data/model.digits.generated.json
+書き出し先: src/data/generated/model.digits.generated.json
 重みは int8 に落とす(層ごとに倍率を1つ持つ)。精度はほとんど落ちず、
 大きさが4分の1になる。
 """
@@ -30,7 +30,7 @@ MOMENTUM = 0.9
 DECAY = 0.7
 # 勾配が大きすぎるときは縮める。壊れ方のもう一方の原因を塞ぐ
 CLIP = 4.0
-OUT = os.path.join(os.path.dirname(__file__), "..", "..", "src", "data", "model.digits.generated.json")
+OUT = os.path.join(os.path.dirname(__file__), "..", "..", "src", "data", "generated", "model.digits.generated.json")
 
 
 def accuracy(model, x, y, batch=1000):

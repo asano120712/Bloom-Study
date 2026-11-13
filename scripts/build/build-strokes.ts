@@ -15,7 +15,7 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { CACHE_DIR, readDict } from './dict-cache.ts'
+import { CACHE_DIR, readDict } from '../lib/dict-cache.ts'
 
 /** 清音のひらがな46字。濁音・拗音はまだ出さない(なぞる字は少ないほうが迷わない) */
 const HIRAGANA = [
@@ -40,8 +40,8 @@ const HIRAGANA = [
  */
 const KANJI_GRADES = [1, 2]
 
-const OUT_KANA = fileURLToPath(new URL('../src/data/strokes.hiragana.generated.json', import.meta.url))
-const OUT_KANJI = fileURLToPath(new URL('../src/data/strokes.kanji.generated.json', import.meta.url))
+const OUT_KANA = fileURLToPath(new URL('../../src/data/generated/strokes.hiragana.generated.json', import.meta.url))
+const OUT_KANJI = fileURLToPath(new URL('../../src/data/generated/strokes.kanji.generated.json', import.meta.url))
 
 interface Kanjidic2 {
   characters: { literal: string; misc: { grade: number | null } }[]

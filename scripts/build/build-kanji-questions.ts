@@ -13,11 +13,11 @@
 import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
-import { readDict } from './dict-cache.ts'
-import { kanjiLevelOf, partnerGradeCap, type Level } from './difficulty.ts'
-import { JUKUGO_DENYLIST } from './jukugo-denylist.ts'
-import { isUnsuitable } from './unsuitable.ts'
-import { CONFUSABLE_OF, KRAD_VARIANTS, VARIANT_STROKES } from './kanji-radicals.ts'
+import { readDict } from '../lib/dict-cache.ts'
+import { kanjiLevelOf, partnerGradeCap, type Level } from '../lib/difficulty.ts'
+import { JUKUGO_DENYLIST } from '../lib/jukugo-denylist.ts'
+import { isUnsuitable } from '../lib/unsuitable.ts'
+import { CONFUSABLE_OF, KRAD_VARIANTS, VARIANT_STROKES } from '../lib/kanji-radicals.ts'
 
 // ---------------------------------------------------------------- 辞書側の型
 
@@ -71,8 +71,8 @@ const PART_TILE_COUNT = 8
  */
 const STROKE_PRIMITIVES = new Set(['｜', '一', 'ノ', '丿', '丶', '乙', '亅'])
 
-const OUT_PATH = fileURLToPath(new URL('../src/data/questions.kanji.generated.json', import.meta.url))
-const PARTS_OUT_PATH = fileURLToPath(new URL('../src/data/parts.kanji.generated.json', import.meta.url))
+const OUT_PATH = fileURLToPath(new URL('../../src/data/generated/questions.kanji.generated.json', import.meta.url))
+const PARTS_OUT_PATH = fileURLToPath(new URL('../../src/data/generated/parts.kanji.generated.json', import.meta.url))
 
 const args = process.argv.slice(2)
 const reportOnly = args.includes('--report')

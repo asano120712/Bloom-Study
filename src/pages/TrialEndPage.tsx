@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { AppShell } from '@/components/AppShell'
-import { BloomMark } from '@/components/BloomMark'
+import { AppShell } from '@/components/layout/AppShell'
+import { BloomMark } from '@/components/brand/BloomMark'
 import { TRIAL_LIMIT } from '@/config'
 import { useAudienceMode } from '@/hooks/useAudienceMode'
 
