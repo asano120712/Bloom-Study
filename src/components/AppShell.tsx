@@ -22,9 +22,10 @@ interface AppShellProps {
  * ウィンドウに追従して動くと、中身の文字や余白と同じ倍率で一緒に伸び縮みする。
  * 画面の比率を変えたいとき以外、ここを px や vw に書き換える必要はない。
  *
- * 高さは min-h-dvh(動的ビューポート高)を起点にした flex チェーンで渡す。
- * 親が height:auto のまま min-h-full を重ねても % が解決されず、
- * 各画面の justify-center が効かなくなるため。
+ * 高さは #root の高さ(min-h-full)を起点にした flex チェーンで渡す。
+ * #root は高さが決まっている(index.css)ので、% がそのまま解決できる。
+ * 以前は dvh(画面の高さ)を使っていたが、上の帯のぶんを body で空けるようにしたので、
+ * dvh だとそのぶんはみ出す。
  */
 export function AppShell({ children, fitViewport = false, exitTo }: AppShellProps) {
   /*
@@ -39,19 +40,20 @@ export function AppShell({ children, fitViewport = false, exitTo }: AppShellProp
   return (
     /*
       safe-area: viewport-fit=cover で画面の端まで描いているので、ノッチとホームバーのぶんを空ける。
+      上(時計・電池の帯)のぶんだけは、ここではなく body で空ける(index.css)。
       iPhone を横にするとノッチ側の余白が無くなり、下では「かけた」などのボタンが
       ホームバー(上へなぞるとホームに戻る)に重なる。書く場所を端から離しておくと、
       端からなぞる「戻る」も起きにくい。
     */
     <div
-      className={`flex flex-col bg-base-50 pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] ${
-        fitViewport ? 'h-dvh overflow-hidden' : 'min-h-dvh'
+      className={`flex flex-col bg-base-50 pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] ${
+        fitViewport ? 'h-full overflow-hidden' : 'min-h-full'
       }`}
     >
       {/*
         min-h-0 が要る。flex 要素の既定 min-height:auto は中身より小さくならないため、
         これが無いと下位の高さが確定せず、ヒントが増えるたびに枠が伸びて
-        h-dvh を超え、overflow-hidden でキャンバスとボタンが切り落とされる。
+        画面の高さを超え、overflow-hidden でキャンバスとボタンが切り落とされる。
       */}
       <div
         className={`mx-auto flex w-full max-w-md flex-1 flex-col ${fitViewport ? 'min-h-0' : ''}`}
