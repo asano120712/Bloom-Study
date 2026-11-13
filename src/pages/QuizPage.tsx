@@ -234,6 +234,8 @@ export function QuizPage() {
   const [recalled, setRecalled] = useState(false)
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
+  /** 問題が出た時刻。学びの記録に、答えるまでにかかった時間を残す(問題ごとに画面ごと作り直される) */
+  const [startedAt] = useState(() => Date.now())
 
   /**
    * assemble モードの部品タイル。並びは問題IDから決まるので、再描画しても動かない
@@ -361,6 +363,18 @@ export function QuizPage() {
       isCorrect: result.isCorrect,
       hintsUsed,
       answeredAt: new Date().toISOString(),
+      // 学びの記録で、この時どう答えたかを見るためのもの
+      prompt: question.prompt,
+      promptReading: question.promptReading,
+      answer: question.answerUnit ? answerText(question.answer) : result.answer,
+      given:
+        submission.kind === 'handwriting'
+          ? { kind: 'handwriting' }
+          : submission.kind === 'parts'
+            ? { kind: 'parts', parts: submission.parts }
+            : { kind: 'text', text: submission.text },
+      hints: revealedHints(hints, hintsUsed).map((hint) => (hint.caption ? `${hint.caption}: ${hint.text}` : hint.text)),
+      durationMs: new Date().getTime() - startedAt,
     }
     const next = await record(answer)
     commitAdvance()

@@ -270,7 +270,34 @@ export interface AnswerRecord {
   hintsUsed: number
   /** ISO 8601 */
   answeredAt: string
+  /*
+   * ここから下は、学びの記録で「この時どう答えたか」を見るためのもの。
+   * 足す前に答えた記録には無い(画面は、あるものだけ出す)。
+   * 問題データを作り直しても当時のまま見られるよう、問題と正解は写しを持つ。
+   */
+  /** 出題語(漢字は「◯景」のような伏せた形) */
+  prompt?: string
+  promptReading?: string
+  /** 正解(文章題は単位つき) */
+  answer?: string
+  /** 自分の答え。手書きは、いまは書いた印だけ(線はあとで別に残す) */
+  given?: GivenAnswer
+  /** 見たヒント(見出しがあれば「見出し: 中身」) */
+  hints?: string[]
+  /** 問題が出てから答えるまで(ms) */
+  durationMs?: number
 }
+
+export type GivenAnswer = { kind: 'text'; text: string } | { kind: 'parts'; parts: string[] } | { kind: 'handwriting' }
+
+/** グラフ用に、1時間ごと・ジャンルごとに数えたもの。a = 解いた数、c = 正解、n = ヒントなしで正解 */
+export interface AnswerCount {
+  a: number
+  c: number
+  n: number
+}
+/** キーは端末の時刻での「YYYY-MM-DDTHH」 */
+export type AnswerBuckets = Record<string, Partial<Record<GenreId, AnswerCount>>>
 
 export interface UserStats {
   totalAnswered: number
@@ -280,4 +307,9 @@ export interface UserStats {
   /** 無料トライアルで消化した問題数 */
   trialUsed: number
   history: AnswerRecord[]
+  /**
+   * グラフ用の数(1時間ごと)。履歴は件数で古いものから消えるが、こちらは数だけなので1か月ぶん残す。
+   * 足す前に保存した記録には無いので、読むときに履歴から作る。
+   */
+  buckets: AnswerBuckets
 }
