@@ -1,0 +1,15 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Bloomstudy</title>
+  <!-- ホーム画面に置くアプリのアイコンの元(favicon.svg と同じ花を、正方形の地に置いたもの)。
+       花は中心から半径 40% の円(maskable の安全な範囲)に収める。Android で丸や角丸に切り抜かれても欠けない。
+       PNG(pwa-192.png・pwa-512.png・apple-touch-icon.png)はこれから書き出す。直したら書き出し直すこと。 -->
+  <rect width="512" height="512" fill="#F0FAF6"/>
+  <g transform="translate(256,256) scale(7.5)">
+    <ellipse transform="rotate(0)" cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/>
+    <ellipse transform="rotate(72)" cx="0" cy="-10" rx="6.5" ry="9.5" fill="#3FBE93"/>
+    <ellipse transform="rotate(144)" cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/>
+    <ellipse transform="rotate(216)" cx="0" cy="-10" rx="6.5" ry="9.5" fill="#3FBE93"/>
+    <ellipse transform="rotate(288)" cx="0" cy="-10" rx="6.5" ry="9.5" fill="#5DCAA5"/>
+    <circle cx="0" cy="0" r="4.5" fill="#0F6E56"/>
+  </g>
+</svg>
