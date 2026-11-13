@@ -8,14 +8,14 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "dict:fetch": "node scripts/fetch-dict.ts",
-    "questions:kanji": "node scripts/build-kanji-questions.ts",
-    "questions:english": "node scripts/build-english-questions.ts",
+    "questions:kanji": "node scripts/build/build-kanji-questions.ts",
+    "questions:english": "node scripts/build/build-english-questions.ts",
     "preview": "vite preview",
-    "strokes": "node scripts/build-strokes.ts",
-    "shapes:kanji": "node scripts/build-kanji-shapes.ts",
-    "puzzles:kanji": "node scripts/build-kanji-puzzles.ts",
-    "parts:kanji": "node scripts/build-kanji-questions.ts --grades=1,2 --parts-only",
-    "questions:math": "node scripts/build-math-questions.ts"
+    "strokes": "node scripts/build/build-strokes.ts",
+    "shapes:kanji": "node scripts/build/build-kanji-shapes.ts",
+    "puzzles:kanji": "node scripts/build/build-kanji-puzzles.ts",
+    "parts:kanji": "node scripts/build/build-kanji-questions.ts --grades=1,2 --parts-only",
+    "questions:math": "node scripts/build/build-math-questions.ts"
   },
   "dependencies": {
     "fast-levenshtein": "^3.0.0",

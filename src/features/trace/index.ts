@@ -1,4 +1,4 @@
-import hiragana from '@/data/strokes.hiragana.generated.json'
+import hiragana from '@/data/generated/strokes.hiragana.generated.json'
 
 /**
  * なぞりがきのお手本。

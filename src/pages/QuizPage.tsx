@@ -1,23 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { AppShell } from '@/components/AppShell'
-import { BoxHandwriting, type WriteRow, type WrittenRow } from '@/components/BoxHandwriting'
-import { ColumnForm, DivisionForm, type ColumnCell } from '@/components/ColumnForm'
-import { FractionForm, type FractionSlot, type FractionWork } from '@/components/FractionForm'
-import { FractionInput, type FractionPart } from '@/components/FractionInput'
-import { AnswerRowForm } from '@/components/AnswerRowForm'
-import { MathText } from '@/components/MathText'
-import { MemoIcon, MemoPad } from '@/components/MemoPad'
-import { WordForm, type WordSlot } from '@/components/WordForm'
-import { WordInput, type WordPart } from '@/components/WordInput'
-import { HandwritingCanvas } from '@/components/HandwritingCanvas'
-import { FreeTraceCanvas } from '@/components/FreeTraceCanvas'
-import { HintList } from '@/components/HintList'
-import { NumberInput } from '@/components/NumberInput'
-import { PartsInput } from '@/components/PartsInput'
-import { KanjiDrawing } from '@/components/PartTile'
-import { Loading } from '@/components/Loading'
-import { TypingInput } from '@/components/TypingInput'
+import { AppShell } from '@/components/layout/AppShell'
+import { BoxHandwriting, type WriteRow, type WrittenRow } from '@/components/handwriting/BoxHandwriting'
+import { ColumnForm, DivisionForm, type ColumnCell } from '@/components/input/ColumnForm'
+import { FractionForm, type FractionSlot, type FractionWork } from '@/components/input/FractionForm'
+import { FractionInput, type FractionPart } from '@/components/input/FractionInput'
+import { AnswerRowForm } from '@/components/input/AnswerRowForm'
+import { MathText } from '@/components/quiz/MathText'
+import { MemoIcon, MemoPad } from '@/components/input/MemoPad'
+import { WordForm, type WordSlot } from '@/components/input/WordForm'
+import { WordInput, type WordPart } from '@/components/input/WordInput'
+import { HandwritingCanvas } from '@/components/handwriting/HandwritingCanvas'
+import { FreeTraceCanvas } from '@/components/handwriting/FreeTraceCanvas'
+import { HintList } from '@/components/quiz/HintList'
+import { NumberInput } from '@/components/input/NumberInput'
+import { PartsInput } from '@/components/input/PartsInput'
+import { KanjiDrawing } from '@/components/input/PartTile'
+import { Loading } from '@/components/layout/Loading'
+import { TypingInput } from '@/components/input/TypingInput'
 import { answerChoicesOf, findGenre } from '@/data/genres'
 import { assemblyOf } from '@/features/assemble'
 import type { TraceJudgement } from '@/features/trace/judge'
@@ -234,6 +234,8 @@ export function QuizPage() {
   const [recalled, setRecalled] = useState(false)
 
   const hints = useMemo(() => (question ? buildHints(question) : []), [question])
+  /** 問題が出た時刻。学びの記録に、答えるまでにかかった時間を残す(問題ごとに画面ごと作り直される) */
+  const [startedAt] = useState(() => Date.now())
 
   /**
    * assemble モードの部品タイル。並びは問題IDから決まるので、再描画しても動かない
@@ -361,6 +363,18 @@ export function QuizPage() {
       isCorrect: result.isCorrect,
       hintsUsed,
       answeredAt: new Date().toISOString(),
+      // 学びの記録で、この時どう答えたかを見るためのもの
+      prompt: question.prompt,
+      promptReading: question.promptReading,
+      answer: question.answerUnit ? answerText(question.answer) : result.answer,
+      given:
+        submission.kind === 'handwriting'
+          ? { kind: 'handwriting' }
+          : submission.kind === 'parts'
+            ? { kind: 'parts', parts: submission.parts }
+            : { kind: 'text', text: submission.text },
+      hints: revealedHints(hints, hintsUsed).map((hint) => (hint.caption ? `${hint.caption}: ${hint.text}` : hint.text)),
+      durationMs: new Date().getTime() - startedAt,
     }
     const next = await record(answer)
     commitAdvance()

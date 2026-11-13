@@ -18,10 +18,10 @@ function once(name: string, load: () => Promise<{ default: unknown }>): Promise<
 }
 
 export function digitsModel(): Promise<Weights> {
-  return once('digits', () => import('@/data/model.digits.generated.json'))
+  return once('digits', () => import('@/data/generated/model.digits.generated.json'))
 }
 
 /** 英字(小文字 a〜z)。EMNIST で学習したもの(scripts/train/train_letters.py) */
 export function lettersModel(): Promise<Weights> {
-  return once('letters', () => import('@/data/model.letters.generated.json'))
+  return once('letters', () => import('@/data/generated/model.letters.generated.json'))
 }

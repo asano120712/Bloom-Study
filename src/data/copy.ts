@@ -1,6 +1,7 @@
 import type { ActivityId } from '@/data/activities'
 import type { AnswerChoiceId } from '@/data/genres'
 import type { AssembleLayout } from '@/features/assemble'
+import type { StampKind } from '@/services/stampCard'
 import type { AudienceMode, Difficulty, GenreId, JudgeVerdict, MathTopic, PromptForm } from '@/types'
 
 /**
@@ -191,16 +192,46 @@ export interface Copy {
     record: string
     enterHint: string
   }
+  /** 学びの記録(おとな。こどもはスタンプカードを出すので、こどもの言葉は画面には出ない) */
   myPage: {
     title: string
     loading: string
-    correct: string
+    /** グラフ・まとめの期間の切り替え */
+    periods: { day: string; week: string; month: string }
+    answered: string
+    accuracy: string
+    /** ヒントを見ずに正解した割合 */
+    noHint: string
     currentStreak: string
-    bestStreak: string
+    bestStreak: (count: number) => string
+    /** 棒グラフの見出しと、色の説明 */
+    chart: string
+    chartCorrect: string
+    chartIncorrect: string
+    /** 棒1本の読み上げ */
+    bar: (name: string, answered: number, correct: number) => string
+    genres: string
+    /** 割合が出せない(その期間に解いていない)とき */
+    none: string
     trialLeft: (left: number) => string
     history: string
     empty: string
+    today: string
+    yesterday: string
     hintsUsed: (count: number) => string
+    seconds: (seconds: number) => string
+    /** カードを押すと開く、1問の中身 */
+    detail: {
+      correctAnswer: string
+      yourAnswer: string
+      handwriting: string
+      notSaved: string
+      hints: string
+      noHints: string
+      time: string
+      mode: string
+      close: string
+    }
     solve: string
   }
   exit: { label: string; title: string; note: string; stay: string; leave: string }
@@ -233,6 +264,12 @@ export interface Copy {
     got: string
     already: string
     monthTotal: (count: number) => string
+    /** 押す前に、どのスタンプにするか選んでもらう問いかけ */
+    choose: string
+    /** 選んだスタンプを押すボタン */
+    press: string
+    /** スタンプの名前(読み上げだけ。画面には絵だけ出す) */
+    kinds: Record<StampKind, string>
     play: string
   }
 }
@@ -487,15 +524,38 @@ const ADULT: Copy = {
     enterHint: 'Enter でも進めます',
   },
   myPage: {
-    title: 'これまでの記録',
+    title: '学びの記録',
     loading: '記録を読み込み中',
-    correct: '正解数',
-    currentStreak: '今の連続',
-    bestStreak: '最高連続',
+    periods: { day: '1日', week: '1週間', month: '1か月' },
+    answered: '解いた数',
+    accuracy: '正解率',
+    noHint: 'ヒントなしで正解',
+    currentStreak: '連続正解',
+    bestStreak: (count) => `最高 ${count}`,
+    chart: '解いた数の移り変わり',
+    chartCorrect: '正解',
+    chartIncorrect: '不正解',
+    bar: (name, answered, correct) => `${name}: ${answered}問、正解${correct}問`,
+    genres: 'ジャンル別の正解率',
+    none: '—',
     trialLeft: (left) => `無料で解ける残り: ${left} 問`,
-    history: '解答履歴',
-    empty: 'まだ記録がありません。',
-    hintsUsed: (count) => `ヒント${count}`,
+    history: '解いた問題',
+    empty: 'まだ記録がありません。問題を解くと、ここに並びます。',
+    today: '今日',
+    yesterday: 'きのう',
+    hintsUsed: (count) => (count === 0 ? 'ヒントなし' : `ヒント${count}`),
+    seconds: (seconds) => (seconds < 60 ? `${seconds}秒` : `${Math.floor(seconds / 60)}分${seconds % 60}秒`),
+    detail: {
+      correctAnswer: '正解',
+      yourAnswer: 'あなたの答え',
+      handwriting: '手書きで答えました',
+      notSaved: 'この問題の答えは残っていません',
+      hints: '見たヒント',
+      noHints: 'ヒントを見ずに答えました',
+      time: 'かかった時間',
+      mode: '答え方',
+      close: '閉じる',
+    },
     solve: '問題を解く',
   },
   about: {
@@ -533,6 +593,9 @@ const ADULT: Copy = {
     already: '今日のスタンプは ゲット済み',
     monthTotal: (count) => `この月のスタンプ ${count}個`,
     play: '遊びに行く',
+    choose: '今日は どのスタンプに する？',
+    press: 'スタンプを 押す！',
+    kinds: { flower: 'はな', rabbit: 'うさぎ', dress: 'ワンピース', beetle: 'かぶとむし', police: 'パトカー', dinosaur: 'きょうりゅう' },
   },
 }
 
@@ -776,15 +839,38 @@ const KIDS: Copy = {
     enterHint: 'Enter でも すすめるよ',
   },
   myPage: {
-    title: 'これまでの きろく',
+    title: 'まなびの きろく',
     loading: 'きろくを よみこみちゅう',
-    correct: 'せいかいの かず',
-    currentStreak: 'いま れんぞく',
-    bestStreak: 'さいこう れんぞく',
+    periods: { day: '1にち', week: '1しゅうかん', month: '1かげつ' },
+    answered: 'といた かず',
+    accuracy: 'せいかいの わりあい',
+    noHint: 'ヒントなしで せいかい',
+    currentStreak: 'れんぞく せいかい',
+    bestStreak: (count) => `さいこう ${count}`,
+    chart: 'といた かず',
+    chartCorrect: 'せいかい',
+    chartIncorrect: 'ざんねん',
+    bar: (name, answered, correct) => `${name}: ${answered}もん、せいかい ${correct}もん`,
+    genres: 'ジャンルごとの せいかい',
+    none: '—',
     trialLeft: (left) => `むりょうで とける のこり: ${left} もん`,
     history: 'といた もんだい',
     empty: 'まだ きろくが ないよ。',
-    hintsUsed: (count) => `ヒント${count}`,
+    today: 'きょう',
+    yesterday: 'きのう',
+    hintsUsed: (count) => (count === 0 ? 'ヒントなし' : `ヒント${count}`),
+    seconds: (seconds) => (seconds < 60 ? `${seconds}びょう` : `${Math.floor(seconds / 60)}ふん${seconds % 60}びょう`),
+    detail: {
+      correctAnswer: 'せいかい',
+      yourAnswer: 'じぶんの こたえ',
+      handwriting: 'てがきで こたえたよ',
+      notSaved: 'この もんだいの こたえは のこって いないよ',
+      hints: 'みた ヒント',
+      noHints: 'ヒントを みないで こたえたよ',
+      time: 'かかった じかん',
+      mode: 'こたえかた',
+      close: 'とじる',
+    },
     solve: 'もんだいを とく',
   },
   about: {
@@ -823,6 +909,9 @@ const KIDS: Copy = {
     already: 'きょうの スタンプは ゲットずみ！',
     monthTotal: (count) => `この つきの スタンプ ${count}こ`,
     play: 'あそびに いく',
+    choose: 'きょうは どの スタンプに する？',
+    press: 'スタンプを おす！',
+    kinds: { flower: 'はな', rabbit: 'うさぎ', dress: 'ワンピース', beetle: 'かぶとむし', police: 'パトカー', dinosaur: 'きょうりゅう' },
   },
 }
 

@@ -2,7 +2,7 @@
 
   python3 scripts/train/train_letters.py
 
-書き出し先: src/data/model.letters.generated.json
+書き出し先: src/data/generated/model.letters.generated.json
 材料は EMNIST の小文字(emnist.py)。数字(train_digits.py)と同じ作りで、
 種類が多く形も似ている(a と d、h と n)ぶん、フィルターを増やしてある。
 
@@ -29,7 +29,7 @@ EPOCHS = 10
 LEARNING_RATE = 0.03
 DECAY = 0.75
 F1, F2 = 16, 32
-OUT = os.path.join(os.path.dirname(__file__), "..", "..", "src", "data", "model.letters.generated.json")
+OUT = os.path.join(os.path.dirname(__file__), "..", "..", "src", "data", "generated", "model.letters.generated.json")
 # 仕上げ直し(finetune.py --kind letters)の出発点として、EMNIST だけで学習した重みも残す
 BASE = os.path.join(os.path.dirname(__file__), ".cache", "model.letters.base.json")
 SAMPLES = os.path.join(os.path.dirname(__file__), ".cache", "samples.json")

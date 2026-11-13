@@ -15,7 +15,7 @@ import { execFileSync } from 'node:child_process'
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
-import { CACHE_DIR } from './dict-cache.ts'
+import { CACHE_DIR } from './lib/dict-cache.ts'
 
 /** jmdict-simplified のリリースから取るアセット */
 const JMDICT_ASSETS = ['kanjidic2-en', 'kradfile', 'jmdict-eng-common']
@@ -25,7 +25,7 @@ const JMDICT_ASSETS = ['kanjidic2-en', 'kradfile', 'jmdict-eng-common']
  *
  * jmdict-simplified の JSON は優先タグ(ichi1 / news1 / nf01…)を common の真偽値へ
  * 畳んでしまう。同じ答えに候補が複数あるときどの語で出題するかは語の頻度で決めたいので、
- * タグを持っているこちらも取る(scripts/word-priority.ts が読む)。
+ * タグを持っているこちらも取る(scripts/lib/word-priority.ts が読む)。
  * EDRDG は https を提供していないため http で取る。開発時にしか使わないデータ。
  */
 const JMDICT_XML_URL = 'http://ftp.edrdg.org/pub/Nihongo/JMdict_e.gz'
