@@ -1,4 +1,4 @@
-import type { HowToDemoId } from '@/components/HowToDemo'
+import type { HowToDemoId } from '@/components/sheets/HowToDemo'
 import type { ActivityId } from './activities'
 
 /**

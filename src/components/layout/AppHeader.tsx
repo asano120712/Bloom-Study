@@ -4,8 +4,8 @@ import type { Copy } from '@/data/copy'
 import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
 import { writeAudienceMode } from '@/services/audienceMode'
 import { TOP_PATH, type AudienceMode } from '@/types'
-import { BloomLogo } from './BloomLogo'
-import { BloomMark } from './BloomMark'
+import { BloomLogo } from '../brand/BloomLogo'
+import { BloomMark } from '../brand/BloomMark'
 
 interface AppHeaderProps {
   /**

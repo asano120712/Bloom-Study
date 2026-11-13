@@ -31,7 +31,7 @@ import mnist
 from net import Net
 from preprocess import normalize_gray, unpack
 
-DATA = os.path.join(os.path.dirname(__file__), "..", "..", "src", "data")
+DATA = os.path.join(os.path.dirname(__file__), "..", "..", "src", "data", "generated")
 KINDS = {
     "digits": {
         "labels": [str(i) for i in range(10)],

@@ -15,9 +15,9 @@
 import { writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
-import type { Level } from './difficulty.ts'
+import type { Level } from '../lib/difficulty.ts'
 
-const OUT_PATH = fileURLToPath(new URL('../src/data/questions.math.generated.json', import.meta.url))
+const OUT_PATH = fileURLToPath(new URL('../../src/data/generated/questions.math.generated.json', import.meta.url))
 
 /** 種類ごとの問題数。多すぎても全部は解かれないので、ほどほどに */
 const PER_KIND = 400

@@ -19,10 +19,10 @@ import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { CACHE_DIR, readDict } from './dict-cache.ts'
+import { CACHE_DIR, readDict } from '../lib/dict-cache.ts'
 
-const OUT = fileURLToPath(new URL('../src/data/shapes.kanji.generated.json', import.meta.url))
-const QUESTIONS = fileURLToPath(new URL('../src/data/questions.kanji.generated.json', import.meta.url))
+const OUT = fileURLToPath(new URL('../../src/data/generated/shapes.kanji.generated.json', import.meta.url))
+const QUESTIONS = fileURLToPath(new URL('../../src/data/generated/questions.kanji.generated.json', import.meta.url))
 
 /**
  * 答え1字あたりの似た漢字の数。多いほど慎重になるが、比べる時間とファイルが増える。

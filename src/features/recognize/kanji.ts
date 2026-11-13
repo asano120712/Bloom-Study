@@ -5,7 +5,7 @@ import type { Point, Stroke } from './word'
  *
  * 出題では答えが分かっているので、何千字から当てるのではなく、答えの漢字と
  * **形の似た漢字**(未と末、待と持)だけと比べる。お手本は KanjiVG の線
- * (scripts/build-kanji-shapes.ts が点の並びに直したもの)。
+ * (scripts/build/build-kanji-shapes.ts が点の並びに直したもの)。
  *
  * **書き順と画数は問わない。** 見るのは形だけで、2つの見方で近さを出す。
  * - 線で比べる: 書いた線とお手本の線を、順番ではなく位置と形でいちばん合う組に対応させる
@@ -48,7 +48,7 @@ let loading: Promise<Shapes> | null = null
 /** お手本と似た漢字(946KB)。漢字を手書きで答えるときだけ読む */
 export function kanjiShapes(): Promise<Shapes> {
   if (!loading) {
-    loading = import('@/data/shapes.kanji.generated.json').then((module) => module.default as unknown as Shapes)
+    loading = import('@/data/generated/shapes.kanji.generated.json').then((module) => module.default as unknown as Shapes)
   }
   return loading
 }

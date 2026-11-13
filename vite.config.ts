@@ -78,7 +78,7 @@ function devSampleSink(route: string, file: string, name: string): Plugin {
 function dataCounts(): Plugin {
   const id = 'virtual:data-counts'
   const read = (file: string) =>
-    JSON.parse(readFileSync(fileURLToPath(new URL(`./src/data/${file}`, import.meta.url)), 'utf-8'))
+    JSON.parse(readFileSync(fileURLToPath(new URL(`./src/data/generated/${file}`, import.meta.url)), 'utf-8'))
   return {
     name: 'bloomstudy:data-counts',
     resolveId: (source) => (source === id ? `\0${id}` : undefined),

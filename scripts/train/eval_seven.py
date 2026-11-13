@@ -12,7 +12,7 @@ import mnist
 from net import Net
 from style_seven import add_tick
 
-MODEL = os.path.join(os.path.dirname(__file__), "..", "..", "src", "data", "model.digits.generated.json")
+MODEL = os.path.join(os.path.dirname(__file__), "..", "..", "src", "data", "generated", "model.digits.generated.json")
 
 
 def load_model():

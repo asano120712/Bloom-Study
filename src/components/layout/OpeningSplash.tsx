@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { LOGO_SOURCES } from '@/assets/logos'
 import { useAudienceMode } from '@/hooks/useAudienceMode'
 import { markOpeningShown } from '@/services/openingSession'
-import { BloomLogo } from './BloomLogo'
-import { BloomMark } from './BloomMark'
+import { BloomLogo } from '../brand/BloomLogo'
+import { BloomMark } from '../brand/BloomMark'
 import { LoadingDots } from './LoadingDots'
 
 /**

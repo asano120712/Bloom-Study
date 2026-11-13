@@ -1,5 +1,5 @@
 import { useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
-import { AppShell } from '@/components/AppShell'
+import { AppShell } from '@/components/layout/AppShell'
 import { guessDigit, guessLetter, type Guess } from '@/features/recognize'
 import { addSample, clearSamples, packInk, readSamples, readWriter, writeWriter } from '@/features/recognize/samples'
 import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'

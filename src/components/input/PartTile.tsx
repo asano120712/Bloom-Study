@@ -5,7 +5,7 @@ import { kanjiShapes } from '@/features/recognize/kanji'
  * パズルのタイル1つ。
  *
  * タイルの名前が「字|0」(左か上)・「字|1」(右か下)なら、KanjiVG のお手本の線から、その字の中での部品の形を描く
- * (scripts/build-kanji-puzzles.ts が作るパズル)。フォントに無い部品(𠦝・㑒)も出せ、見た目も字の中の形のままになる。
+ * (scripts/build/build-kanji-puzzles.ts が作るパズル)。フォントに無い部品(𠦝・㑒)も出せ、見た目も字の中の形のままになる。
  * 「|」の無い名前(小1・小2のパズルの 氵 など)は、これまでどおり文字で出す。
  *
  * 大きさは文字と同じく font-size に合わせる(高さ 1.1em)。呼ぶ側の text-3xl などがそのまま効く。

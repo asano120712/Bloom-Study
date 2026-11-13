@@ -2,9 +2,9 @@
 
 ヒントが花びらのようにひとつずつ浮かびあがるあいだに、答えを「思い出す」ゲーム型の学習ウェブアプリ。
 
-- [要件定義書](Bloomstudy_要件定義書.md) — コンセプト・ビジネスモデル
-- [機能要件書](Bloomstudy_機能要件書.md) — 画面一覧・機能要件
-- [技術選定書](Bloomstudy_技術選定書.md) — 技術スタックと選定理由
+- [要件定義書](docs/Bloomstudy_要件定義書.md) — コンセプト・ビジネスモデル
+- [機能要件書](docs/Bloomstudy_機能要件書.md) — 画面一覧・機能要件
+- [技術選定書](docs/Bloomstudy_技術選定書.md) — 技術スタックと選定理由
 
 ## 開発環境
 
@@ -33,26 +33,46 @@ npm run lint    # oxlint
 ## ディレクトリ構成
 
 ```
+docs/             要件定義書・機能要件書・技術選定書
+public/           ロゴ・アイコン(URL で参照されるので、ここは動かさない)
+scripts/
+├── build/        問題・お手本の生成(npm run questions:kanji など)
+├── lib/          生成で共通に使う部品(辞書キャッシュ・難易度・除外語リストなど)
+├── train/        手書き読み取りモデルの学習(Python)
+├── fetch-dict.ts      辞書データの取得(npm run dict:fetch)
+└── check-recognizer.ts 読み取りモデルの確認
 src/
 ├── assets/       ロゴアセットのパス定義(logos.ts)
-├── components/   共通UI(AppShell, AppHeader, OpeningSplash, Loading, LoadingDots,
-│                        HintList, BloomLogo, BloomMark)
-│                 こたえかたの入力(TypingInput, OnScreenKeyboard,
-│                        HandwritingCanvas, PartsInput, InputModeSheet)
+├── components/
+│   ├── layout/       画面の枠(AppShell, AppHeader, AboutFooter, StaffCorners,
+│   │                 OpeningSplash, Loading, LoadingDots)
+│   ├── brand/        ロゴと絵(BloomLogo, BloomMark, HeroVisual, ActivityArt)
+│   ├── input/        こたえかたの入力(TypingInput, OnScreenKeyboard, NumberPad,
+│   │                 PartsInput, PartTile, 筆算・分数・単語のマス, MemoPad など)
+│   ├── handwriting/  手書き・なぞりのキャンバス(HandwritingCanvas, TraceCanvas など)
+│   ├── quiz/         出題・結果の表示(HintList, MathText, ModelAnswer, FigureView)
+│   ├── sheets/       下から出るシート(HowToSheet, HowToDemo, InputModeSheet)
+│   └── kids/         こどものあそびの枠とスタンプ(PlayFrame, StampCard, StampArt)
 ├── config/       ヒント間隔・トライアル上限・編集距離の許容量など調整パラメータ
 ├── data/         ジャンル・あそびの定義(genres, activities)、画面の言葉(copy)、
-│                 問題データ(手書き分 + 生成JSON)、なぞりのお手本(生成JSON)
+│   │             このアプリについて(about, credits)、手書きの問題(questions)
+│   └── generated/    スクリプトが作るデータ(問題・お手本・パズル・読み取りモデル)。手で直さない
 ├── features/
 │   ├── hints/    ジャンル別ヒント分解ルール(english / kanji / math)とレジストリ
 │   ├── trace/    なぞりがきのお手本(図形は手書き、ひらがなは生成JSON)
 │   ├── match/    ちがいさがしの図形(数から組み立てる)とダミーの選び方
+│   ├── math/     計算の式・分数の扱い
+│   ├── recognize/    手書きの読み取り(英字・数字・漢字)
+│   ├── assemble/ 漢字のパズルの組み立て
 │   └── judge/    正誤判定(正規化一致 / 編集距離 / パーツの置いた向き)
-├── hooks/        useHintTimer, useStats, useQuizSession, useHasFinePointer
+├── hooks/        useHintTimer, useStats, useQuizSession, useStaffGesture など
 ├── pages/        画面(トップ[おとな/こども] / ジャンル選択 / 出題 / 結果 / マイページ /
-│                     トライアル終了)
+│   │             このアプリについて / スタッフ用 / トライアル終了)
+│   └── recognize-lab/   読み取りの試し場(開発中だけ。本番のビルドには入らない)
 ├── utils/        小さな共通処理(prefersReducedMotion, shuffleWithSeed)
 ├── services/     出題の取得(quizSource) / 永続化(statsRepository, quizSession,
-│                 openingSession, audienceMode) / 読み上げ(speech)
+│                 openingSession, audienceMode, stampCard) / 読み上げ(speech) /
+│                 スタッフ用パスワード(staffPasscode, pbkdf2)
 └── types/        ドメイン型
 ```
 
@@ -70,7 +90,7 @@ npm run questions:kanji -- --grades=3,4     # 学年をしぼって確認する
 npm run questions:kanji -- --report         # 書き出さず、内訳と先頭20問だけ確認
 ```
 
-出力は `src/data/questions.kanji.generated.json`。直接編集しても次回生成で消える。
+出力は `src/data/generated/questions.kanji.generated.json`。直接編集しても次回生成で消える。
 手で直したい問題は `src/data/questions.ts` の `MANUAL_QUESTIONS` に置く(同じ `answer` があれば生成側を捨てる)。
 
 #### 出題文もヒントも熟語で出す
@@ -115,7 +135,7 @@ KRADFILE の分解から、正解パーツと部品タイル(正解 + ダミー)
 
 ダミーは**見分けにくい部品**を優先する(`辶` に対して `廴` `走`)。
 形が違いすぎる部品を混ぜると、思い出さなくても消去法で解けてしまう。
-機械的に「似ている」を判定する手段が無いため、`scripts/kanji-radicals.ts` の
+機械的に「似ている」を判定する手段が無いため、`scripts/lib/kanji-radicals.ts` の
 `CONFUSABLE_GROUPS` に35組を手で持っている。足りない分は同じ画数の常用部品で埋める。
 
 **ダミーが簡単すぎると気づいたら、この表に足すこと。**
@@ -173,7 +193,7 @@ npm run questions:english -- --bands=1000  # NGSL上位1000語の範囲だけ
 npm run questions:english -- --report      # 書き出さず、内訳と無作為20問だけ確認
 ```
 
-出力は `src/data/questions.english.generated.json`。
+出力は `src/data/generated/questions.english.generated.json`。
 出題語は漢字表記(`uk` タグの語はかな表記)、答えは第一訳、同じ語義の別訳は
 `acceptableAnswers` に入れて正解扱いにする。
 漢字表記の出題語には読みを `promptReading` に添える(椅子 → いす)。
@@ -204,7 +224,7 @@ militarism・lipstick のような優先度の低い語まで問題になる。
 載っている語が勝つ**ため、急騰 → jump・減収 → fall のように新聞語彙や専門語で
 出題してしまう。
 
-そこで JMdict の優先タグで並べ替えてから選ぶ([scripts/word-priority.ts](scripts/word-priority.ts))。
+そこで JMdict の優先タグで並べ替えてから選ぶ([scripts/lib/word-priority.ts](scripts/lib/word-priority.ts))。
 
 | 順 | 見るもの | 意味 |
 |---|---|---|
@@ -221,7 +241,7 @@ militarism・lipstick のような優先度の低い語まで問題になる。
 `common` の真偽値へ畳んでしまう)ため、`npm run dict:fetch` で生XMLも落としている。
 
 JMdict のタグでは弾けない問題(`おなら` → wind など)は
-`scripts/english-denylist.ts` に出題語を書いて除外する。
+`scripts/lib/english-denylist.ts` に出題語を書いて除外する。
 生成JSONを直接編集しても次回生成で消える。
 
 順位づけでも残る偏り(同じ答えで、新聞に出るほうが日常語に勝つ)はここで落とす。
@@ -230,7 +250,7 @@ JMdict のタグでは弾けない問題(`おなら` → wind など)は
 ### 計算問題の生成
 
 **このジャンルだけ辞書を読まない。** 7×8 が 56 であることは外から持ってこなくても作れる。
-[scripts/build-math-questions.ts](scripts/build-math-questions.ts) はルールだけで書き出す。
+[scripts/build/build-math-questions.ts](scripts/build/build-math-questions.ts) はルールだけで書き出す。
 
 ```bash
 npm run questions:math              # 小1〜小6の整数・分数・小数の計算と、割合・速さの文章題 → 6649問
@@ -287,7 +307,7 @@ npm run questions:math -- --report  # 書き出さず、内訳と先頭20問だ�
 **1行で出すのは小1・2の暗算だけ**(1桁どうし、2桁±1桁)。それ以外はすべて筆算で出す。
 
 問題データは**1行の式のまま持つ**(`prompt: '24 × 5'`)。マイページの履歴や読み上げは
-1行のほうが扱いやすいため、縦に積むのは見せる側([ColumnForm](src/components/ColumnForm.tsx))で行う。
+1行のほうが扱いやすいため、縦に積むのは見せる側([ColumnForm](src/components/input/ColumnForm.tsx))で行う。
 積むかどうかは `promptLayout: 'column'` で持ち、小1・2の暗算どうしは1行のまま出す。
 
 #### 計算だけ、画面の並びが違う
@@ -421,7 +441,7 @@ npm run questions:math -- --report  # 書き出さず、内訳と先頭20問だ�
 問題も答えもヒントも、データとしては「2/3 + 1/4」「7/4」「1 3/4」のように**1行の文字で持つ**
 (記録・読み上げ・マイページの履歴は1行のほうが扱いやすい)。教科書と同じく分子を上・分母を下に
 積むのは見せる側の仕事で、出題・ヒント・確認・結果のどこでも `MathText`
-([components/MathText.tsx](src/components/MathText.tsx))を通す。
+([components/MathText.tsx](src/components/quiz/MathText.tsx))を通す。
 
 - **答えは約分が必要**。値が同じでも 4/6 は正解にしない(約分は小5で習う手順そのもの)。
   ただし不正解として記録もしない。数字キーボードでは「約分できるので、約分してから答えよう」と出して、
@@ -524,7 +544,7 @@ npm run questions:math -- --report  # 書き出さず、内訳と先頭20問だ�
 **式と手順が食い違ったまま出てしまう**ことがある。生成スクリプトが持つのはヒントの文だけ。
 
 打つ場所は「段」「位」「商」「引く段」「ひいた数」「こたえ」の6種類
-(`ColumnSlot`)。画面側([ColumnForm](src/components/ColumnForm.tsx))は
+(`ColumnSlot`)。画面側([ColumnForm](src/components/input/ColumnForm.tsx))は
 場所の名前を見て置くだけで、進め方は知らない。
 
 #### たし算・ひき算は、一のくらいから1けたずつ
@@ -562,7 +582,7 @@ npm run questions:math -- --report  # 書き出さず、内訳と先頭20問だ�
 右に寄せて書く。数字キーボードのほうでマスを置かないのとは理由が逆で、こちらは
 **書く場所を先に見せないと書けない**ため、最初から全部出す。
 
-マスは**書く場所に入る最大の大きさ**にする(`useFitCell`、[BoxHandwriting.tsx](src/components/BoxHandwriting.tsx))。
+マスは**書く場所に入る最大の大きさ**にする(`useFitCell`、[BoxHandwriting.tsx](src/components/handwriting/BoxHandwriting.tsx))。
 ヒントの下から「けす/かけた」の上までが書く場所で、式の行数・途中の段の数・画面の大きさで
 入る大きさが毎回変わるので、決め打ちの上限では無駄が出る。数字の大きさもマスに合わせる(0.625 倍)。
 
@@ -623,7 +643,7 @@ npm run questions:math -- --report  # 書き出さず、内訳と先頭20問だ�
 ```
 
 かけ算と形が違う(縦に積むのではなく、囲って上に書く)ので、
-[DivisionForm](src/components/ColumnForm.tsx) に分けてある。
+[DivisionForm](src/components/input/ColumnForm.tsx) に分けてある。
 
 **1けたごとに「たてる → かける → ひく(→ おろす)」を打つ。** 見出しもこの言い方にする
 (「5 × 5 を かく」のような言い方だと、かける手と ひく手がどちらも引き算に見える)。 商だけ打たせると、引き算を頭の中で
@@ -663,7 +683,7 @@ SE は高さがもともと足りないので、出題画面だけ、背の低�
 #### 計算のメモ
 
 計算の出題画面の右上(パスの横)にメモのボタン(アイコンは `public/images/memo.svg`)を置く。押すと縦長の薄い紙が出題の上に重なり、
-紙の余白と同じように自由に書いて計算できる([MemoPad](src/components/MemoPad.tsx))。読み取りも判定もしない。
+紙の余白と同じように自由に書いて計算できる([MemoPad](src/components/input/MemoPad.tsx))。読み取りも判定もしない。
 
 - **下がうっすら透ける**(紙は8割ほど白い)。問題の数を見ながら書ける。「下を透かす」を切ると真っ白になる
 - **置き場所は画面の横幅で変える**。740px 未満(iPhone、iPhone Duo の縦持ち)は画面いっぱい近くに重ね、
@@ -703,7 +723,7 @@ SE は高さがもともと足りないので、出題画面だけ、背の低�
 
 #### 数字キーボードは別に持つ
 
-アルファベットのキーボードとは別の部品([NumberPad](src/components/NumberPad.tsx))。
+アルファベットのキーボードとは別の部品([NumberPad](src/components/input/NumberPad.tsx))。
 数の答えに a〜z は要らないうえ、キーが10個なら1つずつを大きく取れる
 (360×640 の端末でも1キー44px)。OS のキーボードを出さない理由はアルファベット側と同じ。
 
@@ -721,7 +741,7 @@ SE は高さがもともと足りないので、出題画面だけ、背の低�
 **辞書をそのまま流すと、性的・排泄・死や暴力に関する語が出題やヒントに混ざる。**
 小学校配当の漢字を扱うアプリなので、生成の段階で落とす。
 
-判定は `scripts/unsuitable.ts` に集約してあり、漢字・英単語の両方の生成が使う。
+判定は `scripts/lib/unsuitable.ts` に集約してあり、漢字・英単語の両方の生成が使う。
 
 **JMdict のタグでは弾けない。** `射精` `精液` は俗語でも古語でもなく医学用語として
 登録されているため、`vulg` も `sens` も付かない。英語の語義に現れる語で見分けるのが、
@@ -741,9 +761,9 @@ SE は高さがもともと足りないので、出題画面だけ、背の低�
 
 | ファイル | 用途 |
 |---|---|
-| `scripts/unsuitable.ts` | 語義から機械的に判定する語のリスト |
-| `scripts/jukugo-denylist.ts` | 漢字ヒントの熟語を個別に除外 |
-| `scripts/english-denylist.ts` | 英単語の出題語を個別に除外 |
+| `scripts/lib/unsuitable.ts` | 語義から機械的に判定する語のリスト |
+| `scripts/lib/jukugo-denylist.ts` | 漢字ヒントの熟語を個別に除外 |
+| `scripts/lib/english-denylist.ts` | 英単語の出題語を個別に除外 |
 
 **同種の語を見つけたら、1件ずつ生成JSONから消すのではなく、上のどれかに足すこと。**
 生成JSONを直接編集しても次回生成で戻る。
@@ -754,11 +774,11 @@ SE は高さがもともと足りないので、出題画面だけ、背の低�
 ### あそびかたは、あそびごとに出す
 
 一覧のカード右上の「？」から、そのあそび1つぶんの説明を出す
-([HowToSheet](src/components/HowToSheet.tsx))。
+([HowToSheet](src/components/sheets/HowToSheet.tsx))。
 
 **手順ごとに1画面ずつ、デモを付けて出す。** 全部並べると、読む前に長さで降りてしまう。
 文だけでは「段ごとに打つ」「ヒントが増える」も伝わらないので、
-手順の上で本物と同じ見た目を動かす([HowToDemo](src/components/HowToDemo.tsx))。
+手順の上で本物と同じ見た目を動かす([HowToDemo](src/components/sheets/HowToDemo.tsx))。
 筆算のデモは本物の `ColumnForm` に段を順に渡しているので、本番と形がずれない。
 
 デモの枠と文の枠は高さを決めてある。手順を送るたびに高さが変わると、
@@ -822,7 +842,7 @@ SE は高さがもともと足りないので、出題画面だけ、背の低�
    (`layout` に `inline`(横に連ねる) か `stacked`(行を積む) を指定する)
 3. `src/data/genres.ts` にジャンルと `inputModes` を追加
 4. 問題は `src/data/questions.ts` に手で書くか、`scripts/` に生成スクリプトを足す
-5. `src/components/ActivityArt.tsx` に一覧用の絵を足す(後述。`ActivityId` 全部に要るので、
+5. `src/components/brand/ActivityArt.tsx` に一覧用の絵を足す(後述。`ActivityId` 全部に要るので、
    足さないと型エラーで気づく)
 
 そのジャンルで新しいこたえかたが要るなら、`InputMode` に足したうえで
@@ -831,7 +851,7 @@ SE は高さがもともと足りないので、出題画面だけ、背の低�
 ### 一覧のカード(動く絵)
 
 ジャンル選択の一覧は、左に**中身を小さくして流す絵**、右に名前と説明を置く
-([src/components/ActivityArt.tsx](src/components/ActivityArt.tsx))。
+([src/components/brand/ActivityArt.tsx](src/components/brand/ActivityArt.tsx))。
 
 ```
 ┌──────────────────────────────┐
@@ -959,8 +979,8 @@ SE は高さがもともと足りないので、出題画面だけ、背の低�
 
 | 場所 | おとな | こども |
 |---|---|---|
-| ヘッダー([AppHeader](src/components/AppHeader.tsx) の `HeaderMark`) | 横組みロゴ(h-9=36px) | `face="smile"` のマーク(44px・`motion="idle"`) |
-| オープニング([OpeningSplash](src/components/OpeningSplash.tsx)) | 縦組みロゴ(SMILで1回再生) | `face="smile"` のマークが開く |
+| ヘッダー([AppHeader](src/components/layout/AppHeader.tsx) の `HeaderMark`) | 横組みロゴ(h-9=36px) | `face="smile"` のマーク(44px・`motion="idle"`) |
+| オープニング([OpeningSplash](src/components/layout/OpeningSplash.tsx)) | 縦組みロゴ(SMILで1回再生) | `face="smile"` のマークが開く |
 
 - ヘッダーのマークは**文字が無いぶん小さく見える**ので 44px にしてある。
   トップへ戻る押し場所でもあり、他の押し場所(`min-h-11`)と同じ大きさに揃うため
@@ -1058,7 +1078,7 @@ NGSL の頻度帯(1000/2000/3000)しか手元に無いので、3段階にとど�
         歌(小2) → 「演◯」えんか      演は小5
 ```
 
-`partnerGradeCap()`(scripts/difficulty.ts)で、小3・4なら小4まで、小5・6なら小6まで、
+`partnerGradeCap()`(scripts/lib/difficulty.ts)で、小3・4なら小4まで、小5・6なら小6まで、
 中学以上は常用漢字すべて、と上限を掛けている。熟語の候補は減るが、
 小6までに限っても2語以上持つ字は993字あるので足りる。
 
@@ -1129,7 +1149,7 @@ NGSL の頻度帯(1000/2000/3000)しか手元に無いので、3段階にとど�
 終わりの見えない出題は、この年齢では達成感にならない。
 
 判定は、お手本のパスを 2 ずつの点に刻んで指との距離で見る
-([src/components/TraceCanvas.tsx](src/components/TraceCanvas.tsx))。
+([src/components/handwriting/TraceCanvas.tsx](src/components/handwriting/TraceCanvas.tsx))。
 
 | ルール | 値 | 理由 |
 |---|---|---|
@@ -1186,7 +1206,7 @@ KRADFILE の分解が字形と合わない字(花を 亻+艹 と出す、海を 
 にょう・かまえ(近・間・図)を外した数。
 
 ```bash
-npm run parts:kanji              # 小1・小2の部品データ → src/data/parts.kanji.generated.json
+npm run parts:kanji              # 小1・小2の部品データ → src/data/generated/parts.kanji.generated.json
 npm run parts:kanji -- --report  # 書き出さず、割れる字だけ確認
 ```
 
@@ -1250,7 +1270,7 @@ flower-petals     ✿ ❀ ❁ ❋       はなびらの数 4〜9
 `overscroll-behavior: none` を掛けて、端での跳ね返りも止める)。
 
 そのぶん「画面を移ったら先頭から」はブラウザ任せにできないので、
-[AppShell](src/components/AppShell.tsx) が開いたときに `#root` を先頭へ戻す。
+[AppShell](src/components/layout/AppShell.tsx) が開いたときに `#root` を先頭へ戻す。
 
 ### ウィンドウの大きさに合わせる
 
@@ -1288,7 +1308,7 @@ font-size: clamp(1rem, calc(16 * var(--app-scale)), 1.875rem);
 - **上限は `1.875rem`**。大きなモニタで間延びさせないための頭打ち。
 
 rem で書いていないものだけ、個別に追従させている。
-手書きキャンバスの線の太さ([src/components/HandwritingCanvas.tsx](src/components/HandwritingCanvas.tsx))は
+手書きキャンバスの線の太さ([src/components/handwriting/HandwritingCanvas.tsx](src/components/handwriting/HandwritingCanvas.tsx))は
 Canvas API に px で渡すため、root `font-size` から倍率を読んで掛けている。
 8px のままだと、大きな画面では枠と字に対して線だけが細く見える。
 
@@ -1472,7 +1492,7 @@ library が並んでしまう。フォーカス可能な `input` を置かず、
 ### 結果画面のおてほん
 
 正解は文字列として出すだけでなく、書き写せる「おてほん」として見せる
-(`src/components/ModelAnswer.tsx`)。すぐ下に「じぶんが かいた こたえ」が並ぶので、
+(`src/components/quiz/ModelAnswer.tsx`)。すぐ下に「じぶんが かいた こたえ」が並ぶので、
 枠の見た目と幅(`max-w-xs`・`border-bloom-200`)はそちらに揃えている。
 
 敷くガイドはジャンル定義の `answerGuide` で決める。画面側で `genreId` を見て分岐しない。

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useAudienceMode } from '@/hooks/useAudienceMode'
-import { BloomMark } from './BloomMark'
+import { BloomMark } from '../brand/BloomMark'
 
 /**
  * 花びらが開閉するローディング表示。

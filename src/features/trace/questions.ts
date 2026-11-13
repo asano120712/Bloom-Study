@@ -1,4 +1,4 @@
-import kanji from '@/data/strokes.kanji.generated.json'
+import kanji from '@/data/generated/strokes.kanji.generated.json'
 import type { Question } from '@/types'
 
 /**

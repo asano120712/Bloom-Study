@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { HowToDemo } from '@/components/HowToDemo'
+import { HowToDemo } from '@/components/sheets/HowToDemo'
 import { demosFor } from '@/data/howTo'
 import { useCopy } from '@/hooks/useAudienceMode'
 import type { ActivityId } from '@/data/activities'

@@ -11,7 +11,7 @@ import {
   type StampKind,
 } from '@/services/stampCard'
 import { prefersReducedMotion } from '@/utils/motion'
-import { BloomMark } from './BloomMark'
+import { BloomMark } from '../brand/BloomMark'
 import { Confetti, StampCardSheet, StampChooser, TodayMeter } from './StampCard'
 
 /**

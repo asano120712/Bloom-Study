@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { AppShell } from '@/components/AppShell'
+import { AppShell } from '@/components/layout/AppShell'
 import { useStats } from '@/hooks/useStats'
 import { clearStamps, resetToday } from '@/services/stampCard'
 import { checkStaffPasscode } from '@/services/staffPasscode'

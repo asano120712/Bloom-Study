@@ -2,7 +2,7 @@ import { useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNod
 import { useFitCell } from '@/hooks/useFitCell'
 import { useCopy } from '@/hooks/useAudienceMode'
 import { useNoTouchGesture } from '@/hooks/useNoTouchGesture'
-import { EraserIcon, HandwritingTools } from '@/components/HandwritingTools'
+import { EraserIcon, HandwritingTools } from '@/components/handwriting/HandwritingTools'
 
 /** 書く場所1つぶん。筆算の位・商・こたえにそのまま対応する */
 export interface WriteRow {

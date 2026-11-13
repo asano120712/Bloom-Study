@@ -16,7 +16,7 @@ import mnist
 from net import Net
 
 OUT = os.path.join(os.path.dirname(__file__), ".cache", "check.json")
-MODEL = os.path.join(os.path.dirname(__file__), "..", "..", "src", "data", "model.digits.generated.json")
+MODEL = os.path.join(os.path.dirname(__file__), "..", "..", "src", "data", "generated", "model.digits.generated.json")
 
 
 def main():
