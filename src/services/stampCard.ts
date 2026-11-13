@@ -13,6 +13,13 @@ const STORAGE_KEY = 'bloomstudy:stamps:v1'
 /** 1日にこの回数あそぶと、その日にスタンプが押される */
 export const STAMP_GOAL = 10
 
+/**
+ * スタンプの種類。押す前に、その日のぶんを子どもが選ぶ。
+ * 並びは選ぶ画面の順(はな・うさぎ・ワンピース・かぶとむし・パトカー・きょうりゅう)。
+ */
+export const STAMP_KINDS = ['flower', 'rabbit', 'dress', 'beetle', 'police', 'dinosaur'] as const
+export type StampKind = (typeof STAMP_KINDS)[number]
+
 interface StampData {
   /** 日付(YYYY-MM-DD、端末の時刻)ごとの、あそんだ回数 */
   plays: Record<string, number>
@@ -22,9 +29,11 @@ interface StampData {
    * あとで「ぜんぶ できた!」やスタンプカードを開いたときに、まだ見せていなければ押す
    */
   celebrated: string[]
+  /** 日付ごとに選んだスタンプ。種類を選べるようになる前に押した日は無い(はなで出す) */
+  kinds: Record<string, StampKind>
 }
 
-const EMPTY: StampData = { plays: {}, celebrated: [] }
+const EMPTY: StampData = { plays: {}, celebrated: [], kinds: {} }
 
 /** 端末の時刻での日付。toISOString は世界時なので、日本の朝9時までは前の日になってしまう */
 export function dayKey(date = new Date()): string {
@@ -38,7 +47,7 @@ export function readStamps(): StampData {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (!raw) return EMPTY
     const parsed = JSON.parse(raw) as Partial<StampData>
-    return { plays: parsed.plays ?? {}, celebrated: parsed.celebrated ?? [] }
+    return { plays: parsed.plays ?? {}, celebrated: parsed.celebrated ?? [], kinds: parsed.kinds ?? {} }
   } catch {
     // 読めない(プライベートモードなど)・壊れているときは、まっさらから始める
     return EMPTY
@@ -54,6 +63,10 @@ function writeStamps(data: StampData): void {
 }
 
 export const isStamped = (data: StampData, day: string) => (data.plays[day] ?? 0) >= STAMP_GOAL
+
+/** その日に押したスタンプの種類。選ぶ前に押した日は、はな */
+export const kindOf = (kinds: Record<string, StampKind>, day: string): StampKind =>
+  STAMP_KINDS.includes(kinds[day]) ? kinds[day] : 'flower'
 
 /** あそびを1回終えたとき。今日の回数を返す */
 export function addPlay(): number {
@@ -78,7 +91,8 @@ export function resetToday(): void {
   const data = readStamps()
   const today = dayKey()
   const { [today]: _, ...plays } = data.plays
-  writeStamps({ plays, celebrated: data.celebrated.filter((day) => day !== today) })
+  const { [today]: __, ...kinds } = data.kinds
+  writeStamps({ plays, kinds, celebrated: data.celebrated.filter((day) => day !== today) })
 }
 
 /** スタンプカードを全部消す(隠しページのスタッフ用。文化祭で端末を次の人に渡す前など) */
@@ -90,11 +104,11 @@ export function clearStamps(): void {
   }
 }
 
-/** 押す演出を見せ終えた。同じ日にもう一度は見せない */
-export function markCelebrated(): void {
+/** 今日のスタンプを kind で押した。同じ日にもう一度、押す演出は見せない */
+export function markCelebrated(kind: StampKind): void {
   const data = readStamps()
   const today = dayKey()
-  if (data.celebrated.includes(today)) return
   // 古い日付は要らないので、直近のぶんだけ残す
-  writeStamps({ ...data, celebrated: [...data.celebrated, today].slice(-40) })
+  const celebrated = data.celebrated.includes(today) ? data.celebrated : [...data.celebrated, today].slice(-40)
+  writeStamps({ ...data, celebrated, kinds: { ...data.kinds, [today]: kind } })
 }

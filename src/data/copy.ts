@@ -1,6 +1,7 @@
 import type { ActivityId } from '@/data/activities'
 import type { AnswerChoiceId } from '@/data/genres'
 import type { AssembleLayout } from '@/features/assemble'
+import type { StampKind } from '@/services/stampCard'
 import type { AudienceMode, Difficulty, GenreId, JudgeVerdict, MathTopic, PromptForm } from '@/types'
 
 /**
@@ -233,6 +234,12 @@ export interface Copy {
     got: string
     already: string
     monthTotal: (count: number) => string
+    /** 押す前に、どのスタンプにするか選んでもらう問いかけ */
+    choose: string
+    /** 選んだスタンプを押すボタン */
+    press: string
+    /** スタンプの名前(読み上げだけ。画面には絵だけ出す) */
+    kinds: Record<StampKind, string>
     play: string
   }
 }
@@ -533,6 +540,9 @@ const ADULT: Copy = {
     already: '今日のスタンプは ゲット済み',
     monthTotal: (count) => `この月のスタンプ ${count}個`,
     play: '遊びに行く',
+    choose: '今日は どのスタンプに する？',
+    press: 'スタンプを 押す！',
+    kinds: { flower: 'はな', rabbit: 'うさぎ', dress: 'ワンピース', beetle: 'かぶとむし', police: 'パトカー', dinosaur: 'きょうりゅう' },
   },
 }
 
@@ -823,6 +833,9 @@ const KIDS: Copy = {
     already: 'きょうの スタンプは ゲットずみ！',
     monthTotal: (count) => `この つきの スタンプ ${count}こ`,
     play: 'あそびに いく',
+    choose: 'きょうは どの スタンプに する？',
+    press: 'スタンプを おす！',
+    kinds: { flower: 'はな', rabbit: 'うさぎ', dress: 'ワンピース', beetle: 'かぶとむし', police: 'パトカー', dinosaur: 'きょうりゅう' },
   },
 }
 

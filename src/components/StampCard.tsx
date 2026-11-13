@@ -8,8 +8,9 @@ import {
 } from 'react'
 import { useCopy } from '@/hooks/useAudienceMode'
 import type { PressStage } from '@/hooks/usePressStage'
-import { STAMP_GOAL, dayKey } from '@/services/stampCard'
+import { STAMP_GOAL, STAMP_KINDS, dayKey, kindOf, type StampKind } from '@/services/stampCard'
 import { prefersReducedMotion } from '@/utils/motion'
+import { StampArt } from './StampArt'
 
 /**
  * こどものスタンプカード(カレンダーの形)。
@@ -23,8 +24,12 @@ interface MonthProps {
   /** 0 はじまり(1月 = 0) */
   month: number
   plays: Record<string, number>
+  /** 日付ごとに選んだスタンプ */
+  kinds: Record<string, StampKind>
   /** 今日のマスに押す演出を出すとき */
   pressStage?: PressStage
+  /** 押す演出の途中で、いま選んでいるスタンプ */
+  pressKind?: StampKind
 }
 
 /** スタンプの傾き。日ごとに決まった角度にして、描き直しても動かないようにする */
@@ -76,29 +81,6 @@ export function Confetti() {
   )
 }
 
-/** はんこの絵。花の形を、二重の丸で囲む */
-export function Stamp({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 40 40" aria-hidden="true" className={className}>
-      <circle cx="20" cy="20" r="17.6" fill="none" stroke="currentColor" strokeWidth="2.6" />
-      <circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" strokeWidth="0.9" strokeDasharray="2.2 1.5" />
-      {[0, 1, 2, 3, 4].map((index) => (
-        <ellipse
-          key={index}
-          cx="20"
-          cy="13.4"
-          rx="4.1"
-          ry="6"
-          fill="currentColor"
-          opacity="0.88"
-          transform={`rotate(${index * 72} 20 20)`}
-        />
-      ))}
-      <circle cx="20" cy="20" r="2.7" fill="white" />
-    </svg>
-  )
-}
-
 /** 今日のマスの輪。あそんだ回数のぶんだけ埋まる */
 function TodayRing({ count }: { count: number }) {
   const ratio = Math.min(1, count / STAMP_GOAL)
@@ -122,7 +104,7 @@ function TodayRing({ count }: { count: number }) {
 }
 
 /** 1か月ぶんのカードの中身(見出し・曜日・日のマス) */
-export function StampMonth({ year, month, plays, pressStage }: MonthProps) {
+export function StampMonth({ year, month, plays, kinds, pressStage, pressKind }: MonthProps) {
   const copy = useCopy()
   const today = dayKey()
   const firstWeekday = new Date(year, month, 1).getDay()
@@ -160,7 +142,7 @@ export function StampMonth({ year, month, plays, pressStage }: MonthProps) {
           // 今日に押す演出の途中は、スタンプが現れるまで輪を満タンにして待つ
           const pressing = isToday && pressStage !== undefined
           const stamped = count >= STAMP_GOAL && !(pressing && pressStage === 'before')
-          /** 押す前(光らせて待つ・スタンプがためている)あいだ */
+          /** 押す前(光らせて待つ・スタンプを選んでいる・持ち上げている)あいだ */
           const waiting = pressing && pressStage !== 'press'
           const angle = angleOf(day)
 
@@ -212,10 +194,15 @@ export function StampMonth({ year, month, plays, pressStage }: MonthProps) {
                       ))}
                     </>
                   )}
-                  <Stamp
+                  <StampArt
+                    kind={pressing ? (pressKind ?? 'flower') : kindOf(kinds, key)}
                     className={`block size-full text-warm-600 ${
                       // 浮かんでいるあいだは紙に乗っていないので、インクのにじみ(重ねて濃くなる色)にしない
-                      pressing && pressStage === 'hold' ? 'animate-stamp-hold drop-shadow-lg' : 'mix-blend-multiply'
+                      pressing && pressStage === 'hold'
+                        ? 'animate-stamp-float drop-shadow-lg'
+                        : pressing && pressStage === 'lift'
+                          ? 'animate-stamp-lift drop-shadow-lg'
+                          : 'mix-blend-multiply'
                     } ${pressing && pressStage === 'press' ? 'animate-stamp-press' : ''}`}
                   />
                 </span>
@@ -255,14 +242,21 @@ function Rings() {
 }
 
 /** 今月のカード1枚(めくらない)。終わりの画面で、スタンプを押すところを見せる */
-export function StampCardSheet({ plays, pressStage }: BookProps) {
+export function StampCardSheet({ plays, kinds, pressStage, pressKind }: BookProps) {
   const now = new Date()
   return (
     <div className="relative">
       <Rings />
       <div aria-hidden="true" className="absolute inset-x-1.5 top-1 -bottom-1 rounded-3xl border-2 border-bloom-100 bg-white" />
       <Sheet className="relative">
-        <StampMonth year={now.getFullYear()} month={now.getMonth()} plays={plays} pressStage={pressStage} />
+        <StampMonth
+          year={now.getFullYear()}
+          month={now.getMonth()}
+          plays={plays}
+          kinds={kinds}
+          pressStage={pressStage}
+          pressKind={pressKind}
+        />
       </Sheet>
     </div>
   )
@@ -273,8 +267,10 @@ const FLIP_MS = 620
 
 interface BookProps {
   plays: Record<string, number>
+  kinds: Record<string, StampKind>
   /** 今日のマスに押す演出を出すとき(今月を開いているあいだだけ効く) */
   pressStage?: PressStage
+  pressKind?: StampKind
 }
 
 /**
@@ -284,7 +280,7 @@ interface BookProps {
  * 前の月へ戻るときは、前の紙が上から倒れてきて、いまの紙の上にかぶさる。
  * 左右のスワイプでもめくれる。めくれるのは、記録のある最初の月から今月まで。
  */
-export function StampCardBook({ plays, pressStage }: BookProps) {
+export function StampCardBook({ plays, kinds, pressStage, pressKind }: BookProps) {
   const copy = useCopy()
   const now = new Date()
   /** 今月を 0 として、何か月前か(0, 1, 2…) */
@@ -377,7 +373,13 @@ export function StampCardBook({ plays, pressStage }: BookProps) {
         <div aria-hidden="true" className="absolute inset-x-1.5 top-1 -bottom-1 rounded-3xl border-2 border-bloom-100 bg-white" />
 
         <Sheet className="relative">
-          <StampMonth {...shown} plays={plays} pressStage={isThisMonth ? pressStage : undefined} />
+          <StampMonth
+            {...shown}
+            plays={plays}
+            kinds={kinds}
+            pressStage={isThisMonth ? pressStage : undefined}
+            pressKind={pressKind}
+          />
         </Sheet>
 
         {moving && (
@@ -388,7 +390,7 @@ export function StampCardBook({ plays, pressStage }: BookProps) {
             style={{ transform: flipping?.direction === 'over' ? 'rotateX(100deg)' : undefined }}
           >
             <Sheet className="h-full">
-              <StampMonth {...moving} plays={plays} />
+              <StampMonth {...moving} plays={plays} kinds={kinds} />
             </Sheet>
           </div>
         )}
@@ -440,6 +442,60 @@ export function TodayMeter({ count, added = 0 }: { count: number; added?: number
           )}
         </span>
       ))}
+    </div>
+  )
+}
+
+/**
+ * 押す前に、今日のスタンプを選ぶところ。6つの絵から選んで、押すボタンで押す。
+ * 名前は出さない(字が読めなくても絵で選べる)。読み上げにだけ名前を付ける。
+ * 選ぶたびに、カードの上に浮かんでいるスタンプの絵も変わる(呼ぶ側が value を渡す)。
+ */
+export function StampChooser({
+  value,
+  onChange,
+  onPress,
+  disabled = false,
+}: {
+  value: StampKind
+  onChange: (kind: StampKind) => void
+  onPress: () => void
+  /** 押している途中。選び直しも押し直しもさせない */
+  disabled?: boolean
+}) {
+  const copy = useCopy()
+  return (
+    <div className="flex w-full flex-col items-center gap-3">
+      <p className="text-xl font-bold text-bloom-700">{copy.stampCard.choose}</p>
+      <div role="radiogroup" aria-label={copy.stampCard.choose} className="grid w-full grid-cols-6 gap-1.5">
+        {STAMP_KINDS.map((kind) => {
+          const selected = kind === value
+          return (
+            <button
+              key={kind}
+              type="button"
+              role="radio"
+              aria-checked={selected}
+              aria-label={copy.stampCard.kinds[kind]}
+              disabled={disabled}
+              onClick={() => onChange(kind)}
+              className={`flex aspect-square items-center justify-center rounded-2xl border-2 p-1 transition-transform ${
+                selected ? 'scale-110 border-warm-500 bg-warm-100' : 'border-bloom-100 bg-white'
+              }`}
+            >
+              <StampArt kind={kind} className="size-full text-warm-600" />
+            </button>
+          )
+        })}
+      </div>
+      <button
+        type="button"
+        onClick={onPress}
+        disabled={disabled}
+        className="flex min-h-14 w-full items-center justify-center rounded-full bg-warm-500 text-xl font-bold text-white disabled:opacity-60"
+      >
+        {copy.stampCard.press}
+      </button>
     </div>
   )
 }
