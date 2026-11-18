@@ -6,6 +6,7 @@ import { writeAudienceMode } from '@/services/audienceMode'
 import { TOP_PATH, type AudienceMode } from '@/types'
 import { BloomLogo } from '../brand/BloomLogo'
 import { BloomMark } from '../brand/BloomMark'
+import { NoticeButton } from './NoticeButton'
 
 interface AppHeaderProps {
   /**
@@ -24,7 +25,7 @@ const AUDIENCE_LABEL: Record<AudienceMode, string> = {
 }
 
 /**
- * 全画面共通のヘッダー。左にロゴ、右におとな/こどもの切り替えを置く。
+ * 全画面共通のヘッダー。左にロゴ、右におとな/こどもの切り替えとお知らせを置く。
  * 出題中(exitTo あり)だけは並びを入れ替え、左を「やめる」、右をロゴにする。
  * ロゴの中身はモードで変わる(HeaderMark)。
  */
@@ -49,7 +50,11 @@ export function AppHeader({ exitTo }: AppHeaderProps) {
         >
           <HeaderMark mode={mode} />
         </Link>
-        <AudienceSwitch current={mode} />
+        {/* 切り替えの右にお知らせ。2つで1つの塊に見えるよう、間は詰めておく */}
+        <div className="flex shrink-0 items-center gap-2">
+          <AudienceSwitch current={mode} />
+          <NoticeButton />
+        </div>
       </header>
     )
   }

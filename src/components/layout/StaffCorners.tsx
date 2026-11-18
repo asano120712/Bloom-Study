@@ -9,20 +9,22 @@ const PLACE: Record<Corner, string> = {
 }
 
 /**
- * 隠しページ(スタッフ用)の入口。画面の四隅を、右上から時計回りに1回ずつ押すと開く(useStaffGesture)。
+ * 隠しページ(スタッフ用)の入口。画面の四隅を、左上から時計回りに1回ずつ押すと開く(useStaffGesture)。
  *
  * 四隅には色を付けない(お客さんに気づかれないように)。押す場所は透明な四角で受ける。
  *
  * - 隅を押したときは、下にあるボタンは反応させない(右上の「こども」の切り替えに重なり、
  *   隅を押すとモードまで切り替わって、こども向けの画面へ移ってしまった)
+ * - ただし右上だけは、手順の途中(左上を押したあと)にしか受け止めない。
+ *   ふだんはお知らせのボタンに通す(止めるとお客さんがお知らせを開けない)
  * - body の直下に置く。画面の中に置くと、動きを付けた枠を基準に fixed が効いて、
  *   iPad で四角が画面の隅からずれた(上の2つがヘッダーの横に出た)
  */
 export function StaffCorners() {
-  useStaffGesture()
+  const isInProgress = useStaffGesture()
   return createPortal(
     <>
-      {ORDER.map((corner) => (
+      {ORDER.filter((corner) => corner !== 'top-right' || isInProgress).map((corner) => (
         <div
           key={corner}
           aria-hidden="true"

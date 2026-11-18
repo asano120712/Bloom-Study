@@ -34,6 +34,19 @@
   --color-warm-500: #e07a5f;
   --color-warm-600: #c25a3e;
 
+  /* お知らせアイコンの点。新しいお知らせがあるあいだ、ゆっくり点いたり消えたりする */
+  --animate-notice-blink: notice-blink 1600ms ease-in-out infinite;
+
+  @keyframes notice-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.2;
+    }
+  }
+
   /* オープニングのローディングドット。3点が順に跳ねる */
   --animate-loading-dot: loading-dot 1200ms ease-in-out infinite;
 
