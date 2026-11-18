@@ -402,7 +402,7 @@ export function StampCardBook({ plays, kinds, pressStage, pressKind }: BookProps
           onClick={() => go(back + 1)}
           disabled={back >= maxBack || flipping !== null}
           aria-label={copy.stampCard.prev}
-          className="flex size-12 shrink-0 items-center justify-center rounded-full border-2 border-bloom-200 text-xl font-bold text-ink-600 disabled:opacity-30"
+          className="btn-soft flex size-12 shrink-0 items-center justify-center rounded-full border-2 border-bloom-200 text-xl font-bold text-ink-600 disabled:opacity-30"
         >
           ‹
         </button>
@@ -479,8 +479,8 @@ export function StampChooser({
               aria-label={copy.stampCard.kinds[kind]}
               disabled={disabled}
               onClick={() => onChange(kind)}
-              className={`flex aspect-square items-center justify-center rounded-2xl border-2 p-1 transition-transform ${
-                selected ? 'scale-110 border-warm-500 bg-warm-100' : 'border-bloom-100 bg-white'
+              className={`btn-soft flex aspect-square items-center justify-center rounded-2xl border-2 p-1 transition-transform ${
+                selected ? 'scale-110 border-warm-500 bg-warm-100 [--btn-edge:var(--color-warm-500)]' : 'border-bloom-100 bg-white'
               }`}
             >
               <StampArt kind={kind} className="size-full text-warm-600" />
@@ -492,7 +492,7 @@ export function StampChooser({
         type="button"
         onClick={onPress}
         disabled={disabled}
-        className="flex min-h-14 w-full items-center justify-center rounded-full bg-warm-500 text-xl font-bold text-white disabled:opacity-60"
+        className="btn-raised flex min-h-14 w-full items-center justify-center rounded-full bg-warm-500 [--btn-edge:var(--color-warm-600)] text-xl font-bold text-white disabled:opacity-60"
       >
         {copy.stampCard.press}
       </button>

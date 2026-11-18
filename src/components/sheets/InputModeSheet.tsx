@@ -141,7 +141,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
                   onClick={() => selected && mode && onStart(selected, mode, form, topic)}
                   className={`flex min-h-16 flex-col justify-center rounded-2xl px-5 text-left ${
                     // 筆算を先に勧める。小3・4で習う形で、手順の練習になる
-                    index === 0 ? 'bg-bloom-700 text-white' : 'border-2 border-bloom-200 text-ink-900'
+                    index === 0 ? 'btn-raised bg-bloom-700 text-white' : 'btn-soft border-2 border-bloom-200 text-ink-900'
                   }`}
                 >
                   <span className="text-lg font-bold">{copy.sheet.forms[form].label}</span>
@@ -155,7 +155,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
             <button
               type="button"
               onClick={() => setStep(beforeForm)}
-              className="mt-6 flex min-h-12 w-full items-center justify-center rounded-full border-2 border-bloom-200 text-sm font-bold text-ink-600"
+              className="btn-soft mt-6 flex min-h-12 w-full items-center justify-center rounded-full border-2 border-bloom-200 text-sm font-bold text-ink-600"
             >
               {beforeForm === 'topic' ? copy.sheet.backToTopic : copy.sheet.backToMode}
             </button>
@@ -169,13 +169,13 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
               ランダムは最後。種類を決めずに始めたい人が、迷わず下まで来られるように。
               小3・4は5つ並ぶので、はみ出す端末では中でスクロールさせる。
             */}
-            <div className="mt-6 flex max-h-[60vh] flex-col gap-3 overflow-y-auto overscroll-contain">
+            <div className="mt-6 flex max-h-[60vh] flex-col gap-3 overflow-y-auto overscroll-contain pb-1.5">
               {topics.map((entry) => (
                 <button
                   key={entry}
                   type="button"
                   onClick={() => mode && chooseTopic(mode, entry)}
-                  className="flex min-h-16 shrink-0 flex-col justify-center rounded-2xl border-2 border-bloom-200 px-5 text-left text-ink-900"
+                  className="btn-soft flex min-h-16 shrink-0 flex-col justify-center rounded-2xl border-2 border-bloom-200 px-5 text-left text-ink-900"
                 >
                   <span className="text-lg font-bold">{copy.sheet.topics[entry]}</span>
                   {selected && (
@@ -188,7 +188,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
               <button
                 type="button"
                 onClick={() => mode && chooseTopic(mode, undefined)}
-                className="flex min-h-16 shrink-0 flex-col justify-center rounded-2xl border-2 border-dashed border-bloom-300 px-5 text-left text-ink-900"
+                className="btn-soft flex min-h-16 shrink-0 flex-col justify-center rounded-2xl border-2 border-dashed border-bloom-300 px-5 text-left text-ink-900"
               >
                 <span className="text-lg font-bold">{copy.sheet.mixedTopic.label}</span>
                 <span className="text-sm text-ink-600">{copy.sheet.mixedTopic.note}</span>
@@ -198,7 +198,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
             <button
               type="button"
               onClick={() => setStep('answer')}
-              className="mt-6 flex min-h-12 w-full items-center justify-center rounded-full border-2 border-bloom-200 text-sm font-bold text-ink-600"
+              className="btn-soft mt-6 flex min-h-12 w-full items-center justify-center rounded-full border-2 border-bloom-200 text-sm font-bold text-ink-600"
             >
               {copy.sheet.backToMode}
             </button>
@@ -208,13 +208,13 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
             <h2 className="mt-1 text-center text-xl font-bold">{copy.sheet.chooseDifficulty}</h2>
 
             {/* 6段階まで並ぶので、はみ出す端末では中でスクロールさせる */}
-            <div className="mt-6 flex max-h-[60vh] flex-col gap-3 overflow-y-auto overscroll-contain">
+            <div className="mt-6 flex max-h-[60vh] flex-col gap-3 overflow-y-auto overscroll-contain pb-1.5">
               {difficultiesOf(genre.id).map((level) => (
                 <button
                   key={level}
                   type="button"
                   onClick={() => chooseDifficulty(level)}
-                  className="flex min-h-16 shrink-0 flex-col justify-center rounded-2xl border-2 border-bloom-200 px-5 text-left text-ink-900"
+                  className="btn-soft flex min-h-16 shrink-0 flex-col justify-center rounded-2xl border-2 border-bloom-200 px-5 text-left text-ink-900"
                 >
                   <span className="text-lg font-bold">{copy.difficulties[level].label}</span>
                 </button>
@@ -224,7 +224,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
             <button
               type="button"
               onClick={onClose}
-              className="mt-6 flex min-h-12 w-full items-center justify-center rounded-full border-2 border-bloom-200 text-sm font-bold text-ink-600"
+              className="btn-soft mt-6 flex min-h-12 w-full items-center justify-center rounded-full border-2 border-bloom-200 text-sm font-bold text-ink-600"
             >
               {copy.sheet.close}
             </button>
@@ -248,7 +248,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
                   onClick={() => chooseMode(choice)}
                   className={`flex min-h-16 flex-col justify-center rounded-2xl px-5 text-left ${
                     // 先頭を勧める(並び順がそのまま勧める順)
-                    index === 0 ? 'bg-bloom-700 text-white' : 'border-2 border-bloom-200 text-ink-900'
+                    index === 0 ? 'btn-raised bg-bloom-700 text-white' : 'btn-soft border-2 border-bloom-200 text-ink-900'
                   }`}
                 >
                   <span className="text-lg font-bold">{copy.answerModes[choice.id].label}</span>
@@ -262,7 +262,7 @@ export function InputModeSheet({ genre, onStart, onClose }: InputModeSheetProps)
             <button
               type="button"
               onClick={backToDifficulty}
-              className="mt-6 flex min-h-12 w-full items-center justify-center rounded-full border-2 border-bloom-200 text-sm font-bold text-ink-600"
+              className="btn-soft mt-6 flex min-h-12 w-full items-center justify-center rounded-full border-2 border-bloom-200 text-sm font-bold text-ink-600"
             >
               {copy.sheet.backToDifficulty}
             </button>

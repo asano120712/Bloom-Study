@@ -6,6 +6,7 @@ import { writeAudienceMode } from '@/services/audienceMode'
 import { TOP_PATH, type AudienceMode } from '@/types'
 import { BloomLogo } from '../brand/BloomLogo'
 import { BloomMark } from '../brand/BloomMark'
+import { NoticeButton } from './NoticeButton'
 
 interface AppHeaderProps {
   /**
@@ -24,7 +25,7 @@ const AUDIENCE_LABEL: Record<AudienceMode, string> = {
 }
 
 /**
- * 全画面共通のヘッダー。左にロゴ、右におとな/こどもの切り替えを置く。
+ * 全画面共通のヘッダー。左にロゴ、右におとな/こどもの切り替えとお知らせを置く。
  * 出題中(exitTo あり)だけは並びを入れ替え、左を「やめる」、右をロゴにする。
  * ロゴの中身はモードで変わる(HeaderMark)。
  */
@@ -49,7 +50,11 @@ export function AppHeader({ exitTo }: AppHeaderProps) {
         >
           <HeaderMark mode={mode} />
         </Link>
-        <AudienceSwitch current={mode} />
+        {/* 切り替えの右にお知らせ。2つで1つの塊に見えるよう、間は詰めておく */}
+        <div className="flex shrink-0 items-center gap-2">
+          <AudienceSwitch current={mode} />
+          <NoticeButton />
+        </div>
       </header>
     )
   }
@@ -121,7 +126,7 @@ function AudienceSwitch({ current }: { current: AudienceMode }) {
           onClick={() => writeAudienceMode(mode)}
           aria-current={mode === current ? 'page' : undefined}
           className={`flex min-h-9 items-center rounded-full px-2.5 text-xs font-bold ${
-            mode === current ? 'bg-bloom-700 text-white' : 'text-ink-600'
+            mode === current ? 'btn-inset bg-bloom-700 text-white' : 'text-ink-600'
           }`}
         >
           {AUDIENCE_LABEL[mode]}
@@ -177,14 +182,14 @@ function ExitConfirmDialog({
           <button
             type="button"
             onClick={onCancel}
-            className="min-h-14 rounded-full bg-bloom-700 text-lg font-bold text-white"
+            className="btn-raised min-h-14 rounded-full bg-bloom-700 text-lg font-bold text-white"
           >
             {words.stay}
           </button>
           <button
             type="button"
             onClick={onExit}
-            className="min-h-14 rounded-full border-2 border-bloom-200 text-lg font-bold text-ink-900"
+            className="btn-soft min-h-14 rounded-full border-2 border-bloom-200 text-lg font-bold text-ink-900"
           >
             {words.leave}
           </button>

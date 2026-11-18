@@ -235,6 +235,8 @@ export interface Copy {
     solve: string
   }
   exit: { label: string; title: string; note: string; stay: string; leave: string }
+  /** ヘッダー右上のお知らせ(ボタンの名前と、開いたモーダルの言葉) */
+  notice: { open: string; title: string; back: string; close: string; empty: string }
   /** このアプリについて(ホームの下のリンクと、その画面)。読むのは保護者なので、こどもでも言葉はおとな寄り */
   about: {
     link: string
@@ -578,6 +580,13 @@ const ADULT: Copy = {
     stay: '続ける',
     leave: 'やめる',
   },
+  notice: {
+    open: 'お知らせを開く',
+    title: 'お知らせ',
+    back: '一覧へ戻る',
+    close: '閉じる',
+    empty: 'お知らせはまだありません。',
+  },
   stampCard: {
     title: 'スタンプカード',
     weekdays: ['日', '月', '火', '水', '木', '金', '土'],
@@ -893,6 +902,13 @@ const KIDS: Copy = {
     note: 'いまの もんだいは とばされるよ。',
     stay: 'つづける',
     leave: 'やめる',
+  },
+  notice: {
+    open: 'おしらせを ひらく',
+    title: 'おしらせ',
+    back: 'いちらんに もどる',
+    close: 'とじる',
+    empty: 'おしらせは まだ ないよ。',
   },
   stampCard: {
     title: 'スタンプカード',

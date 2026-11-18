@@ -34,6 +34,19 @@
   --color-warm-500: #e07a5f;
   --color-warm-600: #c25a3e;
 
+  /* お知らせアイコンの点。新しいお知らせがあるあいだ、ゆっくり点いたり消えたりする */
+  --animate-notice-blink: notice-blink 1600ms ease-in-out infinite;
+
+  @keyframes notice-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.2;
+    }
+  }
+
   /* オープニングのローディングドット。3点が順に跳ねる */
   --animate-loading-dot: loading-dot 1200ms ease-in-out infinite;
 
@@ -407,4 +420,66 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/*
+ * ボタンの立体感。押せるものは少し浮かせ、押しているあいだだけ沈ませる。
+ *
+ * 下に色の濃い縁(--btn-edge)を厚み(--btn-depth)ぶん出し、その下に薄い影を落とす。
+ * 押すと縁の厚みぶん下がって縁と影が消え、指で押し込んだように見える。
+ * 縁の色は、塗りのボタンは塗りより濃い緑、白い/枠線のボタンは枠線の色。
+ * 赤みのボタンなどは [--btn-edge:var(--color-warm-600)] のように変える。
+ *
+ * - btn-raised: 塗りのボタン(濃い緑)
+ * - btn-soft:   白い/枠線だけのボタン、選ぶカード
+ * - btn-inset:  切り替えの「いま選ばれているほう」。凹ませて、押し込んだままに見せる
+ *
+ * 動きは translate(transform ではない)で付ける。scale-110 などの拡大と打ち消し合わないように。
+ * 影は横へ広げない。スクロールする一覧の中で左右が切れて見えないように。
+ */
+@utility btn-raised {
+  --btn-edge-default: var(--color-bloom-800);
+  box-shadow:
+    0 var(--btn-depth, 2px) 0 var(--btn-edge, var(--btn-edge-default)),
+    0 calc(var(--btn-depth, 2px) + 1.5px) 5px -2px rgb(35 41 43 / 0.25);
+  transition:
+    translate 90ms ease-out,
+    box-shadow 90ms ease-out;
+
+  &:active:not(:disabled) {
+    translate: 0 var(--btn-depth, 2px);
+    box-shadow: 0 0 0 var(--btn-edge, var(--btn-edge-default));
+  }
+
+  /* 押せないときは浮かせない。平らなことで「いまは押せない」を伝える */
+  &:disabled {
+    translate: 0 var(--btn-depth, 2px);
+    box-shadow: none;
+  }
+}
+
+@utility btn-soft {
+  --btn-edge-default: var(--color-bloom-200);
+  box-shadow:
+    0 var(--btn-depth, 2px) 0 var(--btn-edge, var(--btn-edge-default)),
+    0 calc(var(--btn-depth, 2px) + 1.5px) 5px -2px rgb(35 41 43 / 0.15);
+  transition:
+    translate 90ms ease-out,
+    box-shadow 90ms ease-out;
+
+  &:active:not(:disabled) {
+    translate: 0 var(--btn-depth, 2px);
+    box-shadow: 0 0 0 var(--btn-edge, var(--btn-edge-default));
+  }
+
+  &:disabled {
+    translate: 0 var(--btn-depth, 2px);
+    box-shadow: none;
+  }
+}
+
+@utility btn-inset {
+  box-shadow:
+    inset 0 2px 5px rgb(0 0 0 / 0.45),
+    inset 0 1px 1px rgb(0 0 0 / 0.25);
 }

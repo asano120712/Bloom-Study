@@ -30,7 +30,7 @@ export function PeriodTabs({ value, onChange }: { value: RecordPeriod; onChange:
           aria-selected={period === value}
           onClick={() => onChange(period)}
           className={`min-h-10 flex-1 rounded-full text-sm font-bold ${
-            period === value ? 'bg-bloom-700 text-white' : 'text-ink-600'
+            period === value ? 'btn-inset bg-bloom-700 text-white' : 'text-ink-600'
           }`}
         >
           {copy.myPage.periods[period]}
@@ -207,7 +207,7 @@ export function HistoryCards({
                 <button
                   type="button"
                   onClick={() => onOpen(record)}
-                  className="flex w-full items-center gap-3 rounded-2xl border-2 border-bloom-100 bg-white px-4 py-3 text-left"
+                  className="btn-soft flex w-full items-center gap-3 rounded-2xl border-2 border-bloom-100 bg-white px-4 py-3 text-left"
                 >
                   <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-bold ${GENRE_COLOR[record.genreId].chip}`}>
                     {copy.activities[record.genreId].label}
@@ -349,7 +349,7 @@ export function RecordDetailSheet({
         <button
           type="button"
           onClick={onClose}
-          className="mt-6 min-h-14 w-full rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600"
+          className="btn-soft mt-6 min-h-14 w-full rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600"
         >
           {detail.close}
         </button>

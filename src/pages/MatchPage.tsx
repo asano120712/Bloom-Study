@@ -113,7 +113,7 @@ export function MatchPage() {
                 // 図形そのものは読み上げられないので、名前はボタンが持つ
                 aria-label={figureLabel(choice)}
                 onClick={() => choose(choice, position)}
-                className={`flex size-full min-h-0 min-w-0 items-center justify-center rounded-3xl border-2 bg-white p-4 ${
+                className={`btn-soft flex size-full min-h-0 min-w-0 items-center justify-center rounded-3xl border-2 bg-white p-4 ${
                   celebrating && isAnswer ? 'border-bloom-500 bg-bloom-50' : 'border-bloom-200'
                 } ${missed === position ? 'animate-shake' : ''} ${
                   // 点滅だけだと薄れて見えるので、枠と地も変えて「ここ」と分かるようにする
