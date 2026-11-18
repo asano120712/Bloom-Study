@@ -56,7 +56,7 @@ export function NumberPad({
           onClick={onBackspace}
           aria-label="1文字消す"
           // 小数点のキーがあるときは、消すキーと小数点を細くして「こたえあわせ」が折り返さない幅を残す
-          className={`h-full ${allowDecimal ? 'flex-[0.8]' : 'flex-1'} rounded-xl border-2 border-bloom-200 text-xl font-bold text-ink-600 disabled:text-ink-400`}
+          className={`btn-soft h-full ${allowDecimal ? 'flex-[0.8]' : 'flex-1'} rounded-xl border-2 border-bloom-200 [--btn-depth:1.5px] text-xl font-bold text-ink-600 disabled:text-ink-400`}
         >
           ⌫
         </button>
@@ -69,7 +69,7 @@ export function NumberPad({
           disabled={disabled || !canSubmit}
           onClick={onSubmit}
           // キーの幅は画面幅で決まるので、文字も幅に合わせて頭打ちにする
-          className={`h-full ${allowDecimal ? 'flex-[1.6]' : 'flex-1'} rounded-xl bg-bloom-700 text-[min(1rem,4vw)] font-bold text-white disabled:bg-bloom-200`}
+          className={`btn-raised h-full ${allowDecimal ? 'flex-[1.6]' : 'flex-1'} rounded-xl bg-bloom-700 [--btn-depth:1.5px] text-[min(1rem,4vw)] font-bold text-white disabled:bg-bloom-200`}
         >
           {submitLabel}
         </button>
@@ -99,7 +99,7 @@ function NumberKey({
       disabled={disabled}
       aria-label={label}
       onClick={() => onKey(digit)}
-      className={`h-full ${className} rounded-xl bg-white text-3xl font-bold text-ink-900 shadow-sm active:bg-bloom-100 disabled:text-ink-400`}
+      className={`btn-soft h-full ${className} rounded-xl bg-white text-3xl font-bold text-ink-900 [--btn-depth:1.5px] active:bg-bloom-100 disabled:text-ink-400`}
     >
       {digit}
     </button>

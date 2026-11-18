@@ -48,7 +48,7 @@ export function MemoPad({ open, onClose }: { open: boolean; onClose: () => void 
         <button
           type="button"
           onClick={onClose}
-          className="flex min-h-10 items-center rounded-full border-2 border-bloom-200 px-4 text-sm font-bold text-ink-600"
+          className="btn-soft flex min-h-10 items-center rounded-full border-2 border-bloom-200 px-4 text-sm font-bold text-ink-600"
         >
           {copy.quiz.memoClose}
         </button>

@@ -356,7 +356,7 @@ export function BoxHandwriting({ rows, form, onSubmit, disabled = false }: BoxHa
           onClick={() => onSubmit(exportImage(), cellImages())}
           // 消している途中で出すと、消し残しに気づかないまま答えになる
           disabled={disabled || !hasStroke || erasing}
-          className="min-h-14 flex-1 rounded-full bg-bloom-700 px-6 font-bold text-white disabled:bg-bloom-200"
+          className="btn-raised min-h-14 flex-1 rounded-full bg-bloom-700 px-6 font-bold text-white disabled:bg-bloom-200"
         >
           {copy.handwriting.done}
         </button>

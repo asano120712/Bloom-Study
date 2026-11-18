@@ -91,7 +91,7 @@ export function HowToSheet({ activity, onClose }: { activity: ActivityId; onClos
             <button
               type="button"
               onClick={() => setIndex(index - 1)}
-              className="min-h-14 flex-1 rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600"
+              className="btn-soft min-h-14 flex-1 rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600"
             >
               {copy.howTo.back}
             </button>
@@ -99,7 +99,7 @@ export function HowToSheet({ activity, onClose }: { activity: ActivityId; onClos
           <button
             type="button"
             onClick={() => (isLast ? onClose() : setIndex(index + 1))}
-            className="min-h-14 flex-2 rounded-full bg-bloom-700 text-lg font-bold text-white"
+            className="btn-raised min-h-14 flex-2 rounded-full bg-bloom-700 text-lg font-bold text-white"
           >
             {isLast ? copy.howTo.close : copy.howTo.next}
           </button>

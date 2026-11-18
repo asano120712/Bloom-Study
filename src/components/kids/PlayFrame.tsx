@@ -67,13 +67,13 @@ export function PlayFinished({ onRestart, played }: { onRestart: () => void; pla
         <button
           type="button"
           onClick={onRestart}
-          className="flex min-h-16 w-full items-center justify-center rounded-full bg-bloom-700 text-xl font-bold text-white"
+          className="btn-raised flex min-h-16 w-full items-center justify-center rounded-full bg-bloom-700 text-xl font-bold text-white"
         >
           {copy.play.again}
         </button>
         <Link
           to="/genres"
-          className="flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600"
+          className="btn-soft flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600"
         >
           {copy.play.other}
         </Link>

@@ -90,7 +90,7 @@ export function StaffPage() {
           <button
             type="submit"
             disabled={checking || !passcode}
-            className="min-h-14 rounded-full bg-bloom-700 text-lg font-bold text-white disabled:bg-bloom-200"
+            className="btn-raised min-h-14 rounded-full bg-bloom-700 text-lg font-bold text-white disabled:bg-bloom-200"
           >
             {checking ? '確かめています' : '開く'}
           </button>
@@ -118,21 +118,21 @@ function StaffTools() {
       <button
         type="button"
         onClick={() => run('記録(履歴)をリセット', reset)}
-        className="min-h-14 rounded-full border-2 border-warm-500 font-bold text-warm-600"
+        className="btn-soft min-h-14 rounded-full border-2 border-warm-500 [--btn-edge:var(--color-warm-500)] font-bold text-warm-600"
       >
         記録(履歴)をリセット
       </button>
       <button
         type="button"
         onClick={() => run('スタンプカードをリセット', clearStamps)}
-        className="min-h-14 rounded-full border-2 border-warm-500 font-bold text-warm-600"
+        className="btn-soft min-h-14 rounded-full border-2 border-warm-500 [--btn-edge:var(--color-warm-500)] font-bold text-warm-600"
       >
         スタンプカードをリセット
       </button>
       <button
         type="button"
         onClick={() => run('今日のスタンプまでの回数をリセット', resetToday)}
-        className="min-h-14 rounded-full border-2 border-warm-500 font-bold text-warm-600"
+        className="btn-soft min-h-14 rounded-full border-2 border-warm-500 [--btn-edge:var(--color-warm-500)] font-bold text-warm-600"
       >
         今日のスタンプまでの回数をリセット
       </button>

@@ -33,7 +33,7 @@ export function NoticeButton() {
         aria-label={copy.notice.open}
         aria-haspopup="dialog"
         onClick={open}
-        className="flex size-10 shrink-0 items-center justify-center rounded-full border border-bloom-200 bg-white shadow-[0_2px_8px_rgb(35_41_43/0.08)]"
+        className="btn-soft flex size-10 shrink-0 items-center justify-center rounded-full border border-bloom-200 bg-white [--btn-depth:1.5px]"
       >
         <NoticeIcon hasNew={hasNew} className="size-6" />
       </button>
@@ -82,23 +82,6 @@ function formatDate(date: string) {
 }
 
 /**
- * 閉じるボタンの上に引く、薄緑の斜線の帯。
- * お知らせ(読むところ)と閉じる(操作)の境目を、線1本より柔らかく分ける。
- */
-function StripeDivider() {
-  return (
-    <div
-      aria-hidden="true"
-      className="h-2 shrink-0"
-      style={{
-        backgroundImage:
-          'repeating-linear-gradient(-45deg, var(--color-bloom-200) 0 2px, transparent 2px 8px)',
-      }}
-    />
-  )
-}
-
-/**
  * モーダルを置く場所。
  * 横はヘッダー(アプリの列)の左右から 20px 内側、縦はヘッダーの下 20px から
  * コピーライトの上 20px まで。コピーライトが無い画面や、画面より下にあるときは画面の下端から 20px。
@@ -126,8 +109,8 @@ function useDialogFrame(header: HTMLElement | null): CSSProperties | undefined {
 
 /**
  * お知らせのモーダル。一覧 → 本文 の2段。
- * いちばん下の中央に閉じるボタンを置き、その上に斜線の帯を引く。
- * 本文を開いているときは、帯の上に一覧へ戻るを足す。
+ * いちばん下の中央に閉じるボタンを置き、その上に薄緑の線を1本引く(読むところと操作の境目)。
+ * 本文を開いているときは、線の上に一覧へ戻るを足す。
  * Esc は1つ前へ(本文なら一覧へ、一覧なら閉じる)。
  */
 function NoticeDialog({ header, onClose }: { header: HTMLElement | null; onClose: () => void }) {
@@ -184,7 +167,7 @@ function NoticeDialog({ header, onClose }: { header: HTMLElement | null; onClose
             <button
               type="button"
               onClick={() => setSelected(null)}
-              className="mt-5 flex min-h-12 w-full shrink-0 items-center justify-center rounded-full border-2 border-bloom-200 text-sm font-bold text-ink-600"
+              className="btn-soft mt-5 flex min-h-12 w-full shrink-0 items-center justify-center rounded-full border-2 border-bloom-200 text-sm font-bold text-ink-600"
             >
               {copy.notice.back}
             </button>
@@ -196,13 +179,13 @@ function NoticeDialog({ header, onClose }: { header: HTMLElement | null; onClose
             {NOTICES.length === 0 ? (
               <p className="mt-6 flex-1 text-center text-sm text-ink-600">{copy.notice.empty}</p>
             ) : (
-              <ul className="mt-5 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-contain">
+              <ul className="mt-5 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-contain pb-1.5">
                 {NOTICES.map((notice) => (
                   <li key={notice.id} className="shrink-0">
                     <button
                       type="button"
                       onClick={() => setSelected(notice)}
-                      className="flex min-h-16 w-full flex-col justify-center rounded-2xl border-2 border-bloom-200 bg-white px-5 py-3 text-left text-ink-900"
+                      className="btn-soft flex min-h-16 w-full flex-col justify-center rounded-2xl border-2 border-bloom-200 bg-white px-5 py-3 text-left text-ink-900"
                     >
                       <span className="text-xs text-ink-400 tabular-nums">
                         {formatDate(notice.date)}
@@ -216,15 +199,13 @@ function NoticeDialog({ header, onClose }: { header: HTMLElement | null; onClose
           </>
         )}
 
-        <div className="mt-5">
-          <StripeDivider />
-        </div>
+        <hr aria-hidden="true" className="mt-5 shrink-0 border-t-2 border-bloom-200" />
 
         <div className="mt-5 flex shrink-0 justify-center">
           <button
             type="button"
             onClick={onClose}
-            className="flex min-h-12 min-w-40 items-center justify-center rounded-full bg-bloom-700 px-8 text-sm font-bold text-white"
+            className="btn-raised flex min-h-12 min-w-40 items-center justify-center rounded-full bg-bloom-700 px-8 text-sm font-bold text-white"
           >
             {copy.notice.close}
           </button>

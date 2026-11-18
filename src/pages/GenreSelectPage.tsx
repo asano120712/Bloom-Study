@@ -67,7 +67,7 @@ export function GenreSelectPage() {
             <button
               type="button"
               onClick={() => open(activity)}
-              className="flex min-h-20 w-full items-center gap-4 rounded-3xl bg-bloom-100 p-4 text-left"
+              className="btn-soft flex min-h-20 w-full items-center gap-4 rounded-3xl bg-bloom-100 p-4 text-left"
             >
               {/*
                 中身を小さくして流す絵。字を読まなくても選べるよう、
@@ -139,7 +139,7 @@ export function GenreSelectPage() {
       </ul>
 
       {/* 戻り先はモードごとのトップ。こどもは /kids から来ている */}
-      <Link to={TOP_PATH[mode]} className="mt-8 flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600">
+      <Link to={TOP_PATH[mode]} className="btn-soft mt-8 flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600">
         {copy.genreSelect.back}
       </Link>
 

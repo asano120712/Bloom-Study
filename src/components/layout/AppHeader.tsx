@@ -126,7 +126,7 @@ function AudienceSwitch({ current }: { current: AudienceMode }) {
           onClick={() => writeAudienceMode(mode)}
           aria-current={mode === current ? 'page' : undefined}
           className={`flex min-h-9 items-center rounded-full px-2.5 text-xs font-bold ${
-            mode === current ? 'bg-bloom-700 text-white' : 'text-ink-600'
+            mode === current ? 'btn-inset bg-bloom-700 text-white' : 'text-ink-600'
           }`}
         >
           {AUDIENCE_LABEL[mode]}
@@ -182,14 +182,14 @@ function ExitConfirmDialog({
           <button
             type="button"
             onClick={onCancel}
-            className="min-h-14 rounded-full bg-bloom-700 text-lg font-bold text-white"
+            className="btn-raised min-h-14 rounded-full bg-bloom-700 text-lg font-bold text-white"
           >
             {words.stay}
           </button>
           <button
             type="button"
             onClick={onExit}
-            className="min-h-14 rounded-full border-2 border-bloom-200 text-lg font-bold text-ink-900"
+            className="btn-soft min-h-14 rounded-full border-2 border-bloom-200 text-lg font-bold text-ink-900"
           >
             {words.leave}
           </button>

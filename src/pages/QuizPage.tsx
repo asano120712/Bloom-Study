@@ -793,7 +793,7 @@ export function QuizPage() {
               aria-pressed={memoOpen}
               // 字ではなくアイコンで出す(読み上げには aria-label の「計算のメモを開く」を使う)
               className={`flex size-8 shrink-0 items-center justify-center rounded-full border-2 ${
-                memoOpen ? 'border-bloom-700 bg-bloom-700 text-white' : 'border-bloom-200 text-ink-600'
+                memoOpen ? 'btn-inset border-bloom-700 bg-bloom-700 text-white' : 'btn-soft border-bloom-200 text-ink-600'
               }`}
             >
               <MemoIcon className="size-5" />
@@ -803,7 +803,7 @@ export function QuizPage() {
             type="button"
             onClick={pass}
             aria-label={copy.quiz.passAria}
-            className="flex min-h-8 shrink-0 items-center rounded-full border-2 border-bloom-200 px-3 text-xs font-bold text-ink-600"
+            className="btn-soft flex min-h-8 shrink-0 items-center rounded-full border-2 border-bloom-200 px-3 text-xs font-bold text-ink-600"
           >
             {copy.quiz.pass}
           </button>
@@ -927,7 +927,7 @@ export function QuizPage() {
                     imageDataUrl: selfReport.image,
                   })
                 }
-                className="min-h-14 flex-1 rounded-full border-2 border-warm-500 text-lg font-bold text-warm-600"
+                className="btn-soft min-h-14 flex-1 rounded-full border-2 border-warm-500 [--btn-edge:var(--color-warm-500)] text-lg font-bold text-warm-600"
               >
                 {copy.quiz.wrong}
               </button>
@@ -939,7 +939,7 @@ export function QuizPage() {
                     imageDataUrl: selfReport.image,
                   })
                 }
-                className="min-h-14 flex-1 rounded-full bg-bloom-700 text-lg font-bold text-white"
+                className="btn-raised min-h-14 flex-1 rounded-full bg-bloom-700 text-lg font-bold text-white"
               >
                 {copy.quiz.right}
               </button>
