@@ -36,6 +36,7 @@ import { lettersModel } from '@/features/recognize/model'
 import { judgeWord, type Stroke } from '@/features/recognize/word'
 import { buildHints, hintLayoutOf, revealedHints } from '@/features/hints'
 import { judgeHandwriting, judgeNumber, judgeParts, judgeTyping } from '@/features/judge'
+import { ConcealAnswerContext, concealCopy } from '@/features/conceal'
 import { useCopy } from '@/hooks/useAudienceMode'
 import { useHintTimer } from '@/hooks/useHintTimer'
 import { useQuizSession } from '@/hooks/useQuizSession'
@@ -148,7 +149,7 @@ export function QuizPage() {
   const navigate = useNavigate()
   const genre = findGenre(genreId ?? '')
   const { stats, isLoading: isStatsLoading, record } = useStats()
-  const copy = useCopy()
+  const baseCopy = useCopy()
 
   /**
    * こたえかたと なんいど はジャンル選択のシートで決めて URL で受け取る。
@@ -185,6 +186,13 @@ export function QuizPage() {
     topic,
   )
   const question = questions[cursor]
+  /**
+   * 漢字の問題では、答えの字を画面のほかの文字(ジャンル名の「漢字」、「連続」「消す」など)で
+   * 見せない。答えの字が入った言葉はひらがなにする(features/conceal)。
+   * この画面の中の部品(ヘッダー・書く道具・ヒントの枠など)へは ConcealAnswerContext で渡す。
+   */
+  const concealedAnswer = genre?.id === 'kanji' ? question?.answer : undefined
+  const copy = concealCopy(baseCopy, concealedAnswer)
   /**
    * 手書きモードで「かけた」を押した後、自己申告を待っている状態。
    * 書いた字は結果画面で見せるため、キャンバスの画像も一緒に抱えておく。
@@ -769,388 +777,391 @@ export function QuizPage() {
   }
 
   return (
-    <AppShell fitViewport exitTo="/genres">
-      {/* 出題中に読む場所は選択できなくてよい。手書きのドラッグで範囲選択されるのを防ぐ */}
-      <header className="flex items-center justify-between gap-2 text-sm text-ink-600 select-none">
-        <span className="min-w-0 truncate">{copy.activities[genre.id].label}</span>
+    <ConcealAnswerContext.Provider value={concealedAnswer}>
+      <AppShell fitViewport exitTo="/genres">
+        {/* 出題中に読む場所は選択できなくてよい。手書きのドラッグで範囲選択されるのを防ぐ */}
+        <header className="flex items-center justify-between gap-2 text-sm text-ink-600 select-none">
+          <span className="min-w-0 truncate">{copy.activities[genre.id].label}</span>
 
-        <span className="flex shrink-0 items-center gap-2">
-          <span aria-live="polite">{copy.quiz.progress(stats.currentStreak, cursor + 1)}</span>
-          {/*
-            パスは進み具合の横。分からないまま止まったときに探す場所は、
-            入力の近くではなく「この問題をやめる」ことを考える場所(上)のほう。
-            やめるとは反対側に置いて、押し間違えないようにしてある。
-          */}
-          {/*
-            計算のメモ。計算だけに出す(漢字・英単語は思い出す練習なので、メモで答えを書いて
-            確かめられてしまう)。パスの横に置き、答えの入力から離しておく(押し間違えないように)。
-          */}
-          {showsPromptBelow && (
+          <span className="flex shrink-0 items-center gap-2">
+            <span aria-live="polite">{copy.quiz.progress(stats.currentStreak, cursor + 1)}</span>
+            {/*
+              パスは進み具合の横。分からないまま止まったときに探す場所は、
+              入力の近くではなく「この問題をやめる」ことを考える場所(上)のほう。
+              やめるとは反対側に置いて、押し間違えないようにしてある。
+            */}
+            {/*
+              計算のメモ。計算だけに出す(漢字・英単語は思い出す練習なので、メモで答えを書いて
+              確かめられてしまう)。パスの横に置き、答えの入力から離しておく(押し間違えないように)。
+            */}
+            {showsPromptBelow && (
+              <button
+                type="button"
+                onClick={() => setMemoOpen((current) => !current)}
+                aria-label={copy.quiz.memoOpen}
+                aria-pressed={memoOpen}
+                // 字ではなくアイコンで出す(読み上げには aria-label の「計算のメモを開く」を使う)
+                className={`flex size-8 shrink-0 items-center justify-center rounded-full border-2 ${
+                  memoOpen ? 'btn-inset border-bloom-700 bg-bloom-700 text-white' : 'btn-soft border-bloom-200 text-ink-600'
+                }`}
+              >
+                <MemoIcon className="size-5" />
+              </button>
+            )}
             <button
               type="button"
-              onClick={() => setMemoOpen((current) => !current)}
-              aria-label={copy.quiz.memoOpen}
-              aria-pressed={memoOpen}
-              // 字ではなくアイコンで出す(読み上げには aria-label の「計算のメモを開く」を使う)
-              className={`flex size-8 shrink-0 items-center justify-center rounded-full border-2 ${
-                memoOpen ? 'border-bloom-700 bg-bloom-700 text-white' : 'border-bloom-200 text-ink-600'
-              }`}
+              onClick={pass}
+              aria-label={copy.quiz.passAria}
+              className="btn-soft flex min-h-8 shrink-0 items-center rounded-full border-2 border-bloom-200 px-3 text-xs font-bold text-ink-600"
             >
-              <MemoIcon className="size-5" />
+              {copy.quiz.pass}
             </button>
-          )}
-          <button
-            type="button"
-            onClick={pass}
-            aria-label={copy.quiz.passAria}
-            className="flex min-h-8 shrink-0 items-center rounded-full border-2 border-bloom-200 px-3 text-xs font-bold text-ink-600"
+          </span>
+        </header>
+
+        {showsPromptBelow && (
+          <MemoPad key={question.id} open={memoOpen} onClose={() => setMemoOpen(false)} />
+        )}
+
+        {/*
+          計算だけ、出題をヒントの下に置く(ヒント → 式 → 答え)。
+          紙の筆算と同じで、式と答えを書く場所が隣り合っていたほうが解きやすい。
+          思い出す系のジャンルは、先に出題語を見て考える流れなので上のまま。
+        */}
+        {!showsPromptBelow && !showsModel && (
+          <PromptBlock question={question} layout={layout} caption={promptCaption} />
+        )}
+
+        {/*
+          ヒント枠は余りを分け合うが、上限を決めて残りは入力側(特にキャンバス)へ回す。
+          上限が 44(176px)だと、計算の3段のどれかが2行になったとき最後の段が切れる。
+          52(208px)なら2行ぶん増えても収まる。
+        */}
+        {/*
+          筆算のときはヒントの枠を詰めて、高さを固定する(伸ばさない)。
+          筆算は式・途中の段・答えのマスで縦に長く、背の低い端末(iPhone SE)では
+          書くマスや数字キーボードが押し出される。ヒントの枠に回していた高さをマスへ回す。
+        */}
+        {/*
+          お手本を見せる問題(小1・小2の組み立て)は、ヒントのかわりにお手本の字を真ん中に大きく出す。
+          熟語が無いので、出せるヒントも無い。
+        */}
+        {/* なぞり書きは、お手本が書く場所の中に出るので、ここには何も置かない */}
+        {inputMode === 'trace' ? null : question.modelPrompt ? (
+          <section className="flex min-h-0 flex-1 flex-col items-center justify-center text-center select-none">
+            {!recalled && (
+              <>
+                <p className="text-base text-ink-600">{copy.build.look}</p>
+                <p className="animate-bloom-in mt-2 font-display text-7xl leading-none text-bloom-700">
+                  {/* パズルは、部品と同じお手本の線で描く(フォントの字だと、部品だけ手書きのような線で浮く) */}
+                  {question.puzzle ? <KanjiDrawing char={question.prompt} /> : question.prompt}
+                </p>
+              </>
+            )}
+          </section>
+        ) : (
+          <section
+            className={`flex min-h-0 flex-col ${showsPromptInInput || isWord ? 'mt-2 shrink-0' : 'mt-4 max-h-52 flex-1'}`}
           >
-            {copy.quiz.pass}
-          </button>
-        </span>
-      </header>
+            <HintList
+              hints={revealedHints(hints, revealedCount)}
+              layout={hintLayoutOf(genre.id)}
+              secondsToNext={secondsToNext}
+              compact={showsPromptInInput || isWord}
+              fractions={isFraction}
+              small={genre.id === 'kanji'}
+            />
+          </section>
+        )}
 
-      {showsPromptBelow && (
-        <MemoPad key={question.id} open={memoOpen} onClose={() => setMemoOpen(false)} />
-      )}
+        {/* 計算は、ヒントのあとに出題を置く。答えを書く場所のすぐ上になる */}
+        {showsPromptBelow && !showsPromptInInput && (
+          <PromptBlock question={question} layout={layout} caption={promptCaption} />
+        )}
 
-      {/*
-        計算だけ、出題をヒントの下に置く(ヒント → 式 → 答え)。
-        紙の筆算と同じで、式と答えを書く場所が隣り合っていたほうが解きやすい。
-        思い出す系のジャンルは、先に出題語を見て考える流れなので上のまま。
-      */}
-      {!showsPromptBelow && !showsModel && (
-        <PromptBlock question={question} layout={layout} caption={promptCaption} />
-      )}
-
-      {/*
-        ヒント枠は余りを分け合うが、上限を決めて残りは入力側(特にキャンバス)へ回す。
-        上限が 44(176px)だと、計算の3段のどれかが2行になったとき最後の段が切れる。
-        52(208px)なら2行ぶん増えても収まる。
-      */}
-      {/*
-        筆算のときはヒントの枠を詰めて、高さを固定する(伸ばさない)。
-        筆算は式・途中の段・答えのマスで縦に長く、背の低い端末(iPhone SE)では
-        書くマスや数字キーボードが押し出される。ヒントの枠に回していた高さをマスへ回す。
-      */}
-      {/*
-        お手本を見せる問題(小1・小2の組み立て)は、ヒントのかわりにお手本の字を真ん中に大きく出す。
-        熟語が無いので、出せるヒントも無い。
-      */}
-      {/* なぞり書きは、お手本が書く場所の中に出るので、ここには何も置かない */}
-      {inputMode === 'trace' ? null : question.modelPrompt ? (
-        <section className="flex min-h-0 flex-1 flex-col items-center justify-center text-center select-none">
-          {!recalled && (
+        {/* 余りは入力側へ多めに配る(ヒント枠と 2:1)。キャンバスとキーはここで伸びる */}
+        {/*
+          マスに書くときは真ん中に寄せる。キーボードと違って縦に短く、
+          下に寄せるとヒント枠との間が大きく空いて、つながりが見えなくなる。
+        */}
+        {/*
+          マスに書くときは、ヒントの下の高さを全部使う(マスはそこに入る最大の大きさまで広がる)。
+          確認の画面に変わったら、今までどおり真ん中に寄せる。
+        */}
+        <section
+          className={`flex min-h-0 flex-col ${
+            (writesInBoxes && !selfReport) || inputMode === 'trace'
+              ? 'flex-1 pt-2'
+              : `mt-auto flex-2 pt-4 ${writesInBoxes ? 'justify-center' : 'justify-end'}`
+          }`}
+        >
+          {selfReport ? (
+            // 読み取れなかった・違って見えたときは、正解を見せて自己申告してもらう
+            <div className="flex flex-col gap-4 select-none">
+              <div className="rounded-3xl bg-bloom-50 px-5 py-4 text-center">
+                <p className="text-sm text-ink-400">{copy.quiz.answerLabel}</p>
+                <p className="mt-1 text-3xl font-bold text-bloom-700">
+                  <MathText text={answerText(question.answer)} />
+                </p>
+                {/*
+                  自分が書いたものを、こたえと並べて見せる。書いたマスはこの画面では消えるので、
+                  見せないと何を書いたかを思い出して比べるしかない。
+                  画像の分だけ枠が縦に長くなるので、背の低い端末でヒントの枠に重ならないよう余白を詰めてある。
+                */}
+                <p className="mt-3 text-sm text-ink-400">{copy.result.mine.handwriting}</p>
+                <img
+                  src={selfReport.image}
+                  alt={copy.result.mine.handwriting}
+                  className="mx-auto mt-1 max-h-20 max-w-full rounded-xl border-2 border-bloom-200 bg-white"
+                />
+                {/* 何と読めたのかを見せる。書き直すときの手がかりになる */}
+                {selfReport.read && (
+                  <p className="mt-3 text-sm text-ink-600">
+                    <MathText
+                      text={
+                        selfReport.readMatches
+                          ? copy.quiz.readAsUnsure(answerText(selfReport.read))
+                          : copy.quiz.readAs(answerText(selfReport.read))
+                      }
+                    />
+                  </p>
+                )}
+                {selfReport.unread && <p className="mt-3 text-sm text-ink-600">{copy.quiz.readUnknown}</p>}
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() =>
+                    finish(judgeHandwriting(question, false), selfReport.hintsUsed, {
+                      kind: 'handwriting',
+                      imageDataUrl: selfReport.image,
+                    })
+                  }
+                  className="btn-soft min-h-14 flex-1 rounded-full border-2 border-warm-500 [--btn-edge:var(--color-warm-500)] text-lg font-bold text-warm-600"
+                >
+                  {copy.quiz.wrong}
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    finish(judgeHandwriting(question, true), selfReport.hintsUsed, {
+                      kind: 'handwriting',
+                      imageDataUrl: selfReport.image,
+                    })
+                  }
+                  className="btn-raised min-h-14 flex-1 rounded-full bg-bloom-700 text-lg font-bold text-white"
+                >
+                  {copy.quiz.right}
+                </button>
+              </div>
+            </div>
+          ) : (
             <>
-              <p className="text-base text-ink-600">{copy.build.look}</p>
-              <p className="animate-bloom-in mt-2 font-display text-7xl leading-none text-bloom-700">
-                {/* パズルは、部品と同じお手本の線で描く(フォントの字だと、部品だけ手書きのような線で浮く) */}
-                {question.puzzle ? <KanjiDrawing char={question.prompt} /> : question.prompt}
-              </p>
+              {inputMode === 'typing' && (
+                <TypingInput
+                  key={`typing-${question.id}`}
+                  onSubmit={(value) =>
+                    finish(judgeTyping(question, value), revealedCount, {
+                      kind: 'text',
+                      text: value,
+                    })
+                  }
+                />
+              )}
+              {inputMode === 'number' && isFraction && (
+                <FractionInput
+                  key={`fraction-${question.id}`}
+                  parts={fractionPartsOf(question.prompt)}
+                  // 打ち直しはじめたら、約分の注意は消す
+                  onChange={() => setReducible(false)}
+                  display={(value, focus, select) => (
+                    <PromptBlock
+                      question={question}
+                      fitted
+                      layout={layout}
+                      caption={promptCaption}
+                      // 値は合っているのに約分していないとき。記録はせず、直してもらう
+                      note={reducible ? copy.number.reducible : undefined}
+                      fraction={fractionSlots((part) => ({
+                        digits: value[part],
+                        focused: focus === part,
+                        onSelect: () => select(part),
+                      }))}
+                    />
+                  )}
+                  onSubmit={(value) => {
+                    const judged = judgeNumber(question, value)
+                    if (judged.reducible) {
+                      setReducible(true)
+                      return
+                    }
+                    finish(judged, revealedCount, { kind: 'text', text: value })
+                  }}
+                />
+              )}
+              {inputMode === 'number' && isWord && (
+                <WordInput
+                  key={`word-${question.id}`}
+                  answerParts={question.answerParts}
+                  display={(entry, focus, select) => (
+                    <WordForm
+                      {...wordSlots((part) => ({
+                        digits: entry[part],
+                        focused: focus === part,
+                        onSelect: () => select(part),
+                      }))}
+                    />
+                  )}
+                  onSubmit={(value) =>
+                    finish(judgeNumber(question, value), revealedCount, {
+                      kind: 'text',
+                      text: answerText(value),
+                    })
+                  }
+                />
+              )}
+              {inputMode === 'number' && !isFraction && !isWord && (
+                <NumberInput
+                  // 打ち直しのたびに作り直して、打った数を空に戻す
+                  key={`number-${question.id}-${stepIndex}-${missed ?? ''}`}
+                  // 筆算は、そこに入りうる桁数より多くは打てない(マスからはみ出す)
+                  maxLength={step?.width}
+                  // 小数点は、小数の答えのところでだけ打てる(段は整数で計算するので出さない)
+                  allowDecimal={step ? Boolean(step.decimals) : question.prompt.includes('.')}
+                  display={
+                    showsPromptInInput
+                      ? (typed) => (
+                          <PromptBlock
+                            question={question}
+                            fitted
+                            layout={layout}
+                            // 打っている場所の名前を出す(「一のくらい」「かける 7 × 8」)
+                            caption={step?.caption ?? promptCaption}
+                            note={missed === null ? undefined : copy.number.retry}
+                            cells={columnCells(typed)}
+                          />
+                        )
+                      : undefined
+                  }
+                  submitLabel={isLastStep ? copy.number.submit : nextStepLabel}
+                  onSubmit={(value) => {
+                    if (step && !isLastStep) {
+                      commitStep(value, step)
+                      return
+                    }
+                    // 最後の手。ここも合うまで進まない。
+                    // 小数の答えは数として比べる(8.40 も 8.4 も同じ。紙でも最後の 0 は消してよい)
+                    const isRight = step?.decimals
+                      ? Number(value) === Number(step.expected)
+                      : value === step?.expected
+                    if (step && !isRight) {
+                      setMissed(value)
+                      if (step.counts) setMissedAnswer(true)
+                      return
+                    }
+                    // 答えは、打った途中のものから組み立てる(位ごと・商は、それ自体が答え)
+                    const typed = [...filledSteps, value]
+                    const answer = script.length > 0 ? answerFromSteps(script, typed) : value
+                    const judged = judgeNumber(question, answer)
+                    finish(
+                      // 答えの部分を1回めで間違えていたら、打ち直して合っても「ざんねん」
+                      missedAnswer ? { ...judged, verdict: 'incorrect', isCorrect: false } : judged,
+                      revealedCount,
+                      { kind: 'text', text: answer },
+                    )
+                  }}
+                />
+              )}
+              {inputMode === 'handwriting' && writesInBoxes && (
+                <BoxHandwriting
+                  key={`boxes-${question.id}`}
+                  rows={writeRows}
+                  // マスは筆算のその場所に置く。式と離すと、どこに書くのか分からなくなる
+                  form={(cellsOf) =>
+                    isPlainMath ? (
+                      <AnswerRowForm cells={cellsOf(`${question.id}-answer`)} />
+                    ) : isWord ? (
+                      <WordForm
+                        writing
+                        {...wordSlots((part) => ({ content: cellsOf(`${question.id}-${part}`) }))}
+                        left={undefined}
+                        right={undefined}
+                        expression={cellsOf(`${question.id}-expression`)}
+                      />
+                    ) : (
+                    <PromptBlock
+                      question={question}
+                      layout={layout}
+                      caption={promptCaption}
+                      writing
+                      fraction={
+                        isFraction
+                          ? fractionSlots((part) => ({ content: cellsOf(`${question.id}-${part}`) }))
+                          : undefined
+                      }
+                      cells={(isFraction ? [] : writeRows).map((row, index) => ({
+                        slot: writeScript[index].slot,
+                        digits: '',
+                        width: row.boxes,
+                        tone: 'typing' as const,
+                        content: cellsOf(row.key),
+                      }))}
+                    />
+                    )
+                  }
+                  onSubmit={(image, rows) => void judgeWritten(image, rows)}
+                />
+              )}
+              {inputMode === 'handwriting' && !writesInBoxes && (
+                <HandwritingCanvas
+                  key={`handwriting-${question.id}`}
+                  onSubmit={(image, strokes) => void judgeWrittenWord(image, strokes)}
+                  disabled={readingWord}
+                />
+              )}
+              {inputMode === 'trace' && question.strokes && (
+                <FreeTraceCanvas
+                  key={`trace-${question.id}`}
+                  label={question.answer}
+                  strokes={question.strokes}
+                  onSubmit={(judgement, image) =>
+                    finish(
+                      {
+                        verdict: judgement.grade,
+                        // とてもきれい・きれいは正解(連続が続く)、もう少しは不正解として残す
+                        isCorrect: judgement.grade !== 'rough',
+                        answer: question.answer,
+                      },
+                      0,
+                      { kind: 'handwriting', imageDataUrl: image },
+                      traceNotes(judgement),
+                    )
+                  }
+                />
+              )}
+              {inputMode === 'assemble' && assembleLayout && (
+                <PartsInput
+                  key={`assemble-${question.id}`}
+                  tiles={partTiles}
+                  layout={assembleLayout}
+                  // 組み上がるかどうかだけを渡す。正解の部品は画面に持たせない
+                  assembledOf={(first, second) =>
+                    judgeParts(question, first, second).isCorrect ? question.answer : null
+                  }
+                  onReveal={() => setRecalled(true)}
+                  onSubmit={(first, second) =>
+                    finish(judgeParts(question, first, second), revealedCount, {
+                      kind: 'parts',
+                      parts: [first, second],
+                    })
+                  }
+                />
+              )}
             </>
           )}
         </section>
-      ) : (
-        <section
-          className={`flex min-h-0 flex-col ${showsPromptInInput || isWord ? 'mt-2 shrink-0' : 'mt-4 max-h-52 flex-1'}`}
-        >
-          <HintList
-            hints={revealedHints(hints, revealedCount)}
-            layout={hintLayoutOf(genre.id)}
-            secondsToNext={secondsToNext}
-            compact={showsPromptInInput || isWord}
-            fractions={isFraction}
-          />
-        </section>
-      )}
-
-      {/* 計算は、ヒントのあとに出題を置く。答えを書く場所のすぐ上になる */}
-      {showsPromptBelow && !showsPromptInInput && (
-        <PromptBlock question={question} layout={layout} caption={promptCaption} />
-      )}
-
-      {/* 余りは入力側へ多めに配る(ヒント枠と 2:1)。キャンバスとキーはここで伸びる */}
-      {/*
-        マスに書くときは真ん中に寄せる。キーボードと違って縦に短く、
-        下に寄せるとヒント枠との間が大きく空いて、つながりが見えなくなる。
-      */}
-      {/*
-        マスに書くときは、ヒントの下の高さを全部使う(マスはそこに入る最大の大きさまで広がる)。
-        確認の画面に変わったら、今までどおり真ん中に寄せる。
-      */}
-      <section
-        className={`flex min-h-0 flex-col ${
-          (writesInBoxes && !selfReport) || inputMode === 'trace'
-            ? 'flex-1 pt-2'
-            : `mt-auto flex-2 pt-4 ${writesInBoxes ? 'justify-center' : 'justify-end'}`
-        }`}
-      >
-        {selfReport ? (
-          // 読み取れなかった・違って見えたときは、正解を見せて自己申告してもらう
-          <div className="flex flex-col gap-4 select-none">
-            <div className="rounded-3xl bg-bloom-50 px-5 py-4 text-center">
-              <p className="text-sm text-ink-400">{copy.quiz.answerLabel}</p>
-              <p className="mt-1 text-3xl font-bold text-bloom-700">
-                <MathText text={answerText(question.answer)} />
-              </p>
-              {/*
-                自分が書いたものを、こたえと並べて見せる。書いたマスはこの画面では消えるので、
-                見せないと何を書いたかを思い出して比べるしかない。
-                画像の分だけ枠が縦に長くなるので、背の低い端末でヒントの枠に重ならないよう余白を詰めてある。
-              */}
-              <p className="mt-3 text-sm text-ink-400">{copy.result.mine.handwriting}</p>
-              <img
-                src={selfReport.image}
-                alt={copy.result.mine.handwriting}
-                className="mx-auto mt-1 max-h-20 max-w-full rounded-xl border-2 border-bloom-200 bg-white"
-              />
-              {/* 何と読めたのかを見せる。書き直すときの手がかりになる */}
-              {selfReport.read && (
-                <p className="mt-3 text-sm text-ink-600">
-                  <MathText
-                    text={
-                      selfReport.readMatches
-                        ? copy.quiz.readAsUnsure(answerText(selfReport.read))
-                        : copy.quiz.readAs(answerText(selfReport.read))
-                    }
-                  />
-                </p>
-              )}
-              {selfReport.unread && <p className="mt-3 text-sm text-ink-600">{copy.quiz.readUnknown}</p>}
-            </div>
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={() =>
-                  finish(judgeHandwriting(question, false), selfReport.hintsUsed, {
-                    kind: 'handwriting',
-                    imageDataUrl: selfReport.image,
-                  })
-                }
-                className="min-h-14 flex-1 rounded-full border-2 border-warm-500 text-lg font-bold text-warm-600"
-              >
-                {copy.quiz.wrong}
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  finish(judgeHandwriting(question, true), selfReport.hintsUsed, {
-                    kind: 'handwriting',
-                    imageDataUrl: selfReport.image,
-                  })
-                }
-                className="min-h-14 flex-1 rounded-full bg-bloom-700 text-lg font-bold text-white"
-              >
-                {copy.quiz.right}
-              </button>
-            </div>
-          </div>
-        ) : (
-          <>
-            {inputMode === 'typing' && (
-              <TypingInput
-                key={`typing-${question.id}`}
-                onSubmit={(value) =>
-                  finish(judgeTyping(question, value), revealedCount, {
-                    kind: 'text',
-                    text: value,
-                  })
-                }
-              />
-            )}
-            {inputMode === 'number' && isFraction && (
-              <FractionInput
-                key={`fraction-${question.id}`}
-                parts={fractionPartsOf(question.prompt)}
-                // 打ち直しはじめたら、約分の注意は消す
-                onChange={() => setReducible(false)}
-                display={(value, focus, select) => (
-                  <PromptBlock
-                    question={question}
-                    fitted
-                    layout={layout}
-                    caption={promptCaption}
-                    // 値は合っているのに約分していないとき。記録はせず、直してもらう
-                    note={reducible ? copy.number.reducible : undefined}
-                    fraction={fractionSlots((part) => ({
-                      digits: value[part],
-                      focused: focus === part,
-                      onSelect: () => select(part),
-                    }))}
-                  />
-                )}
-                onSubmit={(value) => {
-                  const judged = judgeNumber(question, value)
-                  if (judged.reducible) {
-                    setReducible(true)
-                    return
-                  }
-                  finish(judged, revealedCount, { kind: 'text', text: value })
-                }}
-              />
-            )}
-            {inputMode === 'number' && isWord && (
-              <WordInput
-                key={`word-${question.id}`}
-                answerParts={question.answerParts}
-                display={(entry, focus, select) => (
-                  <WordForm
-                    {...wordSlots((part) => ({
-                      digits: entry[part],
-                      focused: focus === part,
-                      onSelect: () => select(part),
-                    }))}
-                  />
-                )}
-                onSubmit={(value) =>
-                  finish(judgeNumber(question, value), revealedCount, {
-                    kind: 'text',
-                    text: answerText(value),
-                  })
-                }
-              />
-            )}
-            {inputMode === 'number' && !isFraction && !isWord && (
-              <NumberInput
-                // 打ち直しのたびに作り直して、打った数を空に戻す
-                key={`number-${question.id}-${stepIndex}-${missed ?? ''}`}
-                // 筆算は、そこに入りうる桁数より多くは打てない(マスからはみ出す)
-                maxLength={step?.width}
-                // 小数点は、小数の答えのところでだけ打てる(段は整数で計算するので出さない)
-                allowDecimal={step ? Boolean(step.decimals) : question.prompt.includes('.')}
-                display={
-                  showsPromptInInput
-                    ? (typed) => (
-                        <PromptBlock
-                          question={question}
-                          fitted
-                          layout={layout}
-                          // 打っている場所の名前を出す(「一のくらい」「かける 7 × 8」)
-                          caption={step?.caption ?? promptCaption}
-                          note={missed === null ? undefined : copy.number.retry}
-                          cells={columnCells(typed)}
-                        />
-                      )
-                    : undefined
-                }
-                submitLabel={isLastStep ? copy.number.submit : nextStepLabel}
-                onSubmit={(value) => {
-                  if (step && !isLastStep) {
-                    commitStep(value, step)
-                    return
-                  }
-                  // 最後の手。ここも合うまで進まない。
-                  // 小数の答えは数として比べる(8.40 も 8.4 も同じ。紙でも最後の 0 は消してよい)
-                  const isRight = step?.decimals
-                    ? Number(value) === Number(step.expected)
-                    : value === step?.expected
-                  if (step && !isRight) {
-                    setMissed(value)
-                    if (step.counts) setMissedAnswer(true)
-                    return
-                  }
-                  // 答えは、打った途中のものから組み立てる(位ごと・商は、それ自体が答え)
-                  const typed = [...filledSteps, value]
-                  const answer = script.length > 0 ? answerFromSteps(script, typed) : value
-                  const judged = judgeNumber(question, answer)
-                  finish(
-                    // 答えの部分を1回めで間違えていたら、打ち直して合っても「ざんねん」
-                    missedAnswer ? { ...judged, verdict: 'incorrect', isCorrect: false } : judged,
-                    revealedCount,
-                    { kind: 'text', text: answer },
-                  )
-                }}
-              />
-            )}
-            {inputMode === 'handwriting' && writesInBoxes && (
-              <BoxHandwriting
-                key={`boxes-${question.id}`}
-                rows={writeRows}
-                // マスは筆算のその場所に置く。式と離すと、どこに書くのか分からなくなる
-                form={(cellsOf) =>
-                  isPlainMath ? (
-                    <AnswerRowForm cells={cellsOf(`${question.id}-answer`)} />
-                  ) : isWord ? (
-                    <WordForm
-                      writing
-                      {...wordSlots((part) => ({ content: cellsOf(`${question.id}-${part}`) }))}
-                      left={undefined}
-                      right={undefined}
-                      expression={cellsOf(`${question.id}-expression`)}
-                    />
-                  ) : (
-                  <PromptBlock
-                    question={question}
-                    layout={layout}
-                    caption={promptCaption}
-                    writing
-                    fraction={
-                      isFraction
-                        ? fractionSlots((part) => ({ content: cellsOf(`${question.id}-${part}`) }))
-                        : undefined
-                    }
-                    cells={(isFraction ? [] : writeRows).map((row, index) => ({
-                      slot: writeScript[index].slot,
-                      digits: '',
-                      width: row.boxes,
-                      tone: 'typing' as const,
-                      content: cellsOf(row.key),
-                    }))}
-                  />
-                  )
-                }
-                onSubmit={(image, rows) => void judgeWritten(image, rows)}
-              />
-            )}
-            {inputMode === 'handwriting' && !writesInBoxes && (
-              <HandwritingCanvas
-                key={`handwriting-${question.id}`}
-                onSubmit={(image, strokes) => void judgeWrittenWord(image, strokes)}
-                disabled={readingWord}
-              />
-            )}
-            {inputMode === 'trace' && question.strokes && (
-              <FreeTraceCanvas
-                key={`trace-${question.id}`}
-                label={question.answer}
-                strokes={question.strokes}
-                onSubmit={(judgement, image) =>
-                  finish(
-                    {
-                      verdict: judgement.grade,
-                      // とてもきれい・きれいは正解(連続が続く)、もう少しは不正解として残す
-                      isCorrect: judgement.grade !== 'rough',
-                      answer: question.answer,
-                    },
-                    0,
-                    { kind: 'handwriting', imageDataUrl: image },
-                    traceNotes(judgement),
-                  )
-                }
-              />
-            )}
-            {inputMode === 'assemble' && assembleLayout && (
-              <PartsInput
-                key={`assemble-${question.id}`}
-                tiles={partTiles}
-                layout={assembleLayout}
-                // 組み上がるかどうかだけを渡す。正解の部品は画面に持たせない
-                assembledOf={(first, second) =>
-                  judgeParts(question, first, second).isCorrect ? question.answer : null
-                }
-                onReveal={() => setRecalled(true)}
-                onSubmit={(first, second) =>
-                  finish(judgeParts(question, first, second), revealedCount, {
-                    kind: 'parts',
-                    parts: [first, second],
-                  })
-                }
-              />
-            )}
-          </>
-        )}
-      </section>
-    </AppShell>
+      </AppShell>
+    </ConcealAnswerContext.Provider>
   )
 }
 

@@ -313,7 +313,7 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
           onPointerCancel={endStroke}
           onMouseDown={preventSelection}
           draggable={false}
-          aria-label={memo ? copy.quiz.memo : '手書き入力エリア'}
+          aria-label={memo ? copy.quiz.memo : copy.handwriting.areaAria}
           // select-none: なぞったときに周りが範囲選択される(青い枠)のを防ぐ
           className={`w-full min-h-0 flex-1 touch-none select-none rounded-2xl border-2 ${
             memo ? 'bg-transparent' : 'bg-white'
@@ -355,7 +355,7 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
             type="button"
             onClick={clearAll}
             disabled={disabled || !hasStroke}
-            className="min-h-14 flex-1 rounded-full border-2 border-bloom-200 px-6 text-lg font-bold text-ink-600 disabled:text-ink-400"
+            className="btn-soft min-h-14 flex-1 rounded-full border-2 border-bloom-200 px-6 text-lg font-bold text-ink-600 disabled:text-ink-400"
           >
             {copy.quiz.memoClear}
           </button>
@@ -366,7 +366,7 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
             onClick={() => onSubmit?.(exportImage(), strokesRef.current.filter((stroke) => stroke.length > 1))}
             // 消している途中で出すと、消し残しに気づかないまま答えになる
             disabled={disabled || !hasStroke || erasing}
-            className="min-h-14 flex-1 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
+            className="btn-raised min-h-14 flex-1 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
           >
             {copy.handwriting.done}
           </button>

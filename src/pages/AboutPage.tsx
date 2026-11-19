@@ -108,7 +108,7 @@ export function AboutPage() {
                   href={credit.license.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-1 inline-block rounded-full bg-white px-2 py-0.5 text-xs text-ink-600 underline"
+                  className="btn-soft mt-1 inline-block rounded-full bg-white px-2 py-0.5 text-xs text-ink-600 underline"
                 >
                   {credit.license.name}
                 </a>
@@ -120,7 +120,7 @@ export function AboutPage() {
 
       <Link
         to={TOP_PATH[mode]}
-        className="mt-10 flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600"
+        className="btn-soft mt-10 flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600"
       >
         {copy.about.back}
       </Link>

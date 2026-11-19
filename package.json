@@ -15,7 +15,8 @@
     "shapes:kanji": "node scripts/build/build-kanji-shapes.ts",
     "puzzles:kanji": "node scripts/build/build-kanji-puzzles.ts",
     "parts:kanji": "node scripts/build/build-kanji-questions.ts --grades=1,2 --parts-only",
-    "questions:math": "node scripts/build/build-math-questions.ts"
+    "questions:math": "node scripts/build/build-math-questions.ts",
+    "check:conceal": "node scripts/check-conceal.ts"
   },
   "dependencies": {
     "fast-levenshtein": "^3.0.0",

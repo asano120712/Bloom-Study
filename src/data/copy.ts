@@ -1,6 +1,7 @@
 import type { ActivityId } from '@/data/activities'
 import type { AnswerChoiceId } from '@/data/genres'
 import type { AssembleLayout } from '@/features/assemble'
+import type { NoticeKind } from '@/data/notices'
 import type { StampKind } from '@/services/stampCard'
 import type { AudienceMode, Difficulty, GenreId, JudgeVerdict, MathTopic, PromptForm } from '@/types'
 
@@ -143,8 +144,19 @@ export interface Copy {
     clearAllAria: string
     done: string
     boxLabel: (place: number) => string
+    /** 書く場所の読み上げ名 */
+    areaAria: string
   }
-  typing: { placeholderTap: string; placeholderKey: string; inputLabel: string; submit: string }
+  typing: {
+    placeholderTap: string
+    placeholderKey: string
+    inputLabel: string
+    submit: string
+    /** 端末のキーボードのかわりに、画面のキーボードで打つ */
+    useScreenKeyboard: string
+    /** 画面のキーボードの、1文字消すキーの読み上げ名 */
+    backspaceAria: string
+  }
   /** あそび(なぞりがき・おなじものさがし)で共通の言葉 */
   play: {
     allDone: string
@@ -235,6 +247,16 @@ export interface Copy {
     solve: string
   }
   exit: { label: string; title: string; note: string; stay: string; leave: string }
+  /** ヘッダー右上のお知らせ(ボタンの名前と、開いたモーダルの言葉) */
+  notice: {
+    open: string
+    title: string
+    back: string
+    close: string
+    empty: string
+    /** お知らせの種類のタグ(更新情報・イベント) */
+    kinds: Record<NoticeKind, string>
+  }
   /** このアプリについて(ホームの下のリンクと、その画面)。読むのは保護者なので、こどもでも言葉はおとな寄り */
   about: {
     link: string
@@ -474,12 +496,15 @@ const ADULT: Copy = {
     clearAllAria: 'もう一度押すと、書いたものを全部消す',
     done: '書けた',
     boxLabel: (place) => `答えの ${place} マス目`,
+    areaAria: '手書き入力エリア',
   },
   typing: {
     placeholderTap: '答えをタップして入力',
     placeholderKey: 'キーボードで入力',
     inputLabel: '入力中の答え',
     submit: '答え合わせ',
+    useScreenKeyboard: '画面のキーボードを使う',
+    backspaceAria: '1文字消す',
   },
   play: {
     allDone: '全部終わった!',
@@ -577,6 +602,14 @@ const ADULT: Copy = {
     note: '今の問題は飛ばされます。',
     stay: '続ける',
     leave: 'やめる',
+  },
+  notice: {
+    open: 'お知らせを開く',
+    title: 'お知らせ',
+    back: '一覧へ戻る',
+    close: '閉じる',
+    empty: 'お知らせはまだありません。',
+    kinds: { update: '更新情報', event: 'イベント' },
   },
   stampCard: {
     title: 'スタンプカード',
@@ -789,12 +822,15 @@ const KIDS: Copy = {
     clearAllAria: 'もういちど おすと、ぜんぶ けす',
     done: 'かけた',
     boxLabel: (place) => `こたえの ${place} マスめ`,
+    areaAria: 'てがきで かくところ',
   },
   typing: {
     placeholderTap: 'こたえを タップして うとう',
     placeholderKey: 'キーボードで うとう',
     inputLabel: '入力中のこたえ',
     submit: 'こたえあわせ',
+    useScreenKeyboard: 'がめんの キーボードを つかう',
+    backspaceAria: '1もじ けす',
   },
   play: {
     allDone: 'ぜんぶ できた！',
@@ -893,6 +929,14 @@ const KIDS: Copy = {
     note: 'いまの もんだいは とばされるよ。',
     stay: 'つづける',
     leave: 'やめる',
+  },
+  notice: {
+    open: 'おしらせを ひらく',
+    title: 'おしらせ',
+    back: 'いちらんに もどる',
+    close: 'とじる',
+    empty: 'おしらせは まだ ないよ。',
+    kinds: { update: 'あたらしく なったよ', event: 'イベント' },
   },
   stampCard: {
     title: 'スタンプカード',

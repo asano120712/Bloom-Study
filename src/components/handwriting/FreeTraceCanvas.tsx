@@ -233,7 +233,7 @@ export function FreeTraceCanvas({ label, strokes, onSubmit }: FreeTraceCanvasPro
         type="button"
         onClick={submit}
         disabled={written.length === 0 || samples.length === 0}
-        className="flex min-h-14 shrink-0 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white disabled:bg-bloom-200"
+        className="btn-raised flex min-h-14 shrink-0 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white disabled:bg-bloom-200"
       >
         {copy.handwriting.done}
       </button>

@@ -158,7 +158,7 @@ export function ResultPage() {
               type="button"
               onClick={readAloud}
               aria-label={`${result.answer} の読み方を聞く`}
-              className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-bloom-200 px-5 text-base font-bold text-bloom-700"
+              className="btn-soft mt-4 inline-flex min-h-11 items-center gap-2 rounded-full border-2 border-bloom-200 px-5 text-base font-bold text-bloom-700"
             >
               {copy.result.listen}
             </button>
@@ -173,14 +173,14 @@ export function ResultPage() {
           {hasNext ? (
             <Link
               to={nextPath}
-              className="flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
+              className="btn-raised flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
             >
               {copy.result.next}
             </Link>
           ) : (
             <Link
               to={nextPath}
-              className="flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
+              className="btn-raised flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
             >
               {copy.result.chooseGenre}
             </Link>
@@ -188,7 +188,7 @@ export function ResultPage() {
           {hasFinePointer && (
             <p className="text-center text-xs text-ink-400">{copy.result.enterHint}</p>
           )}
-          <Link to="/mypage" className="flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600">
+          <Link to="/mypage" className="btn-soft flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600">
             {copy.result.record}
           </Link>
         </div>

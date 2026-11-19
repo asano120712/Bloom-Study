@@ -41,11 +41,11 @@ export function TopPage() {
           <div className="flex w-full flex-col gap-4">
             <Link
               to="/genres"
-              className="flex min-h-14 w-full items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
+              className="btn-raised flex min-h-14 w-full items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
             >
               {copy.top.start}
             </Link>
-            <Link to="/mypage" className="flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600">
+            <Link to="/mypage" className="btn-soft flex min-h-14 items-center justify-center rounded-full border-2 border-bloom-200 text-base font-bold text-ink-600">
               {copy.top.record}
             </Link>
           </div>

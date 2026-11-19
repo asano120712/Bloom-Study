@@ -24,7 +24,7 @@ export function TrialEndPage() {
         </p>
         <Link
           to="/mypage"
-          className="flex min-h-14 w-full items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
+          className="btn-raised flex min-h-14 w-full items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
         >
           記録を見る
         </Link>

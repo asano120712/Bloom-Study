@@ -102,16 +102,16 @@ export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
             type="button"
             disabled={disabled || !value}
             onClick={submit}
-            className="min-h-14 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
+            className="btn-raised min-h-14 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
           >
             {copy.typing.submit}
           </button>
           <button
             type="button"
             onClick={() => setForceKeyboard(true)}
-            className="mx-auto flex min-h-11 items-center justify-center rounded-full border-2 border-bloom-200 px-5 text-sm font-bold text-ink-600"
+            className="btn-soft mx-auto flex min-h-11 items-center justify-center rounded-full border-2 border-bloom-200 px-5 text-sm font-bold text-ink-600"
           >
-            画面のキーボードを使う
+            {copy.typing.useScreenKeyboard}
           </button>
         </div>
       )}

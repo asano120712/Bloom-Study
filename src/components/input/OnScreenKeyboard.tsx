@@ -1,3 +1,5 @@
+import { useCopy } from '@/hooks/useAudienceMode'
+
 interface OnScreenKeyboardProps {
   onKey: (letter: string) => void
   onBackspace: () => void
@@ -32,6 +34,7 @@ export function OnScreenKeyboard({
   submitLabel,
   disabled = false,
 }: OnScreenKeyboardProps) {
+  const copy = useCopy()
   return (
     <div
       className="flex max-h-40 min-h-0 flex-1 flex-col gap-1.5"
@@ -46,7 +49,7 @@ export function OnScreenKeyboard({
               type="button"
               disabled={disabled}
               onClick={() => onKey(letter)}
-              className="h-full flex-1 rounded-lg bg-white text-xl font-bold text-ink-900 shadow-sm active:bg-bloom-100 disabled:text-ink-400"
+              className="btn-soft h-full flex-1 rounded-lg bg-white text-xl font-bold text-ink-900 [--btn-depth:1.5px] active:bg-bloom-100 disabled:text-ink-400"
             >
               {letter}
             </button>
@@ -59,8 +62,8 @@ export function OnScreenKeyboard({
           type="button"
           disabled={disabled}
           onClick={onBackspace}
-          aria-label="1文字消す"
-          className="min-h-12 flex-1 rounded-lg border-2 border-bloom-200 text-lg font-bold text-ink-600 disabled:text-ink-400"
+          aria-label={copy.typing.backspaceAria}
+          className="btn-soft min-h-12 flex-1 rounded-lg [--btn-depth:1.5px] border-2 border-bloom-200 text-lg font-bold text-ink-600 disabled:text-ink-400"
         >
           ⌫
         </button>
@@ -68,7 +71,7 @@ export function OnScreenKeyboard({
           type="button"
           disabled={disabled || !canSubmit}
           onClick={onSubmit}
-          className="min-h-12 flex-2 rounded-lg bg-bloom-700 text-lg font-bold text-white disabled:bg-bloom-200"
+          className="btn-raised min-h-12 flex-2 rounded-lg [--btn-depth:1.5px] bg-bloom-700 text-lg font-bold text-white disabled:bg-bloom-200"
         >
           {submitLabel}
         </button>

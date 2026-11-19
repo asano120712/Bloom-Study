@@ -138,7 +138,7 @@ function KidsStampPage() {
 
       <Link
         to="/genres"
-        className="mt-8 flex min-h-16 items-center justify-center rounded-full bg-bloom-700 text-xl font-bold text-white"
+        className="btn-raised mt-8 flex min-h-16 items-center justify-center rounded-full bg-bloom-700 text-xl font-bold text-white"
       >
         {copy.stampCard.play}
       </Link>
@@ -197,7 +197,7 @@ function RecordPage() {
       <div className="mt-8 flex flex-col gap-3">
         <Link
           to="/genres"
-          className="flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
+          className="btn-raised flex min-h-14 items-center justify-center rounded-full bg-bloom-700 text-lg font-bold text-white"
         >
           {copy.myPage.solve}
         </Link>

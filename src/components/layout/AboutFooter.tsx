@@ -13,7 +13,8 @@ export function AboutFooter() {
       <Link to="/about" className="flex min-h-11 items-center px-3 underline">
         {copy.about.link}
       </Link>
-      <p>{COPYRIGHT}</p>
+      {/* お知らせのモーダルは、この行の上 20px までを高さに使う(NoticeButton) */}
+      <p data-copyright>{COPYRIGHT}</p>
     </footer>
   )
 }

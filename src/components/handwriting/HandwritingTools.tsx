@@ -78,7 +78,7 @@ function ToolButton({ label, ariaLabel, icon, active, activeClassName, onClick, 
       aria-pressed={active}
       // SE の幅でも「かけた」の場所を残すため、絵の下に小さく字を添える縦並びにする
       className={`flex w-14 flex-col items-center justify-center rounded-full text-xs leading-none font-bold disabled:text-ink-400 ${
-        active ? activeClassName : 'text-ink-600'
+        active ? `btn-inset ${activeClassName}` : 'text-ink-600'
       }`}
     >
       {icon}

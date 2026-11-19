@@ -73,6 +73,21 @@ function matchesDifficulty(question: Question, difficulty: Difficulty): boolean 
   return (question.level ?? 'normal') === difficulty
 }
 
+/**
+ * 出題語の候補(variants)を持つ問題は、既定の形と候補の中から1つを選んで、その形にする。
+ *
+ * 出題を始めるときに選ぶので、そのセットの中では同じ形のまま(途中で戻ってきても変わらない)。
+ * 次にセットを取り直すと、また選び直す。記録は id につくので、どの形で出ても同じ問題として数える。
+ */
+function pickVariant(question: Question): Question {
+  const { variants, ...rest } = question
+  if (!variants || variants.length === 0) return question
+  const index = Math.floor(Math.random() * (variants.length + 1))
+  if (index === 0) return rest
+  const { prompt, promptReading, hintSource } = variants[index - 1]
+  return { ...rest, prompt, promptReading, hintSource }
+}
+
 /** Fisher-Yates。出題順を決めるのも取得側の責務なのでここで混ぜる。 */
 function shuffle<T>(items: T[]): T[] {
   const shuffled = [...items]
@@ -95,7 +110,7 @@ export const localQuizSource: QuizSource = {
     return {
       genreId,
       questions: shuffle(
-        (await questionsOf(genreId)).filter((q) => canServe(q, inputMode, difficulty, topic)),
+        (await questionsOf(genreId)).filter((q) => canServe(q, inputMode, difficulty, topic)).map(pickVariant),
       ),
     }
   },

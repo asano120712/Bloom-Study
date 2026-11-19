@@ -242,7 +242,7 @@ export function PartsInput({
             setRevealed(true)
             onReveal?.()
           }}
-          className="min-h-14 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
+          className="btn-raised min-h-14 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200"
         >
           {copy.parts.recalled}
         </button>
@@ -330,7 +330,7 @@ export function PartsInput({
             onPointerDown={(event) => onPointerDown(event, tile, 'tray')}
             onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
-            className={`min-h-11 touch-none rounded-xl border-2 border-bloom-200 bg-white font-display text-2xl text-ink-900 [@media(min-height:780px)]:min-h-14 [@media(min-height:780px)]:text-3xl ${
+            className={`btn-soft min-h-11 touch-none rounded-xl border-2 border-bloom-200 bg-white font-display text-2xl text-ink-900 [@media(min-height:780px)]:min-h-14 [@media(min-height:780px)]:text-3xl ${
               dragging?.from === 'tray' && dragging.tile === tile ? 'opacity-40' : ''
             }`}
           >
@@ -344,7 +344,7 @@ export function PartsInput({
         // 演出中も緑のまま置いておく。押しても submit 側で弾く
         disabled={disabled || !ready}
         onClick={submit}
-        className="min-h-11 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200 [@media(min-height:780px)]:min-h-12"
+        className="btn-raised min-h-11 rounded-full bg-bloom-700 px-6 text-lg font-bold text-white disabled:bg-bloom-200 [@media(min-height:780px)]:min-h-12"
       >
         {copy.parts.submit}
       </button>
