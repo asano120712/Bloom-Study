@@ -12,6 +12,7 @@ export const JUKUGO_DENYLIST = new Set<string>([
   '避妊',
   '裸婦',
   '全裸',
+  '痴漢',
   '艶事',
   // 女の人の見た目や結婚をからかう言葉
   '醜女',

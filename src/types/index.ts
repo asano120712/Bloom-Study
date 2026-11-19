@@ -182,6 +182,19 @@ export interface Question {
    * (['部首|亻(にんべん)', 'のこりのパーツ|木', '画数|6画', '音読み|キュウ'])。
    */
   hintSource?: string[]
+  /**
+   * 出題語の別の候補(漢字の熟語の穴うめ)。出題を始めるたびに、既定の形
+   * (prompt・promptReading・hintSource)とこの中から1つを選ぶ(services/quizSource.ts)。
+   * 同じ字でも熟語が変わると思い出せないことが多いので、いろいろな語で出す。
+   */
+  variants?: QuestionVariant[]
+}
+
+/** 出題語の別の候補。どれを選んでも、答えと記録(id)は同じ問題のまま */
+export interface QuestionVariant {
+  prompt: string
+  promptReading?: string
+  hintSource: string[]
 }
 
 /**
