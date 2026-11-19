@@ -17,6 +17,12 @@ interface HintListProps {
    * 詰めて出すときも枠を少し高くして、3段が入るようにする。
    */
   fractions?: boolean
+  /**
+   * 字を一回り小さくする(漢字のとき)。漢字は意味・熟語2語・読み・画数と文が長く、
+   * 携帯ではヒントの枠が低い(iPhone SE で約110px)ので、ふつうの大きさだと
+   * 最初に出た意味が枠の上に押し出されて見えなくなる。
+   */
+  small?: boolean
 }
 
 /**
@@ -35,6 +41,7 @@ export function HintList({
   secondsToNext,
   compact = false,
   fractions = false,
+  small = false,
 }: HintListProps) {
   const copy = useCopy()
   const isInline = layout === 'inline'
@@ -62,7 +69,7 @@ export function HintList({
               `${fractions ? 'h-28' : 'h-24'} flex-col gap-1 overflow-y-auto py-2`
             : isInline
               ? 'min-h-14 flex-1 items-center justify-center py-3'
-              : 'min-h-24 flex-1 flex-col gap-2 overflow-y-auto py-3'
+              : `min-h-24 flex-1 flex-col overflow-y-auto ${small ? 'gap-1 py-2' : 'gap-2 py-3'}`
         }`}
       >
         {hints.length === 0 ? (
@@ -78,8 +85,24 @@ export function HintList({
           </p>
         ) : (
           hints.map((hint) => (
-            <div key={hint.index} className="animate-bloom-in text-left">
-              {hint.caption && <span className="block text-xs text-ink-400">{hint.caption}</span>}
+            /*
+              見出し(意味・熟語 など)は本文の前に小さく置く。上に1行使うと、
+              ヒントが4つになったとき枠に収まらず、最初の意味が上に押し出されて見えなくなる。
+              筆算(compact)は見出しを上に積む形のまま。
+            */
+            <div
+              key={hint.index}
+              className={`animate-bloom-in text-left ${compact ? '' : 'flex items-baseline gap-2'}`}
+            >
+              {hint.caption && (
+                <span
+                  className={
+                    compact ? 'block text-xs text-ink-400' : 'shrink-0 text-xs whitespace-nowrap text-ink-400'
+                  }
+                >
+                  {hint.caption}
+                </span>
+              )}
               {/*
                 文字の大きさを画面幅で頭打ちにする(狭い端末ほど小さくなる)。
                 px で決め打ちにすると、端末の幅・フォント・文字サイズの設定しだいで
@@ -87,8 +110,12 @@ export function HintList({
                 それでも長い文は折り返す(2行になってよい)。
               */}
               <span
-                className={`block tracking-wide break-words text-bloom-700 ${
-                  compact ? 'text-base leading-6' : 'text-[min(1.25rem,5vw)] leading-7'
+                className={`block min-w-0 tracking-wide break-words text-bloom-700 ${
+                  compact
+                    ? 'text-base leading-6'
+                    : small
+                      ? 'text-[min(1rem,4.2vw)] leading-6'
+                      : 'text-[min(1.25rem,5vw)] leading-7'
                 }`}
               >
                 {/* 分数のヒント(「2/3 = 8/12」)は、分子を上・分母を下に積んで見せる */}
