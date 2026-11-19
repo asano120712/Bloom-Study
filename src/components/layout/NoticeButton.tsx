@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
-import { NOTICES, type Notice } from '@/data/notices'
+import { NOTICES, type Notice, type NoticeKind } from '@/data/notices'
 import { useAudienceMode, useCopy } from '@/hooks/useAudienceMode'
 import { hasNewNotice, markNoticesSeen } from '@/services/noticeSeen'
 
@@ -76,6 +76,22 @@ function NoticeIcon({ hasNew, className }: { hasNew: boolean; className?: string
   )
 }
 
+/** 種類ごとのタグの色。更新情報はブランドの緑、イベントは目を引く暖色 */
+const TAG_CLASS: Record<NoticeKind, string> = {
+  update: 'bg-bloom-100 text-bloom-700',
+  event: 'bg-warm-100 text-warm-600',
+}
+
+/** お知らせの種類のタグ(更新情報・イベント) */
+function NoticeTag({ kind }: { kind: NoticeKind }) {
+  const copy = useCopy()
+  return (
+    <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${TAG_CLASS[kind]}`}>
+      {copy.notice.kinds[kind]}
+    </span>
+  )
+}
+
 /** 「2026-11-18」を「2026.11.18」にする */
 function formatDate(date: string) {
   return date.replaceAll('-', '.')
@@ -109,6 +125,8 @@ function useDialogFrame(header: HTMLElement | null): CSSProperties | undefined {
 
 /**
  * お知らせのモーダル。一覧 → 本文 の2段。
+ * 一覧はカードを並べ、上に種類のタグと日付、その下に見出しを置く。
+ * 本文は見出しを色で目立たせ、その下に文章を続ける(読み物なので左にそろえる)。
  * いちばん下の中央に閉じるボタンを置き、その上に薄緑の線を1本引く(読むところと操作の境目)。
  * 本文を開いているときは、線の上に一覧へ戻るを足す。
  * Esc は1つ前へ(本文なら一覧へ、一覧なら閉じる)。
@@ -153,12 +171,15 @@ function NoticeDialog({ header, onClose }: { header: HTMLElement | null; onClose
       >
         {selected ? (
           <>
-            <p className="text-center text-sm text-ink-400 tabular-nums">
-              {formatDate(selected.date)}
-            </p>
-            <h2 className="mt-1 text-center text-xl font-bold">{selected.words[mode].title}</h2>
+            <div className="flex shrink-0 items-center justify-between gap-2">
+              <NoticeTag kind={selected.kind} />
+              <span className="text-sm text-ink-400 tabular-nums">{formatDate(selected.date)}</span>
+            </div>
+            <h2 className="mt-3 shrink-0 text-xl leading-snug font-bold text-bloom-700">
+              {selected.words[mode].title}
+            </h2>
 
-            <div className="mt-5 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-contain text-base leading-relaxed text-ink-900">
+            <div className="mt-4 flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-contain text-base leading-relaxed text-ink-900">
               {selected.words[mode].body.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
@@ -185,12 +206,15 @@ function NoticeDialog({ header, onClose }: { header: HTMLElement | null; onClose
                     <button
                       type="button"
                       onClick={() => setSelected(notice)}
-                      className="btn-soft flex min-h-16 w-full flex-col justify-center rounded-2xl border-2 border-bloom-200 bg-white px-5 py-3 text-left text-ink-900"
+                      className="btn-soft flex min-h-16 w-full flex-col gap-2 rounded-2xl border-2 border-bloom-200 bg-white px-5 py-4 text-left text-ink-900"
                     >
-                      <span className="text-xs text-ink-400 tabular-nums">
-                        {formatDate(notice.date)}
+                      <span className="flex items-center justify-between gap-2">
+                        <NoticeTag kind={notice.kind} />
+                        <span className="text-xs text-ink-400 tabular-nums">
+                          {formatDate(notice.date)}
+                        </span>
                       </span>
-                      <span className="text-base font-bold">{notice.words[mode].title}</span>
+                      <span className="text-base leading-snug font-bold">{notice.words[mode].title}</span>
                     </button>
                   </li>
                 ))}
