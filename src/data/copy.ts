@@ -1,6 +1,7 @@
 import type { ActivityId } from '@/data/activities'
 import type { AnswerChoiceId } from '@/data/genres'
 import type { AssembleLayout } from '@/features/assemble'
+import type { NoticeKind } from '@/data/notices'
 import type { StampKind } from '@/services/stampCard'
 import type { AudienceMode, Difficulty, GenreId, JudgeVerdict, MathTopic, PromptForm } from '@/types'
 
@@ -247,7 +248,15 @@ export interface Copy {
   }
   exit: { label: string; title: string; note: string; stay: string; leave: string }
   /** ヘッダー右上のお知らせ(ボタンの名前と、開いたモーダルの言葉) */
-  notice: { open: string; title: string; back: string; close: string; empty: string }
+  notice: {
+    open: string
+    title: string
+    back: string
+    close: string
+    empty: string
+    /** お知らせの種類のタグ(更新情報・イベント) */
+    kinds: Record<NoticeKind, string>
+  }
   /** このアプリについて(ホームの下のリンクと、その画面)。読むのは保護者なので、こどもでも言葉はおとな寄り */
   about: {
     link: string
@@ -600,6 +609,7 @@ const ADULT: Copy = {
     back: '一覧へ戻る',
     close: '閉じる',
     empty: 'お知らせはまだありません。',
+    kinds: { update: '更新情報', event: 'イベント' },
   },
   stampCard: {
     title: 'スタンプカード',
@@ -926,6 +936,7 @@ const KIDS: Copy = {
     back: 'いちらんに もどる',
     close: 'とじる',
     empty: 'おしらせは まだ ないよ。',
+    kinds: { update: 'あたらしく なったよ', event: 'イベント' },
   },
   stampCard: {
     title: 'スタンプカード',
