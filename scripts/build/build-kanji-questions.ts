@@ -70,6 +70,13 @@ const MIN_HINTS = 3
  */
 const JUKUGO_HINTS = 2
 
+/**
+ * 1つの字で、出題文にする熟語の最大数。出題を始めるたびに、この中から1つを選ぶ。
+ * 同じ字でも、熟語が変わると思い出せないことが多い。いろいろな語の中で思い出す練習にする。
+ * 多すぎると身近でない語まで出てくるので、身近な順に3つまで。
+ */
+const MAX_PROMPTS = 3
+
 /** assemble モードで並べる部品タイルの総数(正解 + ダミー) */
 const PART_TILE_COUNT = 8
 
@@ -249,7 +256,7 @@ function chooseJukugo(
    * 分けられない読みの語は、読みから字を思い出せないので出題文には後回しにする。
    */
   readable: (word: Jukugo) => boolean,
-): { prompt: Jukugo; hints: Jukugo[] } | null {
+): { prompt: Jukugo; hints: Jukugo[] }[] {
   // 伏せていない側に、その学年ではまだ習わない字が出ないようにする
   const candidates = (index.get(literal) ?? []).filter((word) => word.maxGrade <= gradeCap)
   const isDistinct = (word: Jukugo) =>
@@ -260,31 +267,54 @@ function chooseJukugo(
     [...word.text].filter((c) => c === literal).length === 1
     // 伏せると別の字でも成り立つ語(「◯行」かんこう = 刊行 / 慣行)は答えが定まらない
     && isDistinct(word)
-  // 手で決めた出題文(PROMPT_OF)があれば、それを使う
-  const prompt = PROMPT_OF[literal] !== undefined
+  // 委員 を採ったあとに 委員会・委員長 を並べても手がかりが増えない
+  const overlaps = (a: Jukugo, b: Jukugo) => a.text.includes(b.text) || b.text.includes(a.text)
+
+  // 手で決めた出題文(PROMPT_OF)があれば、それだけを使う
+  const primary = PROMPT_OF[literal] !== undefined
     ? candidates.find((word) => word.text === PROMPT_OF[literal] && canPrompt(word))
     : candidates.find((word) => canPrompt(word) && readable(word)) ?? candidates.find(canPrompt)
-  if (!prompt) return null
+  if (!primary) return []
 
-  const chosen = new Set<Jukugo>([prompt])
-  const passes: ((word: Jukugo) => boolean)[] = [
-    (word) => !word.supplement && isDistinct(word),
-    (word) => !word.supplement,
-    (word) => isDistinct(word),
-    () => true,
-  ]
-  for (const pass of passes) {
+  /*
+   * 2つめ以降の出題文の候補。よく使われる語のうち、学習者が知っている語(tier 2 まで)で、
+   * 読みから字が分かる語だけ。ほとんど見ない語で出題すると、意味が分かっても書けない。
+   */
+  const prompts = [primary]
+  if (PROMPT_OF[literal] === undefined) {
     for (const word of candidates) {
-      if (chosen.size > JUKUGO_HINTS) break
-      if (chosen.has(word) || !pass(word)) continue
-      // 委員 を採ったあとに 委員会・委員長 を並べても手がかりが増えない
-      if ([...chosen].some((c) => word.text.includes(c.text) || c.text.includes(word.text))) continue
-      chosen.add(word)
+      if (prompts.length >= MAX_PROMPTS) break
+      if (word.supplement || word.tier > 2 || !canPrompt(word) || !readable(word)) continue
+      if (prompts.some((p) => p === word || overlaps(p, word))) continue
+      prompts.push(word)
     }
   }
 
-  // 出すときは身近な語から
-  return { prompt, hints: candidates.filter((word) => word !== prompt && chosen.has(word)) }
+  /*
+   * ヒントは出題文ごとに選ぶ。ほかの出題文の候補も「区別がつく身近な語」なので、
+   * 自然とヒントの先頭に来る(落語 が出題文なら、ヒントは 集落・落下)。
+   */
+  const hintsFor = (prompt: Jukugo) => {
+    const chosen = new Set<Jukugo>([prompt])
+    const passes: ((word: Jukugo) => boolean)[] = [
+      (word) => !word.supplement && isDistinct(word),
+      (word) => !word.supplement,
+      (word) => isDistinct(word),
+      () => true,
+    ]
+    for (const pass of passes) {
+      for (const word of candidates) {
+        if (chosen.size > JUKUGO_HINTS) break
+        if (chosen.has(word) || !pass(word)) continue
+        if ([...chosen].some((c) => overlaps(c, word))) continue
+        chosen.add(word)
+      }
+    }
+    // 出すときは身近な語から
+    return candidates.filter((word) => word !== prompt && chosen.has(word))
+  }
+
+  return prompts.map((prompt) => ({ prompt, hints: hintsFor(prompt) }))
 }
 
 /** 出題する漢字を ◯ で伏せる。「運営」→「◯営」 */
@@ -392,13 +422,43 @@ function buildQuestionSource(
   level: Level,
   /** 出題文の熟語の意味。まだ書いていない・出してはいけない字が入っているときは undefined */
   meaningOf: (word: Jukugo) => string | undefined,
-): BuildResult | BuildSkip {
-  const literal = char.literal
-  const words = chooseJukugo(
-    literal, jukugo, maskedForms, partnerGradeCap(level),
+): QuestionSource | BuildSkip {
+  const variants = chooseJukugo(
+    char.literal, jukugo, maskedForms, partnerGradeCap(level),
     (word) => readingKindIn(char, word) !== 'unknown',
   )
-  if (!words) return { skipReason: '出題文にできる熟語が無い' }
+  if (variants.length === 0) return { skipReason: '出題文にできる熟語が無い' }
+
+  const [first, ...rest] = variants
+  const primary = buildVariant(char, first, meaningOf)
+  if ('skipReason' in primary) return primary
+
+  // 2つめ以降は、意味を書いてあって、ヒントがそろうものだけ出す
+  const extras: BuildResult[] = []
+  const pending: Jukugo[] = []
+  for (const words of rest) {
+    if (!meaningOf(words.prompt)) { pending.push(words.prompt); continue }
+    const variant = buildVariant(char, words, meaningOf)
+    if (!('skipReason' in variant)) extras.push(variant)
+  }
+  return { primary, extras, pending }
+}
+
+/** 1つの字の出題文たち。primary が問題の既定の形、extras は出題のたびに入れかわる候補 */
+interface QuestionSource {
+  primary: BuildResult
+  extras: BuildResult[]
+  /** 出題文の候補だが、意味をまだ書いていないので出していない語 */
+  pending: Jukugo[]
+}
+
+/** 出題文の熟語1つぶんの、出題文とヒント */
+function buildVariant(
+  char: Kanjidic2['characters'][number],
+  words: { prompt: Jukugo; hints: Jukugo[] },
+  meaningOf: (word: Jukugo) => string | undefined,
+): BuildResult | BuildSkip {
+  const literal = char.literal
   const { prompt } = words
 
   const hints: string[] = []
@@ -693,13 +753,22 @@ function main(): void {
     answer: string
     level: Level
     hintSource: string[]
+    /** 出題を始めるたびに、既定の形(prompt・promptReading・hintSource)と入れかわる候補 */
+    variants?: { prompt: string; promptReading: string; hintSource: string[] }[]
     parts?: string[]
     partTiles?: string[]
   }[] = []
   const skipped: Record<string, number> = {}
   const skip = (reason: string) => { skipped[reason] = (skipped[reason] ?? 0) + 1 }
   /** 目視確認用。補った語・読みの種類を決めきれなかった問題 */
-  const reports: { answer: string; level: Level; report: BuildResult['report']; hints: string[] }[] = []
+  const reports: {
+    answer: string
+    level: Level
+    report: BuildResult['report']
+    hints: string[]
+    /** 出題文の候補すべて(出しているもの・意味が無くてまだ出していないもの) */
+    promptWords: Jukugo[]
+  }[] = []
 
   for (const char of selected) {
     const components = kradfile.kanji[char.literal]
@@ -715,7 +784,14 @@ function main(): void {
         : undefined
     })
     if ('skipReason' in source) { skip(source.skipReason); continue }
-    reports.push({ answer: char.literal, level, report: source.report, hints: source.hints })
+    const { primary, extras, pending } = source
+    reports.push({
+      answer: char.literal,
+      level,
+      report: primary.report,
+      hints: primary.hints,
+      promptWords: [primary, ...extras].map((v) => v.report.promptWord).concat(pending),
+    })
 
     // assemble モード用。筆画レベルまで割れる字は組み立てても字形を成さない
     const maximal = dropNestedParts(components, kradfile).map(displayGlyph)
@@ -727,11 +803,14 @@ function main(): void {
     questions.push({
       id: `kj-g${char.misc.grade}-${char.literal}`,
       genreId: 'kanji',
-      prompt: source.prompt,
-      promptReading: source.promptReading,
+      prompt: primary.prompt,
+      promptReading: primary.promptReading,
       answer: char.literal,
       level,
-      hintSource: source.hints,
+      hintSource: primary.hints,
+      ...(extras.length > 0
+        ? { variants: extras.map((v) => ({ prompt: v.prompt, promptReading: v.promptReading, hintSource: v.hints })) }
+        : {}),
       ...(parts && partTiles && partTiles.length === PART_TILE_COUNT ? { parts, partTiles } : {}),
     })
   }
@@ -759,25 +838,27 @@ function main(): void {
    * 出題文の熟語の意味(scripts/data/kanji-meanings.json)。
    * まだ書いていない語と、答えの字・まだ習わない漢字が入った意味を数える。
    */
-  const usedMeaningKeys = new Set<string>()
-  const missingMeanings: typeof reports = []
-  const badMeanings: string[] = []
-  const keyOf = (r: (typeof reports)[number]) => meaningKey(r.report.promptWord.text, r.report.promptWord.reading)
+  // 出題文の候補ごとに見る(1つの字に最大 MAX_PROMPTS 語)
+  const pairs = reports.flatMap((r) => r.promptWords.map((word) => ({ ...r, word, key: meaningKey(word.text, word.reading) })))
   /** 熟語 → それを出題文に使う問題の答え(病院 → 病・院) */
   const answersOf = new Map<string, string[]>()
-  for (const r of reports) answersOf.set(keyOf(r), [...(answersOf.get(keyOf(r)) ?? []), r.answer])
-  for (const r of reports) {
-    const key = keyOf(r)
-    usedMeaningKeys.add(key)
-    const meaning = meanings.get(key)
-    if (meaning === undefined) { missingMeanings.push(r); continue }
-    const problems = meaningProblems(meaning, answersOf.get(key)!, partnerGradeCap(r.level), gradeOf)
-    if (problems.length > 0) badMeanings.push(`${key}(${r.answer} [${r.level}]) ${problems.join(' / ')}: ${meaning}`)
+  for (const p of pairs) answersOf.set(p.key, [...(answersOf.get(p.key) ?? []), p.answer])
+  const usedMeaningKeys = new Set(pairs.map((p) => p.key))
+  const missingMeanings: typeof pairs = []
+  const badMeanings: string[] = []
+  for (const p of pairs) {
+    const meaning = meanings.get(p.key)
+    if (meaning === undefined) { missingMeanings.push(p); continue }
+    const problems = meaningProblems(meaning, answersOf.get(p.key)!, partnerGradeCap(p.level), gradeOf)
+    if (problems.length > 0) badMeanings.push(`${p.key}(${p.answer} [${p.level}]) ${problems.join(' / ')}: ${meaning}`)
   }
   const unusedMeanings = [...meanings.keys()].filter((key) => !usedMeaningKeys.has(key))
-  console.log(`意味: 書いた ${reports.length - missingMeanings.length}問 / まだ ${missingMeanings.length}問 / 直す必要がある ${badMeanings.length}問 / 使われていない ${unusedMeanings.length}語`)
+  const withVariants = questions.filter((q) => q.variants).length
+  console.log(`出題文の候補: ${pairs.length}語(2つ以上の熟語で出せる字 ${withVariants}字)`)
+  console.log(`意味: 書いた ${pairs.length - missingMeanings.length}語 / まだ ${missingMeanings.length}語 / 直す必要がある ${badMeanings.length}語 / 使われていない ${unusedMeanings.length}語`)
   for (const line of badMeanings) console.log(`  直す: ${line}`)
   for (const key of unusedMeanings) console.log(`  使われていない: ${key}`)
+  if (reportOnly) for (const p of missingMeanings) console.log(`  まだ: ${p.key}\t${p.answer}\t${p.level}`)
   console.log(`出題文と同じ読みでヒントを埋めた問題: ${repeats.length}問 ${repeats.map((r) => r.answer).join('')}`)
 
   if (reportOnly) {
