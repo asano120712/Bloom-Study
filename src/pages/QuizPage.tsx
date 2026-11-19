@@ -860,6 +860,7 @@ export function QuizPage() {
             secondsToNext={secondsToNext}
             compact={showsPromptInInput || isWord}
             fractions={isFraction}
+            small={genre.id === 'kanji'}
           />
         </section>
       )}
