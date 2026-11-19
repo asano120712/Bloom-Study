@@ -313,7 +313,7 @@ export function HandwritingCanvas({ onSubmit, memo = false, disabled = false }: 
           onPointerCancel={endStroke}
           onMouseDown={preventSelection}
           draggable={false}
-          aria-label={memo ? copy.quiz.memo : '手書き入力エリア'}
+          aria-label={memo ? copy.quiz.memo : copy.handwriting.areaAria}
           // select-none: なぞったときに周りが範囲選択される(青い枠)のを防ぐ
           className={`w-full min-h-0 flex-1 touch-none select-none rounded-2xl border-2 ${
             memo ? 'bg-transparent' : 'bg-white'

@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 import { copyOf, type Copy } from '@/data/copy'
+import { concealCopy, useConcealedAnswer } from '@/features/conceal'
 import { readAudienceMode } from '@/services/audienceMode'
 import { TOP_PATH, type AudienceMode } from '@/types'
 
@@ -19,7 +20,10 @@ export function useAudienceMode(): AudienceMode {
   }, [pathname])
 }
 
-/** そのモードの言葉。画面はここから文字列を受け取る(src/data/copy.ts) */
+/**
+ * そのモードの言葉。画面はここから文字列を受け取る(src/data/copy.ts)。
+ * 漢字の出題中は、答えの字が入った言葉をひらがなにして返す(features/conceal)。
+ */
 export function useCopy(): Copy {
-  return copyOf(useAudienceMode())
+  return concealCopy(copyOf(useAudienceMode()), useConcealedAnswer())
 }

@@ -1,3 +1,5 @@
+import { useCopy } from '@/hooks/useAudienceMode'
+
 interface OnScreenKeyboardProps {
   onKey: (letter: string) => void
   onBackspace: () => void
@@ -32,6 +34,7 @@ export function OnScreenKeyboard({
   submitLabel,
   disabled = false,
 }: OnScreenKeyboardProps) {
+  const copy = useCopy()
   return (
     <div
       className="flex max-h-40 min-h-0 flex-1 flex-col gap-1.5"
@@ -59,7 +62,7 @@ export function OnScreenKeyboard({
           type="button"
           disabled={disabled}
           onClick={onBackspace}
-          aria-label="1文字消す"
+          aria-label={copy.typing.backspaceAria}
           className="btn-soft min-h-12 flex-1 rounded-lg [--btn-depth:1.5px] border-2 border-bloom-200 text-lg font-bold text-ink-600 disabled:text-ink-400"
         >
           ⌫

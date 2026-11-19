@@ -111,7 +111,7 @@ export function TypingInput({ onSubmit, disabled = false }: TypingInputProps) {
             onClick={() => setForceKeyboard(true)}
             className="btn-soft mx-auto flex min-h-11 items-center justify-center rounded-full border-2 border-bloom-200 px-5 text-sm font-bold text-ink-600"
           >
-            画面のキーボードを使う
+            {copy.typing.useScreenKeyboard}
           </button>
         </div>
       )}

@@ -143,8 +143,19 @@ export interface Copy {
     clearAllAria: string
     done: string
     boxLabel: (place: number) => string
+    /** 書く場所の読み上げ名 */
+    areaAria: string
   }
-  typing: { placeholderTap: string; placeholderKey: string; inputLabel: string; submit: string }
+  typing: {
+    placeholderTap: string
+    placeholderKey: string
+    inputLabel: string
+    submit: string
+    /** 端末のキーボードのかわりに、画面のキーボードで打つ */
+    useScreenKeyboard: string
+    /** 画面のキーボードの、1文字消すキーの読み上げ名 */
+    backspaceAria: string
+  }
   /** あそび(なぞりがき・おなじものさがし)で共通の言葉 */
   play: {
     allDone: string
@@ -476,12 +487,15 @@ const ADULT: Copy = {
     clearAllAria: 'もう一度押すと、書いたものを全部消す',
     done: '書けた',
     boxLabel: (place) => `答えの ${place} マス目`,
+    areaAria: '手書き入力エリア',
   },
   typing: {
     placeholderTap: '答えをタップして入力',
     placeholderKey: 'キーボードで入力',
     inputLabel: '入力中の答え',
     submit: '答え合わせ',
+    useScreenKeyboard: '画面のキーボードを使う',
+    backspaceAria: '1文字消す',
   },
   play: {
     allDone: '全部終わった!',
@@ -798,12 +812,15 @@ const KIDS: Copy = {
     clearAllAria: 'もういちど おすと、ぜんぶ けす',
     done: 'かけた',
     boxLabel: (place) => `こたえの ${place} マスめ`,
+    areaAria: 'てがきで かくところ',
   },
   typing: {
     placeholderTap: 'こたえを タップして うとう',
     placeholderKey: 'キーボードで うとう',
     inputLabel: '入力中のこたえ',
     submit: 'こたえあわせ',
+    useScreenKeyboard: 'がめんの キーボードを つかう',
+    backspaceAria: '1もじ けす',
   },
   play: {
     allDone: 'ぜんぶ できた！',
